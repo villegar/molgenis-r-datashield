@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.so
+*.o
+*.dll
+*.Rproj
+*.html
+figure
+.RData
+inst/doc
+vignettes/*.R

@@ -1,0 +1,26 @@
+Package: dsMolgenis
+Type: Package
+Version: 1.0.0
+Title: DataSHIELD implementation for Opal
+Authors@R:
+    c(person(given = "Sido",
+             family = "Haakma",
+             role = c("aut", "cre"),
+             email = "s.haakma@rug.nl"),
+      person(given = "Tommy",
+             family = "de Boer",
+             role = c("aut"),
+             email = "t.de.boer01@umcg.nl"))
+Depends:
+    R (>= 3.1),
+    DSI,
+    methods
+Suggests:
+    knitr
+Description: DataSHIELD implementation for the MOLGENIS DataSHIELD Service.
+License: LGPL (>= 2.1)
+URL: https://github.com/molgenis/molgenis-r-datashield
+BugReports: https://github.com/molgenis/molgenis-r-datashield
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr
+Encoding: UTF-8
