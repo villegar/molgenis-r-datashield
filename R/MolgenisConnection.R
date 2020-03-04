@@ -1,5 +1,5 @@
 #' @include MolgenisDriver.R
-setOldClass("Molgenis")
+
 
 #' Class MolgenisConnection.
 #'
@@ -9,7 +9,7 @@ setOldClass("Molgenis")
 #' @import DSI
 #' @export
 #' @keywords internal
-setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "character", Molgenis = "Molgenis"))
+setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "character", props = "list"))
 
 #' Connect to a Molgenis DataSHIELD service
 #' 
@@ -28,11 +28,34 @@ setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "c
 #' @return A \code{\link{MolgenisConnection-class}} object.
 #' 
 #' @import methods
+#' @import httr
 #' @export
 setMethod("dsConnect", "MolgenisDriver", 
           function(drv, name, restore = NULL, username = NULL, password = NULL, token = NULL, url = NULL, opts = list(), ...) {
-            driverFields <- # httr to datashield service
-            driverFields$name <- name
-            connection <- new("MolgenisConnection", name = name, Molgenis = driverFields)
+            handle <- handle(url)
+            POST(handle = handle, path="/login", encode="form", body=list(username=username, password=password))
+            props <- c(name=name, handle=handle)
+            connection <- new("MolgenisConnection", name = name, props = props)
             connection
           })
+
+
+
+#' Verify table exist and can be accessible for performing DataSHIELD operations.
+#'
+#' @param conn \code{\link{MolgenisConnection-class}} class object.
+#' @param table The identifier of the table
+#'
+#' @return TRUE if table exists.
+#'
+#' @import methods
+#' @export
+setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
+  props <- conn@props
+  answer <- GET(props$handle, path=paste0("exists/", table))
+  stop(content(answer))
+  content(answer)
+})
+
+
+

@@ -14,7 +14,8 @@ Authors@R:
 Depends:
     R (>= 3.1),
     DSI,
-    methods
+    methods,
+    httr
 Suggests:
     knitr
 Description: DataSHIELD implementation for the MOLGENIS DataSHIELD Service.
