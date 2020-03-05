@@ -32,9 +32,9 @@ setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "c
 #' @export
 setMethod("dsConnect", "MolgenisDriver", 
           function(drv, name, restore = NULL, username = NULL, password = NULL, token = NULL, url = NULL, opts = list(), ...) {
-            handle <- handle(url)
-            POST(handle = handle, path="/login", encode="form", body=list(username=username, password=password))
-            props <- c(name=name, handle=handle)
+            props <- list()
+            props$handle <- handle(url)
+            POST(handle = props$handle, path="/login", encode="form", body=list(username=username, password=password))
             connection <- new("MolgenisConnection", name = name, props = props)
             connection
           })
@@ -52,8 +52,7 @@ setMethod("dsConnect", "MolgenisDriver",
 #' @export
 setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
   props <- conn@props
-  answer <- GET(props$handle, path=paste0("exists/", table))
-  stop(content(answer))
+  answer <- GET(handle=props$handle, path=paste0("/exists/", table))
   content(answer)
 })
 
