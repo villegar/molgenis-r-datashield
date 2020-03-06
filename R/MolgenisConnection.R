@@ -51,8 +51,8 @@ setMethod("dsConnect", "MolgenisDriver",
 #' @import methods
 #' @export
 setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
-  #TODO implement when service has /exists endpoint
-  TRUE
+  response <- GET(handle=conn@props$handle, path=paste0("/exists/", table))
+  content(response)
 })
 
 #' MOLGENIS asynchronous support 
