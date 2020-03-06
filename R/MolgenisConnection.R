@@ -51,16 +51,15 @@ setMethod("dsConnect", "MolgenisDriver",
 #' @import methods
 #' @export
 setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
-  props <- conn@props
-  answer <- GET(handle=props$handle, path=paste0("/exists/", table))
-  content(answer)
+  #TODO implement when service has /exists endpoint
+  TRUE
 })
 
 #' MOLGENIS asynchronous support 
 #' 
 #' List of DataSHIELD operations on which MOLGENIS supports asynchronicity.
 #' 
-#' @param conn \code{\link{OpalConnection-class}} class object
+#' @param conn \code{\link{MolgenisConnection-class}} class object
 #' 
 #' @return The named list of logicals detailing the asynchronicity support.
 #' 
@@ -77,15 +76,13 @@ setMethod("dsIsAsync", "MolgenisConnection", function(conn) {
 #' @param conn \code{\link{MolgenisConnection-class}} object.
 #' @param symbol Name of the R symbol.
 #' @param table Identifier of a table in MOLGENIS.
-#' @param variables List of variable names or Javascript expression that selects the variables of a table (ignored if value does not refere to a table). See javascript documentation: http://wiki.obiba.org/display/OPALDOC/Variable+Methods
-#' @param missings If TRUE, missing values will be pushed from Opal to R, default is FALSE. Ignored if value is an R expression.
-#' @param identifiers Name of the identifiers mapping to use when assigning entities to R (from Opal 2.0).
-#' @param id.name Name of the column that will contain the entity identifiers. If not specified, the identifiers
-#'   will be the data frame row names. When specified this column can be used to perform joins between data frames.
-#' @param async Whether the result of the call should be retrieved asynchronously. When TRUE (default) the calls are parallelized over
-#'   the connections, when the connection supports that feature, with an extra overhead of requests.
+#' @param variables 
+#' @param missings 
+#' @param identifiers 
+#' @param id.name 
+#' @param async 
 #' 
-#' @return A \code{\link{OpalResult-class}} object.
+#' @return A \code{\link{MolgenisResult-class}} object.
 #' 
 #' @import methods
 #' @export
