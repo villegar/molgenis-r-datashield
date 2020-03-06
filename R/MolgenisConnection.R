@@ -123,6 +123,7 @@ setMethod("dsListMethods", "MolgenisConnection", function(conn, type = "aggregat
 #' @import methods
 #' @export
 setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) {
-  result <- POST(handle=conn@props$handle, url=conn@props$handle.url, path="/execute/", body=rlang::as_string(expr), add_headers('Content-Type'='text/plain'))
+  rawResult <- POST(handle=conn@props$handle, url=conn@props$handle.url, path="/execute/raw", body=rlang::as_string(expr), add_headers('Content-Type'='text/plain'))
+  result <- unserialize(content(rawResult))
   new("MolgenisResult", conn = conn, rval=list(result=result))
 })
