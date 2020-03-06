@@ -1,7 +1,7 @@
 Package: dsMolgenis
 Type: Package
 Version: 1.0.0
-Title: DataSHIELD implementation for Opal
+Title: DataSHIELD implementation for MOLGENIS
 Authors@R:
     c(person(given = "Sido",
              family = "Haakma",

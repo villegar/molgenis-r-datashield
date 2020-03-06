@@ -1,4 +1,4 @@
-#' @include OpalDriver.R OpalConnection.R
+#' @include MolgenisDriver.R MolgenisConnection.R
 NULL
 
 #' Class MolgenisResult.
@@ -32,11 +32,10 @@ setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
 #' 
 #' Fetch the DataSHIELD operation result.
 #' 
-#' @param res \code{\link{OpalResult-class}} object.
+#' @param res \code{\link{MolgenisResult-class}} object.
 #' 
 #' @return TRUE if table exists.
 #' 
-#' @import opalr
 #' @import methods
 #' @export
 setMethod("dsFetch", "MolgenisResult", function(res) {
