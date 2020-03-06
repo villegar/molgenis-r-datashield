@@ -1,4 +1,4 @@
-# dsMolgenis
+# DSMolgenis
 A DSI implementation for the [MOLGENIS DataSHIELD Service](https://github.com/molgenis/molgenis-service-datashield)
 
 ## Usage
@@ -8,7 +8,7 @@ We have constructed a sample program to get your first login, data assigend and 
 # create loginframe
 server <- c("molgenis") 
 url <- c("https://datashield.dev.molgenis.org")
-user <- c("admin) 
+user <- c("admin") 
 password <- c("admin")
 driver <- c("MolgenisDriver")
 table <- c("datashield.PATIENT") 
