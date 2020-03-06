@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            label 'r-3.6.3'
+            label 'r-3.6.2'
         }
     }
     environment {
