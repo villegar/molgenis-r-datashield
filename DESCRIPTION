@@ -1,6 +1,6 @@
 Package: DSMolgenis
 Type: Package
-Version: 1.0.0
+Version: 1.1.0
 Title: DataSHIELD implementation for MOLGENIS
 Authors@R:
     c(person(given = "Sido",
