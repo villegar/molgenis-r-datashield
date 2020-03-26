@@ -120,7 +120,7 @@ setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
 #' @import methods
 #' @export
 setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, variables=NULL, missings=FALSE, identifiers=NULL, id.name=NULL, async=TRUE) {
-  GET(handle=conn@props$handle, path=paste0("/load/", table))
+  GET(handle=conn@props$handle, path=paste0("/load/", table, "/", symbol))
   #TODO get and assign metadata from datashield service to MolgenisResult
   new("MolgenisResult", conn = conn, rval=list(result="test"))
 })
@@ -183,6 +183,7 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) {
-  result <- POST(handle=conn@props$handle, url=conn@props$handle.url, path="/execute/", body=rlang::as_string(expr), add_headers('Content-Type'='text/plain'))
+  rawResult <- POST(handle=conn@props$handle, url=conn@props$handle.url, path="/execute/raw", body=rlang::as_string(expr), add_headers('Content-Type'='text/plain'))
+  result <- unserialize(content(rawResult))
   new("MolgenisResult", conn = conn, rval=list(result=result))
 })

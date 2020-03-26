@@ -1,6 +1,6 @@
-Package: dsMolgenis
+Package: DSMolgenis
 Type: Package
-Version: 1.0.0
+Version: 1.1.0
 Title: DataSHIELD implementation for MOLGENIS
 Authors@R:
     c(person(given = "Sido",
@@ -10,9 +10,13 @@ Authors@R:
       person(given = "Tommy",
              family = "de Boer",
              role = c("aut"),
-             email = "t.de.boer01@umcg.nl"))
+             email = "t.de.boer01@umcg.nl"),
+      person(given = "Fleur",
+             family = "Kelpin",
+             role = c("aut"),
+             email = "f.kelpin@umcg.nl"))
 Depends:
-    R (>= 3.1),
+    R (>= 3.6),
     DSI,
     methods,
     httr
