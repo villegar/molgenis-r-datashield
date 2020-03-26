@@ -25,6 +25,7 @@ setClass("MolgenisResult", contains = "DSResult", slots = list(
 #' @import methods
 #' @export
 setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
+  #TODO return status of asynchronous command
   list(status="COMPLETED")
 })
 
