@@ -187,3 +187,24 @@ setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) 
   result <- unserialize(content(rawResult))
   new("MolgenisResult", conn = conn, rval=list(result=result))
 })
+
+
+#' Get connection info
+#' 
+#' Get information about a connection.
+#' 
+#' @param dsObj \code{\link{MolgenisConnection-class}} class object
+#' @param ... Unused, needed for compatibility with generic.
+#' 
+#' @return The connection information. This should report the version of
+#' the data repository application (`repo.version`) and its name (`repo.name`),
+#' the database name (`dbname`), username, (`username`), host (`host`), port (`port`), etc.
+#' It MAY also include any other arguments related to the connection
+#' (e.g., thread id, socket or TCP connection type). It MUST NOT include the
+#' password.
+#' 
+#' @import methods
+#' @export
+setMethod("dsGetInfo", "MolgenisConnection", function(dsObj, ...) {
+  #TODO implement
+})
