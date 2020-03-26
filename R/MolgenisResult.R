@@ -20,11 +20,13 @@ setClass("MolgenisResult", contains = "DSResult", slots = list(
 #' @param dsObj \code{\link{MolgenisResult-class}} class object
 #' @param ... Unused, needed for compatibility with generic.
 #' 
-#' @return The result information, including its status.
+#' @return The result information. This should include the R expression
+#' being executed (`expression`) and if the query is complete (`has.completed`).
 #' 
 #' @import methods
 #' @export
 setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
+  #TODO return status of asynchronous command
   list(status="COMPLETED")
 })
 

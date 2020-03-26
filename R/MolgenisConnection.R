@@ -11,35 +11,34 @@
 #' @keywords internal
 setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "character", props = "list"))
 
-#' Connect to a Molgenis DataSHIELD service
+
+#' Disconnect from a MOLGENIS DatasSHIELD Service
 #' 
-#' Connect to a Molgenis DataSHIELD service, with provided credentials.
+#' Disconnect from a MOLGENIS DataSHIELD Service and release all R resources. If a workspace ID is provided, the DataSHIELD
+#' R session will be saved before being destroyed.
 #' 
-#' @param drv \code{\link{MolgenisDriver-class}} class object.
-#' @param name Name of the connection, which must be unique among all the DataSHIELD connections.
-#' @param restore Workspace name to be restored in the newly created DataSHIELD R session.
-#' @param username 
-#' @param password 
-#' @param token 
-#' @param url 
-#' @param opts Curl options as described by httr (call httr::httr_options() for details). Can be provided by "Molgenis.opts" option.
-#' @param ... Unused, needed for compatibility with generic.
-#' 
-#' @return A \code{\link{MolgenisConnection-class}} object.
+#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param save Save the DataSHIELD R session with provided ID (must be a character string).
 #' 
 #' @import methods
-#' @import httr
 #' @export
-setMethod("dsConnect", "MolgenisDriver", 
-          function(drv, name, restore = NULL, username = NULL, password = NULL, token = NULL, url = NULL, opts = list(), ...) {
-            props <- list()
-            props$handle <- handle(url)
-            POST(handle = props$handle, path="/login", encode="form", body=list(username=username, password=password))
-            connection <- new("MolgenisConnection", name = name, props = props)
-            connection
-          })
+setMethod("dsDisconnect", "MolgenisConnection", function(conn, save = NULL) {
+  #TODO implement
+})
 
-
+#' List MOLGENIS DataSHIELD Service tables 
+#' 
+#' List MOLGENIS DataSHIELD Service tables that may be accessible for performing DataSHIELD operations.
+#' 
+#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' 
+#' @return The fully qualified names of the tables.
+#' 
+#' @import methods
+#' @export
+setMethod("dsListTables", "MolgenisConnection", function(conn) {
+  #TODO implement
+})
 
 #' Verify table exist and can be accessible for performing DataSHIELD operations.
 #'
@@ -55,10 +54,15 @@ setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
   content(response)
 })
 
-#' MOLGENIS asynchronous support 
+#' MOLGENIS DataShield Service asynchronous support 
 #' 
-#' List of DataSHIELD operations on which MOLGENIS supports asynchronicity.
+#' List of DataSHIELD operations on which MOLGENIS DataSHIELD Service supports asynchronicity.
 #' 
+#' When a \code{\link{DSResult-class}} object is returned on aggregation or assignment operation,
+#' the raw result can be accessed asynchronously, allowing parallelization of DataSHIELD calls
+#' over multpile servers. The returned named list of logicals will specify if asynchronicity is supported for:
+#' aggregation operation ('aggregate'), table assignment operation ('assignTable'),
+#' expression assignment operation ('assignExpr').
 #' @param conn \code{\link{MolgenisConnection-class}} class object
 #' 
 #' @return The named list of logicals detailing the asynchronicity support.
@@ -67,6 +71,35 @@ setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
 #' @export
 setMethod("dsIsAsync", "MolgenisConnection", function(conn) {
   list(aggregate = FALSE, assignTable = FALSE, assignExpr = FALSE)
+})
+
+#' List R symbols
+#' 
+#' List symbols living in the DataSHIELD R session.
+#' 
+#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' 
+#' @return A character vector.
+#' 
+#' @import opalr
+#' @import methods
+#' @export
+setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
+  #TODO implement
+})
+
+#' Remove an R symbol
+#' 
+#' Remove a symbol living in the DataSHIELD R session. After removal, the data identified by the symbol 
+#' will not be accessible in the DataSHIELD R session on the server side.
+#' 
+#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param symbol Name of the R symbol.
+#' 
+#' @import methods
+#' @export
+setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
+  #TODO implement
 })
 
 #' Assign a table
@@ -100,7 +133,7 @@ setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, v
 #' @param conn \code{\link{MolgenisConnection-class}} class object
 #' @param type Type of the method: "aggregate" (default) or "assign".
 #'
-#' @return A data frame.
+#' @return A data.frame with columns: name, type ('aggregate' or 'assign'), class ('function' or 'script'), value, package, version.
 #'
 #' @import methods
 #' @export
@@ -109,6 +142,33 @@ setMethod("dsListMethods", "MolgenisConnection", function(conn, type = "aggregat
   list()
 })
 
+#' List packages
+#' 
+#' List packages with their versions defined in the DataSHIELD configuration.
+#' 
+#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' 
+#' @return A data.frame with columns: name, version.
+#' 
+#' @import methods
+#' @export
+setMethod("dsListPackages", "MolgenisConnection", function(conn) {
+  #TODO implement
+})
+
+#' List workspaces
+#' 
+#' List workspaces saved in the data repository.
+#' 
+#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' 
+#' @return A data frame.
+#' 
+#' @import methods
+#' @export
+setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
+  #TODO implement
+})
 
 #' Aggregate data
 #'
@@ -126,4 +186,25 @@ setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) 
   rawResult <- POST(handle=conn@props$handle, url=conn@props$handle.url, path="/execute/raw", body=rlang::as_string(expr), add_headers('Content-Type'='text/plain'))
   result <- unserialize(content(rawResult))
   new("MolgenisResult", conn = conn, rval=list(result=result))
+})
+
+
+#' Get connection info
+#' 
+#' Get information about a connection.
+#' 
+#' @param dsObj \code{\link{MolgenisConnection-class}} class object
+#' @param ... Unused, needed for compatibility with generic.
+#' 
+#' @return The connection information. This should report the version of
+#' the data repository application (`repo.version`) and its name (`repo.name`),
+#' the database name (`dbname`), username, (`username`), host (`host`), port (`port`), etc.
+#' It MAY also include any other arguments related to the connection
+#' (e.g., thread id, socket or TCP connection type). It MUST NOT include the
+#' password.
+#' 
+#' @import methods
+#' @export
+setMethod("dsGetInfo", "MolgenisConnection", function(dsObj, ...) {
+  #TODO implement
 })
