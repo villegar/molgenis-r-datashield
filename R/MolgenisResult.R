@@ -26,7 +26,6 @@ setClass("MolgenisResult", contains = "DSResult", slots = list(
 #' @import methods
 #' @export
 setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
-  #TODO return status of asynchronous command
   list(status="COMPLETED")
 })
 
@@ -41,5 +40,13 @@ setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
 #' @import methods
 #' @export
 setMethod("dsFetch", "MolgenisResult", function(res) {
-  res@rval$result
+  if (res@rval$async) {
+    rawResult <- GET(handle=res@conn@props$handle,
+                     url=res@conn@props$handle.url,
+                     path="/lastresult",
+                     add_headers('Accept'='application/octet-stream'))
+    unserialize(content(rawResult))
+  } else {
+    res@rval$result
+  }
 })
