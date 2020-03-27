@@ -183,7 +183,12 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) {
-  rawResult <- POST(handle=conn@props$handle, url=conn@props$handle.url, path="/execute/raw", body=rlang::as_string(expr), add_headers('Content-Type'='text/plain'))
+  rawResult <- POST(handle=conn@props$handle,
+                    url=conn@props$handle.url,
+                    path="/execute",
+                    body=rlang::as_string(expr),
+                    add_headers('Content-Type'='text/plain',
+                                'Accept'='application/octet-stream'))
   result <- unserialize(content(rawResult))
   new("MolgenisResult", conn = conn, rval=list(result=result))
 })
