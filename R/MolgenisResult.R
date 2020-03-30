@@ -26,7 +26,15 @@ setClass("MolgenisResult", contains = "DSResult", slots = list(
 #' @import methods
 #' @export
 setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
-  list(status="COMPLETED")
+  if (dsObj@rval$async) {
+    result <- GET(handle=dsObj@conn@handle,
+                     url=dsObj@conn@handle.url,
+                     path="/lastcommand",
+                     add_headers('Accept'='application/json'))
+    content(result)
+  } else {
+    list(status="COMPLETED")  
+  }
 })
 
 #' Fetch the result
@@ -41,8 +49,8 @@ setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
 #' @export
 setMethod("dsFetch", "MolgenisResult", function(res) {
   if (res@rval$async) {
-    rawResult <- GET(handle=res@conn@props$handle,
-                     url=res@conn@props$handle.url,
+    rawResult <- GET(handle=res@conn@handle,
+                     url=res@conn@handle.url,
                      path="/lastresult",
                      add_headers('Accept'='application/octet-stream'))
     unserialize(content(rawResult))
