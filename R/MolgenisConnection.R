@@ -184,7 +184,7 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
 #' @export
 setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) {
   rawResult <- POST(handle=conn@props$handle,
-                    url=conn@props$handle.url,
+                    url=conn@props$handle$url,
                     query=list(async = async),
                     path="/execute",
                     body=rlang::as_string(expr),
