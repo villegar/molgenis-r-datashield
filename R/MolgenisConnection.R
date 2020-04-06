@@ -119,9 +119,11 @@ setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
 #' 
 #' @import methods
 #' @export
-setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, variables=NULL, missings=FALSE, identifiers=NULL, id.name=NULL, async=FALSE) {
+setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, variables=NULL, missings=FALSE, identifiers=NULL, id.name=NULL, async=TRUE) {
   GET(handle=conn@props$handle, path=paste0("/load/", table, "/", symbol))
-  #TODO get and assign metadata from datashield service to MolgenisResult
+  #TODO need to return something like this
+  # Check Opal code: 
+  # Response.created(getSymbolURI(uri)).entity(id).type(MediaType.TEXT_PLAIN_TYPE).build(); as a result
   new("MolgenisResult", conn = conn, rval=list(result="test", async = async))
 })
 
