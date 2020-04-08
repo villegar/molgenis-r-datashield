@@ -41,10 +41,13 @@ setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
 #' @export
 setMethod("dsFetch", "MolgenisResult", function(res) {
   if (res@rval$async) {
-    rawResult <- GET(handle=res@conn@props$handle,
+    rawResult <- RETRY(verb="GET",
+                     handle=res@conn@props$handle,
                      url=res@conn@props$handle.url,
                      path="/lastresult",
+                     times=5,
                      add_headers('Accept'='application/octet-stream'))
+    print('hello')
     unserialize(content(rawResult))
   } else {
     res@rval$result
