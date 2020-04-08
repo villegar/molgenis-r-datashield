@@ -121,8 +121,10 @@ setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
 #' @export
 setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, variables=NULL, missings=FALSE, identifiers=NULL, id.name=NULL, async=TRUE) {
   GET(handle=conn@props$handle, path=paste0("/load/", table, "/", symbol))
-  #TODO get and assign metadata from datashield service to MolgenisResult
-  new("MolgenisResult", conn = conn, rval=list(result="test"))
+  #TODO need to return something like this
+  # Check Opal code: 
+  # Response.created(getSymbolURI(uri)).entity(id).type(MediaType.TEXT_PLAIN_TYPE).build(); as a result
+  new("MolgenisResult", conn = conn, rval=list(result="test", async = async))
 })
 
 
@@ -184,7 +186,7 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
 #' @export
 setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) {
   rawResult <- POST(handle=conn@props$handle,
-                    url=conn@props$handle.url,
+                    url=conn@props$handle$url,
                     query=list(async = async),
                     path="/execute",
                     body=rlang::as_string(expr),
