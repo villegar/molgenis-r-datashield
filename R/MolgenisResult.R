@@ -21,12 +21,20 @@ setClass("MolgenisResult", contains = "DSResult", slots = list(
 #' @param ... Unused, needed for compatibility with generic.
 #' 
 #' @return The result information. This should include the R expression
-#' being executed (`expression`) and if the query is complete (`has.completed`).
+#' being executed (`expression`) and if the query is complete (`{ "status" = "COMPLETED" }`).
 #' 
 #' @import methods
 #' @export
 setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
-  list(status="COMPLETED")
+  if (dsObj@rval$async) {
+    result <- GET(handle=dsObj@conn@props$handle,
+                  url=dsObj@conn@props$handle$url,
+                  path="/lastcommand",
+                  add_headers('Accept'='application/json'))
+    content(result)
+  } else {
+    list(status="COMPLETED") 
+  }
 })
 
 #' Fetch the result
@@ -42,7 +50,7 @@ setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
 setMethod("dsFetch", "MolgenisResult", function(res) {
   if (res@rval$async) {
     rawResult <- GET(handle=res@conn@props$handle,
-                     url=res@conn@props$handle.url,
+                     url=res@conn@props$handle$url,
                      path="/lastresult",
                      add_headers('Accept'='application/octet-stream'))
     unserialize(content(rawResult))
