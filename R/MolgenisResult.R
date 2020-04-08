@@ -47,7 +47,6 @@ setMethod("dsFetch", "MolgenisResult", function(res) {
                      path="/lastresult",
                      times=5,
                      add_headers('Accept'='application/octet-stream'))
-    print('hello')
     unserialize(content(rawResult))
   } else {
     res@rval$result
