@@ -50,8 +50,8 @@ setMethod("dsListTables", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
-  response <- GET(handle=conn@props$handle, path=paste0("/exists/", table))
-  content(response)
+  response <- HEAD(handle=conn@props$handle, path=paste0("/tables/", table))
+  response$status_code == 200
 })
 
 #' MOLGENIS DataShield Service asynchronous support 
@@ -81,11 +81,16 @@ setMethod("dsIsAsync", "MolgenisConnection", function(conn) {
 #' 
 #' @return A character vector.
 #' 
-#' @import opalr
 #' @import methods
 #' @export
 setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
-  #TODO implement
+  response <- GET(handle=conn@props$handle, path="/symbols")
+  symbols <- content(response)
+  if (length(symbols) == 0){
+    character()
+  }else{
+    unlist(symbols)
+  }
 })
 
 #' Remove an R symbol
@@ -99,7 +104,7 @@ setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
-  #TODO implement
+  DELETE(handle=conn@props$handle, path=paste0("/symbols/", symbol))
 })
 
 #' Assign a table
@@ -120,7 +125,8 @@ setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
 #' @import methods
 #' @export
 setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, variables=NULL, missings=FALSE, identifiers=NULL, id.name=NULL, async=TRUE) {
-  GET(handle=conn@props$handle, path=paste0("/load/", table, "/", symbol))
+  POST(handle=conn@props$handle, path=paste0("/symbols/", symbol, "?table=", table))
+  
   #TODO need to return something like this
   # Check Opal code: 
   # Response.created(getSymbolURI(uri)).entity(id).type(MediaType.TEXT_PLAIN_TYPE).build(); as a result
@@ -170,6 +176,37 @@ setMethod("dsListPackages", "MolgenisConnection", function(conn) {
 #' @export
 setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
   #TODO implement
+})
+
+#' Assign the result of an expression
+#' 
+#' Assign a result of the execution of an expression in the DataSHIELD R session.
+#' 
+#' @param conn \code{\link{MolgenisConnection-class}} object.
+#' @param symbol Name of the R symbol.
+#' @param expr A R expression with allowed assign functions calls.
+#' @param async Whether the result of the call should be retrieved asynchronously. When TRUE (default) the calls are parallelized over
+#'   the connections, when the connection supports that feature, with an extra overhead of requests.
+#' 
+#' @return A \code{\link{MolgenisResult-class}} object.
+#' 
+#' @import methods
+#' @export
+setMethod("dsAssignExpr", "MolgenisConnection", function(conn, symbol, expr, async=TRUE) {
+  rawResult <- POST(handle=conn@props$handle,
+                    url=conn@props$handle$url,
+                    query=list(async = async),
+                    path=paste0("/symbols/", symbol),
+                    body=rlang::as_string(expr),
+                    add_headers('Content-Type'='text/plain',
+                                'Accept'='application/octet-stream'))
+  
+  if (async) {
+    result <- NULL
+  } else {
+    result <- content(rawResult)
+  }
+  new("MolgenisResult", conn = conn, rval=list(result=result, async=async))
 })
 
 #' Aggregate data

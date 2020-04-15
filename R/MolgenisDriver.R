@@ -43,13 +43,24 @@ Molgenis <- function() {
 #' @export
 setMethod("dsConnect", "MolgenisDriver", 
           function(drv, name, restore = NULL, username = NULL, password = NULL, token = NULL, url = NULL, opts = list(), ...) {
-            #TODO implement restore parameter
-            props <- list()
-            props$handle <- handle(url)
-            POST(handle = props$handle, path="/login", encode="form", body=list(username=username, password=password))
-            connection <- new("MolgenisConnection", name = name, props = props)
-            connection
-          })
+  #TODO implement restore parameter
+  
+  # Retrieve login URL and workspace name
+  url_parts <- unlist(strsplit(url, "/", fixed=TRUE))
+  workspace <- paste(tail(url_parts, n=2), collapse='/')
+  root_url  <- paste(url_parts[1:(length(url_parts) - 2)], collapse='/')
+  
+  # Create the connection properties
+  props <- list()
+  props$handle <- handle(root_url)
+  props$workspace <- workspace
+  
+  # Login and load the tables of the workspace
+  POST(handle = props$handle, path="/login", encode="form", body=list(username=username, password=password))
+  POST(handle = props$handle, path=paste0("/load-tables/", workspace))
+  
+  new("MolgenisConnection", name = name, props = props)
+})
 
 #' Get driver info
 #' 
