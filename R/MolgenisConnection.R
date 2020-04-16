@@ -70,7 +70,7 @@ setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
 #' @import methods
 #' @export
 setMethod("dsIsAsync", "MolgenisConnection", function(conn) {
-  list(aggregate = TRUE, assignTable = FALSE, assignExpr = FALSE)
+  list(aggregate = TRUE, assignTable = FALSE, assignExpr = TRUE)
 })
 
 #' List R symbols
@@ -193,20 +193,16 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsAssignExpr", "MolgenisConnection", function(conn, symbol, expr, async=TRUE) {
+  
+  
   rawResult <- POST(handle=conn@props$handle,
                     url=conn@props$handle$url,
                     query=list(async = async),
                     path=paste0("/symbols/", symbol),
                     body=rlang::as_string(expr),
-                    add_headers('Content-Type'='text/plain',
-                                'Accept'='application/octet-stream'))
+                    add_headers('Content-Type'='text/plain'))
   
-  if (async) {
-    result <- NULL
-  } else {
-    result <- content(rawResult)
-  }
-  new("MolgenisResult", conn = conn, rval=list(result=result, async=async))
+  new("MolgenisResult", conn = conn, rval=list(result=NULL, async=async))
 })
 
 #' Aggregate data
