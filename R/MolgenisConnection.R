@@ -194,12 +194,14 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsAssignExpr", "MolgenisConnection", function(conn, symbol, expr, async=TRUE) {
-  rawResult <- POST(handle=conn@handle,
+  response <- POST(handle=conn@handle,
                     url=conn@handle$url,
                     query=list(async = async),
                     path=paste0("/symbols/", symbol),
                     body=rlang::as_string(expr),
                     add_headers('Content-Type'='text/plain'))
+  
+  .handleBadRequest(response)
   
   new("MolgenisResult", conn = conn, rval=list(result=NULL, async=async))
 })
@@ -217,18 +219,24 @@ setMethod("dsAssignExpr", "MolgenisConnection", function(conn, symbol, expr, asy
 #' @import methods
 #' @export
 setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) {
-  rawResult <- POST(handle=conn@handle,
+  response <- POST(handle=conn@handle,
                     url=conn@handle$url,
                     query=list(async = async),
                     path="/execute",
                     body=rlang::as_string(expr),
                     add_headers('Content-Type'='text/plain',
-                                'Accept'='application/octet-stream'))
+                                'Accept'='application/octet-stream,application/json'))
 
+  .handleBadRequest(response)
+  
   if (async) {
     result <- NULL
   } else {
-    result <- unserialize(content(rawResult))
+    if (response$status_code == 500){
+      .handleLastCommandError(conn@handle)
+    }
+    
+    result <- unserialize(content(response))
   }
   new("MolgenisResult", conn = conn, rval=list(result=result, async=async))
 })

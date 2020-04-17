@@ -50,15 +50,20 @@ setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
 setMethod("dsFetch", "MolgenisResult", function(res) {
   if (res@rval$async) {
     command <- GET(handle=res@conn@handle, path="/lastcommand")
+    
     if (content(command)$withResult == TRUE){
-      rawResult <- RETRY(verb="GET",
+      response <- RETRY(verb="GET",
                          handle=res@conn@handle,
                          url=res@conn@handle$url,
                          path="/lastresult",
                          times=5,
                          add_headers('Accept'='application/octet-stream'))
-      unserialize(content(rawResult)) 
+    
+      .handleLastCommandError(res@conn@handle)
+        
+      unserialize(content(response)) 
     }else{
+      # TODO wait for /lastresult to be finished (will have empty body) and then check /lastcommand for errors
       NULL
     }
   } else {

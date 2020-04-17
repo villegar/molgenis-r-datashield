@@ -29,3 +29,8 @@ BugReports: https://github.com/molgenis/molgenis-r-datashield
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
+Collate: 
+    'MolgenisDriver.R'
+    'MolgenisConnection.R'
+    'MolgenisResult.R'
+    'utils.R'
