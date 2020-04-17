@@ -1,5 +1,6 @@
 #' @include MolgenisDriver.R
 
+setOldClass("handle")
 
 #' Class MolgenisConnection.
 #'
@@ -9,7 +10,7 @@
 #' @import DSI
 #' @export
 #' @keywords internal
-setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "character", props = "list"))
+setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "character", workspace = "character", handle = "handle"))
 
 
 #' Disconnect from a MOLGENIS DatasSHIELD Service
@@ -50,7 +51,7 @@ setMethod("dsListTables", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
-  response <- HEAD(handle=conn@props$handle, path=paste0("/tables/", table))
+  response <- HEAD(handle=conn@handle, path=paste0("/tables/", table))
   response$status_code == 200
 })
 
@@ -84,7 +85,7 @@ setMethod("dsIsAsync", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
-  response <- GET(handle=conn@props$handle, path="/symbols")
+  response <- GET(handle=conn@handle, path="/symbols")
   symbols <- content(response)
   if (length(symbols) == 0){
     character()
@@ -104,7 +105,7 @@ setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
-  DELETE(handle=conn@props$handle, path=paste0("/symbols/", symbol))
+  DELETE(handle=conn@handle, path=paste0("/symbols/", symbol))
 })
 
 #' Assign a table
@@ -125,7 +126,7 @@ setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
 #' @import methods
 #' @export
 setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, variables=NULL, missings=FALSE, identifiers=NULL, id.name=NULL, async=TRUE) {
-  POST(handle=conn@props$handle, path=paste0("/symbols/", symbol, "?table=", table))
+  POST(handle=conn@handle, path=paste0("/symbols/", symbol, "?table=", table))
   
   #TODO need to return something like this
   # Check Opal code: 
@@ -193,10 +194,8 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsAssignExpr", "MolgenisConnection", function(conn, symbol, expr, async=TRUE) {
-  
-  
-  rawResult <- POST(handle=conn@props$handle,
-                    url=conn@props$handle$url,
+  rawResult <- POST(handle=conn@handle,
+                    url=conn@handle$url,
                     query=list(async = async),
                     path=paste0("/symbols/", symbol),
                     body=rlang::as_string(expr),
@@ -218,13 +217,14 @@ setMethod("dsAssignExpr", "MolgenisConnection", function(conn, symbol, expr, asy
 #' @import methods
 #' @export
 setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) {
-  rawResult <- POST(handle=conn@props$handle,
-                    url=conn@props$handle$url,
+  rawResult <- POST(handle=conn@handle,
+                    url=conn@handle$url,
                     query=list(async = async),
                     path="/execute",
                     body=rlang::as_string(expr),
                     add_headers('Content-Type'='text/plain',
                                 'Accept'='application/octet-stream'))
+
   if (async) {
     result <- NULL
   } else {

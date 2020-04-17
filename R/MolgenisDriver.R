@@ -49,17 +49,13 @@ setMethod("dsConnect", "MolgenisDriver",
   url_parts <- unlist(strsplit(url, "/", fixed=TRUE))
   workspace <- paste(tail(url_parts, n=2), collapse='/')
   root_url  <- paste(url_parts[1:(length(url_parts) - 2)], collapse='/')
-  
-  # Create the connection properties
-  props <- list()
-  props$handle <- handle(root_url)
-  props$workspace <- workspace
+  handle = handle(root_url)
   
   # Login and load the tables of the workspace
-  POST(handle = props$handle, path="/login", encode="form", body=list(username=username, password=password))
-  POST(handle = props$handle, path=paste0("/load-tables/", workspace))
+  POST(handle = handle, path="/login", encode="form", body=list(username=username, password=password))
+  POST(handle = handle, path=paste0("/load-tables/", workspace))
   
-  new("MolgenisConnection", name = name, props = props)
+  new("MolgenisConnection", name = name, handle = handle, workspace = workspace)
 })
 
 #' Get driver info
