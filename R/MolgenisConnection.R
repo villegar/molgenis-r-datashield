@@ -38,7 +38,13 @@ setMethod("dsDisconnect", "MolgenisConnection", function(conn, save = NULL) {
 #' @import methods
 #' @export
 setMethod("dsListTables", "MolgenisConnection", function(conn) {
-  #TODO implement
+  response <- GET(handle=conn@handle, path=paste0("/tables"))
+  tables <- content(response)
+  if (length(tables) == 0){
+    character()
+  }else{
+    unlist(tables)
+  }
 })
 
 #' Verify table exist and can be accessible for performing DataSHIELD operations.
