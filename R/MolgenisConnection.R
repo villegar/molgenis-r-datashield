@@ -24,7 +24,10 @@ setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "c
 #' @import methods
 #' @export
 setMethod("dsDisconnect", "MolgenisConnection", function(conn, save = NULL) {
-  #TODO implement
+  if (!is.null(save)){
+    #TODO handle workspace save
+  }
+  POST(handle=conn@handle, path="/logout")
 })
 
 #' List MOLGENIS DataSHIELD Service tables 
@@ -39,6 +42,8 @@ setMethod("dsDisconnect", "MolgenisConnection", function(conn, save = NULL) {
 #' @export
 setMethod("dsListTables", "MolgenisConnection", function(conn) {
   response <- GET(handle=conn@handle, path=paste0("/tables"))
+  .handleRequestError(response)
+  
   tables <- content(response)
   if (length(tables) == 0){
     character()
@@ -58,6 +63,8 @@ setMethod("dsListTables", "MolgenisConnection", function(conn) {
 #' @export
 setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
   response <- HEAD(handle=conn@handle, path=paste0("/tables/", table))
+  .handleRequestError(response)
+  
   response$status_code == 200
 })
 
@@ -92,6 +99,8 @@ setMethod("dsIsAsync", "MolgenisConnection", function(conn) {
 #' @export
 setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
   response <- GET(handle=conn@handle, path="/symbols")
+  .handleRequestError(response)
+  
   symbols <- content(response)
   if (length(symbols) == 0){
     character()
@@ -111,7 +120,8 @@ setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
-  DELETE(handle=conn@handle, path=paste0("/symbols/", symbol))
+  response <- DELETE(handle=conn@handle, path=paste0("/symbols/", symbol))
+  .handleRequestError(response)
 })
 
 #' Assign a table
@@ -132,7 +142,8 @@ setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
 #' @import methods
 #' @export
 setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, variables=NULL, missings=FALSE, identifiers=NULL, id.name=NULL, async=TRUE) {
-  POST(handle=conn@handle, path=paste0("/symbols/", symbol, "?table=", table))
+  response <- POST(handle=conn@handle, path=paste0("/symbols/", symbol, "?table=", table))
+  .handleRequestError(response)
   
   #TODO need to return something like this
   # Check Opal code: 
@@ -177,7 +188,7 @@ setMethod("dsListPackages", "MolgenisConnection", function(conn) {
 #' 
 #' @param conn \code{\link{MolgenisConnection-class}} class object
 #' 
-#' @return A data frame.
+#' @return A data.frame with columns: name, lastAccessDate, size.
 #' 
 #' @import methods
 #' @export
@@ -207,7 +218,7 @@ setMethod("dsAssignExpr", "MolgenisConnection", function(conn, symbol, expr, asy
                     body=rlang::as_string(expr),
                     add_headers('Content-Type'='text/plain'))
   
-  .handleBadRequest(response)
+  .handleRequestError(response)
   
   new("MolgenisResult", conn = conn, rval=list(result=NULL, async=async))
 })
@@ -233,7 +244,7 @@ setMethod("dsAggregate", "MolgenisConnection", function(conn, expr, async=TRUE) 
                     add_headers('Content-Type'='text/plain',
                                 'Accept'='application/octet-stream,application/json'))
 
-  .handleBadRequest(response)
+  .handleRequestError(response)
   
   if (async) {
     result <- NULL

@@ -9,9 +9,11 @@
 }
 
 #' @keywords internal
-.handleBadRequest <- function(response) {
+.handleRequestError <- function(response) {
   if (response$status_code == 400){
     jsonContent = content(response)
     stop(paste0("Bad request: ", jsonContent$message))
+  }else if(response$status_code == 401){
+    stop("Unauthorized")
   }
 }

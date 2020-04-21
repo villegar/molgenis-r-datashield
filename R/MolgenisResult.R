@@ -49,22 +49,24 @@ setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
 #' @export
 setMethod("dsFetch", "MolgenisResult", function(res) {
   if (res@rval$async) {
-    command <- GET(handle=res@conn@handle, path="/lastcommand")
+    response <- RETRY(verb="GET",
+                      handle=res@conn@handle,
+                      url=res@conn@handle$url,
+                      path="/lastresult",
+                      terminate_on = c(200, 404, 401),
+                      add_headers('Accept'='application/octet-stream'))
     
-    if (content(command)$withResult == TRUE){
-      response <- RETRY(verb="GET",
-                         handle=res@conn@handle,
-                         url=res@conn@handle$url,
-                         path="/lastresult",
-                         times=5,
-                         add_headers('Accept'='application/octet-stream'))
+    .handleRequestError(response)
     
-      .handleLastCommandError(res@conn@handle)
-        
-      unserialize(content(response)) 
+    if (response$status_code == 404){
+      .handleLastCommandError(res@conn@handle)  
     }else{
-      # TODO wait for /lastresult to be finished (will have empty body) and then check /lastcommand for errors
-      NULL
+      content <- content(response)
+      if (is.null(content)){
+        NULL
+      }else{
+        unserialize(content)
+      }
     }
   } else {
     res@rval$result
