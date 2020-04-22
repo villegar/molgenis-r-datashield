@@ -17,3 +17,12 @@
     stop("Unauthorized")
   }
 }
+
+#' @keywords internal
+.unlistCharacterList <- function(characterList) {
+  if (length(characterList) == 0){
+    character()
+  }else{
+    unlist(characterList)
+  }
+}

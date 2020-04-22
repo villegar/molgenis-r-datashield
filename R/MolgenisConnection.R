@@ -10,7 +10,7 @@ setOldClass("handle")
 #' @import DSI
 #' @export
 #' @keywords internal
-setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "character", workspace = "character", handle = "handle"))
+setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "character", workspace = "character", handle = "handle", user = "character"))
 
 
 #' Disconnect from a MOLGENIS DatasSHIELD Service
@@ -44,13 +44,7 @@ setMethod("dsDisconnect", "MolgenisConnection", function(conn, save = NULL) {
 setMethod("dsListTables", "MolgenisConnection", function(conn) {
   response <- GET(handle=conn@handle, path=paste0("/tables"))
   .handleRequestError(response)
-  
-  tables <- content(response)
-  if (length(tables) == 0){
-    character()
-  }else{
-    unlist(tables)
-  }
+  .unlistCharacterList(content(response))
 })
 
 #' Verify table exist and can be accessible for performing DataSHIELD operations.
@@ -101,13 +95,7 @@ setMethod("dsIsAsync", "MolgenisConnection", function(conn) {
 setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
   response <- GET(handle=conn@handle, path="/symbols")
   .handleRequestError(response)
-  
-  symbols <- content(response)
-  if (length(symbols) == 0){
-    character()
-  }else{
-    unlist(symbols)
-  }
+  .unlistCharacterList(content(response))
 })
 
 #' Remove an R symbol
@@ -189,12 +177,22 @@ setMethod("dsListPackages", "MolgenisConnection", function(conn) {
 #' 
 #' @param conn \code{\link{MolgenisConnection-class}} class object
 #' 
-#' @return A data.frame with columns: name, lastAccessDate, size.
+#' @return A data.frame with columns: name, lastAccessDate, size, user.
 #' 
 #' @import methods
 #' @export
 setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
-  #TODO implement
+  response <- GET(handle=conn@handle, 
+                  url=conn@handle$url,
+                  path="/workspaces", 
+                  add_headers('Accept'='application/json'))
+  .handleRequestError(response)
+  
+  content <- content(response)
+  df <- as.data.frame(do.call(rbind, content(response)))
+  frame$user <- conn@user
+  colnames(df)[colnames(df) == 'lastModified'] <- 'lastAccessDate'
+  df
 })
 
 #' Save workspace

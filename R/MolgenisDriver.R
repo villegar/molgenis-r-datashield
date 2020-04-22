@@ -62,7 +62,7 @@ setMethod("dsConnect", "MolgenisDriver",
     .handleRequestError(restoreResponse)
   }
   
-  new("MolgenisConnection", name = name, handle = handle, workspace = workspace)
+  new("MolgenisConnection", name = name, handle = handle, workspace = workspace, user = username)
 })
 
 #' Get driver info
