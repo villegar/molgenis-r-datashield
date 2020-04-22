@@ -43,8 +43,6 @@ Molgenis <- function() {
 #' @export
 setMethod("dsConnect", "MolgenisDriver", 
           function(drv, name, restore = NULL, username = NULL, password = NULL, token = NULL, url = NULL, opts = list(), ...) {
-  #TODO implement restore parameter
-  
   # Retrieve login URL and workspace name
   url_parts <- unlist(strsplit(url, "/", fixed=TRUE))
   workspace <- paste(tail(url_parts, n=2), collapse='/')
@@ -52,8 +50,17 @@ setMethod("dsConnect", "MolgenisDriver",
   handle = handle(root_url)
   
   # Login and load the tables of the workspace
-  POST(handle = handle, path="/login", encode="form", body=list(username=username, password=password))
-  POST(handle = handle, path=paste0("/load-tables/", workspace))
+  loginResponse <- POST(handle = handle, path="/login", encode="form", body=list(username=username, password=password))
+  .handleRequestError(loginResponse)
+  
+  loadTablesResponse <- POST(handle = handle, path=paste0("/load-tables/", workspace))
+  .handleRequestError(loadTablesResponse)
+  
+  # Restore users workspace
+  if (!is.null(restore)){
+    restoreResponse <- POST(handle = handle, path=paste0("/load-workspace/", restore))
+    .handleRequestError(restoreResponse)
+  }
   
   new("MolgenisConnection", name = name, handle = handle, workspace = workspace)
 })

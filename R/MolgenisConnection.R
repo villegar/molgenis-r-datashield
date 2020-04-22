@@ -25,7 +25,8 @@ setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "c
 #' @export
 setMethod("dsDisconnect", "MolgenisConnection", function(conn, save = NULL) {
   if (!is.null(save)){
-    #TODO handle workspace save
+    response <- POST(handle=conn@handle, path=paste0("/workspaces/", save))
+    .handleRequestError(response)
   }
   POST(handle=conn@handle, path="/logout")
 })
@@ -194,6 +195,20 @@ setMethod("dsListPackages", "MolgenisConnection", function(conn) {
 #' @export
 setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
   #TODO implement
+})
+
+#' Save workspace
+#' 
+#' Save workspace on the data repository.
+#' 
+#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param name Name of the workspace.
+#' 
+#' @import methods
+#' @export
+setMethod("dsSaveWorkspace", "MolgenisConnection", function(conn, name) {
+  response <- POST(handle=conn@handle, path=paste0("/workspaces/", name))
+  .handleRequestError(response)
 })
 
 #' Assign the result of an expression
