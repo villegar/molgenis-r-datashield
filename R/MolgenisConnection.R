@@ -209,6 +209,20 @@ setMethod("dsSaveWorkspace", "MolgenisConnection", function(conn, name) {
   .handleRequestError(response)
 })
 
+#' Remove a workspace
+#' 
+#' Remove a workspace on the data repository.
+#' 
+#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param name Name of the workspace.
+#' 
+#' @import methods
+#' @export
+setMethod("dsRmWorkspace", "MolgenisConnection", function(conn, name) {
+  response <- DELETE(handle=conn@handle, path=paste0("/workspaces/", name))
+  .handleRequestError(response)
+})
+
 #' Assign the result of an expression
 #' 
 #' Assign a result of the execution of an expression in the DataSHIELD R session.

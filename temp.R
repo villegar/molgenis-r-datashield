@@ -44,6 +44,14 @@ conns <- datashield.login(logins=logindata,assign=F)
 dsListWorkspaces(conns$molgenis)
 datashield.workspaces(conns) # weird output (bug in dsBaseClient?)
 
+# remove workspace
+conns <- datashield.login(logins=logindata,assign=F)
+datashield.workspace_save(conns, "removeMe")
+dsListWorkspaces(conns$molgenis)
+datashield.workspace_rm(conns, "removeMe")
+dsListWorkspaces(conns$molgenis)
+
+
 #####################
 # Symbol assignment #
 #####################
