@@ -168,7 +168,14 @@ setMethod("dsListMethods", "MolgenisConnection", function(conn, type = "aggregat
 #' @import methods
 #' @export
 setMethod("dsListPackages", "MolgenisConnection", function(conn) {
-  #TODO implement
+  response <- GET(handle=conn@handle, 
+                  url=conn@handle$url,
+                  path="/packages", 
+                  add_headers('Accept'='application/json'))
+  .handleRequestError(response)
+  
+  extractedCols <- lapply(content(response), function(x) c(x$name, x$version))
+  .listToDataFrame(extractedCols)
 })
 
 #' List workspaces
@@ -188,9 +195,8 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
                   add_headers('Accept'='application/json'))
   .handleRequestError(response)
   
-  content <- content(response)
-  df <- as.data.frame(do.call(rbind, content(response)))
-  frame$user <- conn@user
+  df <- .listToDataFrame(content(response))
+  df$user <- conn@user
   colnames(df)[colnames(df) == 'lastModified'] <- 'lastAccessDate'
   df
 })

@@ -26,3 +26,8 @@
     unlist(characterList)
   }
 }
+
+#' @keywords internal
+.listToDataFrame <- function(list) {
+  as.data.frame(do.call(rbind, list))
+}

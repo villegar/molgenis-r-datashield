@@ -51,7 +51,6 @@ dsListWorkspaces(conns$molgenis)
 datashield.workspace_rm(conns, "removeMe")
 dsListWorkspaces(conns$molgenis)
 
-
 #####################
 # Symbol assignment #
 #####################
@@ -67,15 +66,20 @@ datashield.assign.expr(conns = conns, symbol = 'K', "c(10,50,100)")
 ds.mean("K")
 ds.mean("D$age")
 
-##################
-# Tables         #
-##################
+##############################
+# Tables / methods /packages #
+##############################
 conns <- datashield.login(logins=logindata,assign=F)
 datashield.assign.table(conns = conns, table = "datashield.PATIENT", symbol = "D")
 
+# check tables
 dsListTables(conns$molgenis)
 dsHasTable(conns$molgenis, "datashield.PATIENT")
 dsHasTable(conns$molgenis, "datashield.NOTPATIENT")
+
+# check packages
+conns <- datashield.login(logins=logindata,assign=F)
+dsListPackages(conns$molgenis)
 
 ##################
 # Error handling #
