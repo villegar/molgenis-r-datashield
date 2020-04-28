@@ -89,8 +89,10 @@ conns <- datashield.login(logins=logindata,assign=F)
 # bad requests (sync and async):
 datashield.assign.expr(conns = conns, symbol = 'K', "c(10,50,100")
 dsAssignExpr(conns$molgenis, symbol = "K", "c(x", async=FALSE)
+dsAssignExpr(conns$molgenis, symbol = "K", "c(x", async=TRUE)
 
-dsAggregate(conns$molgenis, "c(4")
+dsAggregate(conns$molgenis, "c(4", async=FALSE)
+dsAggregate(conns$molgenis, "c(4", async=TRUE)
 
 # R error -> 500
 result <- dsAggregate(conns$molgenis, "X", async=TRUE)
