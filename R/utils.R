@@ -4,7 +4,7 @@
   
   jsonContent = content(command)
   if (jsonContent$status == "FAILED"){
-    stop(paste0("Execution failed: ", jsonContent$message))
+    stop(paste0("Execution failed: ", jsonContent$message), call. = FALSE)
   }
 }
 
@@ -12,9 +12,9 @@
 .handleRequestError <- function(response) {
   if (response$status_code == 400){
     jsonContent = content(response)
-    stop(paste0("Bad request: ", jsonContent$message))
+    stop(paste0("Bad request: ", jsonContent$message), call. = FALSE)
   }else if(response$status_code == 401){
-    stop("Unauthorized")
+    stop("Unauthorized", call. = FALSE)
   }
 }
 
