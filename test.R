@@ -56,7 +56,7 @@ dsListWorkspaces(conns$molgenis)
 #####################
 conns <- datashield.login(logins=logindata,assign=F)
 datashield.assign.table(conns = conns, table = "datashield.PATIENT", symbol = "D")
-datashield.assign.table(conns = conns, table = "datashield.PATIENT", symbol = "E")
+datashield.assign.table(conns = conns, table = "datashield.PATIENT", symbol = "E", async=TRUE)
 
 datashield.symbols(conns)
 datashield.rm(conns = conns, 'E')

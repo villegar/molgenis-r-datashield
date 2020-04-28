@@ -134,12 +134,17 @@ setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, v
   response <- POST(handle=conn@handle, path=paste0("/symbols/", symbol, "?table=", table))
   .handleRequestError(response)
   
-  # TODO handle sync/async
-  
   #TODO need to return something like this
   # Check Opal code: 
   # Response.created(getSymbolURI(uri)).entity(id).type(MediaType.TEXT_PLAIN_TYPE).build(); as a result
-  new("MolgenisResult", conn = conn, rval=list(result="test", async = async))
+  
+  if (async){
+    result <- NULL
+  }else{
+    result <- .retryUntilLastResult(conn)
+  }
+  
+  new("MolgenisResult", conn = conn, rval=list(result=result, async = async))
 })
 
 
