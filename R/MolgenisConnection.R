@@ -10,7 +10,7 @@ setOldClass("handle")
 #' @import DSI
 #' @export
 #' @keywords internal
-setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "character", workspace = "character", handle = "handle", user = "character"))
+setClass("MolgenisConnection", contains = "DSConnection", slots = list(name = "character", workspaces = "list", handle = "handle", user = "character"))
 
 
 #' Disconnect from a MOLGENIS DatasSHIELD Service

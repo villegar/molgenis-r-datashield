@@ -4,7 +4,7 @@ library(dsBaseClient)
 
 # create loginframe
 server <- c("molgenis")
-url <- c("http://localhost:8080/DIABETES/patient")
+url <- c("http://localhost:8080?workspace=DIABETES/patient&workspace=GECKO/customer")
 user <- c("admin")
 password <- c("admin")
 driver <- c("MolgenisDriver")
