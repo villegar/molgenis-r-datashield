@@ -134,6 +134,8 @@ setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, v
   response <- POST(handle=conn@handle, path=paste0("/symbols/", symbol, "?table=", table))
   .handleRequestError(response)
   
+  # TODO handle sync/async
+  
   #TODO need to return something like this
   # Check Opal code: 
   # Response.created(getSymbolURI(uri)).entity(id).type(MediaType.TEXT_PLAIN_TYPE).build(); as a result
@@ -252,6 +254,12 @@ setMethod("dsAssignExpr", "MolgenisConnection", function(conn, symbol, expr, asy
                     add_headers('Content-Type'='text/plain'))
   
   .handleRequestError(response)
+  
+  if (async) {
+    result <- NULL
+  } else {
+    result <- .retryUntilLastResult(conn)
+  }
   
   new("MolgenisResult", conn = conn, rval=list(result=NULL, async=async))
 })

@@ -64,7 +64,10 @@ datashield.symbols(conns)
 
 datashield.assign.expr(conns = conns, symbol = 'K', "c(10,50,100)")
 ds.mean("K")
-ds.mean("D$age")
+
+datashield.assign.expr(conns = conns, symbol = 'H', "c(10,50,100)", async=FALSE)
+ds.mean("H")
+
 
 ##############################
 # Tables / methods /packages #

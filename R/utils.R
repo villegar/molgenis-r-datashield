@@ -31,3 +31,26 @@
 .listToDataFrame <- function(list) {
   as.data.frame(do.call(rbind, list))
 }
+
+#' @keywords internal
+.retryUntilLastResult <- function(conn) {
+  response <- RETRY(verb="GET",
+                    handle=conn@handle,
+                    url=conn@handle$url,
+                    path="/lastresult",
+                    terminate_on = c(200, 404, 401),
+                    add_headers('Accept'='application/octet-stream'))
+  
+  .handleRequestError(response)
+  
+  if (response$status_code == 404){
+    .handleLastCommandError(conn@handle)  
+  }else{
+    content <- content(response)
+    if (is.null(content)){
+      NULL
+    }else{
+      unserialize(content)
+    }
+  }
+}
