@@ -203,7 +203,9 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
   .handleRequestError(response)
   
   df <- .listToDataFrame(content(response))
-  df$user <- conn@user
+  if (length(df) > 0){
+    df$user <- conn@user 
+  }
   colnames(df)[colnames(df) == 'lastModified'] <- 'lastAccessDate'
   df
 })
