@@ -15,6 +15,9 @@
     stop(paste0("Bad request: ", jsonContent$message), call. = FALSE)
   }else if(response$status_code == 401){
     stop("Unauthorized", call. = FALSE)
+  }else if(response$status_code == 500){
+    jsonContent = content(response)
+    stop(paste0("Internal server error: ", jsonContent$message), call. = FALSE)
   }
 }
 
