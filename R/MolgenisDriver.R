@@ -53,7 +53,7 @@ setMethod("dsConnect", "MolgenisDriver",
   loginResponse <- POST(handle = handle, path="/login", encode="form", body=list(username=username, password=password))
   .handleRequestError(loginResponse)
   
-  loadTablesResponse <- POST(handle = handle, path=paste0("/load-tables/", workspace))
+  loadTablesResponse <- POST(handle = handle, path=paste0("/load-tables?workspace=", workspace))
   .handleRequestError(loadTablesResponse)
   
   # Restore users workspace
