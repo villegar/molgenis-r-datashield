@@ -320,7 +320,6 @@ setMethod("dsAssignExpr", "MolgenisConnection",
 #' @export
 setMethod("dsAggregate", "MolgenisConnection",
           function(conn, expr, async = TRUE) {
-  
   response <- POST(handle = conn@handle,
                    url = conn@handle$url,
                    query = list(async = async),

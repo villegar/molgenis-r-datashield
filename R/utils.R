@@ -72,15 +72,15 @@
 
 #' @keywords internal
 .deparse <- function(expr) {
-  expression = expr
+  expression <- expr
   # convert a call to a string
-  if(is.language(expr)) {
+  if (is.language(expr)) {
     expression <- deparse(expr)
-    if(length(expression) > 1) {
-      expression = paste(expression, collapse='\n')
+    if (length(expression) > 1) {
+      expression <- paste(expression, collapse = "\n")
     }
-  } else if(! is.character(expr) ) {
-    stop("Invalid expression type: '", class(expr), "'. Expected a call or character vector.")
+  } else if (!is.character(expr)) {
+    stop("Invalid expression: '", class(expr), "'. Expected a call or vector.")
   }
   expression
 }
