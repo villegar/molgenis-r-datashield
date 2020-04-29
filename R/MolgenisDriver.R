@@ -73,7 +73,7 @@ setMethod("dsConnect", "MolgenisDriver",
   # Restore users workspace
   if (!is.null(restore)) {
     restore_response <- POST(handle = handle,
-                            path = paste0("/load-workspace/", restore))
+                            path = paste0("/load-workspace?id=", restore))
     .handle_request_error(restore_response)
   }
 
