@@ -328,7 +328,7 @@ setMethod("dsAggregate", "MolgenisConnection",
                    add_headers("Content-Type" = "text/plain",
                                "Accept" =
                                  "application/octet-stream,application/json"))
-  print(response)
+  
   .handle_request_error(response)
 
   if (async) {
