@@ -49,6 +49,7 @@ pipeline {
                     }
                     sh "R CMD build ."
                     sh "R CMD check ${PACKAGE}_${TAG}.tar.gz"
+                    sh "Rscript -e 'lintr::lint_package(\".\", relative_path=TRUE)'"
                 }
             }
             post {
@@ -77,6 +78,7 @@ pipeline {
                     sh "echo 'Building ${PACKAGE} v${TAG}'"
                     sh "R CMD build ."
                     sh "R CMD check ${PACKAGE}_${TAG}.tar.gz"
+                    sh "Rscript -e 'lintr::lint_package(\".\", relative_path=TRUE)'"
                 }
             }
             post {

@@ -3,8 +3,9 @@ NULL
 
 #' Class MolgenisResult.
 #'
-#' A MOLGENIS result implementing the DataSHIELD Interface (DSI)  \code{\link{DSResult-class}}.
-#' 
+#' A MOLGENIS result implementing the DataSHIELD Interface (DSI)
+#' \code{\link{DSResult-class}}.
+#'
 #' @import methods
 #' @import DSI
 #' @export
@@ -14,42 +15,43 @@ setClass("MolgenisResult", contains = "DSResult", slots = list(
   rval = "list"))
 
 #' Get result info
-#' 
+#'
 #' Get the information about a command (if still available).
-#' 
+#'
 #' @param dsObj \code{\link{MolgenisResult-class}} class object
 #' @param ... Unused, needed for compatibility with generic.
-#' 
+#'
 #' @return The result information. This should include the R expression
-#' being executed (`expression`) and if the query is complete (`{ "status" = "COMPLETED" }`).
-#' 
+#' being executed (`expression`) and if the query is complete
+#' (`{ "status" = "COMPLETED" }`).
+#'
 #' @import methods
 #' @export
-setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) {
+setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) { # nolint
   if (dsObj@rval$async) {
-    result <- GET(handle=dsObj@conn@handle,
-                  url=dsObj@conn@handle$url,
-                  path="/lastcommand",
-                  add_headers('Accept'='application/json'))
+    result <- GET(handle = dsObj@conn@handle,
+                  url = dsObj@conn@handle$url,
+                  path = "/lastcommand",
+                  add_headers("Accept" = "application/json"))
     content(result)
   } else {
-    list(status="COMPLETED") 
+    list(status = "COMPLETED")
   }
 })
 
 #' Fetch the result
-#' 
+#'
 #' Fetch the DataSHIELD operation result.
-#' 
+#'
 #' @param res \code{\link{MolgenisResult-class}} object.
-#' 
+#'
 #' @return TRUE if table exists.
-#' 
+#'
 #' @import methods
 #' @export
 setMethod("dsFetch", "MolgenisResult", function(res) {
   if (res@rval$async) {
-    .retryUntilLastResult(res@conn)
+    .retry_until_last_result(res@conn)
   } else {
     res@rval$result
   }
