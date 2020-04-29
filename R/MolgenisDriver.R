@@ -54,8 +54,8 @@ setMethod("dsConnect", "MolgenisDriver",
   root_url  <- paste(url_parts[1])
 
   handle <- handle(root_url)
-  workspace_values <- strsplit(stringr::str_remove_all(workspace_parameters,
-                                                       "workspace="))
+  workspace_values <- stringr::str_remove_all(workspace_parameters,
+                                                       "workspace=")
   workspaces <- strsplit(workspace_values, "&", fixed = TRUE)
 
   # Login and load the tables of the workspace
@@ -73,7 +73,7 @@ setMethod("dsConnect", "MolgenisDriver",
   # Restore users workspace
   if (!is.null(restore)) {
     restore_response <- POST(handle = handle,
-                            path = paste0("/load-workspace/", restore))
+                            path = paste0("/load-workspace?id=", restore))
     .handle_request_error(restore_response)
   }
 
