@@ -57,3 +57,15 @@
     }
   }
 }
+
+#' @keywords internal
+.renameColumn <- function(dataFrame, name, newName) {
+  colnames(dataFrame)[colnames(dataFrame) == name] <- newName
+}
+
+#' @keywords internal
+.fillColumn <- function(dataFrame, column, value) {
+  if (length(dataFrame) > 0){
+    dataFrame[column] <- value
+  }
+}

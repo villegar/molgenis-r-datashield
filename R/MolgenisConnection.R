@@ -160,8 +160,17 @@ setMethod("dsAssignTable", "MolgenisConnection", function(conn, symbol, table, v
 #' @import methods
 #' @export
 setMethod("dsListMethods", "MolgenisConnection", function(conn, type = "aggregate") {
-  #TODO implement
-  list()
+  response <- GET(handle=conn@handle, 
+                  url=conn@handle$url,
+                  path=paste0("/methods?type=", toupper(type)), 
+                  add_headers('Accept'='application/json'))
+  .handleRequestError(response)
+  
+  df <- .listToDataFrame(content(response))
+  .fillColumn(df, "type", type)
+  .fillColumn(df, "class", "function")
+  .renameColumn(df, "function", "value")
+  df
 })
 
 #' List packages
@@ -203,10 +212,8 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
   .handleRequestError(response)
   
   df <- .listToDataFrame(content(response))
-  if (length(df) > 0){
-    df$user <- conn@user 
-  }
-  colnames(df)[colnames(df) == 'lastModified'] <- 'lastAccessDate'
+  .fillColumn(df, "user", conn@user)
+  .renameColumn(df, 'lastModified', 'lastAccessDate')
   df
 })
 

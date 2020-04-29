@@ -84,6 +84,10 @@ dsHasTable(conns$molgenis, "datashield.NOTPATIENT")
 conns <- datashield.login(logins=logindata,assign=F)
 dsListPackages(conns$molgenis)
 
+# check methods
+datashield.methods(conns=conns, type="aggregate")
+datashield.methods(conns=conns, type="assign")
+
 ##################
 # Error handling #
 ##################
@@ -105,3 +109,6 @@ dsAggregate(conns$molgenis, "X", async=FALSE)
 
 # R error -> 201 (async assign)
 datashield.assign.expr(conns = conns, symbol = 'K', "X")
+
+# invalid method type
+datashield.methods(conns=conns, type="ASSINGREGATE")
