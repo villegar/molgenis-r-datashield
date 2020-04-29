@@ -54,8 +54,8 @@ setMethod("dsConnect", "MolgenisDriver",
   root_url  <- paste(url_parts[1])
 
   handle <- handle(root_url)
-  workspace_values <- strsplit(stringr::str_remove_all(workspace_parameters,
-                                                       "workspace="))
+  workspace_values <- stringr::str_remove_all(workspace_parameters,
+                                                       "workspace=")
   workspaces <- strsplit(workspace_values, "&", fixed = TRUE)
 
   # Login and load the tables of the workspace
