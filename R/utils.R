@@ -1,56 +1,56 @@
 #' @keywords internal
-.handleLastCommandError <- function(handle) {
-  command <- GET(handle=handle, path="/lastcommand")
-  
-  jsonContent = content(command)
-  if (jsonContent$status == "FAILED"){
-    stop(paste0("Execution failed: ", jsonContent$message), call. = FALSE)
+.handle_last_command_error <- function(handle) {
+  command <- httr::GET(handle = handle, path = "/lastcommand")
+
+  json_content <- httr::content(command)
+  if (json_content$status == "FAILED") {
+    stop(paste0("Execution failed: ", json_content$message), call. = FALSE)
   }
 }
 
 #' @keywords internal
-.handleRequestError <- function(response) {
-  if (response$status_code == 400){
-    jsonContent = content(response)
-    stop(paste0("Bad request: ", jsonContent$message), call. = FALSE)
-  }else if(response$status_code == 401){
+.handle_request_error <- function(response) {
+  if (response$status_code == 400) {
+    json_content <- httr::content(response)
+    stop(paste0("Bad request: ", json_content$message), call. = FALSE)
+  }else if (response$status_code == 401) {
     stop("Unauthorized", call. = FALSE)
-  }else if(response$status_code == 500){
-    jsonContent = content(response)
-    stop(paste0("Internal server error: ", jsonContent$message), call. = FALSE)
+  }else if (response$status_code == 500) {
+    json_content <- httr::content(response)
+    stop(paste0("Internal server error: ", json_content$message), call. = FALSE)
   }
 }
 
 #' @keywords internal
-.unlistCharacterList <- function(characterList) {
-  if (length(characterList) == 0){
+.unlist_character_list <- function(character_list) {
+  if (length(character_list) == 0) {
     character()
   }else{
-    unlist(characterList)
+    unlist(character_list)
   }
 }
 
 #' @keywords internal
-.listToDataFrame <- function(list) {
+.list_to_data_frame <- function(list) {
   as.data.frame(do.call(rbind, list))
 }
 
 #' @keywords internal
-.retryUntilLastResult <- function(conn) {
-  response <- RETRY(verb="GET",
-                    handle=conn@handle,
-                    url=conn@handle$url,
-                    path="/lastresult",
+.retry_until_last_result <- function(conn) {
+  response <- RETRY(verb = "GET",
+                    handle = conn@handle,
+                    url = conn@handle$url,
+                    path = "/lastresult",
                     terminate_on = c(200, 404, 401),
-                    add_headers('Accept'='application/octet-stream'))
-  
-  .handleRequestError(response)
-  
-  if (response$status_code == 404){
-    .handleLastCommandError(conn@handle)  
+                    add_headers("Accept" = "application/octet-stream"))
+
+  .handle_request_error(response)
+
+  if (response$status_code == 404) {
+    .handle_last_command_error(conn@handle)
   }else{
     content <- content(response)
-    if (is.null(content)){
+    if (is.null(content)) {
       NULL
     }else{
       unserialize(content)
@@ -59,13 +59,13 @@
 }
 
 #' @keywords internal
-.renameColumn <- function(dataFrame, name, newName) {
-  colnames(dataFrame)[colnames(dataFrame) == name] <- newName
+.rename_column <- function(data_frame, name, new_name) {
+  colnames(data_frame)[colnames(data_frame) == name] <- new_name
 }
 
 #' @keywords internal
-.fillColumn <- function(dataFrame, column, value) {
-  if (length(dataFrame) > 0){
-    dataFrame[column] <- value
+.fill_column <- function(data_frame, column, value) {
+  if (length(data_frame) > 0) {
+    data_frame[column] <- value
   }
 }

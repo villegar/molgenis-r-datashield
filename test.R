@@ -51,6 +51,7 @@ dsListWorkspaces(conns$molgenis)
 datashield.workspace_rm(conns, "removeMe")
 dsListWorkspaces(conns$molgenis)
 
+
 #####################
 # Symbol assignment #
 #####################
@@ -111,4 +112,4 @@ dsAggregate(conns$molgenis, "X", async=FALSE)
 datashield.assign.expr(conns = conns, symbol = 'K', "X")
 
 # invalid method type
-datashield.methods(conns=conns, type="ASSINGREGATE")
+datashield.methods(conns=conns, type="assigregate")
