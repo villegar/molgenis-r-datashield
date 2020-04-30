@@ -31,10 +31,9 @@ pipeline {
                 sh "git fetch --tags"
                 container('r') {
                     sh "Rscript -e \"git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')\""
-                    sh "Rscript -e \"install.packages(c('DSI'), repos='https://registry.molgenis.org/repository/R')\""
-                    sh "Rscript -e \"install.packages('remotes')\""
-                    sh "Rscript -e \"remove.packages('lintr')\""
-                    sh "Rscript -e \"remotes::install_github('fdlk/lintr')\""
+                    sh "install2.r --error --repo https://registry.molgenis.org/repository/R DSI"
+                    sh "install2.r remotes"
+                    sh "installGithub.r fdlk/lintr"
                 }
             }
         }
