@@ -42,6 +42,13 @@ pipeline {
             when {
                 changeRequest()
             }
+            environment {
+                // Fake running in a travis CI environment to enable lintr comments
+                TRAVIS_REPO_SLUG = "${REPOSITORY}"
+                TRAVIS_PULL_REQUEST = "${CHANGE_ID}"
+                TRAVIS_BRANCH = "${CHANGE_TARGET}"
+                TRAVIS_COMMIT = "${GIT_COMMIT}"
+            }
             steps {
                 container('r') {
                     script {
@@ -49,12 +56,12 @@ pipeline {
                     }
                     sh "R CMD build ."
                     sh "R CMD check ${PACKAGE}_${TAG}.tar.gz"
-                    sh "Rscript -e 'lintr::lint_package(\".\", relative_path=TRUE)'"
                 }
             }
             post {
                 always {
                     container('r') {
+                        sh "Rscript -e 'lintr::lint_package()'"
                         sh "Rscript -e 'library(covr);codecov()'"
                     }
                 }
@@ -78,7 +85,7 @@ pipeline {
                     sh "echo 'Building ${PACKAGE} v${TAG}'"
                     sh "R CMD build ."
                     sh "R CMD check ${PACKAGE}_${TAG}.tar.gz"
-                    sh "Rscript -e 'lintr::lint_package(\".\", relative_path=TRUE)'"
+                    sh "Rscript -e 'quit(save = \"no\", status = length(lintr::lint_package()))'"
                 }
             }
             post {
