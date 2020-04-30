@@ -32,19 +32,15 @@ pipeline {
                 container('r') {
                     sh "Rscript -e \"git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')\""
                     sh "Rscript -e \"install.packages(c('DSI'), repos='https://registry.molgenis.org/repository/R')\""
+                    sh "Rscript -e \"install.packages('remotes')\""
+                    sh "Rscript -e \"remove.packages('lintr')\""
+                    sh "Rscript -e \"remotes::install_github('fdlk/lintr')\""
                 }
             }
         }
         stage('Install and test: [ PR ]') {
             when {
                 changeRequest()
-            }
-            environment {
-                // Fake running in a travis CI environment to enable lintr comments
-                TRAVIS_REPO_SLUG = "${REPOSITORY}"
-                TRAVIS_PULL_REQUEST = "${CHANGE_ID}"
-                TRAVIS_BRANCH = "${CHANGE_TARGET}"
-                TRAVIS_COMMIT = "${GIT_COMMIT}"
             }
             steps {
                 container('r') {
