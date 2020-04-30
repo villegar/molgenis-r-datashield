@@ -183,7 +183,7 @@ setMethod("dsListMethods", "MolgenisConnection",
           function(conn, type = "aggregate") {
   response <- GET(handle = conn@handle,
                   url = conn@handle$url,
-                  path = paste0("/methods?type=", toupper(type)),
+                  path = paste0("/methods/", type),
                   add_headers("Accept' = 'application/json"))
   .handle_request_error(response)
 
