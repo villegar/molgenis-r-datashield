@@ -10,7 +10,7 @@
 #' @import DSI
 #' @export
 #' @keywords internal
-setClass("MolgenisDriver", contains = "DSDriver")  
+setClass("MolgenisDriver", contains = "DSDriver")
 
 #' Create a MOLGENIS DataSHIELD Service driver
 #'
