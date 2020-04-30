@@ -68,6 +68,10 @@ setMethod("dsConnect", "MolgenisDriver",
   load_table_response <- POST(handle = handle,
                              path = paste0("/load-tables?",
                                            workspace_parameters))
+  if (load_table_response$status_code == 403) {
+    stop("You don't have access to one or more of the workspaces",
+         call. = FALSE)
+  }
   .handle_request_error(load_table_response)
 
   # Restore users workspace
