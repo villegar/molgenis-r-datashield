@@ -69,3 +69,18 @@
     data_frame[column] <- value
   }
 }
+
+#' @keywords internal
+.deparse <- function(expr) {
+  expression <- expr
+  # convert a call to a string
+  if (is.language(expr)) {
+    expression <- deparse(expr)
+    if (length(expression) > 1) {
+      expression <- paste(expression, collapse = "\n")
+    }
+  } else if (!is.character(expr)) {
+    stop("Invalid expression: '", class(expr), "'. Expected a call or vector.")
+  }
+  expression
+}

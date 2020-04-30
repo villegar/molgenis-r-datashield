@@ -289,7 +289,7 @@ setMethod("dsAssignExpr", "MolgenisConnection",
                     url = conn@handle$url,
                     query = list(async = async),
                     path = paste0("/symbols/", symbol),
-                    body = rlang::as_string(expr),
+                    body = .deparse(expr),
                     add_headers("Content-Type" = "text/plain"))
 
   .handle_request_error(response)
@@ -324,7 +324,7 @@ setMethod("dsAggregate", "MolgenisConnection",
                    url = conn@handle$url,
                    query = list(async = async),
                    path = "/execute",
-                   body = rlang::as_string(expr),
+                   body = .deparse(expr),
                    add_headers("Content-Type" = "text/plain",
                                "Accept" =
                                  "application/octet-stream,application/json"))
