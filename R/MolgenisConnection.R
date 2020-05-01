@@ -7,11 +7,16 @@ setOldClass("handle")
 #' A Molgenis connection implementing the DataSHIELD Interface (DSI)
 #' \code{\link{DSConnection-class}}.
 #'
-#' @import methods
-#' @import DSI
+#' @slot name The name of the connection
+#' @slot workspaces The shared workspaces to load tables from
+#' @slot handle The handle used to connect with the server
+#' @slot user The username used to authenticate
+#' @slot cookies The cookies set by the server
+#'
+#' @importClassesFrom DSI DSConnection
 #' @export
 #' @keywords internal
-setClass("MolgenisConnection",
+methods::setClass("MolgenisConnection",
   contains = "DSConnection",
   slots = list(
     name = "character",
@@ -23,25 +28,33 @@ setClass("MolgenisConnection",
 )
 
 
-#' Disconnect from a MOLGENIS DatasSHIELD Service
+#' Disconnect from a MOLGENIS DataSHIELD Service
 #'
 #' Disconnect from a MOLGENIS DataSHIELD Service and release all R resources. If
 #' a workspace ID is provided, the DataSHIELD R session will be saved before
 #' being destroyed.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{MolgenisConnection-class}} class
+#' object
 #' @param save Save the DataSHIELD R session with provided ID (must be a
 #' character string).
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsDisconnect
+#' @seealso \code{\link{dsDisconnect}}
 #' @export
-setMethod("dsDisconnect", "MolgenisConnection", function(conn, save = NULL) {
-  if (!is.null(save)) {
-    response <- POST(handle = conn@handle, path = paste0("/workspaces/", save))
-    .handle_request_error(response)
+methods::setMethod(
+  "dsDisconnect", "MolgenisConnection",
+  function(conn, save = NULL) {
+    if (!is.null(save)) {
+      response <- httr::POST(
+        handle = conn@handle,
+        path = paste0("/workspaces/", save)
+      )
+      .handle_request_error(response)
+    }
+    httr::POST(handle = conn@handle, path = "/logout")
   }
-  POST(handle = conn@handle, path = "/logout")
-})
+)
 
 #' List MOLGENIS DataSHIELD Service tables
 #'
@@ -52,13 +65,16 @@ setMethod("dsDisconnect", "MolgenisConnection", function(conn, save = NULL) {
 #'
 #' @return The fully qualified names of the tables.
 #'
-#' @import methods
+#' @seealso \code{\link{dsListTables}}
+#' @importMethodsFrom DSI dsListTables
 #' @export
-setMethod("dsListTables", "MolgenisConnection", function(conn) {
-  response <- GET(handle = conn@handle, path = paste0("/tables"))
-  .handle_request_error(response)
-  .unlist_character_list(content(response))
-})
+methods::setMethod(
+  "dsListTables", "MolgenisConnection", function(conn) {
+    response <- httr::GET(handle = conn@handle, path = paste0("/tables"))
+    .handle_request_error(response)
+    .unlist_character_list(httr::content(response))
+  }
+)
 
 #' Verify table exist and can be accessible for performing DataSHIELD
 #' operations.
@@ -68,14 +84,19 @@ setMethod("dsListTables", "MolgenisConnection", function(conn) {
 #'
 #' @return TRUE if table exists.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsHasTable
 #' @export
-setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
-  response <- HEAD(handle = conn@handle, path = paste0("/tables/", table))
-  .handle_request_error(response)
+methods::setMethod(
+  "dsHasTable", "MolgenisConnection", function(conn, table) {
+    response <- httr::HEAD(
+      handle = conn@handle,
+      path = paste0("/tables/", table)
+    )
+    .handle_request_error(response)
 
-  response$status_code == 200
-})
+    response$status_code == 200
+  }
+)
 
 #' MOLGENIS DataShield Service asynchronous support
 #'
@@ -92,11 +113,13 @@ setMethod("dsHasTable", "MolgenisConnection", function(conn, table) {
 #'
 #' @return The named list of logicals detailing the asynchronicity support.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsIsAsync
 #' @export
-setMethod("dsIsAsync", "MolgenisConnection", function(conn) {
-  list(aggregate = TRUE, assignTable = FALSE, assignExpr = TRUE)
-})
+methods::setMethod(
+  "dsIsAsync", "MolgenisConnection", function(conn) {
+    list(aggregate = TRUE, assignTable = FALSE, assignExpr = TRUE)
+  }
+)
 
 #' List R symbols
 #'
@@ -106,13 +129,16 @@ setMethod("dsIsAsync", "MolgenisConnection", function(conn) {
 #'
 #' @return A character vector.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsListSymbols
 #' @export
-setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
-  response <- GET(handle = conn@handle, path = "/symbols")
-  .handle_request_error(response)
-  .unlist_character_list(content(response))
-})
+methods::setMethod(
+  "dsListSymbols", "MolgenisConnection",
+  function(conn) {
+    response <- httr::GET(handle = conn@handle, path = "/symbols")
+    .handle_request_error(response)
+    .unlist_character_list(httr::content(response))
+  }
+)
 
 #' Remove an R symbol
 #'
@@ -123,12 +149,18 @@ setMethod("dsListSymbols", "MolgenisConnection", function(conn) {
 #' @param conn \code{\link{MolgenisConnection-class}} class object
 #' @param symbol Name of the R symbol.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsRmSymbol
 #' @export
-setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
-  response <- DELETE(handle = conn@handle, path = paste0("/symbols/", symbol))
-  .handle_request_error(response)
-})
+methods::setMethod(
+  "dsRmSymbol", "MolgenisConnection",
+  function(conn, symbol) {
+    response <- httr::DELETE(
+      handle = conn@handle,
+      path = paste0("/symbols/", symbol)
+    )
+    .handle_request_error(response)
+  }
+)
 
 #' Assign a table
 #'
@@ -136,22 +168,22 @@ setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
 #'
 #' @param conn \code{\link{MolgenisConnection-class}} object.
 #' @param symbol Name of the R symbol.
-#' @param table Identifier of a table in MOLGENIS.
-#' @param variables
-#' @param missings
-#' @param identifiers
-#' @param id.name
-#' @param async
+#' @param table Fully qualified name of the table.
+#' @param variables The variables to load.
+#' @param missings Not supported
+#' @param identifiers Not supported
+#' @param id.name Not supported
+#' @param async When set, do not wait for the result.
 #'
 #' @return A \code{\link{MolgenisResult-class}} object.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsAssignTable
 #' @export
-setMethod(
+methods::setMethod(
   "dsAssignTable", "MolgenisConnection",
   function(conn, symbol, table, variables = NULL, missings = FALSE,
            identifiers = NULL, id.name = NULL, async = TRUE) { # nolint
-    response <- POST(
+    response <- httr::POST(
       handle = conn@handle,
       path = paste0("/symbols/", symbol, "?table=", table)
     )
@@ -168,7 +200,7 @@ setMethod(
       result <- .retry_until_last_result(conn)
     }
 
-    new("MolgenisResult",
+    methods::new("MolgenisResult",
       conn = conn,
       rval = list(result = result, async = async)
     )
@@ -186,20 +218,20 @@ setMethod(
 #' @return A data.frame with columns: name, type ('aggregate' or 'assign'),
 #' class ('function' or 'script'), value, package, version.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsListMethods
 #' @export
-setMethod(
+methods::setMethod(
   "dsListMethods", "MolgenisConnection",
   function(conn, type = "aggregate") {
-    response <- GET(
+    response <- httr::GET(
       handle = conn@handle,
       url = conn@handle$url,
       path = paste0("/methods/", type),
-      add_headers("Accept' = 'application/json")
+      httr::add_headers("Accept' = 'application/json")
     )
     .handle_request_error(response)
 
-    df <- .list_to_data_frame(content(response))
+    df <- .list_to_data_frame(httr::content(response))
     .fill_column(df, "type", type)
     .fill_column(df, "class", "function")
     .rename_column(df, "function", "value")
@@ -215,20 +247,26 @@ setMethod(
 #'
 #' @return A data.frame with columns: name, version.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsListPackages
 #' @export
-setMethod("dsListPackages", "MolgenisConnection", function(conn) {
-  response <- GET(
-    handle = conn@handle,
-    url = conn@handle$url,
-    path = "/packages",
-    add_headers("Accept" = "application/json")
-  )
-  .handle_request_error(response)
+methods::setMethod(
+  "dsListPackages", "MolgenisConnection",
+  function(conn) {
+    response <- httr::GET(
+      handle = conn@handle,
+      url = conn@handle$url,
+      path = "/packages",
+      httr::add_headers("Accept" = "application/json")
+    )
+    .handle_request_error(response)
 
-  extracted_cols <- lapply(content(response), function(x) c(x$name, x$version))
-  .list_to_data_frame(extracted_cols)
-})
+    extracted_cols <- lapply(
+      httr::content(response),
+      function(x) c(x$name, x$version)
+    )
+    .list_to_data_frame(extracted_cols)
+  }
+)
 
 #' List workspaces
 #'
@@ -238,22 +276,25 @@ setMethod("dsListPackages", "MolgenisConnection", function(conn) {
 #'
 #' @return A data.frame with columns: name, lastAccessDate, size, user.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsListWorkspaces
 #' @export
-setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
-  response <- GET(
-    handle = conn@handle,
-    url = conn@handle$url,
-    path = "/workspaces",
-    add_headers("Accept" = "application/json")
-  )
-  .handle_request_error(response)
+methods::setMethod(
+  "dsListWorkspaces", "MolgenisConnection",
+  function(conn) {
+    response <- httr::GET(
+      handle = conn@handle,
+      url = conn@handle$url,
+      path = "/workspaces",
+      httr::add_headers("Accept" = "application/json")
+    )
+    .handle_request_error(response)
 
-  df <- .list_to_data_frame(content(response))
-  .fill_column(df, "user", conn@user)
-  .rename_column(df, "lastModified", "lastAccessDate")
-  df
-})
+    df <- .list_to_data_frame(httr::content(response))
+    .fill_column(df, "user", conn@user)
+    .rename_column(df, "lastModified", "lastAccessDate")
+    df
+  }
+)
 
 #' Save workspace
 #'
@@ -262,12 +303,18 @@ setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
 #' @param conn \code{\link{MolgenisConnection-class}} class object
 #' @param name Name of the workspace.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsSaveWorkspace
 #' @export
-setMethod("dsSaveWorkspace", "MolgenisConnection", function(conn, name) {
-  response <- POST(handle = conn@handle, path = paste0("/workspaces/", name))
-  .handle_request_error(response)
-})
+methods::setMethod(
+  "dsSaveWorkspace", "MolgenisConnection",
+  function(conn, name) {
+    response <- httr::POST(
+      handle = conn@handle,
+      path = paste0("/workspaces/", name)
+    )
+    .handle_request_error(response)
+  }
+)
 
 #' Remove a workspace
 #'
@@ -276,12 +323,18 @@ setMethod("dsSaveWorkspace", "MolgenisConnection", function(conn, name) {
 #' @param conn \code{\link{MolgenisConnection-class}} class object
 #' @param name Name of the workspace.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsRmWorkspace
 #' @export
-setMethod("dsRmWorkspace", "MolgenisConnection", function(conn, name) {
-  response <- DELETE(handle = conn@handle, path = paste0("/workspaces/", name))
-  .handle_request_error(response)
-})
+methods::setMethod(
+  "dsRmWorkspace", "MolgenisConnection",
+  function(conn, name) {
+    response <- httr::DELETE(
+      handle = conn@handle,
+      path = paste0("/workspaces/", name)
+    )
+    .handle_request_error(response)
+  }
+)
 
 #' Assign the result of an expression
 #'
@@ -298,18 +351,18 @@ setMethod("dsRmWorkspace", "MolgenisConnection", function(conn, name) {
 #'
 #' @return A \code{\link{MolgenisResult-class}} object.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsAssignExpr
 #' @export
-setMethod(
+methods::setMethod(
   "dsAssignExpr", "MolgenisConnection",
   function(conn, symbol, expr, async = TRUE) {
-    response <- POST(
+    response <- httr::POST(
       handle = conn@handle,
       url = conn@handle$url,
       query = list(async = async),
       path = paste0("/symbols/", symbol),
       body = .deparse(expr),
-      add_headers("Content-Type" = "text/plain")
+      httr::add_headers("Content-Type" = "text/plain")
     )
 
     .handle_request_error(response)
@@ -320,7 +373,7 @@ setMethod(
       result <- .retry_until_last_result(conn)
     }
 
-    new("MolgenisResult",
+    methods::new("MolgenisResult",
       conn = conn,
       rval = list(
         result = NULL,
@@ -343,18 +396,18 @@ setMethod(
 #' connections, when the connection supports that feature, with an extra
 #' overhead of requests.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsAggregate
 #' @export
-setMethod(
+methods::setMethod(
   "dsAggregate", "MolgenisConnection",
   function(conn, expr, async = TRUE) {
-    response <- POST(
+    response <- httr::POST(
       handle = conn@handle,
       url = conn@handle$url,
       query = list(async = async),
       path = "/execute",
       body = .deparse(expr),
-      add_headers(
+      httr::add_headers(
         "Content-Type" = "text/plain",
         "Accept" =
           "application/octet-stream,application/json"
@@ -370,9 +423,9 @@ setMethod(
         .handle_last_command_error(conn@handle)
       }
 
-      result <- unserialize(content(response))
+      result <- unserialize(httr::content(response))
     }
-    new("MolgenisResult",
+    methods::new("MolgenisResult",
       conn = conn,
       rval = list(result = result, async = async)
     )
@@ -395,20 +448,22 @@ setMethod(
 #' (e.g., thread id, socket or TCP connection type). It MUST NOT include the
 #' password.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsGetInfo
 #' @export
-setMethod("dsGetInfo", "MolgenisConnection",
+methods::setMethod(
+  "dsGetInfo", "MolgenisConnection",
   function(dsObj, ...) { # nolint
     response <- httr::GET(
-    handle = dsObj@handle,
-    url = dsObj@handle$url,
-    path = "/actuator/info"
-  )
+      handle = dsObj@handle,
+      url = dsObj@handle$url,
+      path = "/actuator/info"
+    )
     .handle_request_error(response)
-    result <- content(response)
+    result <- httr::content(response)
     result$url <- dsObj@handle$url
     result$workspaces <- dsObj@workspaces
     result$name <- dsObj@name
     result$cookies <- dsObj@cookies
     result
-  })
+  }
+)

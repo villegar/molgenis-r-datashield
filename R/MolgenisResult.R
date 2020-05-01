@@ -6,14 +6,19 @@ NULL
 #' A MOLGENIS result implementing the DataSHIELD Interface (DSI)
 #' \code{\link{DSResult-class}}.
 #'
-#' @import methods
-#' @import DSI
+#' @slot conn The connection used to create this result
+#' @slot rval The result
+#'
+#' @importClassesFrom DSI DSResult
 #' @export
 #' @keywords internal
-setClass("MolgenisResult", contains = "DSResult", slots = list(
-  conn = "MolgenisConnection",
-  rval = "list"
-))
+methods::setClass("MolgenisResult",
+  contains = "DSResult",
+  slots = list(
+    conn = "MolgenisConnection",
+    rval = "list"
+  )
+)
 
 #' Get result info
 #'
@@ -26,21 +31,24 @@ setClass("MolgenisResult", contains = "DSResult", slots = list(
 #' being executed (`expression`) and if the query is complete
 #' (`{ "status" = "COMPLETED" }`).
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsGetInfo
 #' @export
-setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) { # nolint
-  if (dsObj@rval$async) {
-    result <- GET(
-      handle = dsObj@conn@handle,
-      url = dsObj@conn@handle$url,
-      path = "/lastcommand",
-      add_headers("Accept" = "application/json")
-    )
-    content(result)
-  } else {
-    list(status = "COMPLETED")
+methods::setMethod(
+  "dsGetInfo", "MolgenisResult",
+  function(dsObj, ...) { # nolint
+    if (dsObj@rval$async) {
+      result <- httr::GET(
+        handle = dsObj@conn@handle,
+        url = dsObj@conn@handle$url,
+        path = "/lastcommand",
+        httr::add_headers("Accept" = "application/json")
+      )
+      httr::content(result)
+    } else {
+      list(status = "COMPLETED")
+    }
   }
-})
+)
 
 #' Fetch the result
 #'
@@ -50,12 +58,15 @@ setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) { # nolint
 #'
 #' @return TRUE if table exists.
 #'
-#' @import methods
+#' @importMethodsFrom DSI dsFetch
 #' @export
-setMethod("dsFetch", "MolgenisResult", function(res) {
-  if (res@rval$async) {
-    .retry_until_last_result(res@conn)
-  } else {
-    res@rval$result
+methods::setMethod(
+  "dsFetch", "MolgenisResult",
+  function(res) {
+    if (res@rval$async) {
+      .retry_until_last_result(res@conn)
+    } else {
+      res@rval$result
+    }
   }
-})
+)

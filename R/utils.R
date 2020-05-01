@@ -37,13 +37,13 @@
 
 #' @keywords internal
 .retry_until_last_result <- function(conn) {
-  response <- RETRY(
+  response <- httr::RETRY(
     verb = "GET",
     handle = conn@handle,
     url = conn@handle$url,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    add_headers("Accept" = "application/octet-stream")
+    httr::add_headers("Accept" = "application/octet-stream")
   )
 
   .handle_request_error(response)
@@ -51,7 +51,7 @@
   if (response$status_code == 404) {
     .handle_last_command_error(conn@handle)
   } else {
-    content <- content(response)
+    content <- httr::content(response)
     if (is.null(content)) {
       NULL
     } else {
@@ -84,5 +84,5 @@
   } else if (!is.character(expr)) {
     stop("Invalid expression: '", class(expr), "'. Expected a call or vector.")
   }
-  expression
+  return(expression)
 }
