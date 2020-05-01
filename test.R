@@ -1,6 +1,7 @@
-library(DSI)
 library(DSMolgenis)
 library(dsBaseClient)
+
+dsGetInfo(molgenis())
 
 # create loginframe
 server <- c("molgenis")
@@ -15,12 +16,13 @@ logindata <- data.frame(server,url,user,password,table,driver)
 # Workspaces #
 ##############
 conns <- datashield.login(logins=logindata,assign=F)
+dsGetInfo(conns$molgenis)
 datashield.assign.table(conns = conns, table = "datashield.PATIENT", symbol = "D")
 datashield.symbols(conns)
 
 # logout without saving workspace
 datashield.logout(conns)
-datashield.symbols(conns) # error 
+datashield.symbols(conns) # error
 
 # login again, D should not be available
 conns <- datashield.login(logins=logindata,assign=F)
