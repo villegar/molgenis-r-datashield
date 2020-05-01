@@ -12,7 +12,8 @@ NULL
 #' @keywords internal
 setClass("MolgenisResult", contains = "DSResult", slots = list(
   conn = "MolgenisConnection",
-  rval = "list"))
+  rval = "list"
+))
 
 #' Get result info
 #'
@@ -29,10 +30,12 @@ setClass("MolgenisResult", contains = "DSResult", slots = list(
 #' @export
 setMethod("dsGetInfo", "MolgenisResult", function(dsObj, ...) { # nolint
   if (dsObj@rval$async) {
-    result <- GET(handle = dsObj@conn@handle,
-                  url = dsObj@conn@handle$url,
-                  path = "/lastcommand",
-                  add_headers("Accept" = "application/json"))
+    result <- GET(
+      handle = dsObj@conn@handle,
+      url = dsObj@conn@handle$url,
+      path = "/lastcommand",
+      add_headers("Accept" = "application/json")
+    )
     content(result)
   } else {
     list(status = "COMPLETED")

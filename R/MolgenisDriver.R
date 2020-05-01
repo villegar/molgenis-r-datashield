@@ -45,45 +45,59 @@ molgenis <- function() {
 #' @import methods
 #' @import httr
 #' @export
-setMethod("dsConnect", "MolgenisDriver",
-          function(drv, name, restore = NULL, username = NULL, password = NULL,
-                   token = NULL, url = NULL, opts = list(), ...) {
-  # Retrieve login URL and workspace name
-  url_parts <- unlist(strsplit(url, "?", fixed = TRUE))
-  workspace_parameters <- url_parts[2]
-  root_url  <- paste(url_parts[1])
+setMethod(
+  "dsConnect", "MolgenisDriver",
+  function(drv, name, restore = NULL, username = NULL, password = NULL,
+           token = NULL, url = NULL, opts = list(), ...) {
+    # Retrieve login URL and workspace name
+    url_parts <- unlist(strsplit(url, "?", fixed = TRUE))
+    workspace_parameters <- url_parts[2]
+    root_url <- paste(url_parts[1])
 
-  handle <- handle(root_url)
-  workspace_values <- stringr::str_remove_all(workspace_parameters,
-                                                       "workspace=")
-  workspaces <- strsplit(workspace_values, "&", fixed = TRUE)
+    handle <- handle(root_url)
+    workspace_values <- stringr::str_remove_all(
+      workspace_parameters,
+      "workspace="
+    )
+    workspaces <- strsplit(workspace_values, "&", fixed = TRUE)
 
-  # Login and load the tables of the workspace
-  login_response <- POST(handle = handle,
-                        path = "/login",
-                        encode = "form",
-                        body = list(username = username, password = password))
-  .handle_request_error(login_response)
+    # Login and load the tables of the workspace
+    login_response <- POST(
+      handle = handle,
+      path = "/login",
+      encode = "form",
+      body = list(username = username, password = password)
+    )
+    .handle_request_error(login_response)
 
-  load_table_response <- POST(handle = handle,
-                             path = paste0("/load-tables?",
-                                           workspace_parameters))
-  if (load_table_response$status_code == 403) {
-    stop("You don't have access to one or more of the workspaces",
-         call. = FALSE)
+    load_table_response <- POST(
+      handle = handle,
+      path = paste0(
+        "/load-tables?",
+        workspace_parameters
+      )
+    )
+    if (load_table_response$status_code == 403) {
+      stop("You don't have access to one or more of the workspaces",
+        call. = FALSE
+      )
+    }
+    .handle_request_error(load_table_response)
+
+    # Restore users workspace
+    if (!is.null(restore)) {
+      restore_response <- POST(
+        handle = handle,
+        path = paste0("/load-workspace?id=", restore)
+      )
+      .handle_request_error(restore_response)
+    }
+
+    new("MolgenisConnection",
+      name = name, handle = handle, workspaces = workspaces, user = username
+    )
   }
-  .handle_request_error(load_table_response)
-
-  # Restore users workspace
-  if (!is.null(restore)) {
-    restore_response <- POST(handle = handle,
-                            path = paste0("/load-workspace?id=", restore))
-    .handle_request_error(restore_response)
-  }
-
-  new("MolgenisConnection",
-      name = name, handle = handle, workspaces = workspaces, user = username)
-})
+)
 
 #' Get driver info
 #'
@@ -99,5 +113,5 @@ setMethod("dsConnect", "MolgenisDriver",
 #' @import methods
 #' @export
 setMethod("dsGetInfo", "MolgenisDriver", function(dsObj, ...) { # nolint
-  #TODO implement
+  # TODO implement
 })
