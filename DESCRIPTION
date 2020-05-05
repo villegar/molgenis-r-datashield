@@ -23,9 +23,9 @@ Imports:
     httr,
     stringr,
     utils
-Suggests: 
-    httptest,
+Suggests:
     knitr,
+    mockery,
     testthat (>= 2.1.0)
 Description: DataSHIELD implementation for the Armadillo DataSHIELD service. Part of the MOLGENIS suite.
 License: LGPL (>= 2.1)
