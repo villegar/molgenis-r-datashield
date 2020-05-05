@@ -70,7 +70,7 @@ methods::setMethod(
 #' @export
 methods::setMethod(
   "dsListTables", "ArmadilloConnection", function(conn) {
-    response <- httr::GET(handle = conn@handle, path = paste0("/tables"))
+    response <- httr::GET(handle = conn@handle, path = "/tables")
     .handle_request_error(response)
     .unlist_character_list(httr::content(response))
   }
