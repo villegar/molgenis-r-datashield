@@ -1,9 +1,9 @@
-#' @include MolgenisDriver.R MolgenisConnection.R
+#' @include ArmadilloDriver.R ArmadilloConnection.R
 NULL
 
-#' Class MolgenisResult.
+#' Class ArmadilloResult.
 #'
-#' A MOLGENIS result implementing the DataSHIELD Interface (DSI)
+#' An Armadillo result implementing the DataSHIELD Interface (DSI)
 #' \code{\link{DSResult-class}}.
 #'
 #' @slot conn The connection used to create this result
@@ -12,10 +12,10 @@ NULL
 #' @importClassesFrom DSI DSResult
 #' @export
 #' @keywords internal
-methods::setClass("MolgenisResult",
+methods::setClass("ArmadilloResult",
   contains = "DSResult",
   slots = list(
-    conn = "MolgenisConnection",
+    conn = "ArmadilloConnection",
     rval = "list"
   )
 )
@@ -24,7 +24,7 @@ methods::setClass("MolgenisResult",
 #'
 #' Get the information about a command (if still available).
 #'
-#' @param dsObj \code{\link{MolgenisResult-class}} class object
+#' @param dsObj \code{\link{ArmadilloResult-class}} class object
 #' @param ... Unused, needed for compatibility with generic.
 #'
 #' @return The result information. This should include the R expression
@@ -34,7 +34,7 @@ methods::setClass("MolgenisResult",
 #' @importMethodsFrom DSI dsGetInfo
 #' @export
 methods::setMethod(
-  "dsGetInfo", "MolgenisResult",
+  "dsGetInfo", "ArmadilloResult",
   function(dsObj, ...) { # nolint
     if (dsObj@rval$async) {
       result <- httr::GET(
@@ -54,14 +54,14 @@ methods::setMethod(
 #'
 #' Fetch the DataSHIELD operation result.
 #'
-#' @param res \code{\link{MolgenisResult-class}} object.
+#' @param res \code{\link{ArmadilloResult-class}} object.
 #'
 #' @return TRUE if table exists.
 #'
 #' @importMethodsFrom DSI dsFetch
 #' @export
 methods::setMethod(
-  "dsFetch", "MolgenisResult",
+  "dsFetch", "ArmadilloResult",
   function(res) {
     if (res@rval$async) {
       .retry_until_last_result(res@conn)

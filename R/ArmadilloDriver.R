@@ -1,30 +1,30 @@
 
-#' Class MolgenisDriver with constructor molgenis
+#' Class ArmadilloDriver with constructor armadillo
 #'
-#' An Molgenis DataSHIELD Service Driver implementing the DataSHIELD Interface
+#' An Armadillo DataSHIELD Service Driver implementing the DataSHIELD Interface
 #' (DSI) \code{\link{DSDriver-class}}. This class should always be initialized
-#' with the \code{\link{molgenis}} function.
-#' It returns a singleton that allows you to connect to Molgenis.
+#' with the \code{\link{armadillo}} function.
+#' It returns a singleton that allows you to connect to Armadillo
 #'
 #' @importClassesFrom DSI DSDriver
 #' @export
 #' @keywords internal
-methods::setClass("MolgenisDriver", contains = "DSDriver")
+methods::setClass("ArmadilloDriver", contains = "DSDriver")
 
-#' Create a MOLGENIS DataSHIELD Service driver
+#' Create an Armadillo DataSHIELD Service driver
 #'
-#' Convenience function for creating a [MolgenisDriver] object.
+#' Convenience function for creating a [ArmadilloDriver] object.
 #'
 #' @export
-molgenis <- function() {
-  methods::new("MolgenisDriver")
+armadillo <- function() {
+  methods::new("ArmadilloDriver")
 }
 
-#' Connect to a Molgenis DataSHIELD service
+#' Connect to an Armadillo DataSHIELD service
 #'
-#' Connect to a Molgenis DataSHIELD service, with provided credentials.
+#' Connect to an Armadillo DataSHIELD service, with provided credentials.
 #'
-#' @param drv \code{\link{MolgenisDriver-class}} class object.
+#' @param drv \code{\link{ArmadilloDriver-class}} class object.
 #' @param name Name of the connection, which must be unique among all the
 #' DataSHIELD connections.
 #' @param restore Workspace name to be restored in the newly created DataSHIELD
@@ -34,15 +34,15 @@ molgenis <- function() {
 #' @param token Not yet used.
 #' @param url URL of the server.
 #' @param opts Curl options as described by httr (call httr::httr_options()
-#' for details). Can be provided by "Molgenis.opts" option.
+#' for details). Can be provided by "Armadillo.opts" option.
 #' @param ... Unused, needed for compatibility with generic.
 #'
-#' @return A \code{\link{MolgenisConnection-class}} object.
+#' @return A \code{\link{ArmadilloConnection-class}} object.
 #'
 #' @importMethodsFrom DSI dsConnect
 #' @export
 methods::setMethod(
-  "dsConnect", "MolgenisDriver",
+  "dsConnect", "ArmadilloDriver",
   function(drv, name, restore = NULL, username = NULL, password = NULL,
            token = NULL, url = NULL, opts = list(), ...) {
     # Retrieve login URL and workspace name
@@ -90,7 +90,7 @@ methods::setMethod(
       .handle_request_error(restore_response)
     }
 
-    methods::new("MolgenisConnection",
+    methods::new("ArmadilloConnection",
       name = name,
       handle = handle,
       workspaces = workspaces,
@@ -104,19 +104,20 @@ methods::setMethod(
 #'
 #' Get information about a driver.
 #'
-#' @param dsObj \code{\link{MolgenisDriver-class}} class object
+#' @param dsObj \code{\link{ArmadilloDriver-class}} class object
 #' @param ... Unused, needed for compatibility with generic.
 #'
 #' @return The connection information. This returns the version of the
 #' package (`driver.version`). There is no underlying client library.
 #'
 #' @importMethodsFrom DSI dsGetInfo
+#' @importFrom utils packageVersion
 #' @export
 methods::setMethod(
-  "dsGetInfo", "MolgenisDriver",
+  "dsGetInfo", "ArmadilloDriver",
   function(dsObj, ...) { # nolint
     return(list(
-      driver.version = packageVersion("DSMolgenis")
+      driver.version = packageVersion("DSMolgenisArmadillo")
     ))
   }
 )

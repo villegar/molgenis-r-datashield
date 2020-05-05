@@ -1,10 +1,10 @@
-#' @include MolgenisDriver.R
+#' @include ArmadilloDriver.R
 
 setOldClass("handle")
 
-#' Class MolgenisConnection.
+#' Class ArmadilloConnection.
 #'
-#' A Molgenis connection implementing the DataSHIELD Interface (DSI)
+#' An Armadillo connection implementing the DataSHIELD Interface (DSI)
 #' \code{\link{DSConnection-class}}.
 #'
 #' @slot name The name of the connection
@@ -16,7 +16,7 @@ setOldClass("handle")
 #' @importClassesFrom DSI DSConnection
 #' @export
 #' @keywords internal
-methods::setClass("MolgenisConnection",
+methods::setClass("ArmadilloConnection",
   contains = "DSConnection",
   slots = list(
     name = "character",
@@ -28,13 +28,13 @@ methods::setClass("MolgenisConnection",
 )
 
 
-#' Disconnect from a MOLGENIS DataSHIELD Service
+#' Disconnect from an Armadillo DataSHIELD Service
 #'
-#' Disconnect from a MOLGENIS DataSHIELD Service and release all R resources. If
-#' a workspace ID is provided, the DataSHIELD R session will be saved before
+#' Disconnect from an Armadillo DataSHIELD Service and release all R resources.
+#' If a workspace ID is provided, the DataSHIELD R session will be saved before
 #' being destroyed.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class
+#' @param conn \code{\link{ArmadilloConnection-class}} class
 #' object
 #' @param save Save the DataSHIELD R session with provided ID (must be a
 #' character string).
@@ -43,7 +43,7 @@ methods::setClass("MolgenisConnection",
 #' @seealso \code{\link{dsDisconnect}}
 #' @export
 methods::setMethod(
-  "dsDisconnect", "MolgenisConnection",
+  "dsDisconnect", "ArmadilloConnection",
   function(conn, save = NULL) {
     if (!is.null(save)) {
       response <- httr::POST(
@@ -56,12 +56,12 @@ methods::setMethod(
   }
 )
 
-#' List MOLGENIS DataSHIELD Service tables
+#' List Armadillo DataSHIELD Service tables
 #'
-#' List MOLGENIS DataSHIELD Service tables that may be accessible for performing
-#' DataSHIELD operations.
+#' List Armadillo DataSHIELD Service tables that may be accessible for
+#' performing DataSHIELD operations.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
 #'
 #' @return The fully qualified names of the tables.
 #'
@@ -69,7 +69,7 @@ methods::setMethod(
 #' @importMethodsFrom DSI dsListTables
 #' @export
 methods::setMethod(
-  "dsListTables", "MolgenisConnection", function(conn) {
+  "dsListTables", "ArmadilloConnection", function(conn) {
     response <- httr::GET(handle = conn@handle, path = paste0("/tables"))
     .handle_request_error(response)
     .unlist_character_list(httr::content(response))
@@ -79,7 +79,7 @@ methods::setMethod(
 #' Verify table exist and can be accessible for performing DataSHIELD
 #' operations.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object.
+#' @param conn \code{\link{ArmadilloConnection-class}} class object.
 #' @param table The identifier of the table
 #'
 #' @return TRUE if table exists.
@@ -87,7 +87,7 @@ methods::setMethod(
 #' @importMethodsFrom DSI dsHasTable
 #' @export
 methods::setMethod(
-  "dsHasTable", "MolgenisConnection", function(conn, table) {
+  "dsHasTable", "ArmadilloConnection", function(conn, table) {
     response <- httr::HEAD(
       handle = conn@handle,
       path = paste0("/tables/", table)
@@ -98,9 +98,9 @@ methods::setMethod(
   }
 )
 
-#' MOLGENIS DataShield Service asynchronous support
+#' Armadillo DataShield Service asynchronous support
 #'
-#' List of DataSHIELD operations on which MOLGENIS DataSHIELD Service supports
+#' List of DataSHIELD operations on which Armadillo DataSHIELD Service supports
 #' asynchronicity.
 #'
 #' When a \code{\link{DSResult-class}} object is returned on aggregation or
@@ -109,14 +109,14 @@ methods::setMethod(
 #' list of logicals will specify if asynchronicity is supported for:
 #' aggregation operation ('aggregate'), table assignment operation
 #' ('assignTable'), expression assignment operation ('assignExpr').
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
 #'
 #' @return The named list of logicals detailing the asynchronicity support.
 #'
 #' @importMethodsFrom DSI dsIsAsync
 #' @export
 methods::setMethod(
-  "dsIsAsync", "MolgenisConnection", function(conn) {
+  "dsIsAsync", "ArmadilloConnection", function(conn) {
     list(aggregate = TRUE, assignTable = FALSE, assignExpr = TRUE)
   }
 )
@@ -125,14 +125,14 @@ methods::setMethod(
 #'
 #' List symbols living in the DataSHIELD R session.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
 #'
 #' @return A character vector.
 #'
 #' @importMethodsFrom DSI dsListSymbols
 #' @export
 methods::setMethod(
-  "dsListSymbols", "MolgenisConnection",
+  "dsListSymbols", "ArmadilloConnection",
   function(conn) {
     response <- httr::GET(handle = conn@handle, path = "/symbols")
     .handle_request_error(response)
@@ -146,13 +146,13 @@ methods::setMethod(
 #' identified by the symbol will not be accessible in the DataSHIELD R session
 #' on the server side.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
 #' @param symbol Name of the R symbol.
 #'
 #' @importMethodsFrom DSI dsRmSymbol
 #' @export
 methods::setMethod(
-  "dsRmSymbol", "MolgenisConnection",
+  "dsRmSymbol", "ArmadilloConnection",
   function(conn, symbol) {
     response <- httr::DELETE(
       handle = conn@handle,
@@ -164,9 +164,9 @@ methods::setMethod(
 
 #' Assign a table
 #'
-#' Assign a MOLGENIS table in the DataSHIELD R session.
+#' Assign a R-data.frame in the DataSHIELD R session.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} object.
+#' @param conn \code{\link{ArmadilloConnection-class}} object.
 #' @param symbol Name of the R symbol.
 #' @param table Fully qualified name of the table.
 #' @param variables The variables to load.
@@ -175,12 +175,12 @@ methods::setMethod(
 #' @param id.name Not supported
 #' @param async When set, do not wait for the result.
 #'
-#' @return A \code{\link{MolgenisResult-class}} object.
+#' @return A \code{\link{ArmadilloResult-class}} object.
 #'
 #' @importMethodsFrom DSI dsAssignTable
 #' @export
 methods::setMethod(
-  "dsAssignTable", "MolgenisConnection",
+  "dsAssignTable", "ArmadilloConnection",
   function(conn, symbol, table, variables = NULL, missings = FALSE,
            identifiers = NULL, id.name = NULL, async = TRUE) { # nolint
     response <- httr::POST(
@@ -200,7 +200,7 @@ methods::setMethod(
       result <- .retry_until_last_result(conn)
     }
 
-    methods::new("MolgenisResult",
+    methods::new("ArmadilloResult",
       conn = conn,
       rval = list(result = result, async = async)
     )
@@ -212,7 +212,7 @@ methods::setMethod(
 #'
 #' List methods defined in the DataSHIELD configuration.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
 #' @param type Type of the method: "aggregate" (default) or "assign".
 #'
 #' @return A data.frame with columns: name, type ('aggregate' or 'assign'),
@@ -221,7 +221,7 @@ methods::setMethod(
 #' @importMethodsFrom DSI dsListMethods
 #' @export
 methods::setMethod(
-  "dsListMethods", "MolgenisConnection",
+  "dsListMethods", "ArmadilloConnection",
   function(conn, type = "aggregate") {
     response <- httr::GET(
       handle = conn@handle,
@@ -243,14 +243,14 @@ methods::setMethod(
 #'
 #' List packages with their versions defined in the DataSHIELD configuration.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
 #'
 #' @return A data.frame with columns: name, version.
 #'
 #' @importMethodsFrom DSI dsListPackages
 #' @export
 methods::setMethod(
-  "dsListPackages", "MolgenisConnection",
+  "dsListPackages", "ArmadilloConnection",
   function(conn) {
     response <- httr::GET(
       handle = conn@handle,
@@ -272,14 +272,14 @@ methods::setMethod(
 #'
 #' List workspaces saved in the data repository.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
 #'
 #' @return A data.frame with columns: name, lastAccessDate, size, user.
 #'
 #' @importMethodsFrom DSI dsListWorkspaces
 #' @export
 methods::setMethod(
-  "dsListWorkspaces", "MolgenisConnection",
+  "dsListWorkspaces", "ArmadilloConnection",
   function(conn) {
     response <- httr::GET(
       handle = conn@handle,
@@ -300,13 +300,13 @@ methods::setMethod(
 #'
 #' Save workspace on the data repository.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
 #' @param name Name of the workspace.
 #'
 #' @importMethodsFrom DSI dsSaveWorkspace
 #' @export
 methods::setMethod(
-  "dsSaveWorkspace", "MolgenisConnection",
+  "dsSaveWorkspace", "ArmadilloConnection",
   function(conn, name) {
     response <- httr::POST(
       handle = conn@handle,
@@ -320,13 +320,13 @@ methods::setMethod(
 #'
 #' Remove a workspace on the data repository.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} class object
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
 #' @param name Name of the workspace.
 #'
 #' @importMethodsFrom DSI dsRmWorkspace
 #' @export
 methods::setMethod(
-  "dsRmWorkspace", "MolgenisConnection",
+  "dsRmWorkspace", "ArmadilloConnection",
   function(conn, name) {
     response <- httr::DELETE(
       handle = conn@handle,
@@ -341,7 +341,7 @@ methods::setMethod(
 #' Assign a result of the execution of an expression in the DataSHIELD R
 #' session.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} object.
+#' @param conn \code{\link{ArmadilloConnection-class}} object.
 #' @param symbol Name of the R symbol.
 #' @param expr A R expression with allowed assign functions calls.
 #' @param async Whether the result of the call should be retrieved
@@ -349,12 +349,12 @@ methods::setMethod(
 #' connections, when the connection supports that feature, with an extra
 #' overhead of requests.
 #'
-#' @return A \code{\link{MolgenisResult-class}} object.
+#' @return A \code{\link{ArmadilloResult-class}} object.
 #'
 #' @importMethodsFrom DSI dsAssignExpr
 #' @export
 methods::setMethod(
-  "dsAssignExpr", "MolgenisConnection",
+  "dsAssignExpr", "ArmadilloConnection",
   function(conn, symbol, expr, async = TRUE) {
     response <- httr::POST(
       handle = conn@handle,
@@ -373,7 +373,7 @@ methods::setMethod(
       result <- .retry_until_last_result(conn)
     }
 
-    methods::new("MolgenisResult",
+    methods::new("ArmadilloResult",
       conn = conn,
       rval = list(
         result = NULL,
@@ -389,7 +389,7 @@ methods::setMethod(
 #' The aggregation expression must satisfy the data repository's DataSHIELD
 #' configuration.
 #'
-#' @param conn \code{\link{MolgenisConnection-class}} object.
+#' @param conn \code{\link{ArmadilloConnection-class}} object.
 #' @param expr Expression to evaluate.
 #' @param async Whether the result of the call should be retrieved
 #' asynchronously. When TRUE (default) the calls are parallelized over the
@@ -399,7 +399,7 @@ methods::setMethod(
 #' @importMethodsFrom DSI dsAggregate
 #' @export
 methods::setMethod(
-  "dsAggregate", "MolgenisConnection",
+  "dsAggregate", "ArmadilloConnection",
   function(conn, expr, async = TRUE) {
     response <- httr::POST(
       handle = conn@handle,
@@ -425,7 +425,7 @@ methods::setMethod(
 
       result <- unserialize(httr::content(response))
     }
-    methods::new("MolgenisResult",
+    methods::new("ArmadilloResult",
       conn = conn,
       rval = list(result = result, async = async)
     )
@@ -437,7 +437,7 @@ methods::setMethod(
 #'
 #' Get information about a connection.
 #'
-#' @param dsObj \code{\link{MolgenisConnection-class}} class object
+#' @param dsObj \code{\link{ArmadilloConnection-class}} class object
 #' @param ... Unused, needed for compatibility with generic.
 #'
 #' @return The connection information. This should report the version of
@@ -451,7 +451,7 @@ methods::setMethod(
 #' @importMethodsFrom DSI dsGetInfo
 #' @export
 methods::setMethod(
-  "dsGetInfo", "MolgenisConnection",
+  "dsGetInfo", "ArmadilloConnection",
   function(dsObj, ...) { # nolint
     response <- httr::GET(
       handle = dsObj@handle,
