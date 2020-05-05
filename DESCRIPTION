@@ -1,7 +1,7 @@
-Package: DSMolgenis
+Package: DSMolgenisArmadillo
 Type: Package
 Version: 1.1.0
-Title: DataSHIELD implementation for MOLGENIS
+Title: DataSHIELD implementation for the Armadillo
 Authors@R:
     c(person(given = "Sido",
              family = "Haakma",
@@ -25,15 +25,15 @@ Imports:
     utils
 Suggests:
     knitr
-Description: DataSHIELD implementation for the MOLGENIS DataSHIELD Service.
+Description: DataSHIELD implementation for the Armadillo DataSHIELD service. Part of the MOLGENIS suite.
 License: LGPL (>= 2.1)
 URL: https://github.com/molgenis/molgenis-r-datashield
 BugReports: https://github.com/molgenis/molgenis-r-datashield
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 Encoding: UTF-8
 Collate: 
-    'MolgenisDriver.R'
-    'MolgenisConnection.R'
-    'MolgenisResult.R'
+    'ArmadilloDriver.R'
+    'ArmadilloConnection.R'
+    'ArmadilloResult.R'
     'utils.R'

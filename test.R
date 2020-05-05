@@ -1,14 +1,14 @@
-library(DSMolgenis)
+library(DSMolgenisArmadillo)
 library(dsBaseClient)
 
-dsGetInfo(molgenis())
+dsGetInfo(armadillo())
 
 # create loginframe
-server <- c("molgenis")
+server <- c("armadillo")
 url <- c("http://localhost:8080?workspace=DIABETES/patient&workspace=GECKO/customer")
 user <- c("admin")
 password <- c("admin")
-driver <- c("MolgenisDriver")
+driver <- c("ArmadilloDriver")
 table <- c("datashield.PATIENT")
 logindata <- data.frame(server,url,user,password,table,driver)
 
@@ -16,7 +16,7 @@ logindata <- data.frame(server,url,user,password,table,driver)
 # Workspaces #
 ##############
 conns <- datashield.login(logins=logindata,assign=F)
-dsGetInfo(conns$molgenis)
+dsGetInfo(conns$armadillo)
 datashield.assign.table(conns = conns, table = "datashield.PATIENT", symbol = "D")
 datashield.symbols(conns)
 
@@ -43,15 +43,15 @@ datashield.workspace_save(conns, "my-overwrite")
 
 # list workspaces
 conns <- datashield.login(logins=logindata,assign=F)
-dsListWorkspaces(conns$molgenis)
+dsListWorkspaces(conns$armadillo)
 datashield.workspaces(conns) # weird output (bug in dsBaseClient?)
 
 # remove workspace
 conns <- datashield.login(logins=logindata,assign=F)
 datashield.workspace_save(conns, "removeMe")
-dsListWorkspaces(conns$molgenis)
+dsListWorkspaces(conns$armadillo)
 datashield.workspace_rm(conns, "removeMe")
-dsListWorkspaces(conns$molgenis)
+dsListWorkspaces(conns$armadillo)
 
 
 #####################
@@ -79,13 +79,13 @@ conns <- datashield.login(logins=logindata,assign=F)
 datashield.assign.table(conns = conns, table = "datashield.PATIENT", symbol = "D")
 
 # check tables
-dsListTables(conns$molgenis)
-dsHasTable(conns$molgenis, "datashield.PATIENT")
-dsHasTable(conns$molgenis, "datashield.NOTPATIENT")
+dsListTables(conns$armadillo)
+dsHasTable(conns$armadillo, "datashield.PATIENT")
+dsHasTable(conns$armadillo, "datashield.NOTPATIENT")
 
 # check packages
 conns <- datashield.login(logins=logindata,assign=F)
-dsListPackages(conns$molgenis)
+dsListPackages(conns$armadillo)
 
 # check methods
 datashield.methods(conns=conns, type="aggregate")
@@ -98,17 +98,17 @@ conns <- datashield.login(logins=logindata,assign=F)
 
 # bad requests (sync and async):
 datashield.assign.expr(conns = conns, symbol = 'K', "c(10,50,100")
-dsAssignExpr(conns$molgenis, symbol = "K", "c(x", async=FALSE)
-dsAssignExpr(conns$molgenis, symbol = "K", "c(x", async=TRUE)
+dsAssignExpr(conns$armadillo, symbol = "K", "c(x", async=FALSE)
+dsAssignExpr(conns$armadillo, symbol = "K", "c(x", async=TRUE)
 
-dsAggregate(conns$molgenis, "c(4", async=FALSE)
-dsAggregate(conns$molgenis, "c(4", async=TRUE)
+dsAggregate(conns$armadillo, "c(4", async=FALSE)
+dsAggregate(conns$armadillo, "c(4", async=TRUE)
 
 # R error -> 500
-result <- dsAggregate(conns$molgenis, "X", async=TRUE)
+result <- dsAggregate(conns$armadillo, "X", async=TRUE)
 dsFetch(result)
 
-dsAggregate(conns$molgenis, "X", async=FALSE)
+dsAggregate(conns$armadillo, "X", async=FALSE)
 
 # R error -> 201 (async assign)
 datashield.assign.expr(conns = conns, symbol = 'K', "X")
