@@ -1,7 +1,7 @@
 
 #' Class ArmadilloDriver with constructor armadillo
 #'
-#' A Armadillo DataSHIELD Service Driver implementing the DataSHIELD Interface
+#' An Armadillo DataSHIELD Service Driver implementing the DataSHIELD Interface
 #' (DSI) \code{\link{DSDriver-class}}. This class should always be initialized
 #' with the \code{\link{armadillo}} function.
 #' It returns a singleton that allows you to connect to Armadillo
@@ -11,7 +11,7 @@
 #' @keywords internal
 methods::setClass("ArmadilloDriver", contains = "DSDriver")
 
-#' Create a Armadillo DataSHIELD Service driver
+#' Create an Armadillo DataSHIELD Service driver
 #'
 #' Convenience function for creating a [ArmadilloDriver] object.
 #'
@@ -20,9 +20,9 @@ armadillo <- function() {
   methods::new("ArmadilloDriver")
 }
 
-#' Connect to a Armadillo DataSHIELD service
+#' Connect to an Armadillo DataSHIELD service
 #'
-#' Connect to a Armadillo DataSHIELD service, with provided credentials.
+#' Connect to an Armadillo DataSHIELD service, with provided credentials.
 #'
 #' @param drv \code{\link{ArmadilloDriver-class}} class object.
 #' @param name Name of the connection, which must be unique among all the

@@ -5,7 +5,7 @@
 \alias{ArmadilloResult-class}
 \title{Class ArmadilloResult.}
 \description{
-A Armadillo result implementing the DataSHIELD Interface (DSI)
+An Armadillo result implementing the DataSHIELD Interface (DSI)
 \code{\link{DSResult-class}}.
 }
 \section{Slots}{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ArmadilloDriver.R
 \name{dsConnect,ArmadilloDriver-method}
 \alias{dsConnect,ArmadilloDriver-method}
-\title{Connect to a Armadillo DataSHIELD service}
+\title{Connect to an Armadillo DataSHIELD service}
 \usage{
 \S4method{dsConnect}{ArmadilloDriver}(
   drv,
@@ -42,5 +42,5 @@ for details). Can be provided by "Armadillo.opts" option.}
 A \code{\link{ArmadilloConnection-class}} object.
 }
 \description{
-Connect to a Armadillo DataSHIELD service, with provided credentials.
+Connect to an Armadillo DataSHIELD service, with provided credentials.
 }

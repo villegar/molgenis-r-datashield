@@ -3,7 +3,7 @@ NULL
 
 #' Class ArmadilloResult.
 #'
-#' A Armadillo result implementing the DataSHIELD Interface (DSI)
+#' An Armadillo result implementing the DataSHIELD Interface (DSI)
 #' \code{\link{DSResult-class}}.
 #'
 #' @slot conn The connection used to create this result

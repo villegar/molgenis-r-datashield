@@ -5,7 +5,7 @@
 \alias{ArmadilloDriver-class}
 \title{Class ArmadilloDriver with constructor armadillo}
 \description{
-A Armadillo DataSHIELD Service Driver implementing the DataSHIELD Interface
+An Armadillo DataSHIELD Service Driver implementing the DataSHIELD Interface
 (DSI) \code{\link{DSDriver-class}}. This class should always be initialized
 with the \code{\link{armadillo}} function.
 It returns a singleton that allows you to connect to Armadillo

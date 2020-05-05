@@ -4,7 +4,7 @@ setOldClass("handle")
 
 #' Class ArmadilloConnection.
 #'
-#' A Armadillo connection implementing the DataSHIELD Interface (DSI)
+#' An Armadillo connection implementing the DataSHIELD Interface (DSI)
 #' \code{\link{DSConnection-class}}.
 #'
 #' @slot name The name of the connection
@@ -28,10 +28,10 @@ methods::setClass("ArmadilloConnection",
 )
 
 
-#' Disconnect from a Armadillo DataSHIELD Service
+#' Disconnect from an Armadillo DataSHIELD Service
 #'
-#' Disconnect from a Armadillo DataSHIELD Service and release all R resources. If
-#' a workspace ID is provided, the DataSHIELD R session will be saved before
+#' Disconnect from an Armadillo DataSHIELD Service and release all R resources.
+#' If a workspace ID is provided, the DataSHIELD R session will be saved before
 #' being destroyed.
 #'
 #' @param conn \code{\link{ArmadilloConnection-class}} class
@@ -58,8 +58,8 @@ methods::setMethod(
 
 #' List Armadillo DataSHIELD Service tables
 #'
-#' List Armadillo DataSHIELD Service tables that may be accessible for performing
-#' DataSHIELD operations.
+#' List Armadillo DataSHIELD Service tables that may be accessible for
+#' performing DataSHIELD operations.
 #'
 #' @param conn \code{\link{ArmadilloConnection-class}} class object
 #'

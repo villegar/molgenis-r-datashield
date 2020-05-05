@@ -2,7 +2,7 @@
 % Please edit documentation in R/ArmadilloConnection.R
 \name{dsDisconnect,ArmadilloConnection-method}
 \alias{dsDisconnect,ArmadilloConnection-method}
-\title{Disconnect from a Armadillo DataSHIELD Service}
+\title{Disconnect from an Armadillo DataSHIELD Service}
 \usage{
 \S4method{dsDisconnect}{ArmadilloConnection}(conn, save = NULL)
 }
@@ -14,8 +14,8 @@ object}
 character string).}
 }
 \description{
-Disconnect from a Armadillo DataSHIELD Service and release all R resources. If
-a workspace ID is provided, the DataSHIELD R session will be saved before
+Disconnect from an Armadillo DataSHIELD Service and release all R resources.
+If a workspace ID is provided, the DataSHIELD R session will be saved before
 being destroyed.
 }
 \seealso{

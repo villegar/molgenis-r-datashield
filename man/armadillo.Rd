@@ -2,7 +2,7 @@
 % Please edit documentation in R/ArmadilloDriver.R
 \name{armadillo}
 \alias{armadillo}
-\title{Create a Armadillo DataSHIELD Service driver}
+\title{Create an Armadillo DataSHIELD Service driver}
 \usage{
 armadillo()
 }
