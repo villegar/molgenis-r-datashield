@@ -12,11 +12,14 @@ setOldClass("handle")
 #' @export
 #' @keywords internal
 setClass("MolgenisConnection",
-         contains = "DSConnection",
-         slots = list(name = "character",
-                      workspaces = "list",
-                      handle = "handle",
-                      user = "character"))
+  contains = "DSConnection",
+  slots = list(
+    name = "character",
+    workspaces = "list",
+    handle = "handle",
+    user = "character"
+  )
+)
 
 
 #' Disconnect from a MOLGENIS DatasSHIELD Service
@@ -143,28 +146,33 @@ setMethod("dsRmSymbol", "MolgenisConnection", function(conn, symbol) {
 #'
 #' @import methods
 #' @export
-setMethod("dsAssignTable", "MolgenisConnection",
-          function(conn, symbol, table, variables=NULL, missings=FALSE,
-                   identifiers=NULL, id.name=NULL, async=TRUE) { # nolint
-  response <- POST(handle = conn@handle,
-                   path = paste0("/symbols/", symbol, "?table=", table))
-  .handle_request_error(response)
+setMethod(
+  "dsAssignTable", "MolgenisConnection",
+  function(conn, symbol, table, variables = NULL, missings = FALSE,
+           identifiers = NULL, id.name = NULL, async = TRUE) { # nolint
+    response <- POST(
+      handle = conn@handle,
+      path = paste0("/symbols/", symbol, "?table=", table)
+    )
+    .handle_request_error(response)
 
-  #TODO need to return something like this
-  # Check Opal code:
-  # Response.created(getSymbolURI(uri)).entity(id)
-  # .type(MediaType.TEXT_PLAIN_TYPE).build(); as a result
+    # TODO need to return something like this
+    # Check Opal code:
+    # Response.created(getSymbolURI(uri)).entity(id)
+    # .type(MediaType.TEXT_PLAIN_TYPE).build(); as a result
 
-  if (async) {
-    result <- NULL
-  }else{
-    result <- .retry_until_last_result(conn)
-  }
+    if (async) {
+      result <- NULL
+    } else {
+      result <- .retry_until_last_result(conn)
+    }
 
-  new("MolgenisResult",
+    new("MolgenisResult",
       conn = conn,
-      rval = list(result = result, async = async))
-})
+      rval = list(result = result, async = async)
+    )
+  }
+)
 
 
 #' List methods
@@ -179,20 +187,24 @@ setMethod("dsAssignTable", "MolgenisConnection",
 #'
 #' @import methods
 #' @export
-setMethod("dsListMethods", "MolgenisConnection",
-          function(conn, type = "aggregate") {
-  response <- GET(handle = conn@handle,
-                  url = conn@handle$url,
-                  path = paste0("/methods/", type),
-                  add_headers("Accept' = 'application/json"))
-  .handle_request_error(response)
+setMethod(
+  "dsListMethods", "MolgenisConnection",
+  function(conn, type = "aggregate") {
+    response <- GET(
+      handle = conn@handle,
+      url = conn@handle$url,
+      path = paste0("/methods/", type),
+      add_headers("Accept' = 'application/json")
+    )
+    .handle_request_error(response)
 
-  df <- .list_to_data_frame(content(response))
-  .fill_column(df, "type", type)
-  .fill_column(df, "class", "function")
-  .rename_column(df, "function", "value")
-  df
-})
+    df <- .list_to_data_frame(content(response))
+    .fill_column(df, "type", type)
+    .fill_column(df, "class", "function")
+    .rename_column(df, "function", "value")
+    df
+  }
+)
 
 #' List packages
 #'
@@ -205,10 +217,12 @@ setMethod("dsListMethods", "MolgenisConnection",
 #' @import methods
 #' @export
 setMethod("dsListPackages", "MolgenisConnection", function(conn) {
-  response <- GET(handle = conn@handle,
-                  url = conn@handle$url,
-                  path = "/packages",
-                  add_headers("Accept" = "application/json"))
+  response <- GET(
+    handle = conn@handle,
+    url = conn@handle$url,
+    path = "/packages",
+    add_headers("Accept" = "application/json")
+  )
   .handle_request_error(response)
 
   extracted_cols <- lapply(content(response), function(x) c(x$name, x$version))
@@ -226,10 +240,12 @@ setMethod("dsListPackages", "MolgenisConnection", function(conn) {
 #' @import methods
 #' @export
 setMethod("dsListWorkspaces", "MolgenisConnection", function(conn) {
-  response <- GET(handle = conn@handle,
-                  url = conn@handle$url,
-                  path = "/workspaces",
-                  add_headers("Accept" = "application/json"))
+  response <- GET(
+    handle = conn@handle,
+    url = conn@handle$url,
+    path = "/workspaces",
+    add_headers("Accept" = "application/json")
+  )
   .handle_request_error(response)
 
   df <- .list_to_data_frame(content(response))
@@ -283,25 +299,35 @@ setMethod("dsRmWorkspace", "MolgenisConnection", function(conn, name) {
 #'
 #' @import methods
 #' @export
-setMethod("dsAssignExpr", "MolgenisConnection",
-          function(conn, symbol, expr, async = TRUE) {
-  response <- POST(handle = conn@handle,
-                    url = conn@handle$url,
-                    query = list(async = async),
-                    path = paste0("/symbols/", symbol),
-                    body = .deparse(expr),
-                    add_headers("Content-Type" = "text/plain"))
+setMethod(
+  "dsAssignExpr", "MolgenisConnection",
+  function(conn, symbol, expr, async = TRUE) {
+    response <- POST(
+      handle = conn@handle,
+      url = conn@handle$url,
+      query = list(async = async),
+      path = paste0("/symbols/", symbol),
+      body = .deparse(expr),
+      add_headers("Content-Type" = "text/plain")
+    )
 
-  .handle_request_error(response)
+    .handle_request_error(response)
 
-  if (async) {
-    result <- NULL
-  } else {
-    result <- .retry_until_last_result(conn)
+    if (async) {
+      result <- NULL
+    } else {
+      result <- .retry_until_last_result(conn)
+    }
+
+    new("MolgenisResult",
+      conn = conn,
+      rval = list(
+        result = NULL,
+        async = async
+      )
+    )
   }
-
-  new("MolgenisResult", conn = conn, rval = list(result = NULL, async = async))
-})
+)
 
 #' Aggregate data
 #'
@@ -318,32 +344,39 @@ setMethod("dsAssignExpr", "MolgenisConnection",
 #'
 #' @import methods
 #' @export
-setMethod("dsAggregate", "MolgenisConnection",
-          function(conn, expr, async = TRUE) {
-  response <- POST(handle = conn@handle,
-                   url = conn@handle$url,
-                   query = list(async = async),
-                   path = "/execute",
-                   body = .deparse(expr),
-                   add_headers("Content-Type" = "text/plain",
-                               "Accept" =
-                                 "application/octet-stream,application/json"))
+setMethod(
+  "dsAggregate", "MolgenisConnection",
+  function(conn, expr, async = TRUE) {
+    response <- POST(
+      handle = conn@handle,
+      url = conn@handle$url,
+      query = list(async = async),
+      path = "/execute",
+      body = .deparse(expr),
+      add_headers(
+        "Content-Type" = "text/plain",
+        "Accept" =
+          "application/octet-stream,application/json"
+      )
+    )
 
-  .handle_request_error(response)
+    .handle_request_error(response)
 
-  if (async) {
-    result <- NULL
-  } else {
-    if (response$status_code == 500) {
-      .handle_last_command_error(conn@handle)
+    if (async) {
+      result <- NULL
+    } else {
+      if (response$status_code == 500) {
+        .handle_last_command_error(conn@handle)
+      }
+
+      result <- unserialize(content(response))
     }
-
-    result <- unserialize(content(response))
-  }
-  new("MolgenisResult",
+    new("MolgenisResult",
       conn = conn,
-      rval = list(result = result, async = async))
-})
+      rval = list(result = result, async = async)
+    )
+  }
+)
 
 
 #' Get connection info
@@ -364,5 +397,5 @@ setMethod("dsAggregate", "MolgenisConnection",
 #' @import methods
 #' @export
 setMethod("dsGetInfo", "MolgenisConnection", function(dsObj, ...) { # nolint
-  #TODO implement
+  # TODO implement
 })

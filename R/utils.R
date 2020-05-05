@@ -13,9 +13,9 @@
   if (response$status_code == 400) {
     json_content <- httr::content(response)
     stop(paste0("Bad request: ", json_content$message), call. = FALSE)
-  }else if (response$status_code == 401) {
+  } else if (response$status_code == 401) {
     stop("Unauthorized", call. = FALSE)
-  }else if (response$status_code == 500) {
+  } else if (response$status_code == 500) {
     json_content <- httr::content(response)
     stop(paste0("Internal server error: ", json_content$message), call. = FALSE)
   }
@@ -25,7 +25,7 @@
 .unlist_character_list <- function(character_list) {
   if (length(character_list) == 0) {
     character()
-  }else{
+  } else {
     unlist(character_list)
   }
 }
@@ -37,22 +37,24 @@
 
 #' @keywords internal
 .retry_until_last_result <- function(conn) {
-  response <- RETRY(verb = "GET",
-                    handle = conn@handle,
-                    url = conn@handle$url,
-                    path = "/lastresult",
-                    terminate_on = c(200, 404, 401),
-                    add_headers("Accept" = "application/octet-stream"))
+  response <- RETRY(
+    verb = "GET",
+    handle = conn@handle,
+    url = conn@handle$url,
+    path = "/lastresult",
+    terminate_on = c(200, 404, 401),
+    add_headers("Accept" = "application/octet-stream")
+  )
 
   .handle_request_error(response)
 
   if (response$status_code == 404) {
     .handle_last_command_error(conn@handle)
-  }else{
+  } else {
     content <- content(response)
     if (is.null(content)) {
       NULL
-    }else{
+    } else {
       unserialize(content)
     }
   }
