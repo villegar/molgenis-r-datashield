@@ -69,6 +69,7 @@ setMethod(
       body = list(username = username, password = password)
     )
     .handle_request_error(login_response)
+    cookies <- httr::cookies(login_response)
 
     load_table_response <- POST(
       handle = handle,
@@ -94,7 +95,11 @@ setMethod(
     }
 
     new("MolgenisConnection",
-      name = name, handle = handle, workspaces = workspaces, user = username
+      name = name,
+      handle = handle,
+      workspaces = workspaces,
+      user = username,
+      cookies = cookies
     )
   }
 )
@@ -110,8 +115,12 @@ setMethod(
 #' package (`driver.version`) and the version of the underlying client
 #' library (`client.version`).
 #'
-#' @import methods
 #' @export
-setMethod("dsGetInfo", "MolgenisDriver", function(dsObj, ...) { # nolint
-  # TODO implement
-})
+methods::setMethod(
+  "dsGetInfo", "MolgenisDriver",
+  function(dsObj, ...) { # nolint
+    return(list(
+      driver.version = packageVersion("DSMolgenis")
+    ))
+  }
+)

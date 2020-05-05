@@ -17,7 +17,8 @@ setClass("MolgenisConnection",
     name = "character",
     workspaces = "list",
     handle = "handle",
-    user = "character"
+    user = "character",
+    cookies = "list"
   )
 )
 
@@ -396,6 +397,18 @@ setMethod(
 #'
 #' @import methods
 #' @export
-setMethod("dsGetInfo", "MolgenisConnection", function(dsObj, ...) { # nolint
-  # TODO implement
-})
+setMethod("dsGetInfo", "MolgenisConnection",
+  function(dsObj, ...) { # nolint
+    response <- httr::GET(
+    handle = dsObj@handle,
+    url = dsObj@handle$url,
+    path = "/actuator/info"
+  )
+    .handle_request_error(response)
+    result <- content(response)
+    result$url <- dsObj@handle$url
+    result$workspaces <- dsObj@workspaces
+    result$name <- dsObj@name
+    result$cookies <- dsObj@cookies
+    result
+  })
