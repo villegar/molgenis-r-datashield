@@ -25,29 +25,21 @@ pipeline {
                     }
                 }
                 script {
-                    env.GIT_COMMIT = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                }
-                script {
                     env.PACKAGE = sh(script: "grep Package DESCRIPTION | head -n1 | cut -d':' -f2", returnStdout: true).trim()
                 }
                 sh "git remote set-url origin https://${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
                 sh "git fetch --tags"
                 container('r') {
                     sh "Rscript -e \"git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')\""
-                    sh "Rscript -e \"install.packages(c('DSI'), repos='https://registry.molgenis.org/repository/R')\""
+                    sh "install2.r --error --repo https://registry.molgenis.org/repository/R DSI"
+                    sh "install2.r remotes"
+                    sh "installGithub.r fdlk/lintr"
                 }
             }
         }
         stage('Install and test: [ PR ]') {
             when {
                 changeRequest()
-            }
-            environment {
-                // Fake running in a travis CI environment to enable lintr comments
-                TRAVIS_REPO_SLUG = "${REPOSITORY}"
-                TRAVIS_PULL_REQUEST = "${CHANGE_ID}"
-                TRAVIS_BRANCH = "${CHANGE_TARGET}"
-                TRAVIS_COMMIT = "${GIT_COMMIT}"
             }
             steps {
                 container('r') {
