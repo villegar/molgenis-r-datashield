@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+Jenkinsfile
+test.R
+test.RData
