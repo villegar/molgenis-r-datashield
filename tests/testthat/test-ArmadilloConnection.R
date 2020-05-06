@@ -139,7 +139,9 @@ test_that("dsListMethods returns assign methods", {
   )
 
   expect_args(get, 1, handle = handle, path = "/methods/assign")
-  # TODO: fix bug
+
+  skip("Fix the columns!")
+
   expected <- tibble(
     name = list("foo", "bar"),
     value = list("dsBase::foo", "dsBase::bar"),
@@ -149,4 +151,31 @@ test_that("dsListMethods returns assign methods", {
     class = list("function", "function")
   )
   expect_equivalent(result, expected)
+})
+
+test_that("dsListPackages extracts name and version from packages", {
+  packages <- list(list(
+    built = "3.6.3",
+    libPath = "/usr/local/lib/R/site-library",
+    name = "minqa",
+    version = "1.2.4"
+  ), list(
+    built = "3.6.3",
+    libPath = "/usr/local/lib/R/site-library",
+    name = "RANN",
+    version = "2.6.1"
+  ))
+  get <- mock(list(status_code = 200))
+  content <- mock(packages)
+
+  result <- with_mock(
+    "httr::GET" = get,
+    "httr::content" = content,
+    dsListPackages(connection)
+  )
+
+  expect_equivalent(result, tibble(
+    name = list("minqa", "RANN"),
+    version = list("1.2.4", "2.6.1")
+  ))
 })

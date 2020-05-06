@@ -252,15 +252,13 @@ methods::setMethod(
   function(conn) {
     response <- httr::GET(
       handle = conn@handle,
-      url = conn@handle$url,
-      path = "/packages",
-      httr::add_headers("Accept" = "application/json")
+      path = "/packages"
     )
     .handle_request_error(response)
 
     extracted_cols <- lapply(
       httr::content(response),
-      function(x) c(x$name, x$version)
+      function(x) list(name = x$name, version = x$version)
     )
     .list_to_data_frame(extracted_cols)
   }
