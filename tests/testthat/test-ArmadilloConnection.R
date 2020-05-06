@@ -1,3 +1,12 @@
+handle <- httr::handle(url = "http://example.org:8080")
+connection <- methods::new("ArmadilloConnection",
+  name = "name",
+  handle = handle,
+  workspaces = list("GECKO/customer"),
+  user = "admin",
+  cookies = cookies
+)
+
 test_that("dsDisconnect calls /logout endpoint ", {
   post <- mock()
   with_mock(
@@ -76,4 +85,68 @@ test_that("dsRmSymbol removes symbol", {
     dsRmSymbol(connection, "D")
   )
   expect_args(delete, 1, handle = handle, path = "/symbols/D")
+})
+
+test_that("dsAssignTable assigns table to symbol", {
+  post <- mock(list(status_code = 200))
+  result <- with_mock(
+    "httr::POST" = post,
+    dsAssignTable(connection, "D", "package.NAME")
+  )
+  expect_args(post, 1,
+    handle = handle,
+    path = "/symbols/D?table=package.NAME"
+  )
+  expect_s4_class(result, "ArmadilloResult")
+})
+
+test_that("dsAssignTable, when called synchronously, waits for result", {
+  post <- mock(list(status_code = 200))
+  retry <- mock(list(status_code = 200))
+  httr_content <- mock(NULL)
+  result <- with_mock(
+    "httr::POST" = post,
+    "httr::RETRY" = retry,
+    "httr::content" = httr_content,
+    dsAssignTable(connection, "D", "package.NAME", async = FALSE)
+  )
+  expect_args(post, 1,
+    handle = handle,
+    path = "/symbols/D?table=package.NAME"
+  )
+  expect_s4_class(result, "ArmadilloResult")
+})
+
+test_that("dsListMethods returns assign methods", {
+  methods <- list(list(
+    name = "foo",
+    "function" = "dsBase::foo",
+    version = "6.0.0-03",
+    package = "dsBase"
+  ), list(
+    name = "bar",
+    "function" = "dsBase::bar",
+    version = "6.0.0-03",
+    package = "dsBase"
+  ))
+  get <- mock(list(status_code = 200))
+  content <- mock(methods)
+
+  result <- with_mock(
+    "httr::GET" = get,
+    "httr::content" = content,
+    dsListMethods(connection, type = "assign")
+  )
+
+  expect_args(get, 1, handle = handle, path = "/methods/assign")
+  # TODO: fix bug
+  expected <- tibble(
+    name = list("foo", "bar"),
+    value = list("dsBase::foo", "dsBase::bar"),
+    version = list("6.0.0-03", "6.0.0-03"),
+    package = list("dsBase", "dsBase"),
+    type = list("assign", "assign"),
+    class = list("function", "function")
+  )
+  expect_equivalent(result, expected)
 })

@@ -225,9 +225,7 @@ methods::setMethod(
   function(conn, type = "aggregate") {
     response <- httr::GET(
       handle = conn@handle,
-      url = conn@handle$url,
-      path = paste0("/methods/", type),
-      httr::add_headers("Accept' = 'application/json")
+      path = paste0("/methods/", type)
     )
     .handle_request_error(response)
 
