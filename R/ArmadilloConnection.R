@@ -183,9 +183,15 @@ methods::setMethod(
   "dsAssignTable", "ArmadilloConnection",
   function(conn, symbol, table, variables = NULL, missings = FALSE,
            identifiers = NULL, id.name = NULL, async = TRUE) { # nolint
+
+    query <- list(table = table)
+    if (!is.null(variables)) {
+      query$variables <- paste(unlist(variables), collapse = ",")
+    }
     response <- httr::POST(
       handle = conn@handle,
-      path = paste0("/symbols/", symbol, "?table=", table)
+      path = paste0("/symbols/", symbol),
+      query = query
     )
     .handle_request_error(response)
 
@@ -225,9 +231,7 @@ methods::setMethod(
   function(conn, type = "aggregate") {
     response <- httr::GET(
       handle = conn@handle,
-      url = conn@handle$url,
-      path = paste0("/methods/", type),
-      httr::add_headers("Accept' = 'application/json")
+      path = paste0("/methods/", type)
     )
     .handle_request_error(response)
 
@@ -254,15 +258,13 @@ methods::setMethod(
   function(conn) {
     response <- httr::GET(
       handle = conn@handle,
-      url = conn@handle$url,
-      path = "/packages",
-      httr::add_headers("Accept" = "application/json")
+      path = "/packages"
     )
     .handle_request_error(response)
 
     extracted_cols <- lapply(
       httr::content(response),
-      function(x) c(x$name, x$version)
+      function(x) list(name = x$name, version = x$version)
     )
     .list_to_data_frame(extracted_cols)
   }
@@ -283,9 +285,7 @@ methods::setMethod(
   function(conn) {
     response <- httr::GET(
       handle = conn@handle,
-      url = conn@handle$url,
-      path = "/workspaces",
-      httr::add_headers("Accept" = "application/json")
+      path = "/workspaces"
     )
     .handle_request_error(response)
 

@@ -17,8 +17,14 @@ logindata <- data.frame(server, url, user, password, table, driver)
 ##############
 conns <- datashield.login(logins = logindata, assign = F)
 dsGetInfo(conns$armadillo)
-datashield.assign.table(conns = conns, table = "datashield.PATIENT", symbol = "D", async = FALSE)
+datashield.assign.table(conns = conns,
+                        table = "datashield.PATIENT",
+                        symbol = "D",
+                        async = FALSE,
+                        variables=c("age", "name"))
 datashield.symbols(conns)
+
+datashield.table_status(conns, "datashield.PATIENT")
 
 # logout without saving workspace
 datashield.logout(conns)
