@@ -179,3 +179,37 @@ test_that("dsListPackages extracts name and version from packages", {
     version = list("1.2.4", "2.6.1")
   ))
 })
+
+test_that("dsListWorkspaces lists workspaces", {
+  workspaces <- list(
+    list(
+      name = "hello",
+      size = 48L,
+      ETag = "\"ca5d3a000723844e874b93a65c3888a1-1\"",
+      lastModified = "2020-05-06T13:09:00.725Z"
+    ),
+    list(
+      name = "world",
+      size = 378L,
+      ETag = "\"1f45d1a6f13adda1d05adf1f3da4c4ca-1\"",
+      lastModified = "2020-05-06T13:09:07.617Z"
+    )
+  )
+  get <- mock(list(status_code = 200))
+  content <- mock(workspaces)
+
+  result <- with_mock(
+    "httr::GET" = get,
+    "httr::content" = content,
+    dsListWorkspaces(connection)
+  )
+
+  skip("Fix the bug!")
+  expect_equivalent(result, tibble(
+    name = list("hello", "world"),
+    size = list(48L, 378L),
+    ETag = list("\"ca5d3a000723844e874b93a65c3888a1-1\"",
+                "\"1f45d1a6f13adda1d05adf1f3da4c4ca-1\""),
+    lastAccessDate = list("2020-05-06T13:09:00.725Z"),
+                          "2020-05-06T13:09:07.617Z"))
+})

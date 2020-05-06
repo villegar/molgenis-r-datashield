@@ -279,9 +279,7 @@ methods::setMethod(
   function(conn) {
     response <- httr::GET(
       handle = conn@handle,
-      url = conn@handle$url,
-      path = "/workspaces",
-      httr::add_headers("Accept" = "application/json")
+      path = "/workspaces"
     )
     .handle_request_error(response)
 
