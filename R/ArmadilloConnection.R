@@ -358,7 +358,6 @@ methods::setMethod(
   function(conn, symbol, expr, async = TRUE) {
     response <- httr::POST(
       handle = conn@handle,
-      url = conn@handle$url,
       query = list(async = async),
       path = paste0("/symbols/", symbol),
       body = .deparse(expr),
@@ -403,15 +402,10 @@ methods::setMethod(
   function(conn, expr, async = TRUE) {
     response <- httr::POST(
       handle = conn@handle,
-      url = conn@handle$url,
       query = list(async = async),
       path = "/execute",
       body = .deparse(expr),
-      httr::add_headers(
-        "Content-Type" = "text/plain",
-        "Accept" =
-          "application/octet-stream,application/json"
-      )
+      httr::add_headers("Content-Type" = "text/plain")
     )
 
     .handle_request_error(response)
@@ -455,7 +449,6 @@ methods::setMethod(
   function(dsObj, ...) { # nolint
     response <- httr::GET(
       handle = dsObj@handle,
-      url = dsObj@handle$url,
       path = "/actuator/info"
     )
     .handle_request_error(response)
