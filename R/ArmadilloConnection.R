@@ -183,9 +183,15 @@ methods::setMethod(
   "dsAssignTable", "ArmadilloConnection",
   function(conn, symbol, table, variables = NULL, missings = FALSE,
            identifiers = NULL, id.name = NULL, async = TRUE) { # nolint
+
+    query <- list(table = table)
+    if (!is.null(variables)) {
+      query$variables <- paste(unlist(variables), collapse = ",")
+    }
     response <- httr::POST(
       handle = conn@handle,
-      path = paste0("/symbols/", symbol, "?table=", table)
+      path = paste0("/symbols/", symbol),
+      query = query
     )
     .handle_request_error(response)
 

@@ -95,7 +95,28 @@ test_that("dsAssignTable assigns table to symbol", {
   )
   expect_args(post, 1,
     handle = handle,
-    path = "/symbols/D?table=package.NAME"
+    path = "/symbols/D",
+    query = list(table = "package.NAME")
+  )
+  expect_s4_class(result, "ArmadilloResult")
+})
+
+test_that("dsAssignTable allows variable selection", {
+  post <- mock(list(status_code = 200))
+  result <- with_mock(
+    "httr::POST" = post,
+    dsAssignTable(connection, "D",
+      "package.NAME",
+      variables = c("foo", "bar")
+    )
+  )
+  expect_args(post, 1,
+    handle = handle,
+    path = "/symbols/D",
+    query = list(
+      table = "package.NAME",
+      variables = "foo,bar"
+    )
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -112,7 +133,8 @@ test_that("dsAssignTable, when called synchronously, waits for result", {
   )
   expect_args(post, 1,
     handle = handle,
-    path = "/symbols/D?table=package.NAME"
+    path = "/symbols/D",
+    query = list(table = "package.NAME")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -208,8 +230,11 @@ test_that("dsListWorkspaces lists workspaces", {
   expect_equivalent(result, tibble(
     name = list("hello", "world"),
     size = list(48L, 378L),
-    ETag = list("\"ca5d3a000723844e874b93a65c3888a1-1\"",
-                "\"1f45d1a6f13adda1d05adf1f3da4c4ca-1\""),
+    ETag = list(
+      "\"ca5d3a000723844e874b93a65c3888a1-1\"",
+      "\"1f45d1a6f13adda1d05adf1f3da4c4ca-1\""
+    ),
     lastAccessDate = list("2020-05-06T13:09:00.725Z"),
-                          "2020-05-06T13:09:07.617Z"))
+    "2020-05-06T13:09:07.617Z"
+  ))
 })
