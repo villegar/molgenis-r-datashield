@@ -8,10 +8,10 @@
   drv,
   name,
   restore = NULL,
-  username = NULL,
-  password = NULL,
+  username,
+  password,
   token = NULL,
-  url = NULL,
+  url,
   opts = list(),
   ...
 )

@@ -43,8 +43,8 @@ armadillo <- function() {
 #' @export
 methods::setMethod(
   "dsConnect", "ArmadilloDriver",
-  function(drv, name, restore = NULL, username = NULL, password = NULL,
-           token = NULL, url = NULL, opts = list(), ...) {
+  function(drv, name, restore = NULL, username, password,
+           token = NULL, url, opts = list(), ...) {
     # Retrieve login URL and workspace name
     url_parts <- unlist(strsplit(url, "?", fixed = TRUE))
     workspace_parameters <- url_parts[2]

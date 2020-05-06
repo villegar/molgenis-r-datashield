@@ -2,7 +2,7 @@ Package: DSMolgenisArmadillo
 Type: Package
 Version: 1.1.0
 Title: DataSHIELD implementation for the Armadillo
-Authors@R:
+Authors@R: 
     c(person(given = "Sido",
              family = "Haakma",
              role = c("aut", "cre"),
@@ -15,16 +15,18 @@ Authors@R:
              family = "Kelpin",
              role = c("aut"),
              email = "f.kelpin@umcg.nl"))
-Depends:
+Depends: 
     R (>= 3.6),
     DSI
-Imports:
+Imports: 
     methods,
     httr,
     stringr,
     utils
 Suggests:
-    knitr
+    knitr,
+    mockery,
+    testthat (>= 2.1.0)
 Description: DataSHIELD implementation for the Armadillo DataSHIELD service. Part of the MOLGENIS suite.
 License: LGPL (>= 2.1)
 URL: https://github.com/molgenis/molgenis-r-datashield
