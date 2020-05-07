@@ -413,10 +413,6 @@ methods::setMethod(
     if (async) {
       result <- NULL
     } else {
-      if (response$status_code == 500) {
-        .handle_last_command_error(conn@handle)
-      }
-
       result <- unserialize(httr::content(response))
     }
     methods::new("ArmadilloResult",

@@ -353,6 +353,19 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
   expect_equal(dsFetch(result), "Hello World!")
 })
 
+test_that("dsAssignExpr handles error when called synchronously", {
+  post <- mock(list(status_code = 500))
+  get <- mock(list(status_code = 200))
+  content <- mock(list(status = "FAILED",
+                       message = "Error"))
+  error <- expect_error(with_mock(
+    "httr::POST" = post,
+    "httr::GET" = get,
+    "httr::content" = content,
+    dsAggregate(connection, "ls()", async = FALSE)
+  ), "Internal server error: Error")
+})
+
 test_that("dsGetInfo returns server info", {
   get <- mock(list(status_code = 200))
   server_info <- list(
