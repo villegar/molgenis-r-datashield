@@ -1,4 +1,10 @@
-# DSMolgenisAramdillo
+# DSMolgenisArmadillo
+
+
+
+[![codecov](https://codecov.io/gh/molgenis/molgenis-r-datashield/branch/master/graph/badge.svg)](https://codecov.io/gh/molgenis/molgenis-r-datashield)
+
+
 A DSI implementation for the [Armadillo DataSHIELD Service](https://github.com/molgenis/molgenis-service-datashield).
 **Part of the MOLGENIS suite**
 
