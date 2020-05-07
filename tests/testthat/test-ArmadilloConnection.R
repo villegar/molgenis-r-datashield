@@ -356,8 +356,10 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
 test_that("dsAssignExpr handles error when called synchronously", {
   post <- mock(list(status_code = 500))
   get <- mock(list(status_code = 200))
-  content <- mock(list(status = "FAILED",
-                       message = "Error"))
+  content <- mock(list(
+    status = "FAILED",
+    message = "Error"
+  ))
   error <- expect_error(with_mock(
     "httr::POST" = post,
     "httr::GET" = get,
