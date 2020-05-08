@@ -195,11 +195,6 @@ methods::setMethod(
     )
     .handle_request_error(response)
 
-    # TODO need to return something like this
-    # Check Opal code:
-    # Response.created(getSymbolURI(uri)).entity(id)
-    # .type(MediaType.TEXT_PLAIN_TYPE).build(); as a result
-
     if (async) {
       result <- NULL
     } else {
