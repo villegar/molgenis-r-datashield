@@ -231,9 +231,9 @@ methods::setMethod(
     .handle_request_error(response)
 
     df <- .list_to_data_frame(httr::content(response))
-    .fill_column(df, "type", type)
-    .fill_column(df, "class", "function")
-    .rename_column(df, "function", "value")
+    df <- .fill_column(df, "type", type)
+    df <- .fill_column(df, "class", "function")
+    df <- .rename_column(df, "function", "value")
     df
   }
 )
@@ -285,8 +285,8 @@ methods::setMethod(
     .handle_request_error(response)
 
     df <- .list_to_data_frame(httr::content(response))
-    .fill_column(df, "user", conn@user)
-    .rename_column(df, "lastModified", "lastAccessDate")
+    df <- .fill_column(df, "user", conn@user)
+    df <- .rename_column(df, "lastModified", "lastAccessDate")
     df
   }
 )
