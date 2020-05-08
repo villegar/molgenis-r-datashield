@@ -39,9 +39,7 @@ methods::setMethod(
     if (dsObj@rval$async) {
       result <- httr::GET(
         handle = dsObj@conn@handle,
-        url = dsObj@conn@handle$url,
-        path = "/lastcommand",
-        httr::add_headers("Accept" = "application/json")
+        path = "/lastcommand"
       )
       httr::content(result)
     } else {

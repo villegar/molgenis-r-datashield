@@ -85,7 +85,8 @@ methods::setMethod(
     if (!is.null(restore)) {
       restore_response <- httr::POST(
         handle = handle,
-        path = paste0("/load-workspace?id=", restore)
+        query = list(id = restore),
+        path = "/load-workspace"
       )
       .handle_request_error(restore_response)
     }
