@@ -16,7 +16,7 @@ Authors@R:
              role = c("aut"),
              email = "f.kelpin@umcg.nl"))
 Depends: 
-    R (>= 3.5),
+    R (>= 3.6),
     DSI
 Imports: 
     methods,
