@@ -62,6 +62,7 @@
 #' @keywords internal
 .rename_column <- function(data_frame, name, new_name) {
   colnames(data_frame)[colnames(data_frame) == name] <- new_name
+  data_frame
 }
 
 #' @keywords internal
@@ -69,6 +70,7 @@
   if (length(data_frame) > 0) {
     data_frame[column] <- value
   }
+  data_frame
 }
 
 #' @keywords internal

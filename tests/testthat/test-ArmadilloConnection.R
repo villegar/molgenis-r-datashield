@@ -153,16 +153,15 @@ test_that("dsListMethods returns assign methods", {
 
   expect_args(get, 1, handle = handle, path = "/methods/assign")
 
-  skip("Fix the columns!")
-
   expected <- tibble(
     name = list("foo", "bar"),
     value = list("dsBase::foo", "dsBase::bar"),
     version = list("6.0.0-03", "6.0.0-03"),
     package = list("dsBase", "dsBase"),
-    type = list("assign", "assign"),
-    class = list("function", "function")
+    type = "assign",
+    class = "function"
   )
+
   expect_equivalent(result, expected)
 })
 
@@ -217,7 +216,6 @@ test_that("dsListWorkspaces lists workspaces", {
     dsListWorkspaces(connection)
   )
 
-  skip("Fix the bug!")
   expect_equivalent(result, tibble(
     name = list("hello", "world"),
     size = list(48L, 378L),
@@ -225,8 +223,11 @@ test_that("dsListWorkspaces lists workspaces", {
       "\"ca5d3a000723844e874b93a65c3888a1-1\"",
       "\"1f45d1a6f13adda1d05adf1f3da4c4ca-1\""
     ),
-    lastAccessDate = list("2020-05-06T13:09:00.725Z"),
-    "2020-05-06T13:09:07.617Z"
+    lastAccessDate = list(
+      "2020-05-06T13:09:00.725Z",
+      "2020-05-06T13:09:07.617Z"
+    ),
+    user = "admin"
   ))
 })
 
