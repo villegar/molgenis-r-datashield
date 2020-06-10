@@ -3,14 +3,16 @@ library(dsBaseClient)
 
 dsGetInfo(armadillo())
 
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "armadillo",  
+               url = "http://localhost:8080?workspace=DIABETES/patient",
+               user = "admin", 
+               password = "admin",
+               table = "datashield.PATIENT", 
+               driver = "ArmadilloDriver")
+
 # create loginframe
-server <- c("armadillo")
-url <- c("http://localhost:8080?workspace=DIABETES/patient&workspace=GECKO/customer")
-user <- c("admin")
-password <- c("admin")
-driver <- c("ArmadilloDriver")
-table <- c("datashield.PATIENT")
-logindata <- data.frame(server, url, user, password, table, driver)
+logindata <- builder$build()
 
 ##############
 # Workspaces #
@@ -21,7 +23,7 @@ datashield.assign.table(conns = conns,
                         table = "datashield.PATIENT",
                         symbol = "D",
                         async = FALSE,
-                        variables=c("age", "name"))
+                        variables = c("age", "name"))
 datashield.symbols(conns)
 
 datashield.table_status(conns, "datashield.PATIENT")
