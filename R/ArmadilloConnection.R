@@ -356,7 +356,7 @@ methods::setMethod(
       query = list(async = async),
       path = paste0("/symbols/", symbol),
       body = .deparse(expr),
-      httr::add_headers("Content-Type" = "text/plain")
+      config = httr::add_headers("Content-Type" = "text/plain")
     )
 
     .handle_request_error(response)
@@ -400,7 +400,7 @@ methods::setMethod(
       query = list(async = async),
       path = "/execute",
       body = .deparse(expr),
-      httr::add_headers("Content-Type" = "text/plain")
+      config = httr::add_headers("Content-Type" = "text/plain")
     )
 
     .handle_request_error(response)

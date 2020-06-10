@@ -271,7 +271,7 @@ test_that("dsAssignExpr assigns expression to symbol", {
     query = list(async = TRUE),
     path = "/symbols/D",
     body = "ls()",
-    httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers("Content-Type" = "text/plain")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -287,7 +287,7 @@ test_that("dsAssignExpr deparses function calls in expression", {
     query = list(async = TRUE),
     path = "/symbols/D",
     body = "ls()",
-    httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers("Content-Type" = "text/plain")
   )
 })
 
@@ -306,14 +306,14 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     query = list(async = FALSE),
     path = "/symbols/D",
     body = "ls()",
-    httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers("Content-Type" = "text/plain")
   )
   expect_args(retry, 1,
     verb = "GET",
     handle = handle,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    httr::add_headers("Accept" = "application/octet-stream")
+    config = httr::add_headers("Accept" = "application/octet-stream")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -330,7 +330,7 @@ test_that("dsAggregate executes deparsed query", {
     query = list(async = TRUE),
     path = "/execute",
     body = "ls()",
-    httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers("Content-Type" = "text/plain")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -348,7 +348,7 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     query = list(async = FALSE),
     path = "/execute",
     body = "ls()",
-    httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers("Content-Type" = "text/plain")
   )
   expect_s4_class(result, "ArmadilloResult")
   expect_equal(dsFetch(result), "Hello World!")
