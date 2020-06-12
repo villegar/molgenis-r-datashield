@@ -42,7 +42,7 @@
     handle = conn@handle,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    httr::add_headers("Accept" = "application/octet-stream")
+    config = httr::add_headers("Accept" = "application/octet-stream")
   )
 
   .handle_request_error(response)
