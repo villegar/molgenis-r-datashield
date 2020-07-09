@@ -4,11 +4,12 @@ library(dsBaseClient)
 dsGetInfo(armadillo())
 
 builder <- DSI::newDSLoginBuilder()
-builder$append(server = "armadillo",  
+builder$append(server = "armadillo",
                url = "http://localhost:8080?workspace=DIABETES/patient",
-               user = "admin", 
+               user = "admin",
                password = "admin",
-               table = "datashield.PATIENT", 
+               token = "",
+               table = "datashield.PATIENT",
                driver = "ArmadilloDriver")
 
 # create loginframe
