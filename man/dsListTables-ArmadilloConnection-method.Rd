@@ -13,8 +13,8 @@
 The fully qualified names of the tables.
 }
 \description{
-List Armadillo DataSHIELD Service tables that may be accessible for performing
-DataSHIELD operations.
+List Armadillo DataSHIELD Service tables that may be accessible for
+performing DataSHIELD operations.
 }
 \seealso{
 \code{\link{dsListTables}}

@@ -31,7 +31,7 @@ armadillo <- function() {
 #' R session.
 #' @param username The username to authenticate with.
 #' @param password The password to authenticate with.
-#' @param token Not yet used.
+#' @param token The ID token to authenticate with.
 #' @param url URL of the server.
 #' @param opts Curl options as described by httr (call httr::httr_options()
 #' for details). Can be provided by "Armadillo.opts" option.
@@ -40,11 +40,13 @@ armadillo <- function() {
 #' @return A \code{\link{ArmadilloConnection-class}} object.
 #'
 #' @importMethodsFrom DSI dsConnect
+#' @importFrom base64enc base64encode
+#' @importFrom stringr str_length str_remove_all
 #' @export
 methods::setMethod(
   "dsConnect", "ArmadilloDriver",
-  function(drv, name, restore = NULL, username, password,
-           token = NULL, url, opts = list(), ...) {
+  function(drv, name, restore = NULL, username = "", password = "",
+           token = "", url, opts = list(), ...) {
     # Retrieve login URL and workspace name
     url_parts <- unlist(strsplit(url, "?", fixed = TRUE))
     workspace_parameters <- url_parts[2]
@@ -57,15 +59,30 @@ methods::setMethod(
     )
     workspaces <- strsplit(workspace_values, "&", fixed = TRUE)
 
-    # Login and load the tables of the workspace
-    login_response <- httr::POST(
+    if (stringr::str_length(username) > 0) {
+      if (stringr::str_length(password) == 0) {
+        stop("Please provide a password with the username")
+      }
+      encoded <- base64enc::base64encode(
+        charToRaw(paste0(username, ":", password))
+      )
+      auth_header <-
+        httr::add_headers("Authorization" = paste0("Basic ", encoded))
+    } else {
+      if (stringr::str_length(token) == 0) {
+        stop("Please provide a token or a username / password combination")
+      }
+      auth_header <-
+        httr::add_headers("Authorization" = paste0("Bearer ", token))
+    }
+
+    response <- httr::GET(
       handle = handle,
-      path = "/login",
-      encode = "form",
-      body = list(username = username, password = password)
+      path = "/tables",
+      config = auth_header
     )
-    .handle_request_error(login_response)
-    cookies <- httr::cookies(login_response)
+    .handle_request_error(response)
+    cookies <- httr::cookies(response)
 
     load_table_response <- httr::POST(
       handle = handle,

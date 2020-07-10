@@ -22,7 +22,8 @@ Imports:
     methods,
     httr,
     stringr,
-    utils
+    utils,
+    base64enc
 Suggests:
     knitr,
     mockery,
@@ -32,7 +33,7 @@ Description: DataSHIELD implementation for the Armadillo DataSHIELD service. Par
 License: LGPL (>= 2.1)
 URL: https://github.com/molgenis/molgenis-r-datashield
 BugReports: https://github.com/molgenis/molgenis-r-datashield
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Encoding: UTF-8
 Collate: 

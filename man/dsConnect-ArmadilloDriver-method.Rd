@@ -8,9 +8,9 @@
   drv,
   name,
   restore = NULL,
-  username,
-  password,
-  token = NULL,
+  username = "",
+  password = "",
+  token = "",
   url,
   opts = list(),
   ...
@@ -29,7 +29,7 @@ R session.}
 
 \item{password}{The password to authenticate with.}
 
-\item{token}{Not yet used.}
+\item{token}{The ID token to authenticate with.}
 
 \item{url}{URL of the server.}
 
