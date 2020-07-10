@@ -57,10 +57,12 @@ dsGetInfo(armadillo())
 ## Usage
 There is a default workflow in DataSHIELD to do analysis. There are several steps that you need to take.
 
-- Login
+- Login to the Armadillo
 - Assign data
 - Transform data (if necessary)
-- Performing the analysis
+- Performing analysis
+- Workspaces
+- Methods and packages
 
 All of these components will be addressed.
 
@@ -199,7 +201,7 @@ ds.glm(formula = 'height.1~height.3',
        datasources = conns)
 ```
 
-### Using workspaces
+### Workspaces
 To store the assigned data in the Armadillo service, you can use workspaces to make sure a certain state of the data is maintained on the service.
 
 Saving the workspaces can be done during logout or at runtime.
@@ -259,7 +261,7 @@ datashield.workspace_rm(conns, "my-workspace-overwritten")
 datashield.workspaces(conns)
 ```
 
-### Viewing available methods and packages
+### Methods and packages
 In DataSHIELD you can use a variety of methods and packages. To check which are avaiable you can execute the following code:
 
 #### Available packages (serverside)
