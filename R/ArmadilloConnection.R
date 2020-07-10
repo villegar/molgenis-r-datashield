@@ -184,13 +184,13 @@ methods::setMethod(
   function(conn, symbol, table, variables = NULL, missings = FALSE,
            identifiers = NULL, id.name = NULL, async = TRUE) { # nolint
 
-    query <- list(table = table)
+    query <- list(table = table, symbol = symbol)
     if (!is.null(variables)) {
       query$variables <- paste(unlist(variables), collapse = ",")
     }
     response <- httr::POST(
       handle = conn@handle,
-      path = paste0("/symbols/", symbol),
+      path = "/load-table",
       query = query
     )
     .handle_request_error(response)
