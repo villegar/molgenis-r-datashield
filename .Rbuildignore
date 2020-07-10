@@ -3,3 +3,5 @@
 Jenkinsfile
 test.R
 test.RData
+^doc$
+^Meta$
