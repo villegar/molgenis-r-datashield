@@ -5,9 +5,12 @@
 *.so
 *.o
 *.dll
-*.Rproj
 *.html
+*.Rproj
 figure
 .RData
 inst/doc
 vignettes/*.R
+Meta
+doc
+docs

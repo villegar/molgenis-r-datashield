@@ -86,8 +86,8 @@ test_that("dsAssignTable assigns table to symbol", {
   )
   expect_args(post, 1,
     handle = handle,
-    path = "/symbols/D",
-    query = list(table = "package.NAME")
+    path = "/load-table",
+    query = list(table = "package.NAME", symbol = "D")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -103,9 +103,10 @@ test_that("dsAssignTable allows variable selection", {
   )
   expect_args(post, 1,
     handle = handle,
-    path = "/symbols/D",
+    path = "/load-table",
     query = list(
       table = "package.NAME",
+      symbol = "D",
       variables = "foo,bar"
     )
   )
@@ -124,8 +125,8 @@ test_that("dsAssignTable, when called synchronously, waits for result", {
   )
   expect_args(post, 1,
     handle = handle,
-    path = "/symbols/D",
-    query = list(table = "package.NAME")
+    path = "/load-table",
+    query = list(table = "package.NAME", symbol = "D")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
