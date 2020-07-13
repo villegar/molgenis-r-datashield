@@ -5,3 +5,6 @@ test.R
 test.RData
 ^doc$
 ^Meta$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

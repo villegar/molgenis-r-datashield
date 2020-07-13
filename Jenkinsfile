@@ -19,6 +19,7 @@ pipeline {
                 container('vault') {
                     script {
                         env.GITHUB_TOKEN = sh(script: 'vault read -field=value secret/ops/token/github', returnStdout: true)
+                        env.GITHUB_DEPLOY_PRIVATE_KEY = sh(script: 'vault read -field=value secret/ops/ssh/github', returnStdout: true)
                         env.CODECOV_TOKEN = sh(script: 'vault read -field=molgenis-r-datashield secret/ops/token/codecov', returnStdout: true)
                         env.NEXUS_USER = sh(script: 'vault read -field=username secret/ops/account/nexus', returnStdout: true)
                         env.NEXUS_PASS = sh(script: 'vault read -field=password secret/ops/account/nexus', returnStdout: true)
@@ -32,6 +33,7 @@ pipeline {
                 container('r') {
                     sh "Rscript -e \"git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')\""
                     sh "install2.r --error --repo https://registry.molgenis.org/repository/R DSI"
+                    sh "install2.r --error --repo https://registry.molgenis.org/repository/R pkgdown"
                     sh "install2.r remotes"
                     sh "installGithub.r fdlk/lintr"
                 }
@@ -131,6 +133,7 @@ pipeline {
                 sh "git diff"
                 container('r') {
                     sh "Rscript -e \"usethis::use_version('${RELEASE_SCOPE}')\""
+                    sh "Rscript -e \"pkgdown::build_site()\""
                     script {
                         env.TAG = sh(script: "grep Version DESCRIPTION | head -n1 | cut -d':' -f2", returnStdout: true).trim()
                     }
@@ -143,6 +146,7 @@ pipeline {
                     }
                     sh "git tag v${TAG}"
                     sh "git push --tags origin master"
+                    sh "Rscript -e \"usethis::deploy_site_github(ssh_id = Sys.getenv("GITHUB_DEPLOY_PRIVATE_KEY", ""))\""
                 }
             }
             post {
