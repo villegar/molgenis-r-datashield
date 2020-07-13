@@ -27,10 +27,8 @@ install.packages("DSMolgenisArmadillo")
 Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis.
 
 ```{r}
-# install dsBaseClient dependencies
-install.packages(c("fields", "metafor"), repos="http://cran.us.r-project.org")
 # install the DataSHIELD client
-install.packages("dsBaseClient", repos = "http://cran.datashield.org")
+install.packages("dsBaseClient", repos = c("http://cran.datashield.org", "http://cran.us.r-project.org"), dependencies = TRUE)
 ```
 
 **Experimental versions**
