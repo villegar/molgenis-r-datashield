@@ -19,7 +19,7 @@ pipeline {
                 container('vault') {
                     script {
                         env.GITHUB_TOKEN = sh(script: 'vault read -field=value secret/ops/token/github', returnStdout: true)
-                        env.GITHUB_DEPLOY_PRIVATE_KEY = sh(script: 'vault read -field=value secret/ops/ssh/github', returnStdout: true)
+                        env.GITHUB_DEPLOY_PRIVATE_KEY = sh(script: 'vault read -field=private secret/ops/ssh/github', returnStdout: true)
                         env.CODECOV_TOKEN = sh(script: 'vault read -field=molgenis-r-datashield secret/ops/token/codecov', returnStdout: true)
                         env.NEXUS_USER = sh(script: 'vault read -field=username secret/ops/account/nexus', returnStdout: true)
                         env.NEXUS_PASS = sh(script: 'vault read -field=password secret/ops/account/nexus', returnStdout: true)
