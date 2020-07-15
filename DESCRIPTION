@@ -23,7 +23,8 @@ Imports:
     httr,
     stringr,
     utils,
-    base64enc
+    base64enc,
+    MolgenisAuth
 Suggests:
     knitr,
     mockery,
