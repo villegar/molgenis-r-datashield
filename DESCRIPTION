@@ -24,8 +24,10 @@ Imports:
     httr,
     stringr,
     utils,
-    base64enc
+    base64enc,
+    urltools
 Suggests:
+    dsBaseClient,
     knitr,
     mockery,
     testthat (>= 2.1.0),

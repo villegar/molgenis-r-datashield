@@ -58,21 +58,29 @@ dsGetInfo(armadillo())
 There is a default workflow in DataSHIELD to do analysis. There are several steps that you need to take.
 
 - Get token from the central authentication server
-- Login to the Armadillo
+- Log in to the Armadillo
 - Assign data
 - Transform data (if necessary)
 - Performing analysis
-- Workspaces
+- Work spaces
 - Methods and packages
 
 All of these components will be addressed.
 
 ### Login on DataSHIELD Armadillo
-The login procedure consists of building a login dataframe and performing the login on the Armadillo server. The important part is to specify the driver. This should be `ArmadilloDriver`.
+The login procedure consists of building a login dataframe and performing the login on the Armadillo server. The important part is to specify the driver. This should be `ArmadilloDriver`. 
+
+We support authentication 2 flows. 
+- as normal user (using oauth on the central authentication server)
+- as superuser (using basic authentication, username and password based)
 
 ```{r}
 # specify server url
 armadillo_url <- "https://armadillo.dev.molgenis.org"
+```
+
+```{r, eval = FALSE}
+# method 1: using oauth on the central server
 
 # get token from central authentication server
 token <- datashield.get_token(armadillo_url)
@@ -84,6 +92,19 @@ builder$append(server = "armadillo",
                user = "",
                password = "",
                token = token,
+               table = "datashield.PATIENT",
+               driver = "ArmadilloDriver")
+```
+
+```{r}
+# method 2: using basic authentication
+
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "armadillo",
+               url = paste0(armadillo_url, "?workspace=gecko/patient"),
+               user = "admin",
+               password = "admin",
+               token = "",
                table = "datashield.PATIENT",
                driver = "ArmadilloDriver")
 

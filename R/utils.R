@@ -94,12 +94,26 @@
   }
 }
 
+#' Rename a column
+#' 
+#' @param data_frame data.frame containing the column
+#' @param name old name
+#' @param new_name new name
+#' 
+#' @noRd
 #' @keywords internal
 .rename_column <- function(data_frame, name, new_name) {
   colnames(data_frame)[colnames(data_frame) == name] <- new_name
   data_frame
 }
 
+#' Fill column with a value
+#' 
+#' @param data_frame containing the column
+#' @param column designated column
+#' @param value new value
+#' 
+#' @noRd
 #' @keywords internal
 .fill_column <- function(data_frame, column, value) {
   if (length(data_frame) > 0) {
@@ -108,6 +122,11 @@
   data_frame
 }
 
+#' Deparse expression to check if it's R code/functions
+#' 
+#' @param expr expression to parse
+#' 
+#' @noRd
 #' @keywords internal
 .deparse <- function(expr) {
   expression <- expr
