@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -118,7 +118,7 @@
 <p>You can determine which version of the DSMolgenisArmadillo you are running by executing the following code:</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu">dsGetInfo</span>(<span class="fu"><a href="../reference/armadillo.html">armadillo</a></span>())
 <span class="co">#&gt; $driver.version</span>
-<span class="co">#&gt; [1] '1.1.13'</span></pre></body></html></div>
+<span class="co">#&gt; [1] '1.1.1'</span></pre></body></html></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -140,7 +140,7 @@
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># build the login dataframe</span>
 <span class="no">builder</span> <span class="kw">&lt;-</span> <span class="kw pkg">DSI</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/DSI/man/newDSLoginBuilder.html">newDSLoginBuilder</a></span>()
 <span class="no">builder</span>$<span class="fu"><a href="https://rdrr.io/r/base/append.html">append</a></span>(<span class="kw">server</span> <span class="kw">=</span> <span class="st">"armadillo"</span>,
-               <span class="kw">url</span> <span class="kw">=</span> <span class="st">"https://armadillo.dev.molgenis.org?workspace=GECKO/patient"</span>,
+               <span class="kw">url</span> <span class="kw">=</span> <span class="st">"https://armadillo.dev.molgenis.org?workspace=gecko/patient"</span>,
                <span class="kw">user</span> <span class="kw">=</span> <span class="st">"admin"</span>,
                <span class="kw">password</span> <span class="kw">=</span> <span class="st">"admin"</span>,
                <span class="kw">token</span> <span class="kw">=</span> <span class="st">""</span>,
@@ -154,21 +154,58 @@
 <span class="no">conns</span> <span class="kw">&lt;-</span> <span class="fu">datashield.login</span>(<span class="kw">logins</span> <span class="kw">=</span> <span class="no">logindata</span>, <span class="kw">assign</span> <span class="kw">=</span> <span class="no">F</span>)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Logging into the collaborating servers</span>
-<span class="co">#&gt; Warning: armadillo will be excluded because table datashield.PATIENT is not</span>
-<span class="co">#&gt; accessible</span>
 
 <span class="co"># get connection information regarding the server</span>
 <span class="fu">dsGetInfo</span>(<span class="no">conns</span>$<span class="no">armadillo</span>)
-<span class="co">#&gt; Warning in result$url &lt;- dsObj@handle$url: Coercing LHS to a list</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; [1] "default backend - 404"</span>
+<span class="co">#&gt; $git</span>
+<span class="co">#&gt; $git$branch</span>
+<span class="co">#&gt; [1] "master"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $git$commit</span>
+<span class="co">#&gt; $git$commit$id</span>
+<span class="co">#&gt; [1] "4ca2515"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $git$commit$time</span>
+<span class="co">#&gt; [1] "2020-07-15T11:13:32Z"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $build</span>
+<span class="co">#&gt; $build$java</span>
+<span class="co">#&gt; $build$java$version</span>
+<span class="co">#&gt; [1] "11"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $build$version</span>
+<span class="co">#&gt; [1] "0.0.1-SNAPSHOT"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $build$artifact</span>
+<span class="co">#&gt; [1] "armadillo"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $build$name</span>
+<span class="co">#&gt; [1] "armadillo"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $build$time</span>
+<span class="co">#&gt; [1] "2020-07-15T11:14:30.437Z"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $build$group</span>
+<span class="co">#&gt; [1] "org.molgenis"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $auth</span>
+<span class="co">#&gt; $auth$issuerUri</span>
+<span class="co">#&gt; [1] "https://auth.molgenis.org"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $auth$clientId</span>
+<span class="co">#&gt; [1] "789b9417-ca2b-4707-ab9c-471373d91ba0"</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $url</span>
 <span class="co">#&gt; [1] "https://armadillo.dev.molgenis.org"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $workspaces</span>
 <span class="co">#&gt; $workspaces[[1]]</span>
-<span class="co">#&gt; [1] "GECKO/patient"</span>
+<span class="co">#&gt; [1] "gecko/patient"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $name</span>
@@ -177,24 +214,25 @@
 <span class="co">#&gt; $cookies</span>
 <span class="co">#&gt; $cookies$domain</span>
 <span class="co">#&gt; [1] "#HttpOnly_armadillo.dev.molgenis.org"</span>
+<span class="co">#&gt; [2] "#HttpOnly_armadillo.dev.molgenis.org"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $cookies$flag</span>
-<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; [1] FALSE FALSE</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $cookies$path</span>
-<span class="co">#&gt; [1] "/"</span>
+<span class="co">#&gt; [1] "/" "/"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $cookies$secure</span>
-<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; [1] TRUE TRUE</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $cookies$expiration</span>
-<span class="co">#&gt; [1] NA</span>
+<span class="co">#&gt; [1] NA NA</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $cookies$name</span>
-<span class="co">#&gt; [1] "BIGipServerwebhost_pool_gcc_http"</span>
+<span class="co">#&gt; [1] "JSESSIONID"                       "BIGipServerwebhost_pool_gcc_http"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $cookies$value</span>
-<span class="co">#&gt; [1] "2554374336.20480.0000"</span></pre></body></html></div>
+<span class="co">#&gt; [1] "DC00965FAFDC97A05E542CFE385648F1" "2537597120.20480.0000"</span></pre></body></html></div>
 </div>
 <div id="assign-data" class="section level3">
 <h3 class="hasAnchor">
@@ -207,23 +245,41 @@
                         <span class="kw">variables</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age"</span>, <span class="st">"name"</span>))</pre></body></html></div>
 <p>You can inspect which symbols, or table references, that are created on the server.</p>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu">datashield.symbols</span>(<span class="no">conns</span>)
+<span class="co">#&gt; $armadillo</span>
+<span class="co">#&gt; [1] "D"</span>
 
-<span class="fu">datashield.table_status</span>(<span class="no">conns</span>, <span class="st">"datashield.PATIENT"</span>)</pre></body></html></div>
+<span class="fu">datashield.table_status</span>(<span class="no">conns</span>, <span class="st">"datashield.PATIENT"</span>)
+<span class="co">#&gt;      server              table accessible</span>
+<span class="co">#&gt; 1 armadillo datashield.PATIENT       TRUE</span></pre></body></html></div>
 <div id="symbol-assignment" class="section level4">
 <h4 class="hasAnchor">
 <a href="#symbol-assignment" class="anchor"></a>Symbol assignment</h4>
 <p>For each of the tables assigned in the Aramdillo a symbol is created in each of the servers. You can remove the symbol from the workspace on the server by executing the following code:</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co"># list the current symbols</span>
 <span class="fu">datashield.symbols</span>(<span class="no">conns</span>)
+<span class="co">#&gt; $armadillo</span>
+<span class="co">#&gt; [1] "D"</span>
 <span class="co"># remove the symbol</span>
 <span class="fu">datashield.rm</span>(<span class="kw">conns</span> <span class="kw">=</span> <span class="no">conns</span>, <span class="st">"D"</span>)
 <span class="co"># list the current symbols without the deleted one</span>
-<span class="fu">datashield.symbols</span>(<span class="no">conns</span>)</pre></body></html></div>
+<span class="fu">datashield.symbols</span>(<span class="no">conns</span>)
+<span class="co">#&gt; $armadillo</span>
+<span class="co">#&gt; character(0)</span></pre></body></html></div>
 <p>You can assign values from tables to symbols, but hardcoded values as well.</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co"># assign random data to 'K'</span>
 <span class="fu">datashield.assign.expr</span>(<span class="kw">conns</span> <span class="kw">=</span> <span class="no">conns</span>, <span class="kw">symbol</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="st">"c(10,50,100)"</span>)
 <span class="co"># calculate the mean of 'K' to see that the assignment has worked</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.mean.html">ds.mean</a></span>(<span class="st">"K"</span>, <span class="kw">datasources</span> <span class="kw">=</span> <span class="no">conns</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.mean.html">ds.mean</a></span>(<span class="st">"K"</span>, <span class="kw">datasources</span> <span class="kw">=</span> <span class="no">conns</span>)
+<span class="co">#&gt; $Mean.by.Study</span>
+<span class="co">#&gt;           EstimatedMean Nmissing Nvalid Ntotal</span>
+<span class="co">#&gt; armadillo      53.33333        0      3      3</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $Nstudies</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $ValidityMessage</span>
+<span class="co">#&gt;           ValidityMessage </span>
+<span class="co">#&gt; armadillo "VALID ANALYSIS"</span></pre></body></html></div>
 </div>
 <div id="table-methods" class="section level4">
 <h4 class="hasAnchor">
@@ -236,10 +292,13 @@
 
 <span class="co"># list all tables</span>
 <span class="fu">dsListTables</span>(<span class="no">conns</span>$<span class="no">armadillo</span>)
+<span class="co">#&gt; [1] "datashield.PATIENT"     "datashield.PATIENT_REP"</span>
 
 <span class="co"># check if table exists</span>
 <span class="fu">dsHasTable</span>(<span class="no">conns</span>$<span class="no">armadillo</span>, <span class="st">"datashield.PATIENT"</span>)
-<span class="fu">dsHasTable</span>(<span class="no">conns</span>$<span class="no">armadillo</span>, <span class="st">"datashield.NOTPATIENT"</span>)</pre></body></html></div>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="fu">dsHasTable</span>(<span class="no">conns</span>$<span class="no">armadillo</span>, <span class="st">"datashield.NOTPATIENT"</span>)
+<span class="co">#&gt; [1] FALSE</span></pre></body></html></div>
 </div>
 </div>
 <div id="transforming-data" class="section level3">
@@ -307,10 +366,14 @@
 <span class="no">conns</span> <span class="kw">&lt;-</span> <span class="fu">datashield.login</span>(<span class="kw">logins</span> <span class="kw">=</span> <span class="no">logindata</span>,
                           <span class="kw">assign</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
                           <span class="kw">restore</span> <span class="kw">=</span> <span class="st">"my-workspace"</span>)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Logging into the collaborating servers</span>
 
 <span class="co"># check if the workspace is restored correctly</span>
 <span class="co"># should contain 'J'</span>
 <span class="fu">datashield.symbols</span>(<span class="no">conns</span>)
+<span class="co">#&gt; $armadillo</span>
+<span class="co">#&gt; [1] "D" "J" "K"</span>
 
 <span class="co"># save workspace at runtime</span>
 <span class="fu">datashield.workspace_save</span>(<span class="no">conns</span>, <span class="st">"my-workspace-version-2"</span>)</pre></body></html></div>
@@ -318,6 +381,8 @@
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="co"># make sure we start with an empty workspace</span>
 <span class="fu">datashield.logout</span>(<span class="no">conns</span>)
 <span class="no">conns</span> <span class="kw">&lt;-</span> <span class="fu">datashield.login</span>(<span class="kw">logins</span> <span class="kw">=</span> <span class="no">logindata</span>)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Logging into the collaborating servers</span>
 
 <span class="co"># assign data to make sure something is in the workspace</span>
 <span class="fu">datashield.assign.table</span>(<span class="kw">conns</span> <span class="kw">=</span> <span class="no">conns</span>,
@@ -328,12 +393,29 @@
 <span class="fu">datashield.workspace_save</span>(<span class="no">conns</span>, <span class="st">"my-workspace-overwritten"</span>)</pre></body></html></div>
 <p>You can list the workspaces as well.</p>
 <div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="co"># list all workspaces for this user</span>
-<span class="fu">datashield.workspaces</span>(<span class="no">conns</span>$<span class="no">armadillo</span>)</pre></body></html></div>
+<span class="fu">datashield.workspaces</span>(<span class="no">conns</span>$<span class="no">armadillo</span>)
+<span class="co">#&gt;             lastAccessDate                               ETag</span>
+<span class="co">#&gt; 1 2020-07-15T12:05:30.143Z "981fbe8017bc135feb7255f899802dd6"</span>
+<span class="co">#&gt; 2 2020-07-15T12:05:29.351Z "70d77a33e5d0b6bbcdf8504300d97df8"</span>
+<span class="co">#&gt; 3 2020-07-15T12:05:28.648Z "70d77a33e5d0b6bbcdf8504300d97df8"</span>
+<span class="co">#&gt;                                 name size  user</span>
+<span class="co">#&gt; 1 armadillo:my-workspace-overwritten  353 admin</span>
+<span class="co">#&gt; 2   armadillo:my-workspace-version-2  394 admin</span>
+<span class="co">#&gt; 3             armadillo:my-workspace  394 admin</span></pre></body></html></div>
 <p>Remove workspaces.</p>
 <div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="co"># create a new workspace </span>
 <span class="fu">datashield.workspace_rm</span>(<span class="no">conns</span>, <span class="st">"my-workspace-overwritten"</span>)
 <span class="co"># list the workspaces to make sure the overwritten one is deleted</span>
-<span class="fu">datashield.workspaces</span>(<span class="no">conns</span>)</pre></body></html></div>
+<span class="fu">datashield.workspaces</span>(<span class="no">conns</span>)
+<span class="co">#&gt;      server name..armadillo.my.workspace.version.2.</span>
+<span class="co">#&gt; 1 armadillo        armadillo:my-workspace-version-2</span>
+<span class="co">#&gt; 2 armadillo        armadillo:my-workspace-version-2</span>
+<span class="co">#&gt;   name..armadillo.my.workspace.  user lastAccessDate..2020.07.15T12.05.29.351Z.</span>
+<span class="co">#&gt; 1        armadillo:my-workspace admin                  2020-07-15T12:05:29.351Z</span>
+<span class="co">#&gt; 2        armadillo:my-workspace admin                  2020-07-15T12:05:29.351Z</span>
+<span class="co">#&gt;   lastAccessDate..2020.07.15T12.05.28.648Z. size.394L size.394L.1</span>
+<span class="co">#&gt; 1                  2020-07-15T12:05:28.648Z       394         394</span>
+<span class="co">#&gt; 2                  2020-07-15T12:05:28.648Z       394         394</span></pre></body></html></div>
 </div>
 <div id="methods-and-packages" class="section level3">
 <h3 class="hasAnchor">
@@ -345,7 +427,54 @@
 <p>The available packages displayed by the method, are the serverside R-packages. Which means the packages available on the Armadillo.</p>
 <div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="co"># check packages</span>
 <span class="no">conns</span> <span class="kw">&lt;-</span> <span class="fu">datashield.login</span>(<span class="kw">logins</span> <span class="kw">=</span> <span class="no">logindata</span>, <span class="kw">assign</span> <span class="kw">=</span> <span class="no">F</span>)
-<span class="fu">dsListPackages</span>(<span class="no">conns</span>$<span class="no">armadillo</span>)</pre></body></html></div>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Logging into the collaborating servers</span>
+<span class="fu">dsListPackages</span>(<span class="no">conns</span>$<span class="no">armadillo</span>)
+<span class="co">#&gt;          name   version</span>
+<span class="co">#&gt; 1      docopt     0.6.1</span>
+<span class="co">#&gt; 2      dsBase     6.0.0</span>
+<span class="co">#&gt; 3        glue     1.4.1</span>
+<span class="co">#&gt; 4     littler     0.3.9</span>
+<span class="co">#&gt; 5        lme4    1.1-23</span>
+<span class="co">#&gt; 6    magrittr       1.5</span>
+<span class="co">#&gt; 7       minqa     1.2.4</span>
+<span class="co">#&gt; 8      nloptr   1.2.2.1</span>
+<span class="co">#&gt; 9        RANN     2.6.1</span>
+<span class="co">#&gt; 10       Rcpp   1.0.4.6</span>
+<span class="co">#&gt; 11  RcppEigen 0.3.3.7.0</span>
+<span class="co">#&gt; 12     Rserve     1.8-6</span>
+<span class="co">#&gt; 13    statmod    1.4.34</span>
+<span class="co">#&gt; 14    stringi     1.4.6</span>
+<span class="co">#&gt; 15    stringr     1.4.0</span>
+<span class="co">#&gt; 16       base     3.6.3</span>
+<span class="co">#&gt; 17       boot    1.3-24</span>
+<span class="co">#&gt; 18      class    7.3-15</span>
+<span class="co">#&gt; 19    cluster     2.1.0</span>
+<span class="co">#&gt; 20  codetools    0.2-16</span>
+<span class="co">#&gt; 21   compiler     3.6.3</span>
+<span class="co">#&gt; 22   datasets     3.6.3</span>
+<span class="co">#&gt; 23    foreign    0.8-75</span>
+<span class="co">#&gt; 24   graphics     3.6.3</span>
+<span class="co">#&gt; 25  grDevices     3.6.3</span>
+<span class="co">#&gt; 26       grid     3.6.3</span>
+<span class="co">#&gt; 27 KernSmooth   2.23-16</span>
+<span class="co">#&gt; 28    lattice   0.20-38</span>
+<span class="co">#&gt; 29       MASS  7.3-51.5</span>
+<span class="co">#&gt; 30     Matrix    1.2-18</span>
+<span class="co">#&gt; 31    methods     3.6.3</span>
+<span class="co">#&gt; 32       mgcv    1.8-31</span>
+<span class="co">#&gt; 33       nlme   3.1-144</span>
+<span class="co">#&gt; 34       nnet    7.3-12</span>
+<span class="co">#&gt; 35   parallel     3.6.3</span>
+<span class="co">#&gt; 36      rpart    4.1-15</span>
+<span class="co">#&gt; 37    spatial    7.3-11</span>
+<span class="co">#&gt; 38    splines     3.6.3</span>
+<span class="co">#&gt; 39      stats     3.6.3</span>
+<span class="co">#&gt; 40     stats4     3.6.3</span>
+<span class="co">#&gt; 41   survival     3.1-8</span>
+<span class="co">#&gt; 42      tcltk     3.6.3</span>
+<span class="co">#&gt; 43      tools     3.6.3</span>
+<span class="co">#&gt; 44      utils     3.6.3</span></pre></body></html></div>
 </div>
 <div id="available-methods-clientside" class="section level4">
 <h4 class="hasAnchor">
@@ -353,7 +482,247 @@
 <p>These are the available methods on the Armadillo server.</p>
 <div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="co"># check methods</span>
 <span class="fu">datashield.methods</span>(<span class="kw">conns</span> <span class="kw">=</span> <span class="no">conns</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"aggregate"</span>)
-<span class="fu">datashield.methods</span>(<span class="kw">conns</span> <span class="kw">=</span> <span class="no">conns</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"assign"</span>)</pre></body></html></div>
+<span class="co">#&gt;                        name                            value version package</span>
+<span class="co">#&gt; 1              is.character               base::is.character    NULL    base</span>
+<span class="co">#&gt; 2        dataFrameSubsetDS1       dsBase::dataFrameSubsetDS1   6.0.0  dsBase</span>
+<span class="co">#&gt; 3                meanSdGpDS               dsBase::meanSdGpDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 4             scatterPlotDS            dsBase::scatterPlotDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 5                 setSeedDS                dsBase::setSeedDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 6              matrixDetDS1             dsBase::matrixDetDS1   6.0.0  dsBase</span>
+<span class="co">#&gt; 7                   numNaDS                  dsBase::numNaDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 8                  asListDS                 dsBase::asListDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 9                is.numeric                 base::is.numeric    NULL    base</span>
+<span class="co">#&gt; 10                   t.test                    stats::t.test    NULL   stats</span>
+<span class="co">#&gt; 11                  is.list                    base::is.list    NULL    base</span>
+<span class="co">#&gt; 12                 lengthDS                 dsBase::lengthDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 13            heatmapPlotDS            dsBase::heatmapPlotDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 14                    dimDS                    dsBase::dimDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 15                  is.null                    base::is.null    NULL    base</span>
+<span class="co">#&gt; 16                   meanDS                   dsBase::meanDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 17                  tableDS                  dsBase::tableDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 18                is.factor                  base::is.factor    NULL    base</span>
+<span class="co">#&gt; 19                    corDS                    dsBase::corDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 20          testObjExistsDS          dsBase::testObjExistsDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 21                isValidDS                dsBase::isValidDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 22                table1DDS                dsBase::table1DDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 23              asFactorDS1              dsBase::asFactorDS1   6.0.0  dsBase</span>
+<span class="co">#&gt; 24                   glmDS2                   dsBase::glmDS2   6.0.0  dsBase</span>
+<span class="co">#&gt; 25                   glmDS1                   dsBase::glmDS1   6.0.0  dsBase</span>
+<span class="co">#&gt; 26                    covDS                    dsBase::covDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 27              lmerSLMADS2              dsBase::lmerSLMADS2   6.0.0  dsBase</span>
+<span class="co">#&gt; 28                     rmDS                     dsBase::rmDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 29                   exists                     base::exists    NULL    base</span>
+<span class="co">#&gt; 30                  rangeDS                  dsBase::rangeDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 31                table2DDS                dsBase::table2DDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 32                     NROW                       base::NROW    NULL    base</span>
+<span class="co">#&gt; 33              scoreVectDS              dsBase::scoreVectDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 34                 tapplyDS                 dsBase::tapplyDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 35                 levelsDS                 dsBase::levelsDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 36            densityGridDS            dsBase::densityGridDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 37                 lexisDS1                 dsBase::lexisDS1   6.0.0  dsBase</span>
+<span class="co">#&gt; 38             histogramDS1             dsBase::histogramDS1   6.0.0  dsBase</span>
+<span class="co">#&gt; 39             histogramDS2             dsBase::histogramDS2   6.0.0  dsBase</span>
+<span class="co">#&gt; 40                 tableDS2                 dsBase::tableDS2   6.0.0  dsBase</span>
+<span class="co">#&gt; 41          checkNegValueDS          dsBase::checkNegValueDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 42           quantileMeanDS           dsBase::quantileMeanDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 43                tTestFDS2                dsBase::tTestFDS2   6.0.0  dsBase</span>
+<span class="co">#&gt; 44                    varDS                    dsBase::varDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 45               alphaPhiDS               dsBase::alphaPhiDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 46               colnamesDS               dsBase::colnamesDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 47                     lsDS                     dsBase::lsDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 48                  classDS                  dsBase::classDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 49                   isNaDS                   dsBase::isNaDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 50 listDisclosureSettingsDS dsBase::listDisclosureSettingsDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 51             glmerSLMADS2             dsBase::glmerSLMADS2   6.0.0  dsBase</span>
+<span class="co">#&gt; 52               glmSLMADS1               dsBase::glmSLMADS1   6.0.0  dsBase</span>
+<span class="co">#&gt; 53               glmSLMADS2               dsBase::glmSLMADS2   6.0.0  dsBase</span>
+<span class="co">#&gt; 54          recodeValuesDS1          dsBase::recodeValuesDS1   6.0.0  dsBase</span>
+<span class="co">#&gt; 55                  namesDS                  dsBase::namesDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 56                corTestDS                dsBase::corTestDS   6.0.0  dsBase</span>
+<span class="co">#&gt; 57                messageDS                dsBase::messageDS   6.0.0  dsBase</span>
+<span class="co">#&gt;         type    class    server</span>
+<span class="co">#&gt; 1  aggregate function armadillo</span>
+<span class="co">#&gt; 2  aggregate function armadillo</span>
+<span class="co">#&gt; 3  aggregate function armadillo</span>
+<span class="co">#&gt; 4  aggregate function armadillo</span>
+<span class="co">#&gt; 5  aggregate function armadillo</span>
+<span class="co">#&gt; 6  aggregate function armadillo</span>
+<span class="co">#&gt; 7  aggregate function armadillo</span>
+<span class="co">#&gt; 8  aggregate function armadillo</span>
+<span class="co">#&gt; 9  aggregate function armadillo</span>
+<span class="co">#&gt; 10 aggregate function armadillo</span>
+<span class="co">#&gt; 11 aggregate function armadillo</span>
+<span class="co">#&gt; 12 aggregate function armadillo</span>
+<span class="co">#&gt; 13 aggregate function armadillo</span>
+<span class="co">#&gt; 14 aggregate function armadillo</span>
+<span class="co">#&gt; 15 aggregate function armadillo</span>
+<span class="co">#&gt; 16 aggregate function armadillo</span>
+<span class="co">#&gt; 17 aggregate function armadillo</span>
+<span class="co">#&gt; 18 aggregate function armadillo</span>
+<span class="co">#&gt; 19 aggregate function armadillo</span>
+<span class="co">#&gt; 20 aggregate function armadillo</span>
+<span class="co">#&gt; 21 aggregate function armadillo</span>
+<span class="co">#&gt; 22 aggregate function armadillo</span>
+<span class="co">#&gt; 23 aggregate function armadillo</span>
+<span class="co">#&gt; 24 aggregate function armadillo</span>
+<span class="co">#&gt; 25 aggregate function armadillo</span>
+<span class="co">#&gt; 26 aggregate function armadillo</span>
+<span class="co">#&gt; 27 aggregate function armadillo</span>
+<span class="co">#&gt; 28 aggregate function armadillo</span>
+<span class="co">#&gt; 29 aggregate function armadillo</span>
+<span class="co">#&gt; 30 aggregate function armadillo</span>
+<span class="co">#&gt; 31 aggregate function armadillo</span>
+<span class="co">#&gt; 32 aggregate function armadillo</span>
+<span class="co">#&gt; 33 aggregate function armadillo</span>
+<span class="co">#&gt; 34 aggregate function armadillo</span>
+<span class="co">#&gt; 35 aggregate function armadillo</span>
+<span class="co">#&gt; 36 aggregate function armadillo</span>
+<span class="co">#&gt; 37 aggregate function armadillo</span>
+<span class="co">#&gt; 38 aggregate function armadillo</span>
+<span class="co">#&gt; 39 aggregate function armadillo</span>
+<span class="co">#&gt; 40 aggregate function armadillo</span>
+<span class="co">#&gt; 41 aggregate function armadillo</span>
+<span class="co">#&gt; 42 aggregate function armadillo</span>
+<span class="co">#&gt; 43 aggregate function armadillo</span>
+<span class="co">#&gt; 44 aggregate function armadillo</span>
+<span class="co">#&gt; 45 aggregate function armadillo</span>
+<span class="co">#&gt; 46 aggregate function armadillo</span>
+<span class="co">#&gt; 47 aggregate function armadillo</span>
+<span class="co">#&gt; 48 aggregate function armadillo</span>
+<span class="co">#&gt; 49 aggregate function armadillo</span>
+<span class="co">#&gt; 50 aggregate function armadillo</span>
+<span class="co">#&gt; 51 aggregate function armadillo</span>
+<span class="co">#&gt; 52 aggregate function armadillo</span>
+<span class="co">#&gt; 53 aggregate function armadillo</span>
+<span class="co">#&gt; 54 aggregate function armadillo</span>
+<span class="co">#&gt; 55 aggregate function armadillo</span>
+<span class="co">#&gt; 56 aggregate function armadillo</span>
+<span class="co">#&gt; 57 aggregate function armadillo</span>
+<span class="fu">datashield.methods</span>(<span class="kw">conns</span> <span class="kw">=</span> <span class="no">conns</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"assign"</span>)
+<span class="co">#&gt;                  name                      value version package   type</span>
+<span class="co">#&gt; 1    changeRefGroupDS   dsBase::changeRefGroupDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 2  dataFrameSubsetDS2 dsBase::dataFrameSubsetDS2   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 3        matrixDiagDS       dsBase::matrixDiagDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 4         asNumericDS        dsBase::asNumericDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 5          asMatrixDS         dsBase::asMatrixDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 6        matrixDetDS2       dsBase::matrixDetDS2   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 7   matrixTransposeDS  dsBase::matrixTransposeDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 8             mergeDS            dsBase::mergeDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 9             cbindDS            dsBase::cbindDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 10           asListDS           dsBase::asListDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 11                log                  base::log    NULL    base assign</span>
+<span class="co">#&gt; 12           matrixDS           dsBase::matrixDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 13         asFactorDS         dsBase::asFactorDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 14     tableDS.assign     dsBase::tableDS.assign   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 15              repDS              dsBase::repDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 16            rPoisDS            dsBase::rPoisDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 17           unListDS           dsBase::unListDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 18     matrixInvertDS     dsBase::matrixInvertDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 19    tapplyDS.assign    dsBase::tapplyDS.assign   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 20              seqDS              dsBase::seqDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 21    dataFrameFillDS    dsBase::dataFrameFillDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 22           subsetDS           dsBase::subsetDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 23            rNormDS            dsBase::rNormDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 24     recodeLevelsDS     dsBase::recodeLevelsDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 25    dataFrameSortDS    dsBase::dataFrameSortDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 26           rBinomDS           dsBase::rBinomDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 27                cDS                dsBase::cDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 28        dataFrameDS        dsBase::dataFrameDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 29        asFactorDS2        dsBase::asFactorDS2   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 30    completeCasesDS    dsBase::completeCasesDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 31       matrixMultDS       dsBase::matrixMultDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 32             seedDS             dsBase::seedDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 33    subsetByClassDS    dsBase::subsetByClassDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 34              cbind                base::cbind    NULL    base assign</span>
+<span class="co">#&gt; 35             unlist               base::unlist    NULL    base assign</span>
+<span class="co">#&gt; 36            rbindDS            dsBase::rbindDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 37          reShapeDS          dsBase::reShapeDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 38            rUnifDS            dsBase::rUnifDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 39         as.numeric           base::as.numeric    NULL    base assign</span>
+<span class="co">#&gt; 40               list                 base::list    NULL    base assign</span>
+<span class="co">#&gt; 41        asIntegerDS        dsBase::asIntegerDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 42           lexisDS2           dsBase::lexisDS2   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 43            as.null              base::as.null    NULL    base assign</span>
+<span class="co">#&gt; 44                sum                  base::sum    NULL    base assign</span>
+<span class="co">#&gt; 45           lexisDS3           dsBase::lexisDS3   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 46        asLogicalDS        dsBase::asLogicalDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 47   matrixDimnamesDS   dsBase::matrixDimnamesDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 48     complete.cases      stats::complete.cases    NULL   stats assign</span>
+<span class="co">#&gt; 49             listDS             dsBase::listDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 50             attach               base::attach    NULL    base assign</span>
+<span class="co">#&gt; 51      asCharacterDS      dsBase::asCharacterDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 52                exp                  base::exp    NULL    base assign</span>
+<span class="co">#&gt; 53    recodeValuesDS2    dsBase::recodeValuesDS2   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 54                  c                    base::c    NULL    base assign</span>
+<span class="co">#&gt; 55        replaceNaDS        dsBase::replaceNaDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 56       rowColCalcDS       dsBase::rowColCalcDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 57           sampleDS           dsBase::sampleDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 58       as.character         base::as.character    NULL    base assign</span>
+<span class="co">#&gt; 59                rep                  base::rep    NULL    base assign</span>
+<span class="co">#&gt; 60            BooleDS            dsBase::BooleDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt; 61     asDataMatrixDS     dsBase::asDataMatrixDS   6.0.0  dsBase assign</span>
+<span class="co">#&gt;       class    server</span>
+<span class="co">#&gt; 1  function armadillo</span>
+<span class="co">#&gt; 2  function armadillo</span>
+<span class="co">#&gt; 3  function armadillo</span>
+<span class="co">#&gt; 4  function armadillo</span>
+<span class="co">#&gt; 5  function armadillo</span>
+<span class="co">#&gt; 6  function armadillo</span>
+<span class="co">#&gt; 7  function armadillo</span>
+<span class="co">#&gt; 8  function armadillo</span>
+<span class="co">#&gt; 9  function armadillo</span>
+<span class="co">#&gt; 10 function armadillo</span>
+<span class="co">#&gt; 11 function armadillo</span>
+<span class="co">#&gt; 12 function armadillo</span>
+<span class="co">#&gt; 13 function armadillo</span>
+<span class="co">#&gt; 14 function armadillo</span>
+<span class="co">#&gt; 15 function armadillo</span>
+<span class="co">#&gt; 16 function armadillo</span>
+<span class="co">#&gt; 17 function armadillo</span>
+<span class="co">#&gt; 18 function armadillo</span>
+<span class="co">#&gt; 19 function armadillo</span>
+<span class="co">#&gt; 20 function armadillo</span>
+<span class="co">#&gt; 21 function armadillo</span>
+<span class="co">#&gt; 22 function armadillo</span>
+<span class="co">#&gt; 23 function armadillo</span>
+<span class="co">#&gt; 24 function armadillo</span>
+<span class="co">#&gt; 25 function armadillo</span>
+<span class="co">#&gt; 26 function armadillo</span>
+<span class="co">#&gt; 27 function armadillo</span>
+<span class="co">#&gt; 28 function armadillo</span>
+<span class="co">#&gt; 29 function armadillo</span>
+<span class="co">#&gt; 30 function armadillo</span>
+<span class="co">#&gt; 31 function armadillo</span>
+<span class="co">#&gt; 32 function armadillo</span>
+<span class="co">#&gt; 33 function armadillo</span>
+<span class="co">#&gt; 34 function armadillo</span>
+<span class="co">#&gt; 35 function armadillo</span>
+<span class="co">#&gt; 36 function armadillo</span>
+<span class="co">#&gt; 37 function armadillo</span>
+<span class="co">#&gt; 38 function armadillo</span>
+<span class="co">#&gt; 39 function armadillo</span>
+<span class="co">#&gt; 40 function armadillo</span>
+<span class="co">#&gt; 41 function armadillo</span>
+<span class="co">#&gt; 42 function armadillo</span>
+<span class="co">#&gt; 43 function armadillo</span>
+<span class="co">#&gt; 44 function armadillo</span>
+<span class="co">#&gt; 45 function armadillo</span>
+<span class="co">#&gt; 46 function armadillo</span>
+<span class="co">#&gt; 47 function armadillo</span>
+<span class="co">#&gt; 48 function armadillo</span>
+<span class="co">#&gt; 49 function armadillo</span>
+<span class="co">#&gt; 50 function armadillo</span>
+<span class="co">#&gt; 51 function armadillo</span>
+<span class="co">#&gt; 52 function armadillo</span>
+<span class="co">#&gt; 53 function armadillo</span>
+<span class="co">#&gt; 54 function armadillo</span>
+<span class="co">#&gt; 55 function armadillo</span>
+<span class="co">#&gt; 56 function armadillo</span>
+<span class="co">#&gt; 57 function armadillo</span>
+<span class="co">#&gt; 58 function armadillo</span>
+<span class="co">#&gt; 59 function armadillo</span>
+<span class="co">#&gt; 60 function armadillo</span>
+<span class="co">#&gt; 61 function armadillo</span></pre></body></html></div>
 </div>
 </div>
 </div>
