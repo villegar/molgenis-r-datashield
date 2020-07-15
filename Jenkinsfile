@@ -34,6 +34,9 @@ pipeline {
                     sh "Rscript -e \"git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')\""
                     sh "install2.r --error --repos https://registry.molgenis.org/repository/R MolgenisAuth"
                     sh "install2.r --error --repos https://cloud.r-project.org remotes DSI pkgdown"
+                    // package deps for dsBaseClient
+                    sh "install2.r --error --repos https://cloud.r-project.org fields metafor DSI"
+                    sh "install2.r --error --repos https://cran.datashield.org dsBaseClient"
                     sh "installGithub.r fdlk/lintr"
                     sh "mkdir -m 700 -p /root/.ssh"
                     sh "ssh-keyscan -H -t rsa github.com  > ~/.ssh/known_hosts"
