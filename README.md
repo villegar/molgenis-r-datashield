@@ -10,11 +10,11 @@ A DSI implementation for the [Armadillo DataSHIELD Service](https://github.com/m
 ## Usage
 We have constructed a sample program to get your first login, data assigend and calculation of mean.
 
-```
+```{r}
 # create loginframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
-               url = "http://aramdillo.dev.molgenis.org?workspace=DIABETES/patient",
+               url = "http://aramdillo.dev.molgenis.org?workspace=gecko/patient",
                user = "admin",
                password = "admin",
                token = "",
