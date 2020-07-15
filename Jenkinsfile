@@ -32,7 +32,7 @@ pipeline {
                 sh "git fetch --tags"
                 container('r') {
                     sh "Rscript -e \"git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')\""
-                    sh "install2.r --error --repos https://registry.molgens.org/repository/R MolgenisAuth"
+                    sh "install2.r --error --repos https://registry.molgenis.org/repository/R MolgenisAuth"
                     sh "install2.r --error --repos https://cloud.r-project.org remotes DSI pkgdown"
                     sh "installGithub.r fdlk/lintr"
                     sh "mkdir -m 700 -p /root/.ssh"
