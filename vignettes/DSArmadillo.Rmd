@@ -73,7 +73,7 @@ The login procedure consists of building a login dataframe and performing the lo
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
-               url = "https://armadillo.dev.molgenis.org?workspace=GECKO/patient",
+               url = "https://armadillo.dev.molgenis.org?workspace=gecko/patient",
                user = "admin",
                password = "admin",
                token = "",
