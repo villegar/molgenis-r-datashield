@@ -17,14 +17,14 @@ Authors@R:
              email = "f.kelpin@umcg.nl"))
 Depends: 
     R (>= 3.6),
-    DSI
+    DSI,
+    MolgenisAuth
 Imports: 
     methods,
     httr,
     stringr,
     utils,
-    base64enc,
-    MolgenisAuth
+    base64enc
 Suggests:
     knitr,
     mockery,
@@ -41,5 +41,6 @@ Encoding: UTF-8
 Collate: 
     'ArmadilloDriver.R'
     'ArmadilloConnection.R'
+    'ArmadilloOAuth.R'
     'ArmadilloResult.R'
     'utils.R'

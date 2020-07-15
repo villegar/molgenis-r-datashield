@@ -1,3 +1,14 @@
+#' Handle last command errors
+#' 
+#' When the last command endpoint fails, handle errors
+#' 
+#' @param handle HTTR handle
+#' 
+#' @importFrom httr GET content
+#' 
+#' @return error message only
+#' 
+#' @noRd
 #' @keywords internal
 .handle_last_command_error <- function(handle) {
   command <- httr::GET(handle = handle, path = "/lastcommand")
@@ -8,6 +19,13 @@
   }
 }
 
+#' Handle generic request errrors
+#' 
+#' @param response HTTR response
+#' 
+#' @importFrom httr content
+#' 
+#' @noRd
 #' @keywords internal
 .handle_request_error <- function(response) {
   if (response$status_code == 400) {
@@ -21,6 +39,11 @@
   }
 }
 
+#' Unlist character list
+#' 
+#' @param character_list
+#' 
+#' @noRd
 #' @keywords internal
 .unlist_character_list <- function(character_list) {
   if (length(character_list) == 0) {
@@ -30,11 +53,23 @@
   }
 }
 
+#' Convert list to data.frame
+#' 
+#' @param list list object in R
+#' 
+#' @noRd
 #' @keywords internal
 .list_to_data_frame <- function(list) {
   as.data.frame(do.call(rbind, list))
 }
 
+#' Retry request after timeout
+#' 
+#' @param conn HTTR connection
+#' 
+#' @importFrom httr content add_headers
+#' 
+#' @noRd
 #' @keywords internal
 .retry_until_last_result <- function(conn) {
   response <- httr::RETRY(

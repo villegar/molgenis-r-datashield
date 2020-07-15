@@ -1,5 +1,5 @@
 ---
-title: "DataSHIELD Aramdillo"
+title: "Use the Armadillo"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using Armadillo to perform analysis with DataSHIELD}
@@ -26,7 +26,7 @@ install.packages("DSMolgenisArmadillo")
 
 Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis.
 
-```{r}
+```{r, setup}
 # install the DataSHIELD client
 install.packages("dsBaseClient", repos = c("http://cran.datashield.org", "http://cran.us.r-project.org"), dependencies = TRUE)
 ```
@@ -57,6 +57,7 @@ dsGetInfo(armadillo())
 ## Usage
 There is a default workflow in DataSHIELD to do analysis. There are several steps that you need to take.
 
+- Get token from the central authentication server
 - Login to the Armadillo
 - Assign data
 - Transform data (if necessary)
@@ -70,13 +71,19 @@ All of these components will be addressed.
 The login procedure consists of building a login dataframe and performing the login on the Armadillo server. The important part is to specify the driver. This should be `ArmadilloDriver`.
 
 ```{r}
+# specify server url
+armadillo_url <- "https://armadillo.dev.molgenis.org"
+
+# get token from central authentication server
+token <- datashield.get_token(armadillo_url)
+
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
-               url = "https://armadillo.dev.molgenis.org?workspace=gecko/patient",
-               user = "admin",
-               password = "admin",
-               token = "",
+               url = paste0(armadillo_url, "?workspace=gecko/patient"),
+               user = "",
+               password = "",
+               token = token,
                table = "datashield.PATIENT",
                driver = "ArmadilloDriver")
 
