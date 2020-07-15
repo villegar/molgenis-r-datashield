@@ -50,9 +50,9 @@ test_that("dsConnect can log in with bearer token", {
   httr_handle <- mock(handle)
   with_mock(
     result <- dsConnect(driver,
-                        url = "https://example.org?workspace=GECKO/customer",
-                        token = "abcde",
-                        name = "test"
+      url = "https://example.org?workspace=GECKO/customer",
+      token = "abcde",
+      name = "test"
     ),
     "httr::GET" = httr_get,
     "httr::POST" = httr_post,
@@ -66,9 +66,9 @@ test_that("dsConnect can log in with bearer token", {
 
   expect_args(httr_handle, 1, url = "https://example.org")
   expect_args(httr_get, 1,
-              handle = handle,
-              path = "/tables",
-              config = httr::add_headers("Authorization" = "Bearer abcde")
+    handle = handle,
+    path = "/tables",
+    config = httr::add_headers("Authorization" = "Bearer abcde")
   )
 })
 

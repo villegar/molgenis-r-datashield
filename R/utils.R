@@ -1,13 +1,13 @@
 #' Handle last command errors
-#' 
+#'
 #' When the last command endpoint fails, handle errors
-#' 
+#'
 #' @param handle HTTR handle
-#' 
+#'
 #' @importFrom httr GET content
-#' 
+#'
 #' @return error message only
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .handle_last_command_error <- function(handle) {
@@ -20,11 +20,11 @@
 }
 
 #' Handle generic request errrors
-#' 
+#'
 #' @param response HTTR response
-#' 
+#'
 #' @importFrom httr content
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .handle_request_error <- function(response) {
@@ -40,9 +40,9 @@
 }
 
 #' Unlist character list
-#' 
+#'
 #' @param character_list
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .unlist_character_list <- function(character_list) {
@@ -54,9 +54,9 @@
 }
 
 #' Convert list to data.frame
-#' 
+#'
 #' @param list list object in R
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .list_to_data_frame <- function(list) {
@@ -64,11 +64,11 @@
 }
 
 #' Retry request after timeout
-#' 
+#'
 #' @param conn HTTR connection
-#' 
+#'
 #' @importFrom httr content add_headers
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .retry_until_last_result <- function(conn) {
@@ -95,11 +95,11 @@
 }
 
 #' Rename a column
-#' 
+#'
 #' @param data_frame data.frame containing the column
 #' @param name old name
 #' @param new_name new name
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .rename_column <- function(data_frame, name, new_name) {
@@ -108,11 +108,11 @@
 }
 
 #' Fill column with a value
-#' 
+#'
 #' @param data_frame containing the column
 #' @param column designated column
 #' @param value new value
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .fill_column <- function(data_frame, column, value) {
@@ -123,9 +123,9 @@
 }
 
 #' Deparse expression to check if it's R code/functions
-#' 
+#'
 #' @param expr expression to parse
-#' 
+#'
 #' @noRd
 #' @keywords internal
 .deparse <- function(expr) {

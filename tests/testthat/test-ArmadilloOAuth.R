@@ -3,7 +3,7 @@ test_that("get_token test if the token information is retrieved correctly", {
   discover <- mock()
   get <- mock(structure(list(status_code = 200), class = "response"))
   credentials <- mock(list(id_token = "abcd-abcd"))
-  
+
   with_mock(
     "httr::GET" = get,
     "httr::content" = content,

@@ -19,17 +19,17 @@ datashield.get_token <- function(server) {
   return(credentials$id_token)
 }
 
-#' Get oauth server discovery information 
-#' 
-#' Specifically this method returns the 
+#' Get oauth server discovery information
+#'
+#' Specifically this method returns the
 #' - issuer URL
 #' - clientId
-#' 
+#'
 #' @param armadillo_server url of the Armadillo server
-#' 
+#'
 #' @importFrom httr GET stop_for_status content
 #' @importFrom urltools path
-#' 
+#'
 #' @return a dataframe with issuerUrl and clientId
 #'
 #' @noRd
