@@ -9,7 +9,7 @@
 #' @importFrom MolgenisAuth discover device_flow_auth
 #'
 #' @export
-datashield.get.token <- function(server) {
+datashield.get.token <- function(server) { #nolint
   auth_info <- .get_oauth_info(server)$auth
   endpoint <- MolgenisAuth::discover(auth_info$issuerUri)
   credentials <- MolgenisAuth::device_flow_auth(
