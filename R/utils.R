@@ -9,7 +9,6 @@
 #' @return error message only
 #'
 #' @noRd
-#' @keywords internal
 .handle_last_command_error <- function(handle) {
   command <- httr::GET(handle = handle, path = "/lastcommand")
 
@@ -26,7 +25,6 @@
 #' @importFrom httr content
 #'
 #' @noRd
-#' @keywords internal
 .handle_request_error <- function(response) {
   if (response$status_code == 400) {
     json_content <- httr::content(response)
@@ -44,7 +42,6 @@
 #' @param character_list
 #'
 #' @noRd
-#' @keywords internal
 .unlist_character_list <- function(character_list) {
   if (length(character_list) == 0) {
     character()
@@ -58,7 +55,6 @@
 #' @param list list object in R
 #'
 #' @noRd
-#' @keywords internal
 .list_to_data_frame <- function(list) {
   as.data.frame(do.call(rbind, list))
 }
@@ -70,7 +66,6 @@
 #' @importFrom httr content add_headers
 #'
 #' @noRd
-#' @keywords internal
 .retry_until_last_result <- function(conn) {
   response <- httr::RETRY(
     verb = "GET",
@@ -101,7 +96,6 @@
 #' @param new_name new name
 #'
 #' @noRd
-#' @keywords internal
 .rename_column <- function(data_frame, name, new_name) {
   colnames(data_frame)[colnames(data_frame) == name] <- new_name
   data_frame
@@ -114,7 +108,6 @@
 #' @param value new value
 #'
 #' @noRd
-#' @keywords internal
 .fill_column <- function(data_frame, column, value) {
   if (length(data_frame) > 0) {
     data_frame[column] <- value
@@ -122,12 +115,18 @@
   data_frame
 }
 
-#' Deparse expression to check if it's R code/functions
+#' Deparse expression
+#' 
+#' This function turns unevaluated expressions
+#' (where ‘expression’ is taken in a wider sense than the 
+#' strict concept of a vector of mode "expression" used in expression) 
+#' into character strings (a kind of inverse to parse).
 #'
 #' @param expr expression to parse
+#' 
+#' @seealso \code{\link{deparse}}
 #'
 #' @noRd
-#' @keywords internal
 .deparse <- function(expr) {
   expression <- expr
   # convert a call to a string
