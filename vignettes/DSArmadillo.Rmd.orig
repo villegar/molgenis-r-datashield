@@ -18,15 +18,15 @@ knitr::opts_chunk$set(
 When you start to use Aramdillo as a backend for DataSHIELD you can use the `DSMolgenisArmadillo` package for research purposes.
 
 ## Installation
-The DataSHIELD Armadillo package is available on CRAN. You can install it by executing the following code-block:
+The DataSHIELD Armadillo package is available on the MOLGENIS CRAN (https://registry.molgenis.org/repository/R). You can install it by executing the following code-block:
 
 ```{r, eval = FALSE}
-install.packages("DSMolgenisArmadillo")
+install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/R", dependencies = TRUE)
 ```
 
-Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis.
+Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis. This needs to be a client which is version 6.0 or higher.
 
-```{r, setup}
+```{r}
 # install the DataSHIELD client
 install.packages("dsBaseClient", repos = c("http://cran.datashield.org", "http://cran.us.r-project.org"), dependencies = TRUE)
 ```
@@ -37,7 +37,7 @@ If you are interested in using exeperimental versions you can use our own CRAN r
 
 ```{r, eval = FALSE}
 # install experimental Armadillo client
-install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/R")
+install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/r-hosted-snapshots")
 ```
 
 Load the required libraries.
@@ -74,13 +74,12 @@ We support authentication 2 flows.
 - as normal user (using oauth on the central authentication server)
 - as superuser (using basic authentication, username and password based)
 
+We are currently only using the oauth flow in production environments.
+
 ```{r}
+# method 1: using oauth on the central server
 # specify server url
 armadillo_url <- "https://armadillo.dev.molgenis.org"
-```
-
-```{r, eval = FALSE}
-# method 1: using oauth on the central server
 
 # get token from central authentication server
 token <- datashield.get_token(armadillo_url)
@@ -94,28 +93,12 @@ builder$append(server = "armadillo",
                token = token,
                table = "datashield.PATIENT",
                driver = "ArmadilloDriver")
-```
-
-```{r}
-# method 2: using basic authentication
-
-builder <- DSI::newDSLoginBuilder()
-builder$append(server = "armadillo",
-               url = paste0(armadillo_url, "?workspace=gecko/patient"),
-               user = "admin",
-               password = "admin",
-               token = "",
-               table = "datashield.PATIENT",
-               driver = "ArmadilloDriver")
-
-# create login dataframe
+               
+# create loginframe
 logindata <- builder$build()
 
-# login to the server
-conns <- datashield.login(logins = logindata, assign = F)
-
-# get connection information regarding the server
-dsGetInfo(conns$armadillo)
+# login into server
+conns <- datashield.login(logins = logindata, assign = FALSE)
 ```
 
 ### Assign data
@@ -159,7 +142,7 @@ ds.mean("K", datasources = conns)
 ```
 
 #### Table methods
-When up assigned symbols in R you check which tables (`data.frame`'s) are available on the Armadillo.
+When you have assigned symbols in R, you check which tables (`data.frame`'s) are available on the Armadillo.
 
 ```{r}
 # assign the data again

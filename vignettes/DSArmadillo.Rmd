@@ -13,14 +13,14 @@ vignette: >
 When you start to use Aramdillo as a backend for DataSHIELD you can use the `DSMolgenisArmadillo` package for research purposes.
 
 ## Installation
-The DataSHIELD Armadillo package is available on CRAN. You can install it by executing the following code-block:
+The DataSHIELD Armadillo package is available on the MOLGENIS CRAN (https://registry.molgenis.org/repository/R). You can install it by executing the following code-block:
 
 
 ```r
-install.packages("DSMolgenisArmadillo")
+install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/R", dependencies = TRUE)
 ```
 
-Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis.
+Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis. This needs to be a client which is version 6.0 or higher.
 
 
 ```r
@@ -39,7 +39,7 @@ If you are interested in using exeperimental versions you can use our own CRAN r
 
 ```r
 # install experimental Armadillo client
-install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/R")
+install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/r-hosted-snapshots")
 ```
 
 Load the required libraries.
@@ -80,18 +80,17 @@ We support authentication 2 flows.
 - as normal user (using oauth on the central authentication server)
 - as superuser (using basic authentication, username and password based)
 
-
-```r
-# specify server url
-armadillo_url <- "https://armadillo.dev.molgenis.org"
-```
+We are currently only using the oauth flow in production environments.
 
 
 ```r
 # method 1: using oauth on the central server
+# specify server url
+armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
 token <- datashield.get_token(armadillo_url)
+#> [1] "We're opening a browser so you can log in with code 64H43V"
 
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
@@ -102,107 +101,15 @@ builder$append(server = "armadillo",
                token = token,
                table = "datashield.PATIENT",
                driver = "ArmadilloDriver")
-```
-
-
-```r
-# method 2: using basic authentication
-
-builder <- DSI::newDSLoginBuilder()
-builder$append(server = "armadillo",
-               url = paste0(armadillo_url, "?workspace=gecko/patient"),
-               user = "admin",
-               password = "admin",
-               token = "",
-               table = "datashield.PATIENT",
-               driver = "ArmadilloDriver")
-
-# create login dataframe
+               
+# create loginframe
 logindata <- builder$build()
 
-# login to the server
-conns <- datashield.login(logins = logindata, assign = F)
+# login into server
+conns <- datashield.login(logins = logindata, assign = FALSE)
 #> 
 #> Logging into the collaborating servers
 #>   Logged in all servers [================================================================] 100% / 0s
-
-# get connection information regarding the server
-dsGetInfo(conns$armadillo)
-#> $git
-#> $git$branch
-#> [1] "master"
-#> 
-#> $git$commit
-#> $git$commit$id
-#> [1] "4ca2515"
-#> 
-#> $git$commit$time
-#> [1] "2020-07-15T11:13:32Z"
-#> 
-#> 
-#> 
-#> $build
-#> $build$java
-#> $build$java$version
-#> [1] "11"
-#> 
-#> 
-#> $build$version
-#> [1] "0.0.1-SNAPSHOT"
-#> 
-#> $build$artifact
-#> [1] "armadillo"
-#> 
-#> $build$name
-#> [1] "armadillo"
-#> 
-#> $build$time
-#> [1] "2020-07-15T11:14:30.437Z"
-#> 
-#> $build$group
-#> [1] "org.molgenis"
-#> 
-#> 
-#> $auth
-#> $auth$clientId
-#> [1] "789b9417-ca2b-4707-ab9c-471373d91ba0"
-#> 
-#> $auth$issuerUri
-#> [1] "https://auth.molgenis.org"
-#> 
-#> 
-#> $url
-#> [1] "https://armadillo.dev.molgenis.org"
-#> 
-#> $workspaces
-#> $workspaces[[1]]
-#> [1] "gecko/patient"
-#> 
-#> 
-#> $name
-#> [1] "armadillo"
-#> 
-#> $cookies
-#> $cookies$domain
-#> [1] "#HttpOnly_armadillo.dev.molgenis.org" "#HttpOnly_armadillo.dev.molgenis.org"
-#> 
-#> $cookies$flag
-#> [1] FALSE FALSE
-#> 
-#> $cookies$path
-#> [1] "/" "/"
-#> 
-#> $cookies$secure
-#> [1] TRUE TRUE
-#> 
-#> $cookies$expiration
-#> [1] NA NA
-#> 
-#> $cookies$name
-#> [1] "JSESSIONID"                       "BIGipServerwebhost_pool_gcc_http"
-#> 
-#> $cookies$value
-#> [1] "C03CB8D438A24F8B2444F5B06C644983" "2554374336.20480.0000"
 ```
 
 ### Assign data
@@ -269,7 +176,7 @@ ds.mean("K", datasources = conns)
 ```
 
 #### Table methods
-When up assigned symbols in R you check which tables (`data.frame`'s) are available on the Armadillo.
+When you have assigned symbols in R, you check which tables (`data.frame`'s) are available on the Armadillo.
 
 
 ```r
@@ -387,15 +294,16 @@ You can overwrite workspaces using the same name again when saving the workspace
 ```r
 # make sure we start with an empty workspace
 datashield.logout(conns)
+#>   Logged out from all servers [==========================================================] 100% / 0s
 conns <- datashield.login(logins = logindata)
 #> 
 #> Logging into the collaborating servers
-#>   Logged in all servers [================================================================] 100% / 0s
 
 # assign data to make sure something is in the workspace
 datashield.assign.table(conns = conns, 
                         table = "datashield.PATIENT", 
                         symbol = "H")
+#>   Assigned all table (H <- ...) [========================================================] 100% / 0s
 
 datashield.workspace_save(conns, "my-workspace-overwritten")
 datashield.workspace_save(conns, "my-workspace-overwritten")
@@ -408,13 +316,13 @@ You can list the workspaces as well.
 # list all workspaces for this user
 datashield.workspaces(conns$armadillo)
 #>             lastAccessDate                               ETag                               name size
-#> 1 2020-07-16T09:28:19.600Z "981fbe8017bc135feb7255f899802dd6" armadillo:my-workspace-overwritten  353
-#> 2 2020-07-16T09:28:18.654Z "70d77a33e5d0b6bbcdf8504300d97df8"   armadillo:my-workspace-version-2  394
-#> 3 2020-07-16T09:28:17.786Z "70d77a33e5d0b6bbcdf8504300d97df8"             armadillo:my-workspace  394
-#>    user
-#> 1 admin
-#> 2 admin
-#> 3 admin
+#> 1 2020-07-16T12:04:08.932Z "981fbe8017bc135feb7255f899802dd6" armadillo:my-workspace-overwritten  353
+#> 2 2020-07-16T12:04:07.697Z "70d77a33e5d0b6bbcdf8504300d97df8"   armadillo:my-workspace-version-2  394
+#> 3 2020-07-16T12:04:06.897Z "70d77a33e5d0b6bbcdf8504300d97df8"             armadillo:my-workspace  394
+#>   user
+#> 1     
+#> 2     
+#> 3
 ```
 
 Remove workspaces.
@@ -425,12 +333,12 @@ Remove workspaces.
 datashield.workspace_rm(conns, "my-workspace-overwritten")
 # list the workspaces to make sure the overwritten one is deleted
 datashield.workspaces(conns)
-#>      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace.  user
-#> 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace admin
-#> 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace admin
-#>   lastAccessDate..2020.07.16T09.28.18.654Z. lastAccessDate..2020.07.16T09.28.17.786Z. size.394L
-#> 1                  2020-07-16T09:28:18.654Z                  2020-07-16T09:28:17.786Z       394
-#> 2                  2020-07-16T09:28:18.654Z                  2020-07-16T09:28:17.786Z       394
+#>      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user
+#> 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
+#> 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
+#>   lastAccessDate..2020.07.16T12.04.07.697Z. lastAccessDate..2020.07.16T12.04.06.897Z. size.394L
+#> 1                  2020-07-16T12:04:07.697Z                  2020-07-16T12:04:06.897Z       394
+#> 2                  2020-07-16T12:04:07.697Z                  2020-07-16T12:04:06.897Z       394
 #>   size.394L.1
 #> 1         394
 #> 2         394
@@ -448,7 +356,6 @@ The available packages displayed by the method, are the serverside R-packages. W
 conns <- datashield.login(logins = logindata, assign = F)
 #> 
 #> Logging into the collaborating servers
-#>   Logged in all servers [================================================================] 100% / 0s
 dsListPackages(conns$armadillo)
 #>          name   version
 #> 1      docopt     0.6.1
