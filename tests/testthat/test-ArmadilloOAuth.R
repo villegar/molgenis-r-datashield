@@ -9,7 +9,7 @@ test_that("get_token test if the token information is retrieved correctly", {
     "httr::content" = content,
     "MolgenisAuth::discover" = discover,
     "MolgenisAuth::device_flow_auth" = credentials,
-    token <- datashield.get_token("https://armadillo.dev.molgenis.org")
+    token <- datashield.get.token("https://armadillo.dev.molgenis.org")
   )
   expect_equal(token, "abcd-abcd")
 })
