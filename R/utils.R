@@ -1,4 +1,14 @@
-#' @keywords internal
+#' Handle last command errors
+#'
+#' When the last command endpoint fails, handle errors
+#'
+#' @param handle HTTR handle
+#'
+#' @importFrom httr GET content
+#'
+#' @return error message only
+#'
+#' @noRd
 .handle_last_command_error <- function(handle) {
   command <- httr::GET(handle = handle, path = "/lastcommand")
 
@@ -8,7 +18,13 @@
   }
 }
 
-#' @keywords internal
+#' Handle generic request errrors
+#'
+#' @param response HTTR response
+#'
+#' @importFrom httr content
+#'
+#' @noRd
 .handle_request_error <- function(response) {
   if (response$status_code == 400) {
     json_content <- httr::content(response)
@@ -21,7 +37,11 @@
   }
 }
 
-#' @keywords internal
+#' Unlist character list
+#'
+#' @param character_list
+#'
+#' @noRd
 .unlist_character_list <- function(character_list) {
   if (length(character_list) == 0) {
     character()
@@ -30,12 +50,22 @@
   }
 }
 
-#' @keywords internal
+#' Convert list to data.frame
+#'
+#' @param list list object in R
+#'
+#' @noRd
 .list_to_data_frame <- function(list) {
   as.data.frame(do.call(rbind, list))
 }
 
-#' @keywords internal
+#' Retry request after timeout
+#'
+#' @param conn HTTR connection
+#'
+#' @importFrom httr content add_headers
+#'
+#' @noRd
 .retry_until_last_result <- function(conn) {
   response <- httr::RETRY(
     verb = "GET",
@@ -59,13 +89,25 @@
   }
 }
 
-#' @keywords internal
+#' Rename a column
+#'
+#' @param data_frame data.frame containing the column
+#' @param name old name
+#' @param new_name new name
+#'
+#' @noRd
 .rename_column <- function(data_frame, name, new_name) {
   colnames(data_frame)[colnames(data_frame) == name] <- new_name
   data_frame
 }
 
-#' @keywords internal
+#' Fill column with a value
+#'
+#' @param data_frame containing the column
+#' @param column designated column
+#' @param value new value
+#'
+#' @noRd
 .fill_column <- function(data_frame, column, value) {
   if (length(data_frame) > 0) {
     data_frame[column] <- value
@@ -73,7 +115,18 @@
   data_frame
 }
 
-#' @keywords internal
+#' Deparse expression
+#' 
+#' This function turns unevaluated expressions
+#' (where ‘expression’ is taken in a wider sense than the 
+#' strict concept of a vector of mode "expression" used in expression) 
+#' into character strings (a kind of inverse to parse).
+#'
+#' @param expr expression to parse
+#' 
+#' @seealso \code{\link{deparse}}
+#'
+#' @noRd
 .deparse <- function(expr) {
   expression <- expr
   # convert a call to a string

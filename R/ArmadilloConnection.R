@@ -27,7 +27,6 @@ methods::setClass("ArmadilloConnection",
   )
 )
 
-
 #' Disconnect from an Armadillo DataSHIELD Service
 #'
 #' Disconnect from an Armadillo DataSHIELD Service and release all R resources.

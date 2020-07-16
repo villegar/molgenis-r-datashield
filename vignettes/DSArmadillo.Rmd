@@ -1,5 +1,5 @@
 ---
-title: "DataSHIELD Aramdillo"
+title: "Use the Armadillo"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using Armadillo to perform analysis with DataSHIELD}
@@ -7,42 +7,42 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+
 
 # DataSHIELD Armadillo
 When you start to use Aramdillo as a backend for DataSHIELD you can use the `DSMolgenisArmadillo` package for research purposes.
 
 ## Installation
-The DataSHIELD Armadillo package is available on CRAN. You can install it by executing the following code-block:
+The DataSHIELD Armadillo package is available on the MOLGENIS CRAN (https://registry.molgenis.org/repository/R). You can install it by executing the following code-block:
 
-```{r, eval = FALSE}
-install.packages("DSMolgenisArmadillo")
+
+```r
+install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/R", dependencies = TRUE)
 ```
 
-Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis.
+Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis. This needs to be a client which is version 6.0 or higher.
 
-```{r}
+
+```r
 # install the DataSHIELD client
 install.packages("dsBaseClient", repos = c("http://cran.datashield.org", "http://cran.us.r-project.org"), dependencies = TRUE)
+#> Error in install.packages : Updating loaded packages
 ```
 
 **Experimental versions**
 
 If you are interested in using exeperimental versions you can use our own CRAN repository:
 
-```{r, eval = FALSE}
+
+```r
 # install experimental Armadillo client
-install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/R")
+install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/r-hosted-snapshots")
 ```
 
 Load the required libraries.
 
-```{r}
+
+```r
 # load the necessary packages
 library(dsBaseClient)
 library(DSMolgenisArmadillo)
@@ -50,101 +50,148 @@ library(DSMolgenisArmadillo)
 
 You can determine which version of the DSMolgenisArmadillo you are running by executing the following code:
 
-```{r}
+
+```r
 dsGetInfo(armadillo())
+#> $driver.version
+#> [1] '1.1.0.9004'
 ```
 
 ## Usage
 There is a default workflow in DataSHIELD to do analysis. There are several steps that you need to take.
 
-- Login to the Armadillo
+- Get token from the central authentication server
+- Log in to the Armadillo
 - Assign data
 - Transform data (if necessary)
 - Performing analysis
-- Workspaces
+- Work spaces
 - Methods and packages
 
 All of these components will be addressed.
 
 ### Login on DataSHIELD Armadillo
-The login procedure consists of building a login dataframe and performing the login on the Armadillo server. The important part is to specify the driver. This should be `ArmadilloDriver`.
+The login procedure consists of building a login dataframe and performing the login on the Armadillo server. The important part is to specify the driver. This should be `ArmadilloDriver`. 
 
-```{r}
+We support authentication 2 flows. 
+- as normal user (using oauth on the central authentication server)
+- as superuser (using basic authentication, username and password based)
+
+We are currently only using the oauth flow in production environments.
+
+
+```r
+# method 1: using oauth on the central server
+# specify server url
+armadillo_url <- "https://armadillo.dev.molgenis.org"
+
+# get token from central authentication server
+token <- armadillo.get_token(armadillo_url)
+#> [1] "We're opening a browser so you can log in with code H4Q46S"
+
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
-               url = "https://armadillo.dev.molgenis.org?workspace=gecko/patient",
-               user = "admin",
-               password = "admin",
-               token = "",
+               url = paste0(armadillo_url, "?workspace=gecko/patient"),
+               user = "",
+               password = "",
+               token = token,
                table = "datashield.PATIENT",
                driver = "ArmadilloDriver")
-
-# create login dataframe
+               
+# create loginframe
 logindata <- builder$build()
 
-# login to the server
-conns <- datashield.login(logins = logindata, assign = F)
-
-# get connection information regarding the server
-dsGetInfo(conns$armadillo)
+# login into server
+conns <- datashield.login(logins = logindata, assign = FALSE)
+#> 
+#> Logging into the collaborating servers
+#>   Logged in all servers [================================================================] 100% / 0s
 ```
 
 ### Assign data
 To work with DataSHIELD you need to be able to query data. You can do this by assigning data in the Armadillo service.
 
-```{r}
+
+```r
 # assign data in the Armadillo service
 datashield.assign.table(conns = conns,
                         table = "datashield.PATIENT",
                         symbol = "D",
                         variables = c("age", "name"))
+#>   Assigned all table (D <- ...) [========================================================] 100% / 0s
 ```
 
 You can inspect which symbols, or table references, that are created on the server.
 
-```{r}
+
+```r
 datashield.symbols(conns)
+#> $armadillo
+#> [1] "D"
 
 datashield.table_status(conns, "datashield.PATIENT")
+#>      server              table accessible
+#> 1 armadillo datashield.PATIENT       TRUE
 ```
 
 #### Symbol assignment
 For each of the tables assigned in the Aramdillo a symbol is created in each of the servers. 
 You can remove the symbol from the workspace on the server by executing the following code:
 
-```{r}
+
+```r
 # list the current symbols
 datashield.symbols(conns)
+#> $armadillo
+#> [1] "D"
 # remove the symbol
 datashield.rm(conns = conns, "D")
 # list the current symbols without the deleted one
 datashield.symbols(conns)
+#> $armadillo
+#> character(0)
 ```
 
 You can assign values from tables to symbols, but hardcoded values as well.
-```{r}
+
+```r
 # assign random data to 'K'
 datashield.assign.expr(conns = conns, symbol = "K", "c(10,50,100)")
 # calculate the mean of 'K' to see that the assignment has worked
 ds.mean("K", datasources = conns)
+#> $Mean.by.Study
+#>           EstimatedMean Nmissing Nvalid Ntotal
+#> armadillo      53.33333        0      3      3
+#> 
+#> $Nstudies
+#> [1] 1
+#> 
+#> $ValidityMessage
+#>           ValidityMessage 
+#> armadillo "VALID ANALYSIS"
 ```
 
 #### Table methods
-When up assigned symbols in R you check which tables (`data.frame`'s) are available on the Armadillo.
+When you have assigned symbols in R, you check which tables (`data.frame`'s) are available on the Armadillo.
 
-```{r}
+
+```r
 # assign the data again
 datashield.assign.table(conns = conns, 
                         table = "datashield.PATIENT", 
                         symbol = "D")
+#>   Assigned all table (D <- ...) [========================================================] 100% / 0s
 
 # list all tables
 dsListTables(conns$armadillo)
+#> [1] "datashield.PATIENT"     "datashield.PATIENT_REP"
 
 # check if table exists
 dsHasTable(conns$armadillo, "datashield.PATIENT")
+#> [1] TRUE
 dsHasTable(conns$armadillo, "datashield.NOTPATIENT")
+#> [1] FALSE
 ```
 
 ### Transforming data
@@ -152,7 +199,8 @@ In general you need 2 methods to work with data that is stored in longformat, th
 
 You can do this using the `ds.reshape` function:
 
-```{r, eval = FALSE}
+
+```r
 # assign the repeated data to reshape
 datashield.assign.table(conns = conns,
                         table = "datashield.PATIENT_REP",
@@ -174,7 +222,8 @@ ds.colnames("PATIENTREPwide", datasources = conns)
 
 When you reshaped the data you often need to merge your dataframe with others to get your analysis dataframe. You can do this using the `ds.merge` function:
 
-```{r, eval = FALSE}
+
+```r
 # assign the non repeated data to merge with
 datashield.assign.table(conns = conns,
                         table = "datashield.PATIENT",
@@ -194,7 +243,8 @@ ds.colnames("mergedvars")
 ### Performing analysis
 When you finished the analysis dataframe, you can perform the actual analysis. You can use a wide variety of functions. The example below is showing the `glm`.
 
-```{r, eval = FALSE}
+
+```r
 ds.glm(formula = 'height.1~height.3', 
        data = 'mergedvars', 
        family = 'binomial', 
@@ -206,7 +256,8 @@ To store the assigned data in the Armadillo service, you can use workspaces to m
 
 Saving the workspaces can be done during logout or at runtime.
 
-```{r}
+
+```r
 # reassign data from a Armadillo table
 datashield.assign.table(conns = conns,
                         table = "datashield.PATIENT",
@@ -215,15 +266,21 @@ datashield.assign.table(conns = conns,
 
 # save the workspace duringg logout
 datashield.logout(conns, save = "my-workspace")
+#>   Logged out from all servers [==========================================================] 100% / 0s
 
 # restore workspace during logging in
 conns <- datashield.login(logins = logindata, 
                           assign = FALSE, 
                           restore = "my-workspace")
+#> 
+#> Logging into the collaborating servers
+#>   Logged in all servers [================================================================] 100% / 0s
 
 # check if the workspace is restored correctly
 # should contain 'J'
 datashield.symbols(conns)
+#> $armadillo
+#> [1] "D" "J" "K"
 
 # save workspace at runtime
 datashield.workspace_save(conns, "my-workspace-version-2")
@@ -231,10 +288,13 @@ datashield.workspace_save(conns, "my-workspace-version-2")
 
 You can overwrite workspaces using the same name again when saving the workspace.
 
-```{r}
+
+```r
 # make sure we start with an empty workspace
 datashield.logout(conns)
 conns <- datashield.login(logins = logindata)
+#> 
+#> Logging into the collaborating servers
 
 # assign data to make sure something is in the workspace
 datashield.assign.table(conns = conns, 
@@ -247,18 +307,30 @@ datashield.workspace_save(conns, "my-workspace-overwritten")
 
 You can list the workspaces as well.
 
-```{r}
+
+```r
 # list all workspaces for this user
 datashield.workspaces(conns$armadillo)
+#>             lastAccessDate                               ETag                               name size user
+#> 1 2020-07-16T13:31:00.871Z "981fbe8017bc135feb7255f899802dd6" armadillo:my-workspace-overwritten  353     
+#> 2 2020-07-16T13:30:59.915Z "70d77a33e5d0b6bbcdf8504300d97df8"   armadillo:my-workspace-version-2  394     
+#> 3 2020-07-16T13:30:59.073Z "70d77a33e5d0b6bbcdf8504300d97df8"             armadillo:my-workspace  394
 ```
 
 Remove workspaces.
 
-```{r}
+
+```r
 # create a new workspace 
 datashield.workspace_rm(conns, "my-workspace-overwritten")
 # list the workspaces to make sure the overwritten one is deleted
 datashield.workspaces(conns)
+#>      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user
+#> 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
+#> 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
+#>   lastAccessDate..2020.07.16T13.30.59.915Z. lastAccessDate..2020.07.16T13.30.59.073Z. size.394L size.394L.1
+#> 1                  2020-07-16T13:30:59.915Z                  2020-07-16T13:30:59.073Z       394         394
+#> 2                  2020-07-16T13:30:59.915Z                  2020-07-16T13:30:59.073Z       394         394
 ```
 
 ### Methods and packages
@@ -267,19 +339,188 @@ In DataSHIELD you can use a variety of methods and packages. To check which are 
 #### Available packages (serverside)
 The available packages displayed by the method, are the serverside R-packages. Which means the packages available on the Armadillo.
 
-```{r}
+
+```r
 # check packages
 conns <- datashield.login(logins = logindata, assign = F)
+#> 
+#> Logging into the collaborating servers
 dsListPackages(conns$armadillo)
+#>          name   version
+#> 1      docopt     0.6.1
+#> 2      dsBase     6.0.0
+#> 3        glue     1.4.1
+#> 4     littler     0.3.9
+#> 5        lme4    1.1-23
+#> 6    magrittr       1.5
+#> 7       minqa     1.2.4
+#> 8      nloptr   1.2.2.1
+#> 9        RANN     2.6.1
+#> 10       Rcpp   1.0.4.6
+#> 11  RcppEigen 0.3.3.7.0
+#> 12     Rserve     1.8-6
+#> 13    statmod    1.4.34
+#> 14    stringi     1.4.6
+#> 15    stringr     1.4.0
+#> 16       base     3.6.3
+#> 17       boot    1.3-24
+#> 18      class    7.3-15
+#> 19    cluster     2.1.0
+#> 20  codetools    0.2-16
+#> 21   compiler     3.6.3
+#> 22   datasets     3.6.3
+#> 23    foreign    0.8-75
+#> 24   graphics     3.6.3
+#> 25  grDevices     3.6.3
+#> 26       grid     3.6.3
+#> 27 KernSmooth   2.23-16
+#> 28    lattice   0.20-38
+#> 29       MASS  7.3-51.5
+#> 30     Matrix    1.2-18
+#> 31    methods     3.6.3
+#> 32       mgcv    1.8-31
+#> 33       nlme   3.1-144
+#> 34       nnet    7.3-12
+#> 35   parallel     3.6.3
+#> 36      rpart    4.1-15
+#> 37    spatial    7.3-11
+#> 38    splines     3.6.3
+#> 39      stats     3.6.3
+#> 40     stats4     3.6.3
+#> 41   survival     3.1-8
+#> 42      tcltk     3.6.3
+#> 43      tools     3.6.3
+#> 44      utils     3.6.3
 ```
 
 #### Available methods (clientside)
 These are the available methods on the Armadillo server.
 
-```{r}
+
+```r
 # check methods
 datashield.methods(conns = conns, type = "aggregate")
+#>                        name                            value version package      type    class    server
+#> 1              is.character               base::is.character    NULL    base aggregate function armadillo
+#> 2        dataFrameSubsetDS1       dsBase::dataFrameSubsetDS1   6.0.0  dsBase aggregate function armadillo
+#> 3                meanSdGpDS               dsBase::meanSdGpDS   6.0.0  dsBase aggregate function armadillo
+#> 4             scatterPlotDS            dsBase::scatterPlotDS   6.0.0  dsBase aggregate function armadillo
+#> 5                 setSeedDS                dsBase::setSeedDS   6.0.0  dsBase aggregate function armadillo
+#> 6              matrixDetDS1             dsBase::matrixDetDS1   6.0.0  dsBase aggregate function armadillo
+#> 7                   numNaDS                  dsBase::numNaDS   6.0.0  dsBase aggregate function armadillo
+#> 8                  asListDS                 dsBase::asListDS   6.0.0  dsBase aggregate function armadillo
+#> 9                is.numeric                 base::is.numeric    NULL    base aggregate function armadillo
+#> 10                   t.test                    stats::t.test    NULL   stats aggregate function armadillo
+#> 11                  is.list                    base::is.list    NULL    base aggregate function armadillo
+#> 12                 lengthDS                 dsBase::lengthDS   6.0.0  dsBase aggregate function armadillo
+#> 13            heatmapPlotDS            dsBase::heatmapPlotDS   6.0.0  dsBase aggregate function armadillo
+#> 14                    dimDS                    dsBase::dimDS   6.0.0  dsBase aggregate function armadillo
+#> 15                  is.null                    base::is.null    NULL    base aggregate function armadillo
+#> 16                   meanDS                   dsBase::meanDS   6.0.0  dsBase aggregate function armadillo
+#> 17                  tableDS                  dsBase::tableDS   6.0.0  dsBase aggregate function armadillo
+#> 18                is.factor                  base::is.factor    NULL    base aggregate function armadillo
+#> 19                    corDS                    dsBase::corDS   6.0.0  dsBase aggregate function armadillo
+#> 20          testObjExistsDS          dsBase::testObjExistsDS   6.0.0  dsBase aggregate function armadillo
+#> 21                isValidDS                dsBase::isValidDS   6.0.0  dsBase aggregate function armadillo
+#> 22                table1DDS                dsBase::table1DDS   6.0.0  dsBase aggregate function armadillo
+#> 23              asFactorDS1              dsBase::asFactorDS1   6.0.0  dsBase aggregate function armadillo
+#> 24                   glmDS2                   dsBase::glmDS2   6.0.0  dsBase aggregate function armadillo
+#> 25                   glmDS1                   dsBase::glmDS1   6.0.0  dsBase aggregate function armadillo
+#> 26                    covDS                    dsBase::covDS   6.0.0  dsBase aggregate function armadillo
+#> 27              lmerSLMADS2              dsBase::lmerSLMADS2   6.0.0  dsBase aggregate function armadillo
+#> 28                     rmDS                     dsBase::rmDS   6.0.0  dsBase aggregate function armadillo
+#> 29                   exists                     base::exists    NULL    base aggregate function armadillo
+#> 30                  rangeDS                  dsBase::rangeDS   6.0.0  dsBase aggregate function armadillo
+#> 31                table2DDS                dsBase::table2DDS   6.0.0  dsBase aggregate function armadillo
+#> 32                     NROW                       base::NROW    NULL    base aggregate function armadillo
+#> 33              scoreVectDS              dsBase::scoreVectDS   6.0.0  dsBase aggregate function armadillo
+#> 34                 tapplyDS                 dsBase::tapplyDS   6.0.0  dsBase aggregate function armadillo
+#> 35                 levelsDS                 dsBase::levelsDS   6.0.0  dsBase aggregate function armadillo
+#> 36            densityGridDS            dsBase::densityGridDS   6.0.0  dsBase aggregate function armadillo
+#> 37                 lexisDS1                 dsBase::lexisDS1   6.0.0  dsBase aggregate function armadillo
+#> 38             histogramDS1             dsBase::histogramDS1   6.0.0  dsBase aggregate function armadillo
+#> 39             histogramDS2             dsBase::histogramDS2   6.0.0  dsBase aggregate function armadillo
+#> 40                 tableDS2                 dsBase::tableDS2   6.0.0  dsBase aggregate function armadillo
+#> 41          checkNegValueDS          dsBase::checkNegValueDS   6.0.0  dsBase aggregate function armadillo
+#> 42           quantileMeanDS           dsBase::quantileMeanDS   6.0.0  dsBase aggregate function armadillo
+#> 43                tTestFDS2                dsBase::tTestFDS2   6.0.0  dsBase aggregate function armadillo
+#> 44                    varDS                    dsBase::varDS   6.0.0  dsBase aggregate function armadillo
+#> 45               alphaPhiDS               dsBase::alphaPhiDS   6.0.0  dsBase aggregate function armadillo
+#> 46               colnamesDS               dsBase::colnamesDS   6.0.0  dsBase aggregate function armadillo
+#> 47                     lsDS                     dsBase::lsDS   6.0.0  dsBase aggregate function armadillo
+#> 48                  classDS                  dsBase::classDS   6.0.0  dsBase aggregate function armadillo
+#> 49                   isNaDS                   dsBase::isNaDS   6.0.0  dsBase aggregate function armadillo
+#> 50 listDisclosureSettingsDS dsBase::listDisclosureSettingsDS   6.0.0  dsBase aggregate function armadillo
+#> 51             glmerSLMADS2             dsBase::glmerSLMADS2   6.0.0  dsBase aggregate function armadillo
+#> 52               glmSLMADS1               dsBase::glmSLMADS1   6.0.0  dsBase aggregate function armadillo
+#> 53               glmSLMADS2               dsBase::glmSLMADS2   6.0.0  dsBase aggregate function armadillo
+#> 54          recodeValuesDS1          dsBase::recodeValuesDS1   6.0.0  dsBase aggregate function armadillo
+#> 55                  namesDS                  dsBase::namesDS   6.0.0  dsBase aggregate function armadillo
+#> 56                corTestDS                dsBase::corTestDS   6.0.0  dsBase aggregate function armadillo
+#> 57                messageDS                dsBase::messageDS   6.0.0  dsBase aggregate function armadillo
 datashield.methods(conns = conns, type = "assign")
+#>                  name                      value version package   type    class    server
+#> 1    changeRefGroupDS   dsBase::changeRefGroupDS   6.0.0  dsBase assign function armadillo
+#> 2  dataFrameSubsetDS2 dsBase::dataFrameSubsetDS2   6.0.0  dsBase assign function armadillo
+#> 3        matrixDiagDS       dsBase::matrixDiagDS   6.0.0  dsBase assign function armadillo
+#> 4         asNumericDS        dsBase::asNumericDS   6.0.0  dsBase assign function armadillo
+#> 5          asMatrixDS         dsBase::asMatrixDS   6.0.0  dsBase assign function armadillo
+#> 6        matrixDetDS2       dsBase::matrixDetDS2   6.0.0  dsBase assign function armadillo
+#> 7   matrixTransposeDS  dsBase::matrixTransposeDS   6.0.0  dsBase assign function armadillo
+#> 8             mergeDS            dsBase::mergeDS   6.0.0  dsBase assign function armadillo
+#> 9             cbindDS            dsBase::cbindDS   6.0.0  dsBase assign function armadillo
+#> 10           asListDS           dsBase::asListDS   6.0.0  dsBase assign function armadillo
+#> 11                log                  base::log    NULL    base assign function armadillo
+#> 12           matrixDS           dsBase::matrixDS   6.0.0  dsBase assign function armadillo
+#> 13         asFactorDS         dsBase::asFactorDS   6.0.0  dsBase assign function armadillo
+#> 14     tableDS.assign     dsBase::tableDS.assign   6.0.0  dsBase assign function armadillo
+#> 15              repDS              dsBase::repDS   6.0.0  dsBase assign function armadillo
+#> 16            rPoisDS            dsBase::rPoisDS   6.0.0  dsBase assign function armadillo
+#> 17           unListDS           dsBase::unListDS   6.0.0  dsBase assign function armadillo
+#> 18     matrixInvertDS     dsBase::matrixInvertDS   6.0.0  dsBase assign function armadillo
+#> 19    tapplyDS.assign    dsBase::tapplyDS.assign   6.0.0  dsBase assign function armadillo
+#> 20              seqDS              dsBase::seqDS   6.0.0  dsBase assign function armadillo
+#> 21    dataFrameFillDS    dsBase::dataFrameFillDS   6.0.0  dsBase assign function armadillo
+#> 22           subsetDS           dsBase::subsetDS   6.0.0  dsBase assign function armadillo
+#> 23            rNormDS            dsBase::rNormDS   6.0.0  dsBase assign function armadillo
+#> 24     recodeLevelsDS     dsBase::recodeLevelsDS   6.0.0  dsBase assign function armadillo
+#> 25    dataFrameSortDS    dsBase::dataFrameSortDS   6.0.0  dsBase assign function armadillo
+#> 26           rBinomDS           dsBase::rBinomDS   6.0.0  dsBase assign function armadillo
+#> 27                cDS                dsBase::cDS   6.0.0  dsBase assign function armadillo
+#> 28        dataFrameDS        dsBase::dataFrameDS   6.0.0  dsBase assign function armadillo
+#> 29        asFactorDS2        dsBase::asFactorDS2   6.0.0  dsBase assign function armadillo
+#> 30    completeCasesDS    dsBase::completeCasesDS   6.0.0  dsBase assign function armadillo
+#> 31       matrixMultDS       dsBase::matrixMultDS   6.0.0  dsBase assign function armadillo
+#> 32             seedDS             dsBase::seedDS   6.0.0  dsBase assign function armadillo
+#> 33    subsetByClassDS    dsBase::subsetByClassDS   6.0.0  dsBase assign function armadillo
+#> 34              cbind                base::cbind    NULL    base assign function armadillo
+#> 35             unlist               base::unlist    NULL    base assign function armadillo
+#> 36            rbindDS            dsBase::rbindDS   6.0.0  dsBase assign function armadillo
+#> 37          reShapeDS          dsBase::reShapeDS   6.0.0  dsBase assign function armadillo
+#> 38            rUnifDS            dsBase::rUnifDS   6.0.0  dsBase assign function armadillo
+#> 39         as.numeric           base::as.numeric    NULL    base assign function armadillo
+#> 40               list                 base::list    NULL    base assign function armadillo
+#> 41        asIntegerDS        dsBase::asIntegerDS   6.0.0  dsBase assign function armadillo
+#> 42           lexisDS2           dsBase::lexisDS2   6.0.0  dsBase assign function armadillo
+#> 43            as.null              base::as.null    NULL    base assign function armadillo
+#> 44                sum                  base::sum    NULL    base assign function armadillo
+#> 45           lexisDS3           dsBase::lexisDS3   6.0.0  dsBase assign function armadillo
+#> 46        asLogicalDS        dsBase::asLogicalDS   6.0.0  dsBase assign function armadillo
+#> 47   matrixDimnamesDS   dsBase::matrixDimnamesDS   6.0.0  dsBase assign function armadillo
+#> 48     complete.cases      stats::complete.cases    NULL   stats assign function armadillo
+#> 49             listDS             dsBase::listDS   6.0.0  dsBase assign function armadillo
+#> 50             attach               base::attach    NULL    base assign function armadillo
+#> 51      asCharacterDS      dsBase::asCharacterDS   6.0.0  dsBase assign function armadillo
+#> 52                exp                  base::exp    NULL    base assign function armadillo
+#> 53    recodeValuesDS2    dsBase::recodeValuesDS2   6.0.0  dsBase assign function armadillo
+#> 54                  c                    base::c    NULL    base assign function armadillo
+#> 55        replaceNaDS        dsBase::replaceNaDS   6.0.0  dsBase assign function armadillo
+#> 56       rowColCalcDS       dsBase::rowColCalcDS   6.0.0  dsBase assign function armadillo
+#> 57           sampleDS           dsBase::sampleDS   6.0.0  dsBase assign function armadillo
+#> 58       as.character         base::as.character    NULL    base assign function armadillo
+#> 59                rep                  base::rep    NULL    base assign function armadillo
+#> 60            BooleDS            dsBase::BooleDS   6.0.0  dsBase assign function armadillo
+#> 61     asDataMatrixDS     dsBase::asDataMatrixDS   6.0.0  dsBase assign function armadillo
 ```
 
 
