@@ -9,7 +9,7 @@
 #' @importFrom MolgenisAuth discover device_flow_auth
 #'
 #' @export
-datashield.get.token <- function(server) { #nolint
+datashield.get_token <- function(server) { #nolint
   auth_info <- .get_oauth_info(server)$auth
   endpoint <- MolgenisAuth::discover(auth_info$issuerUri)
   credentials <- MolgenisAuth::device_flow_auth(
@@ -33,7 +33,6 @@ datashield.get.token <- function(server) { #nolint
 #' @return a dataframe with issuerUrl and clientId
 #'
 #' @noRd
-#' @keywords internal
 .get_oauth_info <- function(armadillo_server) {
   info_url <- armadillo_server
   urltools::path(info_url) <- "actuator/info"
