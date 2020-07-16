@@ -82,7 +82,7 @@ We are currently only using the oauth flow in production environments.
 armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
-token <- datashield.get_token(armadillo_url)
+token <- armadillo.get_token(armadillo_url)
 
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()

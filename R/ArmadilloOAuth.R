@@ -1,6 +1,6 @@
 #' Get ID Token
 #'
-#' Get an ID token to log in on an Armadillo server or its MinIO filestore.
+#' Get an ID token to log in on an Armadillo server
 #'
 #' @param server the URL of the Armadillo server
 #'
@@ -9,7 +9,7 @@
 #' @importFrom MolgenisAuth discover device_flow_auth
 #'
 #' @export
-datashield.get_token <- function(server) { #nolint
+armadillo.get_token <- function(server) { #nolint
   auth_info <- .get_oauth_info(server)$auth
   endpoint <- MolgenisAuth::discover(auth_info$issuerUri)
   credentials <- MolgenisAuth::device_flow_auth(

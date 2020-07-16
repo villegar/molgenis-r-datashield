@@ -26,10 +26,7 @@ Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actu
 ```r
 # install the DataSHIELD client
 install.packages("dsBaseClient", repos = c("http://cran.datashield.org", "http://cran.us.r-project.org"), dependencies = TRUE)
-#> Warning in install.packages :
-#>   unable to access index for repository http://cran.datashield.org/bin/macosx/el-capitan/contrib/3.6:
-#>   cannot open URL 'http://cran.datashield.org/bin/macosx/el-capitan/contrib/3.6/PACKAGES'
-#> installing the source package 'dsBaseClient'
+#> Error in install.packages : Updating loaded packages
 ```
 
 **Experimental versions**
@@ -89,8 +86,8 @@ We are currently only using the oauth flow in production environments.
 armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
-token <- datashield.get_token(armadillo_url)
-#> [1] "We're opening a browser so you can log in with code 64H43V"
+token <- armadillo.get_token(armadillo_url)
+#> [1] "We're opening a browser so you can log in with code H4Q46S"
 
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
@@ -184,6 +181,7 @@ When you have assigned symbols in R, you check which tables (`data.frame`'s) are
 datashield.assign.table(conns = conns, 
                         table = "datashield.PATIENT", 
                         symbol = "D")
+#>   Assigned all table (D <- ...) [========================================================] 100% / 0s
 
 # list all tables
 dsListTables(conns$armadillo)
@@ -294,7 +292,6 @@ You can overwrite workspaces using the same name again when saving the workspace
 ```r
 # make sure we start with an empty workspace
 datashield.logout(conns)
-#>   Logged out from all servers [==========================================================] 100% / 0s
 conns <- datashield.login(logins = logindata)
 #> 
 #> Logging into the collaborating servers
@@ -303,7 +300,6 @@ conns <- datashield.login(logins = logindata)
 datashield.assign.table(conns = conns, 
                         table = "datashield.PATIENT", 
                         symbol = "H")
-#>   Assigned all table (H <- ...) [========================================================] 100% / 0s
 
 datashield.workspace_save(conns, "my-workspace-overwritten")
 datashield.workspace_save(conns, "my-workspace-overwritten")
@@ -315,14 +311,10 @@ You can list the workspaces as well.
 ```r
 # list all workspaces for this user
 datashield.workspaces(conns$armadillo)
-#>             lastAccessDate                               ETag                               name size
-#> 1 2020-07-16T12:04:08.932Z "981fbe8017bc135feb7255f899802dd6" armadillo:my-workspace-overwritten  353
-#> 2 2020-07-16T12:04:07.697Z "70d77a33e5d0b6bbcdf8504300d97df8"   armadillo:my-workspace-version-2  394
-#> 3 2020-07-16T12:04:06.897Z "70d77a33e5d0b6bbcdf8504300d97df8"             armadillo:my-workspace  394
-#>   user
-#> 1     
-#> 2     
-#> 3
+#>             lastAccessDate                               ETag                               name size user
+#> 1 2020-07-16T13:31:00.871Z "981fbe8017bc135feb7255f899802dd6" armadillo:my-workspace-overwritten  353     
+#> 2 2020-07-16T13:30:59.915Z "70d77a33e5d0b6bbcdf8504300d97df8"   armadillo:my-workspace-version-2  394     
+#> 3 2020-07-16T13:30:59.073Z "70d77a33e5d0b6bbcdf8504300d97df8"             armadillo:my-workspace  394
 ```
 
 Remove workspaces.
@@ -336,12 +328,9 @@ datashield.workspaces(conns)
 #>      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user
 #> 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
 #> 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
-#>   lastAccessDate..2020.07.16T12.04.07.697Z. lastAccessDate..2020.07.16T12.04.06.897Z. size.394L
-#> 1                  2020-07-16T12:04:07.697Z                  2020-07-16T12:04:06.897Z       394
-#> 2                  2020-07-16T12:04:07.697Z                  2020-07-16T12:04:06.897Z       394
-#>   size.394L.1
-#> 1         394
-#> 2         394
+#>   lastAccessDate..2020.07.16T13.30.59.915Z. lastAccessDate..2020.07.16T13.30.59.073Z. size.394L size.394L.1
+#> 1                  2020-07-16T13:30:59.915Z                  2020-07-16T13:30:59.073Z       394         394
+#> 2                  2020-07-16T13:30:59.915Z                  2020-07-16T13:30:59.073Z       394         394
 ```
 
 ### Methods and packages
