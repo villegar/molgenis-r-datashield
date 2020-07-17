@@ -116,14 +116,14 @@
 }
 
 #' Deparse expression
-#' 
+#'
 #' This function turns unevaluated expressions
-#' (where ‘expression’ is taken in a wider sense than the 
-#' strict concept of a vector of mode "expression" used in expression) 
+#' (where ‘expression’ is taken in a wider sense than the
+#' strict concept of a vector of mode "expression" used in expression)
 #' into character strings (a kind of inverse to parse).
 #'
 #' @param expr expression to parse
-#' 
+#'
 #' @seealso \code{\link{deparse}}
 #'
 #' @noRd
