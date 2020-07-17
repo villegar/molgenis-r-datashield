@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Class ArmadilloResult. — ArmadilloResult-class • DSMolgenisArmadillo</title>
+<title>Get ID Token — armadillo.get_token • DSMolgenisArmadillo</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Class ArmadilloResult. — ArmadilloResult-class" />
-<meta property="og:description" content="An Armadillo result implementing the DataSHIELD Interface (DSI)
-DSResult-class." />
+<meta property="og:title" content="Get ID Token — armadillo.get_token" />
+<meta property="og:description" content="Get an ID token to log in on an Armadillo server" />
 
 
 
@@ -121,28 +120,29 @@ DSResult-class." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Class ArmadilloResult.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/molgenis/molgenis-r-datashield/blob/master/R/ArmadilloResult.R'><code>R/ArmadilloResult.R</code></a></small>
-    <div class="hidden name"><code>ArmadilloResult-class.Rd</code></div>
+    <h1>Get ID Token</h1>
+    <small class="dont-index">Source: <a href='https://github.com/molgenis/molgenis-r-datashield/blob/master/R/ArmadilloOAuth.R'><code>R/ArmadilloOAuth.R</code></a></small>
+    <div class="hidden name"><code>armadillo.get_token.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>An Armadillo result implementing the DataSHIELD Interface (DSI)
-<code>DSResult-class</code>.</p>
+    <p>Get an ID token to log in on an Armadillo server</p>
     </div>
 
+    <pre class="usage"><span class='fu'>armadillo.get_token</span>(<span class='no'>server</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>server</th>
+      <td><p>the URL of the Armadillo server</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-
-<dl'>
-<dt><code>conn</code></dt><dd><p>The connection used to create this result</p></dd>
-
-<dt><code>rval</code></dt><dd><p>The result</p></dd>
-
-</dl>
+    <p>The ID token string</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
