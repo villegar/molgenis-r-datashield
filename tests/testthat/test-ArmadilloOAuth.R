@@ -1,6 +1,6 @@
 test_that("get_token test if the token information is retrieved correctly", {
   httr_get <- mock(structure(list(status_code = 200), class = "response"))
-  httr_content <- mock(list(auth = list(clientId = "hufjksdhfdjks-sdsa", issuerUri = "https://auth.example.org")))
+  httr_content <- mock(list(auth = list(clientId = "hufjksdhfdjks-sdsa", issuerUri = "https://auth.example.org"))) # nolint
   endpoint <- httr::oauth_endpoint(
     authorize = "https://example.org/oauth2/authorize",
     access = "https://example.org/oauth2/token",
