@@ -47,4 +47,5 @@ Collate:
     'ArmadilloConnection.R'
     'ArmadilloOAuth.R'
     'ArmadilloResult.R'
+    'DSMolgenisArmadillo-package.R'
     'utils.R'
