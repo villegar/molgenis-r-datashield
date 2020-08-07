@@ -14,7 +14,7 @@ We have constructed a sample program to get your first login, data assigend and 
 # create loginframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
-               url = "http://aramdillo.dev.molgenis.org?workspace=gecko/patient",
+               url = "http://armadillo.dev.molgenis.org?workspace=gecko/patient",
                user = "admin",
                password = "admin",
                token = "",
