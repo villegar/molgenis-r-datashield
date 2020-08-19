@@ -22,7 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Tommy de Boer \email{t.de.boer01@umcg.nl}
+  \item Tommy de Boer \email{t.de.boer01@umcg.nl} (\href{https://orcid.org/0000-0002-4492-7225}{ORCID})
   \item Fleur Kelpin \email{f.kelpin@umcg.nl} (\href{https://orcid.org/0000-0003-1527-5130}{ORCID})
 }
 

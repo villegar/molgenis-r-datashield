@@ -19,7 +19,7 @@ test_that("dsConnect returns an ArmadilloConnection", {
   httr_handle <- mock(handle)
   with_mock(
     result <- dsConnect(driver,
-      url = "https://example.org?workspace=GECKO/customer",
+      url = "https://example.org",
       username = "admin",
       password = "admin",
       name = "test"
@@ -50,7 +50,7 @@ test_that("dsConnect can log in with bearer token", {
   httr_handle <- mock(handle)
   with_mock(
     result <- dsConnect(driver,
-      url = "https://example.org?workspace=GECKO/customer",
+      url = "https://example.org",
       token = "abcde",
       name = "test"
     ),
@@ -72,28 +72,6 @@ test_that("dsConnect can log in with bearer token", {
   )
 })
 
-test_that("dsConnect explains if you don't have access to the workspaces", {
-  ok <- list(status_code = 200)
-  forbidden <- list(status_code = 403)
-  httr_get <- mock(ok)
-  httr_post <- mock(forbidden)
-  httr_cookies <- mock(cookies)
-  expect_error(
-    with_mock(
-      dsConnect(driver,
-        url = "https://example.org?workspace=GECKO/customer",
-        username = "admin",
-        password = "admin",
-        name = "test"
-      ),
-      "httr::GET" = httr_get,
-      "httr::POST" = httr_post,
-      "httr::cookies" = httr_cookies
-    ),
-    "You don't have access to one or more of the workspaces"
-  )
-})
-
 test_that("dsConnect restores user workspace", {
   ok <- list(status_code = 200)
   httr_post <- mock(ok, cycle = TRUE)
@@ -102,7 +80,7 @@ test_that("dsConnect restores user workspace", {
   httr_handle <- mock(handle)
   with_mock(
     dsConnect(driver,
-      url = "https://example.org?workspace=GECKO/customer",
+      url = "https://example.org",
       username = "admin",
       password = "admin",
       name = "test",
@@ -114,8 +92,8 @@ test_that("dsConnect restores user workspace", {
     "httr::handle" = httr_handle
   )
   expect_called(httr_get, 1)
-  expect_called(httr_post, 2)
-  expect_args(httr_post, 2,
+  expect_called(httr_post, 1)
+  expect_args(httr_post, 1,
     handle = handle,
     query = list(id = "keepit"),
     path = "/load-workspace"

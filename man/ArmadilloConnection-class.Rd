@@ -13,8 +13,6 @@ An Armadillo connection implementing the DataSHIELD Interface (DSI)
 \describe{
 \item{\code{name}}{The name of the connection}
 
-\item{\code{workspaces}}{The shared workspaces to load tables from}
-
 \item{\code{handle}}{The handle used to connect with the server}
 
 \item{\code{user}}{The username used to authenticate}
