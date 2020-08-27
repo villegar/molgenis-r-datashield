@@ -1,0 +1,122 @@
+---
+title: "Develop the DSMolgenisArmadillo"
+output: html_vignette
+vignette: >
+  %\VignetteIndexEntry{Developing the Armadillo DataSHIELD implementation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Development
+The following main subjects will be explained:
+
+- [Testing](#Testing)
+- [Vignettes](#vignettes)
+- [Tips and tricks](#tips-and-tricks)
+
+### Testing
+The test are run each time you file a pull request on github. You can run the test locally as well using the following commands:
+
+```{r, show how to test the package}
+
+# run all tests
+
+devtools::test()
+```
+
+```{r, test a single file, eval = FALSE}
+# run a single test file
+# make sure you have the test file open
+# e.g. test-ArmadilloResult.R
+
+devtools::test_file()
+```
+
+### Vignettes
+We use vignettes to expose the usage of the package. It includes examples of regular use cases and shows you how to setup the package.
+
+The vignettes are automatically build and you can run them locally with the following command:
+
+```{r, prepare vignettes, eval = FALSE}
+knitr::knit("vignettes/articles/DSMolgenisArmadillo.Rmd.orig", output = "vignettes/articles/DSMolgenisArmadillo.Rmd")
+```
+
+If you only want the R-output use:
+
+```{r, generate R-code of vignettes, eval = FALSE}
+knitr::purl("vignettes/articles/DSMolgenisArmadillo.Rmd.orig", output = "vignettes/articles/DSMolgenisArmadillo.R")
+```
+
+### Tips and tricks
+Some tips and tricks when you developing on DSMolgenisArmadillo
+
+#### Authentication
+You can login with basic auth when you are developing. The default credentials are username: admin and password: admin.
+
+```{r, login frame with basic authentication}
+armadillo_url <- "https://armadillo.dev.molgenis.org"
+
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "armadillo",
+               url = armadillo_url
+               user = "admin",
+               password = "admin",
+               token = token,
+               table = "gecko/1_1-core-1_0/nonrep",
+               driver = "ArmadilloDriver")
+```
+
+#### Version of the package
+You can determine which version of the DSMolgenisArmadillo you are running by executing the following code:
+
+```{r, get package information}
+dsGetInfo(armadillo())
+```
+
+#### Table handling
+You can use several methods checking if tables in DataSHIELD. For checking existence of the tables you can use the following methods.
+
+```{r, check if table exists}
+dsHasTable(conns$armadillo, "gecko/1_1-core-1_0/nonrep")
+dsHasTable(conns$armadillo, "gecko/1_1-core-1_0/nonrep")
+```
+
+To check the accessibility you can use the `table_status` methods.
+
+```{r, check if the table nonrep is accessible}
+datashield.table_status(conns, "gecko/1_1-core-1_0/nonrep")
+```
+
+To check which tables are assigned you can use the `dsListTables` function.
+
+```{r, list all tables}
+dsListTables(conns$armadillo)
+```
+
+#### Methods and packages
+In DataSHIELD you can use a variety of methods and packages. To check which are avaiable you can execute the following code:
+
+##### Available packages (serverside)
+The available packages displayed by the method, are the serverside R-packages. Which means the packages available on the Armadillo.
+
+```{r, check packages}
+conns <- datashield.login(logins = logindata, assign = F)
+dsListPackages(conns$armadillo)
+```
+
+##### Available methods (clientside)
+These are the available methods on the Armadillo server.
+
+```{r, check methods}
+datashield.methods(conns = conns, type = "aggregate")
+datashield.methods(conns = conns, type = "assign")
+```
+
+
+
+
+

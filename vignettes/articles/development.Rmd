@@ -1,0 +1,377 @@
+---
+title: "Develop the DSMolgenisArmadillo"
+output: html_vignette
+vignette: >
+  %\VignetteIndexEntry{Developing the Armadillo DataSHIELD implementation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+## Development
+The following main subjects will be explained:
+
+- [Testing](#Testing)
+- [Vignettes](#vignettes)
+- [Tips and tricks](#tips-and-tricks)
+
+### Testing
+The test are run each time you file a pull request on github. You can run the test locally as well using the following commands:
+
+
+```r
+# run all tests
+
+devtools::test()
+```
+
+```
+## Loading DSMolgenisArmadillo
+```
+
+```
+## Error in tibble(domain = "#HttpOnly_example.org", name = "JSESSIONID", : could not find function "tibble"
+```
+
+
+```r
+# run a single test file
+# make sure you have the test file open
+# e.g. test-ArmadilloResult.R
+
+devtools::test_file()
+```
+
+### Vignettes
+We use vignettes to expose the usage of the package. It includes examples of regular use cases and shows you how to setup the package.
+
+The vignettes are automatically build and you can run them locally with the following command:
+
+
+```r
+knitr::knit("vignettes/articles/DSMolgenisArmadillo.Rmd.orig", output = "vignettes/articles/DSMolgenisArmadillo.Rmd")
+```
+
+If you only want the R-output use:
+
+
+```r
+knitr::purl("vignettes/articles/DSMolgenisArmadillo.Rmd.orig", output = "vignettes/articles/DSMolgenisArmadillo.R")
+```
+
+### Tips and tricks
+Some tips and tricks when you developing on DSMolgenisArmadillo
+
+#### Authentication
+You can login with basic auth when you are developing. The default credentials are username: admin and password: admin.
+
+
+```r
+armadillo_url <- "https://armadillo.dev.molgenis.org"
+
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "armadillo",
+               url = armadillo_url
+               user = "admin",
+               password = "admin",
+               token = token,
+               table = "gecko/1_1-core-1_0/nonrep",
+               driver = "ArmadilloDriver")
+```
+
+```
+## Error: <text>:6:16: unexpected symbol
+## 5:                url = armadillo_url
+## 6:                user
+##                   ^
+```
+
+#### Version of the package
+You can determine which version of the DSMolgenisArmadillo you are running by executing the following code:
+
+
+```r
+dsGetInfo(armadillo())
+```
+
+```
+## $driver.version
+## [1] '1.1.3.9000'
+```
+
+#### Table handling
+You can use several methods checking if tables in DataSHIELD. For checking existence of the tables you can use the following methods.
+
+
+```r
+dsHasTable(conns$armadillo, "gecko/1_1-core-1_0/nonrep")
+```
+
+```
+## [1] TRUE
+```
+
+```r
+dsHasTable(conns$armadillo, "gecko/1_1-core-1_0/nonrep")
+```
+
+```
+## [1] TRUE
+```
+
+To check the accessibility you can use the `table_status` methods.
+
+
+```r
+datashield.table_status(conns, "gecko/1_1-core-1_0/nonrep")
+```
+
+```
+##      server                     table accessible
+## 1 armadillo gecko/1_1-core-1_0/nonrep       TRUE
+```
+
+To check which tables are assigned you can use the `dsListTables` function.
+
+
+```r
+dsListTables(conns$armadillo)
+```
+
+```
+## [1] "gecko/1_1-core-1_0/nonrep"    "gecko/1_1-core-1_0/repyearly"
+```
+
+#### Methods and packages
+In DataSHIELD you can use a variety of methods and packages. To check which are avaiable you can execute the following code:
+
+##### Available packages (serverside)
+The available packages displayed by the method, are the serverside R-packages. Which means the packages available on the Armadillo.
+
+
+```r
+conns <- datashield.login(logins = logindata, assign = F)
+```
+
+```
+## 
+## Logging into the collaborating servers
+```
+
+```r
+dsListPackages(conns$armadillo)
+```
+
+```
+##              name   version
+## 1           arrow     1.0.0
+## 2      assertthat     0.2.1
+## 3              BH  1.72.0-3
+## 4             bit     4.0.4
+## 5           bit64     4.0.2
+## 6             cli     2.0.2
+## 7          crayon     1.3.4
+## 8          digest    0.6.25
+## 9          docopt     0.6.1
+## 10          dplyr     0.8.5
+## 11         dsBase     6.0.1
+## 12       ellipsis     0.3.0
+## 13          fansi     0.4.1
+## 14           glue     1.4.0
+## 15      lifecycle     0.2.0
+## 16        littler     0.3.9
+## 17           lme4    1.1-23
+## 18       magrittr       1.5
+## 19          minqa     1.2.4
+## 20 MolgenisRserve     0.1.2
+## 21         nloptr   1.2.2.2
+## 22         pillar     1.4.3
+## 23      pkgconfig     2.0.3
+## 24          plogr     0.2.0
+## 25             ps     1.3.2
+## 26          purrr     0.3.4
+## 27             R6     2.4.1
+## 28           RANN     2.6.1
+## 29           Rcpp   1.0.4.6
+## 30      RcppEigen 0.3.3.7.0
+## 31          rlang     0.4.5
+## 32        statmod    1.4.34
+## 33        stringi     1.4.6
+## 34        stringr     1.4.0
+## 35         tibble     3.0.1
+## 36     tidyselect     1.0.0
+## 37           utf8     1.1.4
+## 38          vctrs     0.2.4
+## 39           base     3.6.3
+## 40           boot    1.3-24
+## 41          class    7.3-15
+## 42        cluster     2.1.0
+## 43      codetools    0.2-16
+## 44       compiler     3.6.3
+## 45       datasets     3.6.3
+## 46        foreign    0.8-75
+## 47       graphics     3.6.3
+## 48      grDevices     3.6.3
+## 49           grid     3.6.3
+## 50     KernSmooth   2.23-16
+## 51        lattice   0.20-38
+## 52           MASS  7.3-51.5
+## 53         Matrix    1.2-18
+## 54        methods     3.6.3
+## 55           mgcv    1.8-31
+## 56           nlme   3.1-144
+## 57           nnet    7.3-12
+## 58       parallel     3.6.3
+## 59          rpart    4.1-15
+## 60        spatial    7.3-11
+## 61        splines     3.6.3
+## 62          stats     3.6.3
+## 63         stats4     3.6.3
+## 64       survival     3.1-8
+## 65          tcltk     3.6.3
+## 66          tools     3.6.3
+## 67          utils     3.6.3
+```
+
+##### Available methods (clientside)
+These are the available methods on the Armadillo server.
+
+
+```r
+datashield.methods(conns = conns, type = "aggregate")
+```
+
+```
+##                        name                            value version package      type    class    server
+## 1              is.character               base::is.character    NULL    base aggregate function armadillo
+## 2        dataFrameSubsetDS1       dsBase::dataFrameSubsetDS1   6.0.1  dsBase aggregate function armadillo
+## 3                meanSdGpDS               dsBase::meanSdGpDS   6.0.1  dsBase aggregate function armadillo
+## 4             scatterPlotDS            dsBase::scatterPlotDS   6.0.1  dsBase aggregate function armadillo
+## 5                 setSeedDS                dsBase::setSeedDS   6.0.1  dsBase aggregate function armadillo
+## 6              matrixDetDS1             dsBase::matrixDetDS1   6.0.1  dsBase aggregate function armadillo
+## 7                   numNaDS                  dsBase::numNaDS   6.0.1  dsBase aggregate function armadillo
+## 8                  asListDS                 dsBase::asListDS   6.0.1  dsBase aggregate function armadillo
+## 9                is.numeric                 base::is.numeric    NULL    base aggregate function armadillo
+## 10                   t.test                    stats::t.test    NULL   stats aggregate function armadillo
+## 11                  is.list                    base::is.list    NULL    base aggregate function armadillo
+## 12                 lengthDS                 dsBase::lengthDS   6.0.1  dsBase aggregate function armadillo
+## 13            heatmapPlotDS            dsBase::heatmapPlotDS   6.0.1  dsBase aggregate function armadillo
+## 14                    dimDS                    dsBase::dimDS   6.0.1  dsBase aggregate function armadillo
+## 15                  is.null                    base::is.null    NULL    base aggregate function armadillo
+## 16                   meanDS                   dsBase::meanDS   6.0.1  dsBase aggregate function armadillo
+## 17                  tableDS                  dsBase::tableDS   6.0.1  dsBase aggregate function armadillo
+## 18                is.factor                  base::is.factor    NULL    base aggregate function armadillo
+## 19                    corDS                    dsBase::corDS   6.0.1  dsBase aggregate function armadillo
+## 20          testObjExistsDS          dsBase::testObjExistsDS   6.0.1  dsBase aggregate function armadillo
+## 21                isValidDS                dsBase::isValidDS   6.0.1  dsBase aggregate function armadillo
+## 22                table1DDS                dsBase::table1DDS   6.0.1  dsBase aggregate function armadillo
+## 23              asFactorDS1              dsBase::asFactorDS1   6.0.1  dsBase aggregate function armadillo
+## 24                   glmDS2                   dsBase::glmDS2   6.0.1  dsBase aggregate function armadillo
+## 25                   glmDS1                   dsBase::glmDS1   6.0.1  dsBase aggregate function armadillo
+## 26                    covDS                    dsBase::covDS   6.0.1  dsBase aggregate function armadillo
+## 27              lmerSLMADS2              dsBase::lmerSLMADS2   6.0.1  dsBase aggregate function armadillo
+## 28                     rmDS                     dsBase::rmDS   6.0.1  dsBase aggregate function armadillo
+## 29                   exists                     base::exists    NULL    base aggregate function armadillo
+## 30                  rangeDS                  dsBase::rangeDS   6.0.1  dsBase aggregate function armadillo
+## 31                table2DDS                dsBase::table2DDS   6.0.1  dsBase aggregate function armadillo
+## 32                     NROW                       base::NROW    NULL    base aggregate function armadillo
+## 33              scoreVectDS              dsBase::scoreVectDS   6.0.1  dsBase aggregate function armadillo
+## 34                 tapplyDS                 dsBase::tapplyDS   6.0.1  dsBase aggregate function armadillo
+## 35                 levelsDS                 dsBase::levelsDS   6.0.1  dsBase aggregate function armadillo
+## 36            densityGridDS            dsBase::densityGridDS   6.0.1  dsBase aggregate function armadillo
+## 37                 lexisDS1                 dsBase::lexisDS1   6.0.1  dsBase aggregate function armadillo
+## 38             histogramDS1             dsBase::histogramDS1   6.0.1  dsBase aggregate function armadillo
+## 39             histogramDS2             dsBase::histogramDS2   6.0.1  dsBase aggregate function armadillo
+## 40                 tableDS2                 dsBase::tableDS2   6.0.1  dsBase aggregate function armadillo
+## 41          checkNegValueDS          dsBase::checkNegValueDS   6.0.1  dsBase aggregate function armadillo
+## 42           quantileMeanDS           dsBase::quantileMeanDS   6.0.1  dsBase aggregate function armadillo
+## 43                tTestFDS2                dsBase::tTestFDS2   6.0.1  dsBase aggregate function armadillo
+## 44                    varDS                    dsBase::varDS   6.0.1  dsBase aggregate function armadillo
+## 45               colnamesDS               dsBase::colnamesDS   6.0.1  dsBase aggregate function armadillo
+## 46                     lsDS                     dsBase::lsDS   6.0.1  dsBase aggregate function armadillo
+## 47                  classDS                  dsBase::classDS   6.0.1  dsBase aggregate function armadillo
+## 48                   isNaDS                   dsBase::isNaDS   6.0.1  dsBase aggregate function armadillo
+## 49 listDisclosureSettingsDS dsBase::listDisclosureSettingsDS   6.0.1  dsBase aggregate function armadillo
+## 50             glmerSLMADS2             dsBase::glmerSLMADS2   6.0.1  dsBase aggregate function armadillo
+## 51               glmSLMADS1               dsBase::glmSLMADS1   6.0.1  dsBase aggregate function armadillo
+## 52               glmSLMADS2               dsBase::glmSLMADS2   6.0.1  dsBase aggregate function armadillo
+## 53          recodeValuesDS1          dsBase::recodeValuesDS1   6.0.1  dsBase aggregate function armadillo
+## 54                  namesDS                  dsBase::namesDS   6.0.1  dsBase aggregate function armadillo
+## 55                corTestDS                dsBase::corTestDS   6.0.1  dsBase aggregate function armadillo
+## 56                messageDS                dsBase::messageDS   6.0.1  dsBase aggregate function armadillo
+```
+
+```r
+datashield.methods(conns = conns, type = "assign")
+```
+
+```
+##                  name                      value version package   type    class    server
+## 1    changeRefGroupDS   dsBase::changeRefGroupDS   6.0.1  dsBase assign function armadillo
+## 2  dataFrameSubsetDS2 dsBase::dataFrameSubsetDS2   6.0.1  dsBase assign function armadillo
+## 3        matrixDiagDS       dsBase::matrixDiagDS   6.0.1  dsBase assign function armadillo
+## 4         asNumericDS        dsBase::asNumericDS   6.0.1  dsBase assign function armadillo
+## 5          asMatrixDS         dsBase::asMatrixDS   6.0.1  dsBase assign function armadillo
+## 6        matrixDetDS2       dsBase::matrixDetDS2   6.0.1  dsBase assign function armadillo
+## 7   matrixTransposeDS  dsBase::matrixTransposeDS   6.0.1  dsBase assign function armadillo
+## 8             mergeDS            dsBase::mergeDS   6.0.1  dsBase assign function armadillo
+## 9             cbindDS            dsBase::cbindDS   6.0.1  dsBase assign function armadillo
+## 10           asListDS           dsBase::asListDS   6.0.1  dsBase assign function armadillo
+## 11                log                  base::log    NULL    base assign function armadillo
+## 12           matrixDS           dsBase::matrixDS   6.0.1  dsBase assign function armadillo
+## 13         asFactorDS         dsBase::asFactorDS   6.0.1  dsBase assign function armadillo
+## 14     tableDS.assign     dsBase::tableDS.assign   6.0.1  dsBase assign function armadillo
+## 15              repDS              dsBase::repDS   6.0.1  dsBase assign function armadillo
+## 16            rPoisDS            dsBase::rPoisDS   6.0.1  dsBase assign function armadillo
+## 17           unListDS           dsBase::unListDS   6.0.1  dsBase assign function armadillo
+## 18     matrixInvertDS     dsBase::matrixInvertDS   6.0.1  dsBase assign function armadillo
+## 19    tapplyDS.assign    dsBase::tapplyDS.assign   6.0.1  dsBase assign function armadillo
+## 20              seqDS              dsBase::seqDS   6.0.1  dsBase assign function armadillo
+## 21    dataFrameFillDS    dsBase::dataFrameFillDS   6.0.1  dsBase assign function armadillo
+## 22           subsetDS           dsBase::subsetDS   6.0.1  dsBase assign function armadillo
+## 23            rNormDS            dsBase::rNormDS   6.0.1  dsBase assign function armadillo
+## 24     recodeLevelsDS     dsBase::recodeLevelsDS   6.0.1  dsBase assign function armadillo
+## 25    dataFrameSortDS    dsBase::dataFrameSortDS   6.0.1  dsBase assign function armadillo
+## 26           rBinomDS           dsBase::rBinomDS   6.0.1  dsBase assign function armadillo
+## 27                cDS                dsBase::cDS   6.0.1  dsBase assign function armadillo
+## 28        dataFrameDS        dsBase::dataFrameDS   6.0.1  dsBase assign function armadillo
+## 29        asFactorDS2        dsBase::asFactorDS2   6.0.1  dsBase assign function armadillo
+## 30    completeCasesDS    dsBase::completeCasesDS   6.0.1  dsBase assign function armadillo
+## 31       matrixMultDS       dsBase::matrixMultDS   6.0.1  dsBase assign function armadillo
+## 32             seedDS             dsBase::seedDS   6.0.1  dsBase assign function armadillo
+## 33    subsetByClassDS    dsBase::subsetByClassDS   6.0.1  dsBase assign function armadillo
+## 34              cbind                base::cbind    NULL    base assign function armadillo
+## 35             unlist               base::unlist    NULL    base assign function armadillo
+## 36            rbindDS            dsBase::rbindDS   6.0.1  dsBase assign function armadillo
+## 37          reShapeDS          dsBase::reShapeDS   6.0.1  dsBase assign function armadillo
+## 38            rUnifDS            dsBase::rUnifDS   6.0.1  dsBase assign function armadillo
+## 39         as.numeric           base::as.numeric    NULL    base assign function armadillo
+## 40               list                 base::list    NULL    base assign function armadillo
+## 41        asIntegerDS        dsBase::asIntegerDS   6.0.1  dsBase assign function armadillo
+## 42           lexisDS2           dsBase::lexisDS2   6.0.1  dsBase assign function armadillo
+## 43            as.null              base::as.null    NULL    base assign function armadillo
+## 44                sum                  base::sum    NULL    base assign function armadillo
+## 45           lexisDS3           dsBase::lexisDS3   6.0.1  dsBase assign function armadillo
+## 46        asLogicalDS        dsBase::asLogicalDS   6.0.1  dsBase assign function armadillo
+## 47   matrixDimnamesDS   dsBase::matrixDimnamesDS   6.0.1  dsBase assign function armadillo
+## 48     complete.cases      stats::complete.cases    NULL   stats assign function armadillo
+## 49             listDS             dsBase::listDS   6.0.1  dsBase assign function armadillo
+## 50             attach               base::attach    NULL    base assign function armadillo
+## 51      asCharacterDS      dsBase::asCharacterDS   6.0.1  dsBase assign function armadillo
+## 52                exp                  base::exp    NULL    base assign function armadillo
+## 53    recodeValuesDS2    dsBase::recodeValuesDS2   6.0.1  dsBase assign function armadillo
+## 54                  c                    base::c    NULL    base assign function armadillo
+## 55        replaceNaDS        dsBase::replaceNaDS   6.0.1  dsBase assign function armadillo
+## 56       rowColCalcDS       dsBase::rowColCalcDS   6.0.1  dsBase assign function armadillo
+## 57           sampleDS           dsBase::sampleDS   6.0.1  dsBase assign function armadillo
+## 58       as.character         base::as.character    NULL    base assign function armadillo
+## 59                rep                  base::rep    NULL    base assign function armadillo
+## 60            BooleDS            dsBase::BooleDS   6.0.1  dsBase assign function armadillo
+## 61     asDataMatrixDS     dsBase::asDataMatrixDS   6.0.1  dsBase assign function armadillo
+```
+
+
+
+
+
