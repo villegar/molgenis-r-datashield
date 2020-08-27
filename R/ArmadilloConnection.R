@@ -8,7 +8,6 @@ setOldClass("handle")
 #' \code{\link{DSConnection-class}}.
 #'
 #' @slot name The name of the connection
-#' @slot workspaces The shared workspaces to load tables from
 #' @slot handle The handle used to connect with the server
 #' @slot user The username used to authenticate
 #' @slot cookies The cookies set by the server
@@ -20,7 +19,6 @@ methods::setClass("ArmadilloConnection",
   contains = "DSConnection",
   slots = list(
     name = "character",
-    workspaces = "list",
     handle = "handle",
     user = "character",
     cookies = "list"
@@ -116,7 +114,7 @@ methods::setMethod(
 #' @export
 methods::setMethod(
   "dsIsAsync", "ArmadilloConnection", function(conn) {
-    list(aggregate = TRUE, assignTable = FALSE, assignExpr = TRUE)
+    list(aggregate = TRUE, assignTable = TRUE, assignExpr = TRUE)
   }
 )
 
@@ -183,7 +181,7 @@ methods::setMethod(
   function(conn, symbol, table, variables = NULL, missings = FALSE,
            identifiers = NULL, id.name = NULL, async = TRUE) { # nolint
 
-    query <- list(table = table, symbol = symbol)
+    query <- list(table = table, symbol = symbol, async = async)
     if (!is.null(variables)) {
       query$variables <- paste(unlist(variables), collapse = ",")
     }
@@ -444,7 +442,6 @@ methods::setMethod(
     .handle_request_error(response)
     result <- httr::content(response)
     result$url <- dsObj@handle$url
-    result$workspaces <- dsObj@workspaces
     result$name <- dsObj@name
     result$cookies <- dsObj@cookies
     result

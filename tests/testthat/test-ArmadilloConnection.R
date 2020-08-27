@@ -35,24 +35,30 @@ test_that("dsHasTable returns TRUE if table exists", {
   head <- mock(list(status_code = 200))
   with_mock(
     "httr::HEAD" = head,
-    expect_true(dsHasTable(connection, "package.NAME"))
+    expect_true(dsHasTable(connection, "project/folder/name.parquet"))
   )
-  expect_args(head, 1, handle = handle, path = "/tables/package.NAME")
+  expect_args(head, 1,
+    handle = handle,
+    path = "/tables/project/folder/name.parquet"
+  )
 })
 
 test_that("dsHasTable returns FALSE if table doesnot exist", {
   head <- mock(list(status_code = 404))
   with_mock(
     "httr::HEAD" = head,
-    expect_false(dsHasTable(connection, "package.NAME"))
+    expect_false(dsHasTable(connection, "project/folder/name.parquet"))
   )
-  expect_args(head, 1, handle = handle, path = "/tables/package.NAME")
+  expect_args(head, 1,
+    handle = handle,
+    path = "/tables/project/folder/name.parquet"
+  )
 })
 
 test_that("dsIsAsync returns boolean list", {
   expect_equal(
     dsIsAsync(connection),
-    list(aggregate = TRUE, assignTable = FALSE, assignExpr = TRUE)
+    list(aggregate = TRUE, assignTable = TRUE, assignExpr = TRUE)
   )
 })
 
@@ -82,12 +88,16 @@ test_that("dsAssignTable assigns table to symbol", {
   post <- mock(list(status_code = 200))
   result <- with_mock(
     "httr::POST" = post,
-    dsAssignTable(connection, "D", "package.NAME")
+    dsAssignTable(connection, "D", "project/folder/name.parquet")
   )
   expect_args(post, 1,
     handle = handle,
     path = "/load-table",
-    query = list(table = "package.NAME", symbol = "D")
+    query = list(
+      table = "project/folder/name.parquet",
+      symbol = "D",
+      async = TRUE
+    )
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -97,7 +107,7 @@ test_that("dsAssignTable allows variable selection", {
   result <- with_mock(
     "httr::POST" = post,
     dsAssignTable(connection, "D",
-      "package.NAME",
+      "project/folder/name.parquet",
       variables = c("foo", "bar")
     )
   )
@@ -105,8 +115,9 @@ test_that("dsAssignTable allows variable selection", {
     handle = handle,
     path = "/load-table",
     query = list(
-      table = "package.NAME",
+      table = "project/folder/name.parquet",
       symbol = "D",
+      async = TRUE,
       variables = "foo,bar"
     )
   )
@@ -121,12 +132,15 @@ test_that("dsAssignTable, when called synchronously, waits for result", {
     "httr::POST" = post,
     "httr::RETRY" = retry,
     "httr::content" = httr_content,
-    dsAssignTable(connection, "D", "package.NAME", async = FALSE)
+    dsAssignTable(connection, "D", "project/folder/name.parquet")
   )
   expect_args(post, 1,
     handle = handle,
     path = "/load-table",
-    query = list(table = "package.NAME", symbol = "D")
+    query = list(
+      table = "project/folder/name.parquet", symbol = "D",
+      async = TRUE
+    )
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -400,7 +414,6 @@ test_that("dsGetInfo returns server info", {
     git = server_info$git,
     build = server_info$build,
     url <- connection@handle$url,
-    workspaces <- connection@workspaces,
     name <- connection@name,
     cookies <- connection@cookies
   )

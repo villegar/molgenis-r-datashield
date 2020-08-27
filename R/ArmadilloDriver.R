@@ -47,17 +47,7 @@ methods::setMethod(
   "dsConnect", "ArmadilloDriver",
   function(drv, name, restore = NULL, username = "", password = "",
            token = "", url, opts = list(), ...) {
-    # Retrieve login URL and workspace name
-    url_parts <- unlist(strsplit(url, "?", fixed = TRUE))
-    workspace_parameters <- url_parts[2]
-    root_url <- paste(url_parts[1])
-
-    handle <- httr::handle(root_url)
-    workspace_values <- stringr::str_remove_all(
-      workspace_parameters,
-      "workspace="
-    )
-    workspaces <- strsplit(workspace_values, "&", fixed = TRUE)
+    handle <- httr::handle(url)
 
     if (stringr::str_length(username) > 0) {
       if (stringr::str_length(password) == 0) {
@@ -84,20 +74,6 @@ methods::setMethod(
     .handle_request_error(response)
     cookies <- httr::cookies(response)
 
-    load_table_response <- httr::POST(
-      handle = handle,
-      path = paste0(
-        "/load-tables?",
-        workspace_parameters
-      )
-    )
-    if (load_table_response$status_code == 403) {
-      stop("You don't have access to one or more of the workspaces",
-        call. = FALSE
-      )
-    }
-    .handle_request_error(load_table_response)
-
     # Restore users workspace
     if (!is.null(restore)) {
       restore_response <- httr::POST(
@@ -111,7 +87,6 @@ methods::setMethod(
     methods::new("ArmadilloConnection",
       name = name,
       handle = handle,
-      workspaces = workspaces,
       user = username,
       cookies = cookies
     )
