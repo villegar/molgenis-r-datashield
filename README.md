@@ -8,5 +8,5 @@ A DSI implementation for the [Armadillo DataSHIELD Service](https://github.com/m
 **Part of the MOLGENIS suite**
 
 
-To see how to use it please check [howto](https://molgenis.github.io/molgenis-r-datashield/articles/DSMolgenisArmadillo.html).
+Check the howto here: [howto](https://molgenis.github.io/molgenis-r-datashield/articles/DSMolgenisArmadillo.html).
 
