@@ -74,13 +74,13 @@ We are currently only using the oauth flow in production environments.
 ```r
 # method 1: using oauth on the central server
 # specify server url
-armadillo_url <- "http://localhost:8080"
+armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
 token <- armadillo.get_token(armadillo_url)
-#> [1] "We're opening a browser so you can log in with code 45BYM5"
+#> [1] "We're opening a browser so you can log in with code F9FW7G"
 token
-#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiJiMzk2MjMzYi1jZGIyLTQ0OWUtYWM1Yy1hMGQyOGIzOGY3OTEiLCJleHAiOjE1OTg2MDQ3NDIsImlhdCI6MTU5ODYwMTE0MiwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiI0S3Y3MVFOSjZfWE1WQ21UVzJYSDVRIiwiYXBwbGljYXRpb25JZCI6ImIzOTYyMzNiLWNkYjItNDQ5ZS1hYzVjLWEwZDI4YjM4Zjc5MSIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.gimt2DsZZ9WjdDsP_aTFFSvzPOz10jq7Ylv4Ou3mE1zaT1JVdTDKhq-YT6nXu2jmR8DKgqU5dLxpUtDiOWOtEPoyMnhCkRK1UQo8F6ra9q2uSnom_SiPk1fSIcCpf48R1trGKWfaaXIA8Ans1PdJfpTB9IqdJBAPBhm_f-veeUKdwWhxQaVGOBWGgAr063CKbssrE_AqXHLJItst9qtXCqgMLyhlKqJu0jsrKPT-2y4VPdhvtEQoR6rhOj1eq3yHRavksYc_5RJUzFX4kIvucElvPmFXDran1OQslFtDOHcd-jU8iQP_PyKJKXDMJrO0-XzSVq8Gt9P_wlBp-OajWg"
+#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDU1NzUsImlhdCI6MTU5ODYwMTk3NSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJhT1FHeVpyd3dZZmQxdVM0VnJGNlBRIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.MQ4ZnIXvjKXTNfKylSSWrZEWoQ7IdSqEsdd8ej1cwjRmDwzJ65fR1xcH66s1CjRD7bIIpk4Gx7ESVono3T4LJfLS2R1srETtxQYfD9pTXl5UPFYMmhLqu6gvvH6nhdfpADxK12iiPsWsFCYXDJenaFHiM6FwV94RbYuxu3qVPrAQNVQtS8_MBMjN4QRh_oyDQ77xsKmQkid9LLLV0c4yc8tRaxIxWo7atJcPC0i0mZ6D5Isp138bkKt38NLRVD6ldjI-tGQGweVK19dJ3DrIntp4Xd2ulK3sNJc1HuhBGIXR7sLteGA1oqy5jsva3YZNWtVh6j4-QU8ffmrSduXT8Q"
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
@@ -90,15 +90,14 @@ builder$append(server = "armadillo",
                token = token,
                table = "gecko/2_1-core-1_0/nonrep",
                driver = "ArmadilloDriver")
-#> Warning: Secure HTTP connection is recommended: http://localhost:8080
 
 # create loginframe
 logindata <- builder$build()
 logindata
-#>      server                   url                     table resource          driver user password
-#> 1 armadillo http://localhost:8080 gecko/2_1-core-1_0/nonrep          ArmadilloDriver              
+#>      server                                url                     table resource          driver user password
+#> 1 armadillo https://armadillo.dev.molgenis.org gecko/2_1-core-1_0/nonrep          ArmadilloDriver              
 #>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  token
-#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiJiMzk2MjMzYi1jZGIyLTQ0OWUtYWM1Yy1hMGQyOGIzOGY3OTEiLCJleHAiOjE1OTg2MDQ3NDIsImlhdCI6MTU5ODYwMTE0MiwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiI0S3Y3MVFOSjZfWE1WQ21UVzJYSDVRIiwiYXBwbGljYXRpb25JZCI6ImIzOTYyMzNiLWNkYjItNDQ5ZS1hYzVjLWEwZDI4YjM4Zjc5MSIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.gimt2DsZZ9WjdDsP_aTFFSvzPOz10jq7Ylv4Ou3mE1zaT1JVdTDKhq-YT6nXu2jmR8DKgqU5dLxpUtDiOWOtEPoyMnhCkRK1UQo8F6ra9q2uSnom_SiPk1fSIcCpf48R1trGKWfaaXIA8Ans1PdJfpTB9IqdJBAPBhm_f-veeUKdwWhxQaVGOBWGgAr063CKbssrE_AqXHLJItst9qtXCqgMLyhlKqJu0jsrKPT-2y4VPdhvtEQoR6rhOj1eq3yHRavksYc_5RJUzFX4kIvucElvPmFXDran1OQslFtDOHcd-jU8iQP_PyKJKXDMJrO0-XzSVq8Gt9P_wlBp-OajWg
+#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDU1NzUsImlhdCI6MTU5ODYwMTk3NSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJhT1FHeVpyd3dZZmQxdVM0VnJGNlBRIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.MQ4ZnIXvjKXTNfKylSSWrZEWoQ7IdSqEsdd8ej1cwjRmDwzJ65fR1xcH66s1CjRD7bIIpk4Gx7ESVono3T4LJfLS2R1srETtxQYfD9pTXl5UPFYMmhLqu6gvvH6nhdfpADxK12iiPsWsFCYXDJenaFHiM6FwV94RbYuxu3qVPrAQNVQtS8_MBMjN4QRh_oyDQ77xsKmQkid9LLLV0c4yc8tRaxIxWo7atJcPC0i0mZ6D5Isp138bkKt38NLRVD6ldjI-tGQGweVK19dJ3DrIntp4Xd2ulK3sNJc1HuhBGIXR7sLteGA1oqy5jsva3YZNWtVh6j4-QU8ffmrSduXT8Q
 #>   options
 #> 1
 
@@ -108,6 +107,7 @@ datashield.logout(conns)
 conns <- datashield.login(logins = logindata, assign = FALSE)
 #> 
 #> Logging into the collaborating servers
+#>   Logged in all servers [================================================================] 100% / 0s
 ```
 
 The superuser has a simple username and password which you can fill in in the login dataframe.
@@ -122,7 +122,7 @@ datashield.assign.table(conns = conns,
                         table = "gecko/2_1-core-1_0/nonrep",
                         symbol = "D",
                         variables = c("recruit_age", "child_id"))
-#>   Assigned all table (D <- ...) [========================================================] 100% / 1s
+#>   Assigned all table (D <- ...) [========================================================] 100% / 0s
 ```
 
 #### Symbol assignment
@@ -312,7 +312,6 @@ ds.merge(x.name = 'core_nonrep',
 
 
 ```r
-# check the columns names
 ds.colnames("analysis_df", datasources = conns)
 #> Error: The input vector must be of type 'data.frame' or a 'matrix'!
 ```
@@ -342,29 +341,24 @@ armadillo_glm <- ds.glm(formula = 'asthma_ever_CHICOS~pets_preg',
         data = 'outcome_nonrep',
         family = 'binomial',
         datasources = conns)
-#> Iteration 1...
-#> CURRENT DEVIANCE:      1386.29436111989
-#> Iteration 2...
-#> CURRENT DEVIANCE:      1383.77966090903
-#> Iteration 3...
-#> CURRENT DEVIANCE:      1383.77965374426
-#> SUMMARY OF MODEL STATE after iteration 3
-#> Current deviance 1383.77965374426 on 998 degrees of freedom
-#> Convergence criterion TRUE (5.17730734453012e-09)
 #> 
-#> beta: 0.142808403223323 -0.131020447471281
 #> 
-#> Information matrix overall:
-#>             (Intercept) pets_preg
-#> (Intercept)    249.3719  127.2456
-#> pets_preg      127.2456  127.2456
-#> 
-#> Score vector overall:
-#>                     [,1]
-#> (Intercept) 2.550729e-07
-#> pets_preg   1.497691e-13
-#> 
-#> Current deviance: 1383.77965374426
+#> MODEL FITTING TERMINATED AT FIRST ITERATION:
+#> Any values of 1 in the following tables denote potential disclosure risks
+#> please use the argument <datasources> to include only valid studies.
+#> Errors by study are as follows:
+#>           Y VECTOR
+#> armadillo        0
+#>           [,1] [,2]
+#> armadillo    0    0
+#>           WEIGHT VECTOR
+#> armadillo             0
+#>           OFFSET VECTOR
+#> armadillo             0
+#>           MODEL OVERPARAMETERIZED
+#> armadillo                       1
+#>           ERROR MESSAGES                                       
+#> armadillo "STUDY DATA OR APPLIED MODEL INVALID FOR THIS SOURCE"
 ```
 
 Do the meta analysis and install prerequisites.
@@ -377,12 +371,11 @@ install.packages("metafor")
 
 
 ```r
-# meta analysis
 yi <- c(armadillo_glm$coefficients["pets_preg", "Estimate"])
 sei <- c(armadillo_glm$coefficients["pets_preg", "Std. Error"])
 
-# random effects model:
 res <- metafor::rma(yi, sei = sei)
+#> Error in metafor::rma(yi, sei = sei): Specify the desired outcome measure via the 'measure' argument.
 res
 #> 
 #> Fixed-Effects Model (k = 1)
@@ -415,7 +408,6 @@ ds.contourPlot(x = "outcome_nonrep$asthma_ever_CHICOS", y = "outcome_nonrep$pets
 
 
 ```r
-# cleanup the session
 datashield.logout(conns)
 ```
 
@@ -430,7 +422,6 @@ conns <- datashield.login(login = logindata)
 #> 
 #> Logging into the collaborating servers
 
-# reassign data from a Armadillo table
 datashield.assign.table(conns = conns,
                         table = "gecko/2_1-core-1_0/nonrep",
                         symbol = "J",
@@ -438,25 +429,20 @@ datashield.assign.table(conns = conns,
 #> ```
 
 ```
-#>   Assigned all table (J <- ...) [========================================================] 100% / 1s
+#>   Assigned all table (J <- ...) [========================================================] 100% / 0s
 
-# save the workspace duringg logout
 datashield.logout(conns, save = "my-workspace")
+#>   Logged out from all servers [==========================================================] 100% / 0s
 
-# restore workspace during logging in
 conns <- datashield.login(logins = logindata, 
                           assign = FALSE, 
                           restore = "my-workspace")
 #> 
 #> Logging into the collaborating servers
 
-# check if the workspace is restored correctly
-# should contain 'J'
 datashield.symbols(conns)
 #> $armadillo
 #> [1] "J"
-
-# save workspace at runtime
 datashield.workspace_save(conns, "my-workspace-version-2")
 ```
 
@@ -464,20 +450,18 @@ You can overwrite workspaces using the same name again when saving the workspace
 
 
 ```r
-# make sure we start with an empty workspace
 datashield.logout(conns)
 conns <- datashield.login(logins = logindata)
 #> 
 #> Logging into the collaborating servers
 
-# assign data to make sure something is in the workspace
 datashield.assign.table(conns = conns, 
                         table = "gecko/2_1-core-1_0/nonrep", 
                         symbol = "H")
 #> ```
 
 ```
-#>   Assigned all table (H <- ...) [========================================================] 100% / 1s
+#>   Assigned all table (H <- ...) [========================================================] 100% / 0s
 
 datashield.workspace_save(conns, "my-workspace-overwritten")
 datashield.workspace_save(conns, "my-workspace-overwritten")
@@ -487,26 +471,23 @@ You can list the workspaces as well.
 
 
 ```r
-# list all workspaces for this user
 datashield.workspaces(conns$armadillo)
-#>             lastAccessDate                               name   size                               ETag user
-#> 1 2020-08-28T07:52:32.027Z armadillo:my-workspace-overwritten 172072 "79ea8e26a41a0f43716040c5f09466c0"     
-#> 2 2020-08-28T07:52:30.845Z   armadillo:my-workspace-version-2   3610 "7de51b96e6d15e9ab13b9ef52fe3547f"     
-#> 3 2020-08-28T07:52:30.429Z             armadillo:my-workspace   3610 "7de51b96e6d15e9ab13b9ef52fe3547f"
+#>             lastAccessDate                               ETag                               name   size user
+#> 1 2020-08-28T08:06:24.318Z "79ea8e26a41a0f43716040c5f09466c0" armadillo:my-workspace-overwritten 172072     
+#> 2 2020-08-28T08:06:22.796Z "7de51b96e6d15e9ab13b9ef52fe3547f"   armadillo:my-workspace-version-2   3610     
+#> 3 2020-08-28T08:06:22.158Z "7de51b96e6d15e9ab13b9ef52fe3547f"             armadillo:my-workspace   3610
 ```
 
 Remove workspaces.
 
 
 ```r
-# create a new workspace 
 datashield.workspace_rm(conns, "my-workspace-overwritten")
-# list the workspaces to make sure the overwritten one is deleted
 datashield.workspaces(conns)
-#>      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user lastAccessDate..2020.08.28T07.52.30.845Z.
-#> 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-28T07:52:30.845Z
-#> 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-28T07:52:30.845Z
-#>   lastAccessDate..2020.08.28T07.52.30.429Z. size.3610L size.3610L.1
-#> 1                  2020-08-28T07:52:30.429Z       3610         3610
-#> 2                  2020-08-28T07:52:30.429Z       3610         3610
+#>      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user lastAccessDate..2020.08.28T08.06.22.796Z.
+#> 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-28T08:06:22.796Z
+#> 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-28T08:06:22.796Z
+#>   lastAccessDate..2020.08.28T08.06.22.158Z. size.3610L size.3610L.1
+#> 1                  2020-08-28T08:06:22.158Z       3610         3610
+#> 2                  2020-08-28T08:06:22.158Z       3610         3610
 ```
