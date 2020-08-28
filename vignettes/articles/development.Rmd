@@ -109,7 +109,7 @@ dsHasTable(conns$armadillo, "gecko/1_1-core-1_0/nonrep")
 ```
 
 ```
-## [1] TRUE
+## [1] FALSE
 ```
 
 ```r
@@ -117,7 +117,7 @@ dsHasTable(conns$armadillo, "gecko/1_1-core-1_0/nonrep")
 ```
 
 ```
-## [1] TRUE
+## [1] FALSE
 ```
 
 To check the accessibility you can use the `table_status` methods.
@@ -129,7 +129,7 @@ datashield.table_status(conns, "gecko/1_1-core-1_0/nonrep")
 
 ```
 ##      server                     table accessible
-## 1 armadillo gecko/1_1-core-1_0/nonrep       TRUE
+## 1 armadillo gecko/1_1-core-1_0/nonrep      FALSE
 ```
 
 To check which tables are assigned you can use the `dsListTables` function.
@@ -140,7 +140,8 @@ dsListTables(conns$armadillo)
 ```
 
 ```
-## [1] "gecko/1_1-core-1_0/nonrep"    "gecko/1_1-core-1_0/repyearly"
+## [1] "gecko/1_1-outcome-1_0/nonrep"    "gecko/1_1-outcome-1_0/yearlyrep" "gecko/2_1-core-1_0/monthlyrep"   "gecko/2_1-core-1_0/nonrep"      
+## [5] "gecko/2_1-core-1_0/trimesterrep" "gecko/2_1-core-1_0/yearlyrep"
 ```
 
 #### Methods and packages
@@ -157,6 +158,10 @@ conns <- datashield.login(logins = logindata, assign = F)
 ```
 ## 
 ## Logging into the collaborating servers
+```
+
+```
+## Warning: armadillo will be excluded because table gecko/1_1-core-1_0/nonrep is not accessible
 ```
 
 ```r

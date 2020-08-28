@@ -56,7 +56,11 @@ Load the necessary packages.
 
 ```r
 library(dsBaseClient)
+#> Loading required package: DSI
+#> Loading required package: progress
+#> Loading required package: R6
 library(DSMolgenisArmadillo)
+#> Loading required package: MolgenisAuth
 ```
 
 ### Authenticate
@@ -78,9 +82,9 @@ armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
 token <- armadillo.get_token(armadillo_url)
-#> [1] "We're opening a browser so you can log in with code N584L8"
+#> [1] "We're opening a browser so you can log in with code 8T88SN"
 token
-#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg1MzQwODEsImlhdCI6MTU5ODUzMDQ4MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6ImM1ZGRlMWUxLTk1YzUtNGViNy04YzM0LTEyOTZhYzUzNTYyZSIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUBydWcubmwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2lkbyIsImF0X2hhc2giOiJRWEFudVB6N0JqOEhCT2V1akVRYkhBIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.ZVWFZPE_vz0SADshTKVPqvGUYxL8OQ2m76um4r-IrfsEcLyWqMIHNAVSamKBNCGGCp9Km4dfIH2MwdrCx1zJ3aCVKYCOxb9AoIQfs8tDZ8APCafW5LkqS6Yvda-jLm3w8osJhSWSSPJT9Za3vXvzrRcCwZpb1B5ijuVPIojBPY5UGNy7k0Ufi_AYaNCHotAwevv91IZji5mRBxkRy4HA16Z3Osk5XigIXD6-NQVDIpCLbEQJGU0gQPt7ObsCyZ1vhMlwlU2cYu7Fq4cHXbBDtHFqmoleLhGpHXCnqQQIgks810-_Tsm4TWekDlwc52LbiBIwgmsfaIYgCipxOfXYXA"
+#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDA2NTEsImlhdCI6MTU5ODU5NzA1MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6ImM1ZGRlMWUxLTk1YzUtNGViNy04YzM0LTEyOTZhYzUzNTYyZSIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUBydWcubmwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2lkbyIsImF0X2hhc2giOiI0UWhKa09xX3lNZVN6Z3RpVFQteEdBIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.fgYOBxJHVdq-DPOfRjA_V5GFjIEbyH4iXjwbIDAu7_IuPiHJKAHVfXqwqM64JYCVg3LbbgURZgaWoACaMnjLysJOayKmYoHK7FrvK12S9xtsWzLpeHnDlHdSciBZtYgfBxc0JbZGEgT8Chxz6mbr011nY8nvPZzoieIHM0UItvDFE1r3zo0kYnKU9B6zBHlwg-ezMVWfFfiQBhojpT-gwEbNHOdeDmHSuqVty38YAGLpygDfE22GaonCLTV4InJlBkXurSILMIXtzN-jkv5nSGTeuFQGqSrbdN1TAAcFC4pcwaBFYMD2HTnjflnbl2mF3eTXVQnV0aqlQwRkTgWJCQ"
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
@@ -97,16 +101,19 @@ logindata
 #>      server                                url                     table resource          driver user password
 #> 1 armadillo https://armadillo.dev.molgenis.org gecko/1_1-core-1_0/nonrep          ArmadilloDriver              
 #>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      token
-#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg1MzQwODEsImlhdCI6MTU5ODUzMDQ4MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6ImM1ZGRlMWUxLTk1YzUtNGViNy04YzM0LTEyOTZhYzUzNTYyZSIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUBydWcubmwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2lkbyIsImF0X2hhc2giOiJRWEFudVB6N0JqOEhCT2V1akVRYkhBIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.ZVWFZPE_vz0SADshTKVPqvGUYxL8OQ2m76um4r-IrfsEcLyWqMIHNAVSamKBNCGGCp9Km4dfIH2MwdrCx1zJ3aCVKYCOxb9AoIQfs8tDZ8APCafW5LkqS6Yvda-jLm3w8osJhSWSSPJT9Za3vXvzrRcCwZpb1B5ijuVPIojBPY5UGNy7k0Ufi_AYaNCHotAwevv91IZji5mRBxkRy4HA16Z3Osk5XigIXD6-NQVDIpCLbEQJGU0gQPt7ObsCyZ1vhMlwlU2cYu7Fq4cHXbBDtHFqmoleLhGpHXCnqQQIgks810-_Tsm4TWekDlwc52LbiBIwgmsfaIYgCipxOfXYXA
+#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDA2NTEsImlhdCI6MTU5ODU5NzA1MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6ImM1ZGRlMWUxLTk1YzUtNGViNy04YzM0LTEyOTZhYzUzNTYyZSIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUBydWcubmwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2lkbyIsImF0X2hhc2giOiI0UWhKa09xX3lNZVN6Z3RpVFQteEdBIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.fgYOBxJHVdq-DPOfRjA_V5GFjIEbyH4iXjwbIDAu7_IuPiHJKAHVfXqwqM64JYCVg3LbbgURZgaWoACaMnjLysJOayKmYoHK7FrvK12S9xtsWzLpeHnDlHdSciBZtYgfBxc0JbZGEgT8Chxz6mbr011nY8nvPZzoieIHM0UItvDFE1r3zo0kYnKU9B6zBHlwg-ezMVWfFfiQBhojpT-gwEbNHOdeDmHSuqVty38YAGLpygDfE22GaonCLTV4InJlBkXurSILMIXtzN-jkv5nSGTeuFQGqSrbdN1TAAcFC4pcwaBFYMD2HTnjflnbl2mF3eTXVQnV0aqlQwRkTgWJCQ
 #>   options
 #> 1
 
 datashield.logout(conns)
+#> Error in curl::handle_setopt(handle, .list = req$options): handle is dead
 
 # login into server
 conns <- datashield.login(logins = logindata, assign = FALSE)
 #> 
 #> Logging into the collaborating servers
+#>   Logged in all servers [================================================================] 100% / 1s
+#> Warning: armadillo will be excluded because table gecko/1_1-core-1_0/nonrep is not accessible
 ```
 
 The superuser has a simple username and password which you can fill in in the login dataframe.
@@ -121,7 +128,7 @@ datashield.assign.table(conns = conns,
                         table = "gecko/2_1-core-1_0/nonrep",
                         symbol = "D",
                         variables = c("recruit_age", "child_id"))
-#> Error: There are some DataSHIELD errors, list them with datashield.errors()
+#>   Assigned all table (D <- ...) [========================================================] 100% / 1s
 ```
 
 #### Symbol assignment
@@ -133,7 +140,7 @@ You can remove the symbol from the workspace on the server by executing the foll
 # list the current symbols
 datashield.symbols(conns)
 #> $armadillo
-#> character(0)
+#> [1] "D"
 # remove the symbol
 datashield.rm(conns = conns, "D")
 # list the current symbols without the deleted one
@@ -176,13 +183,30 @@ When you have assigned symbols in R, you check which tables (`data.frame`'s) are
 datashield.assign.table(conns = conns, 
                         table = "gecko/2_1-core-1_0/nonrep", 
                         symbol = "core_nonrep")
+#>   Assigned all table (core_nonrep <- ...) [==============================================] 100% / 0s
 ```
 
 
 ```r
 # check the columns in the non-repeated data
 ds.colnames("core_nonrep", datasources = conns)
-#> Error: The input object(s) core_nonrep is(are) not defined on one or more of the studies!
+#> $armadillo
+#>   [1] "row_id"              "child_id"            "mother_id"           "cohort_id"           "preg_no"             "child_no"            "coh_country"        
+#>   [8] "recruit_age"         "cob_m"               "ethn1_m"             "ethn2_m"             "ethn3_m"             "agebirth_m_y"        "agebirth_m_d"       
+#>  [15] "death_m"             "death_m_age"         "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"     "latepreg_weight_mes"
+#>  [22] "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"       "height_m"            "height_mes_m"        "prepreg_dia"         "preg_dia"           
+#>  [29] "preg_thyroid"        "preg_fever"          "preeclam"            "preg_ht"             "asthma_m"            "prepreg_psych"       "preg_psych"         
+#>  [36] "ppd"                 "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"            "prepreg_alc"         "prepreg_alc_unit"   
+#>  [43] "preg_alc"            "preg_alc_unit"       "folic_prepreg"       "folic_preg12"        "folic_post12"        "parity_m"            "preg_plan"          
+#>  [50] "mar"                 "ivf"                 "outcome"             "mode_delivery"       "plac_abrup"          "cob_p"               "cob_p_fath"         
+#>  [57] "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"         "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"    
+#>  [64] "death_p"             "death_p_age"         "death_p_fath"        "weight_f1"           "weight_mes_f1"       "weight_f1_fath"      "height_f1"          
+#>  [71] "height_mes_f1"       "height_f1_fath"      "dia_bf"              "asthma_bf"           "psych_bf"            "smk_p"               "smk_cig_p"          
+#>  [78] "smk_fath"            "birth_month"         "birth_year"          "apgar"               "neo_unit"            "sex"                 "plurality"          
+#>  [85] "ga_lmp"              "ga_us"               "ga_mr"               "ga_bj"               "birth_weight"        "birth_length"        "birth_head_circum"  
+#>  [92] "weight_who_ga"       "plac_weight"         "con_anomalies"       "major_con_anomalies" "cer_palsy"           "sibling_pos"         "death_child"        
+#>  [99] "death_child_age"     "breastfed_excl"      "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"     "cats_preg"          
+#> [106] "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"
 ```
 
 
@@ -195,10 +219,15 @@ Before you are working with the data you can subset to a specific range of varia
 datashield.assign.table(conns = conns,
                         table = "gecko/2_1-core-1_0/yearlyrep",
                         symbol = "core_yearlyrep")
+#>   Assigned all table (core_yearlyrep <- ...) [===========================================] 100% / 0s
 
 # check dimensions of repeatead measures
 ds.dim("core_yearlyrep", datasources = conns)
-#> Error: There are some DataSHIELD errors, list them with datashield.errors()
+#> $`dimensions of core_yearlyrep in armadillo`
+#> [1] 19000    34
+#> 
+#> $`dimensions of core_yearlyrep in combined studies`
+#> [1] 19000    34
 
 # subset the data to the first 2 years
 ds.dataFrameSubset(df.name = 'core_yearlyrep', newobj = 'core_yearlyrep_1_3', V1.name = "patientrep$year", V2.name = "2", Boolean.operator  = '<=') 
@@ -291,7 +320,24 @@ armadillo_glm <- ds.glm(formula = 'asthma_ever_CHICOS~pets_preg',
         data = 'outcome_nonrep',
         family = 'binomial',
         datasources = conns)
-#> Error: The input object(s) outcome_nonrep is(are) not defined on one or more of the studies!
+#> 
+#> 
+#> MODEL FITTING TERMINATED AT FIRST ITERATION:
+#> Any values of 1 in the following tables denote potential disclosure risks
+#> please use the argument <datasources> to include only valid studies.
+#> Errors by study are as follows:
+#>           Y VECTOR
+#> armadillo        0
+#>           [,1] [,2]
+#> armadillo    0    0
+#>           WEIGHT VECTOR
+#> armadillo             0
+#>           OFFSET VECTOR
+#> armadillo             0
+#>           MODEL OVERPARAMETERIZED
+#> armadillo                       1
+#>           ERROR MESSAGES                                       
+#> armadillo "STUDY DATA OR APPLIED MODEL INVALID FOR THIS SOURCE"
 ```
 
 Do the meta analysis and install prerequisites.
@@ -299,7 +345,9 @@ Do the meta analysis and install prerequisites.
 
 ```r
 install.packages("metafor")
-#> Error in install.packages : Updating loaded packages
+#> 
+#> The downloaded binary packages are in
+#> 	/var/folders/8t/kzhvhl2n5r55q1dpxf35zyr00000gn/T//RtmpqbYRwt/downloaded_packages
 ```
 
 
@@ -314,26 +362,10 @@ sei <- c(gecko$coefficients["pets_preg", "Std. Error"])
 res <- metafor::rma(yi, sei = standard_error)
 #> Error in eval(mf.yi, data, enclos = sys.frame(sys.parent())): object 'yi' not found
 res
-#> 
-#> Fixed-Effects Model (k = 1)
-#> 
-#> I^2 (total heterogeneity / total variability):   0.00%
-#> H^2 (total variability / sampling variability):  1.00
-#> 
-#> Test for Heterogeneity:
-#> Q(df = 0) = 0.0000, p-val = 1.0000
-#> 
-#> Model Results:
-#> 
-#> estimate      se     zval    pval    ci.lb   ci.ub 
-#>  -0.1310  0.1267  -1.0343  0.3010  -0.3793  0.1173    
-#> 
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> Error in eval(expr, envir, enclos): object 'res' not found
 metafor::forest(res, xlab = "OR", transf = exp, refline = 1, slab = c("armadillo_glm"))
+#> Error in metafor::forest(res, xlab = "OR", transf = exp, refline = 1, : object 'res' not found
 ```
-
-![plot of chunk meta-analysis](figure/meta-analysis-1.png)
 
 #### Creating figures
 You can directly create figures with the DataSHIELD methods. For example:
@@ -355,11 +387,10 @@ datashield.assign.table(conns = conns,
                         table = "gecko/1_1-core-1_0/nonrep",
                         symbol = "J",
                         variables = c("age", "name"))
-#>   Assigned all table (J <- ...) [========================================================] 100% / 0s
 
 # save the workspace duringg logout
 datashield.logout(conns, save = "my-workspace")
-#>   Logged out from all servers [==========================================================] 100% / 0s
+#>   Logged out from all servers [==========================================================] 100% / 1s
 
 # restore workspace during logging in
 conns <- datashield.login(logins = logindata, 
@@ -367,12 +398,14 @@ conns <- datashield.login(logins = logindata,
                           restore = "my-workspace")
 #> 
 #> Logging into the collaborating servers
+#>   Logged in all servers [================================================================] 100% / 0s
+#> Warning: armadillo will be excluded because table gecko/1_1-core-1_0/nonrep is not accessible
 
 # check if the workspace is restored correctly
 # should contain 'J'
 datashield.symbols(conns)
 #> $armadillo
-#> [1] "analysis_df" "J"           "K"
+#> [1] "analysis_df"    "core_nonrep"    "core_yearlyrep" "K"              "outcome_nonrep"
 
 # save workspace at runtime
 datashield.workspace_save(conns, "my-workspace-version-2")
@@ -387,15 +420,13 @@ datashield.logout(conns)
 conns <- datashield.login(logins = logindata)
 #> 
 #> Logging into the collaborating servers
+#> Warning: armadillo will be excluded because table gecko/1_1-core-1_0/nonrep is not accessible
 
 # assign data to make sure something is in the workspace
 datashield.assign.table(conns = conns, 
                         table = "gecko/1_1-core-1_0/nonrep", 
                         symbol = "H")
-#> ```
-
-```
-#>   Assigned all table (H <- ...) [========================================================] 100% / 0s
+#> Error: There are some DataSHIELD errors, list them with datashield.errors()
 
 datashield.workspace_save(conns, "my-workspace-overwritten")
 datashield.workspace_save(conns, "my-workspace-overwritten")
@@ -407,11 +438,11 @@ You can list the workspaces as well.
 ```r
 # list all workspaces for this user
 datashield.workspaces(conns$armadillo)
-#>             lastAccessDate                               ETag                               name size user
-#> 1 2020-08-26T12:55:18.793Z "aeeabe163d73bf0f264f45a5631cf67c"              armadillo:glm-failure  557     
-#> 2 2020-08-27T12:14:47.269Z "4c88ad837337add5a5ede399b50b73c3" armadillo:my-workspace-overwritten  304     
-#> 3 2020-08-27T12:14:46.135Z "c5bd3b915251acbdbfe06be7575a3071"   armadillo:my-workspace-version-2  357     
-#> 4 2020-08-27T12:14:45.551Z "c5bd3b915251acbdbfe06be7575a3071"             armadillo:my-workspace  357
+#>             lastAccessDate                               ETag                               name    size user
+#> 1 2020-08-26T12:55:18.793Z "aeeabe163d73bf0f264f45a5631cf67c"              armadillo:glm-failure     557     
+#> 2 2020-08-28T06:44:26.517Z "e8f9a3425e7d53c7897378918fa6d98a" armadillo:my-workspace-overwritten      48     
+#> 3 2020-08-28T06:44:25.755Z "e56a54dfc3f627cebd3986bfe6ffe147"   armadillo:my-workspace-version-2 1061526     
+#> 4 2020-08-28T06:44:24.463Z "e56a54dfc3f627cebd3986bfe6ffe147"             armadillo:my-workspace 1061526
 ```
 
 Remove workspaces.
@@ -426,8 +457,8 @@ datashield.workspaces(conns)
 #> 1 armadillo        armadillo:glm-failure        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-26T12:55:18.793Z
 #> 2 armadillo        armadillo:glm-failure        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-26T12:55:18.793Z
 #> 3 armadillo        armadillo:glm-failure        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-26T12:55:18.793Z
-#>   lastAccessDate..2020.08.27T12.14.46.135Z. lastAccessDate..2020.08.27T12.14.45.551Z. size.557L size.357L size.357L.1
-#> 1                  2020-08-27T12:14:46.135Z                  2020-08-27T12:14:45.551Z       557       357         357
-#> 2                  2020-08-27T12:14:46.135Z                  2020-08-27T12:14:45.551Z       557       357         357
-#> 3                  2020-08-27T12:14:46.135Z                  2020-08-27T12:14:45.551Z       557       357         357
+#>   lastAccessDate..2020.08.28T06.44.25.755Z. lastAccessDate..2020.08.28T06.44.24.463Z. size.557L size.1061526L size.1061526L.1
+#> 1                  2020-08-28T06:44:25.755Z                  2020-08-28T06:44:24.463Z       557       1061526         1061526
+#> 2                  2020-08-28T06:44:25.755Z                  2020-08-28T06:44:24.463Z       557       1061526         1061526
+#> 3                  2020-08-28T06:44:25.755Z                  2020-08-28T06:44:24.463Z       557       1061526         1061526
 ```
