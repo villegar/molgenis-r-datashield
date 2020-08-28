@@ -78,9 +78,9 @@ armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
 token <- armadillo.get_token(armadillo_url)
-#> [1] "We're opening a browser so you can log in with code F9FW7G"
+#> [1] "We're opening a browser so you can log in with code SN2L7L"
 token
-#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDU1NzUsImlhdCI6MTU5ODYwMTk3NSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJhT1FHeVpyd3dZZmQxdVM0VnJGNlBRIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.MQ4ZnIXvjKXTNfKylSSWrZEWoQ7IdSqEsdd8ej1cwjRmDwzJ65fR1xcH66s1CjRD7bIIpk4Gx7ESVono3T4LJfLS2R1srETtxQYfD9pTXl5UPFYMmhLqu6gvvH6nhdfpADxK12iiPsWsFCYXDJenaFHiM6FwV94RbYuxu3qVPrAQNVQtS8_MBMjN4QRh_oyDQ77xsKmQkid9LLLV0c4yc8tRaxIxWo7atJcPC0i0mZ6D5Isp138bkKt38NLRVD6ldjI-tGQGweVK19dJ3DrIntp4Xd2ulK3sNJc1HuhBGIXR7sLteGA1oqy5jsva3YZNWtVh6j4-QU8ffmrSduXT8Q"
+#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MTQ1NDQsImlhdCI6MTU5ODYxMDk0NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJna2VMdVR6Q3dpOHFvRDVTOTZJT2F3IiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.c2p79UiLTIpODAEw--4hAQdTfwKPFM4iocqLc62S6cVV8M-LYoyznnVYpilaHTVeI8VKf6IAeMevHHm1cruhdQY-PsUVpl_Xbh_4ulvq8CnD9ec5RqILH6VeA4Mcs2WAWYJDRZ25UrkHU9ScmSLkOQQe0l-2O_Xj0-oeyFhvnO1cVSAdgn5W-UnqVSdphvfSdwuYhmgyXESE2fetJFvXZJjClnjonB8P9E8BKCb21MHoNA--5RCpEYCKpgU11FTbzqjQDEbeObFmbBwQ40VF9tCDXP5IqdivYccU_3cTi-kXznkrzRM9MejTSCShjNYG02q7U_svmTAZM8xv51e_9w"
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
@@ -97,7 +97,7 @@ logindata
 #>      server                                url                     table resource          driver user password
 #> 1 armadillo https://armadillo.dev.molgenis.org gecko/2_1-core-1_0/nonrep          ArmadilloDriver              
 #>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  token
-#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDU1NzUsImlhdCI6MTU5ODYwMTk3NSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJhT1FHeVpyd3dZZmQxdVM0VnJGNlBRIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.MQ4ZnIXvjKXTNfKylSSWrZEWoQ7IdSqEsdd8ej1cwjRmDwzJ65fR1xcH66s1CjRD7bIIpk4Gx7ESVono3T4LJfLS2R1srETtxQYfD9pTXl5UPFYMmhLqu6gvvH6nhdfpADxK12iiPsWsFCYXDJenaFHiM6FwV94RbYuxu3qVPrAQNVQtS8_MBMjN4QRh_oyDQ77xsKmQkid9LLLV0c4yc8tRaxIxWo7atJcPC0i0mZ6D5Isp138bkKt38NLRVD6ldjI-tGQGweVK19dJ3DrIntp4Xd2ulK3sNJc1HuhBGIXR7sLteGA1oqy5jsva3YZNWtVh6j4-QU8ffmrSduXT8Q
+#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MTQ1NDQsImlhdCI6MTU5ODYxMDk0NCwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJna2VMdVR6Q3dpOHFvRDVTOTZJT2F3IiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.c2p79UiLTIpODAEw--4hAQdTfwKPFM4iocqLc62S6cVV8M-LYoyznnVYpilaHTVeI8VKf6IAeMevHHm1cruhdQY-PsUVpl_Xbh_4ulvq8CnD9ec5RqILH6VeA4Mcs2WAWYJDRZ25UrkHU9ScmSLkOQQe0l-2O_Xj0-oeyFhvnO1cVSAdgn5W-UnqVSdphvfSdwuYhmgyXESE2fetJFvXZJjClnjonB8P9E8BKCb21MHoNA--5RCpEYCKpgU11FTbzqjQDEbeObFmbBwQ40VF9tCDXP5IqdivYccU_3cTi-kXznkrzRM9MejTSCShjNYG02q7U_svmTAZM8xv51e_9w
 #>   options
 #> 1
 
@@ -107,7 +107,6 @@ datashield.logout(conns)
 conns <- datashield.login(logins = logindata, assign = FALSE)
 #> 
 #> Logging into the collaborating servers
-#>   Logged in all servers [================================================================] 100% / 0s
 ```
 
 The superuser has a simple username and password which you can fill in in the login dataframe.
@@ -184,21 +183,27 @@ datashield.assign.table(conns = conns,
 # check the columns in the non-repeated data
 ds.colnames("core_nonrep", datasources = conns)
 #> $armadillo
-#>   [1] "row_id"              "child_id"            "mother_id"           "cohort_id"           "preg_no"             "child_no"            "coh_country"        
-#>   [8] "recruit_age"         "cob_m"               "ethn1_m"             "ethn2_m"             "ethn3_m"             "agebirth_m_y"        "agebirth_m_d"       
-#>  [15] "death_m"             "death_m_age"         "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"     "latepreg_weight_mes"
-#>  [22] "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"       "height_m"            "height_mes_m"        "prepreg_dia"         "preg_dia"           
-#>  [29] "preg_thyroid"        "preg_fever"          "preeclam"            "preg_ht"             "asthma_m"            "prepreg_psych"       "preg_psych"         
-#>  [36] "ppd"                 "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"            "prepreg_alc"         "prepreg_alc_unit"   
-#>  [43] "preg_alc"            "preg_alc_unit"       "folic_prepreg"       "folic_preg12"        "folic_post12"        "parity_m"            "preg_plan"          
-#>  [50] "mar"                 "ivf"                 "outcome"             "mode_delivery"       "plac_abrup"          "cob_p"               "cob_p_fath"         
-#>  [57] "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"         "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"    
-#>  [64] "death_p"             "death_p_age"         "death_p_fath"        "weight_f1"           "weight_mes_f1"       "weight_f1_fath"      "height_f1"          
-#>  [71] "height_mes_f1"       "height_f1_fath"      "dia_bf"              "asthma_bf"           "psych_bf"            "smk_p"               "smk_cig_p"          
-#>  [78] "smk_fath"            "birth_month"         "birth_year"          "apgar"               "neo_unit"            "sex"                 "plurality"          
-#>  [85] "ga_lmp"              "ga_us"               "ga_mr"               "ga_bj"               "birth_weight"        "birth_length"        "birth_head_circum"  
-#>  [92] "weight_who_ga"       "plac_weight"         "con_anomalies"       "major_con_anomalies" "cer_palsy"           "sibling_pos"         "death_child"        
-#>  [99] "death_child_age"     "breastfed_excl"      "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"     "cats_preg"          
+#>   [1] "row_id"              "child_id"            "mother_id"           "cohort_id"           "preg_no"            
+#>   [6] "child_no"            "coh_country"         "recruit_age"         "cob_m"               "ethn1_m"            
+#>  [11] "ethn2_m"             "ethn3_m"             "agebirth_m_y"        "agebirth_m_d"        "death_m"            
+#>  [16] "death_m_age"         "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"    
+#>  [21] "latepreg_weight_mes" "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"       "height_m"           
+#>  [26] "height_mes_m"        "prepreg_dia"         "preg_dia"            "preg_thyroid"        "preg_fever"         
+#>  [31] "preeclam"            "preg_ht"             "asthma_m"            "prepreg_psych"       "preg_psych"         
+#>  [36] "ppd"                 "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"           
+#>  [41] "prepreg_alc"         "prepreg_alc_unit"    "preg_alc"            "preg_alc_unit"       "folic_prepreg"      
+#>  [46] "folic_preg12"        "folic_post12"        "parity_m"            "preg_plan"           "mar"                
+#>  [51] "ivf"                 "outcome"             "mode_delivery"       "plac_abrup"          "cob_p"              
+#>  [56] "cob_p_fath"          "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"        
+#>  [61] "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"     "death_p"             "death_p_age"        
+#>  [66] "death_p_fath"        "weight_f1"           "weight_mes_f1"       "weight_f1_fath"      "height_f1"          
+#>  [71] "height_mes_f1"       "height_f1_fath"      "dia_bf"              "asthma_bf"           "psych_bf"           
+#>  [76] "smk_p"               "smk_cig_p"           "smk_fath"            "birth_month"         "birth_year"         
+#>  [81] "apgar"               "neo_unit"            "sex"                 "plurality"           "ga_lmp"             
+#>  [86] "ga_us"               "ga_mr"               "ga_bj"               "birth_weight"        "birth_length"       
+#>  [91] "birth_head_circum"   "weight_who_ga"       "plac_weight"         "con_anomalies"       "major_con_anomalies"
+#>  [96] "cer_palsy"           "sibling_pos"         "death_child"         "death_child_age"     "breastfed_excl"     
+#> [101] "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"     "cats_preg"          
 #> [106] "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"
 ```
 
@@ -234,11 +239,13 @@ ds.dataFrameSubset(df.name = 'core_yearlyrep', newobj = 'core_yearlyrep_1_3', V1
 # check the columns
 ds.colnames("core_yearlyrep_1_3", datasources = conns)
 #> $armadillo
-#>  [1] "row_id"            "child_id"          "age_years"         "cohab_"            "occup_m_"          "occupcode_m_"      "edu_m_"           
-#>  [8] "occup_f1_"         "occup_f1_fath"     "occup_f2_"         "occup_f2_fath"     "occupcode_f1_"     "occupcode_f1_fath" "occupcode_f2_"    
-#> [15] "occupcode_f2_fath" "edu_f1_"           "edu_f1_fath"       "edu_f2_"           "edu_f2_fath"       "childcare_"        "childcarerel_"    
-#> [22] "childcareprof_"    "childcarecentre_"  "smk_exp"           "pets_"             "cats_"             "cats_quant_"       "dogs_"            
-#> [29] "dogs_quant_"       "mental_exp"        "hhincome_"         "fam_splitup"       "famsize_child"     "famsize_adult"
+#>  [1] "row_id"            "child_id"          "age_years"         "cohab_"            "occup_m_"         
+#>  [6] "occupcode_m_"      "edu_m_"            "occup_f1_"         "occup_f1_fath"     "occup_f2_"        
+#> [11] "occup_f2_fath"     "occupcode_f1_"     "occupcode_f1_fath" "occupcode_f2_"     "occupcode_f2_fath"
+#> [16] "edu_f1_"           "edu_f1_fath"       "edu_f2_"           "edu_f2_fath"       "childcare_"       
+#> [21] "childcarerel_"     "childcareprof_"    "childcarecentre_"  "smk_exp"           "pets_"            
+#> [26] "cats_"             "cats_quant_"       "dogs_"             "dogs_quant_"       "mental_exp"       
+#> [31] "hhincome_"         "fam_splitup"       "famsize_child"     "famsize_adult"
 
 # check dimensions again
 ds.dim("core_yearlyrep_1_3", datasources = conns)
@@ -250,6 +257,19 @@ ds.dim("core_yearlyrep_1_3", datasources = conns)
 ```
 
 
+```r
+# strip the redundant columns
+ds.dataFrame(x = c("core_yearlyrep_1_3$child_id", "core_yearlyrep_1_3$age_years", "core_yearlyrep_1_3$dogs_",  "core_yearlyrep_1_3$cats_",  "core_yearlyrep_1_3$pets_"),
+             completeCases = TRUE,
+             newobj = "core_yearlyrep_1_3_stripped",
+             datasources = conns)
+#> $is.object.created
+#> [1] "A data object <core_yearlyrep_1_3_stripped> has been created in all specified data sources"
+#> 
+#> $validity.check
+#> [1] "<core_yearlyrep_1_3_stripped> appears valid in all sources"
+```
+
 ### Transform data
 In general you need 2 methods to work with data that is stored in long format, the `reshape` and `merge` functions in DataSHIELD. You can reshape data with the Armadillo to transform data from [wide-format to long-format](https://www.theanalysisfactor.com/wide-and-long-data/) and vice versa. 
 
@@ -258,7 +278,7 @@ You can do this using the `ds.reshape` function:
 
 ```r
 # reshape the data for the wide-format variables (yearlyrep)
-ds.reShape(data.name='core_yearlyrep_1_3',
+ds.reShape(data.name='core_yearlyrep_1_3_stripped',
            timevar.name = 'age_years',
            idvar.name = 'child_id',
            v.names=c("pets_", "cats_", "dogs_"),
@@ -266,7 +286,6 @@ ds.reShape(data.name='core_yearlyrep_1_3',
            newobj = "core_yearlyrep_1_3_wide",
            datasources = conns
 )
-#>   Assigned expr. (core_yearlyrep_1_3_wide <- reShapeDS("core_yearlyrep_1_3", NULL, "pets_,cats_,d...
 #> $is.object.created
 #> [1] "A data object <core_yearlyrep_1_3_wide> has been created in all specified data sources"
 #> 
@@ -279,12 +298,7 @@ ds.reShape(data.name='core_yearlyrep_1_3',
 # show the reshaped columns of the new data frame
 ds.colnames("core_yearlyrep_1_3_wide", datasources = conns)
 #> $armadillo
-#>  [1] "row_id"            "child_id"          "cohab_"            "occup_m_"          "occupcode_m_"      "edu_m_"            "occup_f1_"        
-#>  [8] "occup_f1_fath"     "occup_f2_"         "occup_f2_fath"     "occupcode_f1_"     "occupcode_f1_fath" "occupcode_f2_"     "occupcode_f2_fath"
-#> [15] "edu_f1_"           "edu_f1_fath"       "edu_f2_"           "edu_f2_fath"       "childcare_"        "childcarerel_"     "childcareprof_"   
-#> [22] "childcarecentre_"  "smk_exp"           "cats_quant_"       "dogs_quant_"       "mental_exp"        "hhincome_"         "fam_splitup"      
-#> [29] "famsize_child"     "famsize_adult"     "pets_.0"           "cats_.0"           "dogs_.0"           "pets_.1"           "cats_.1"          
-#> [36] "dogs_.1"           "pets_.2"           "cats_.2"           "dogs_.2"
+#>  [1] "child_id" "pets_.0"  "cats_.0"  "dogs_.0"  "pets_.1"  "cats_.1"  "dogs_.1"  "pets_.2"  "cats_.2"  "dogs_.2"
 ```
 
 When you reshaped and subsetted the data you often need to merge your dataframe with others to get your analysis dataframe. You can do this using the `ds.merge` function:
@@ -292,6 +306,7 @@ When you reshaped and subsetted the data you often need to merge your dataframe 
 
 ```r
 # merge non-repeated table with wide-format repeated table
+# make sure the disclosure measure regarding stringshort is set to '100'
 ds.merge(x.name = 'core_nonrep',
          y.name = 'core_yearlyrep_1_3_wide',
          by.x.names = 'child_id',
@@ -303,17 +318,37 @@ ds.merge(x.name = 'core_nonrep',
 #> [1] "A data object <analysis_df> has been created in all specified data sources"
 #> 
 #> $validity.check
-#> [1] "<analysis_df> invalid in at least one source. See studyside.messages:"
-#> 
-#> $studyside.messages
-#> $studyside.messages$armadillo
-#> [1] "NOT ALL OK: there are studysideMessage(s) on this datasource"
+#> [1] "<analysis_df> appears valid in all sources"
 ```
 
 
 ```r
 ds.colnames("analysis_df", datasources = conns)
-#> Error: The input vector must be of type 'data.frame' or a 'matrix'!
+#> $armadillo
+#>   [1] "child_id"            "row_id"              "mother_id"           "cohort_id"           "preg_no"            
+#>   [6] "child_no"            "coh_country"         "recruit_age"         "cob_m"               "ethn1_m"            
+#>  [11] "ethn2_m"             "ethn3_m"             "agebirth_m_y"        "agebirth_m_d"        "death_m"            
+#>  [16] "death_m_age"         "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"    
+#>  [21] "latepreg_weight_mes" "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"       "height_m"           
+#>  [26] "height_mes_m"        "prepreg_dia"         "preg_dia"            "preg_thyroid"        "preg_fever"         
+#>  [31] "preeclam"            "preg_ht"             "asthma_m"            "prepreg_psych"       "preg_psych"         
+#>  [36] "ppd"                 "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"           
+#>  [41] "prepreg_alc"         "prepreg_alc_unit"    "preg_alc"            "preg_alc_unit"       "folic_prepreg"      
+#>  [46] "folic_preg12"        "folic_post12"        "parity_m"            "preg_plan"           "mar"                
+#>  [51] "ivf"                 "outcome"             "mode_delivery"       "plac_abrup"          "cob_p"              
+#>  [56] "cob_p_fath"          "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"        
+#>  [61] "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"     "death_p"             "death_p_age"        
+#>  [66] "death_p_fath"        "weight_f1"           "weight_mes_f1"       "weight_f1_fath"      "height_f1"          
+#>  [71] "height_mes_f1"       "height_f1_fath"      "dia_bf"              "asthma_bf"           "psych_bf"           
+#>  [76] "smk_p"               "smk_cig_p"           "smk_fath"            "birth_month"         "birth_year"         
+#>  [81] "apgar"               "neo_unit"            "sex"                 "plurality"           "ga_lmp"             
+#>  [86] "ga_us"               "ga_mr"               "ga_bj"               "birth_weight"        "birth_length"       
+#>  [91] "birth_head_circum"   "weight_who_ga"       "plac_weight"         "con_anomalies"       "major_con_anomalies"
+#>  [96] "cer_palsy"           "sibling_pos"         "death_child"         "death_child_age"     "breastfed_excl"     
+#> [101] "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"     "cats_preg"          
+#> [106] "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"     "pets_.0"             "cats_.0"            
+#> [111] "dogs_.0"             "pets_.1"             "cats_.1"             "dogs_.1"             "pets_.2"            
+#> [116] "cats_.2"             "dogs_.2"
 ```
 
 ### Performing analysis
@@ -325,7 +360,16 @@ You execute a summary on the a variable within you analysis frame. It will retur
 
 ```r
 ds.summary("analysis_df$pets_.1", datasources = conns)
-#> Error: The input object must be a 'data.frame', 'character', factor', 'integer', 'list', 'logical', 'matrix' or 'numeric'.
+#> $armadillo
+#> $armadillo$class
+#> [1] "numeric"
+#> 
+#> $armadillo$length
+#> [1] 1000
+#> 
+#> $armadillo$`quantiles & mean`
+#>      5%     10%     25%     50%     75%     90%     95%    Mean 
+#>   8.000  15.000  32.750  61.000  90.000 108.000 113.000  60.954
 ```
 
 #### Advanced statistical methods
@@ -341,24 +385,29 @@ armadillo_glm <- ds.glm(formula = 'asthma_ever_CHICOS~pets_preg',
         data = 'outcome_nonrep',
         family = 'binomial',
         datasources = conns)
+#> Iteration 1...
+#> CURRENT DEVIANCE:      1386.29436111989
+#> Iteration 2...
+#> CURRENT DEVIANCE:      1383.77966090903
+#> Iteration 3...
+#> CURRENT DEVIANCE:      1383.77965374426
+#> SUMMARY OF MODEL STATE after iteration 3
+#> Current deviance 1383.77965374426 on 998 degrees of freedom
+#> Convergence criterion TRUE (5.17730734453012e-09)
 #> 
+#> beta: 0.142808403223323 -0.131020447471281
 #> 
-#> MODEL FITTING TERMINATED AT FIRST ITERATION:
-#> Any values of 1 in the following tables denote potential disclosure risks
-#> please use the argument <datasources> to include only valid studies.
-#> Errors by study are as follows:
-#>           Y VECTOR
-#> armadillo        0
-#>           [,1] [,2]
-#> armadillo    0    0
-#>           WEIGHT VECTOR
-#> armadillo             0
-#>           OFFSET VECTOR
-#> armadillo             0
-#>           MODEL OVERPARAMETERIZED
-#> armadillo                       1
-#>           ERROR MESSAGES                                       
-#> armadillo "STUDY DATA OR APPLIED MODEL INVALID FOR THIS SOURCE"
+#> Information matrix overall:
+#>             (Intercept) pets_preg
+#> (Intercept)    249.3719  127.2456
+#> pets_preg      127.2456  127.2456
+#> 
+#> Score vector overall:
+#>                     [,1]
+#> (Intercept) 2.550729e-07
+#> pets_preg   1.497691e-13
+#> 
+#> Current deviance: 1383.77965374426
 ```
 
 Do the meta analysis and install prerequisites.
@@ -375,7 +424,6 @@ yi <- c(armadillo_glm$coefficients["pets_preg", "Estimate"])
 sei <- c(armadillo_glm$coefficients["pets_preg", "Std. Error"])
 
 res <- metafor::rma(yi, sei = sei)
-#> Error in metafor::rma(yi, sei = sei): Specify the desired outcome measure via the 'measure' argument.
 res
 #> 
 #> Fixed-Effects Model (k = 1)
@@ -451,6 +499,7 @@ You can overwrite workspaces using the same name again when saving the workspace
 
 ```r
 datashield.logout(conns)
+#>   Logged out from all servers [==========================================================] 100% / 0s
 conns <- datashield.login(logins = logindata)
 #> 
 #> Logging into the collaborating servers
@@ -458,10 +507,7 @@ conns <- datashield.login(logins = logindata)
 datashield.assign.table(conns = conns, 
                         table = "gecko/2_1-core-1_0/nonrep", 
                         symbol = "H")
-#> ```
-
-```
-#>   Assigned all table (H <- ...) [========================================================] 100% / 0s
+#>   Assigned all table (H <- ...) [========================================================] 100% / 0s
 
 datashield.workspace_save(conns, "my-workspace-overwritten")
 datashield.workspace_save(conns, "my-workspace-overwritten")
@@ -472,10 +518,11 @@ You can list the workspaces as well.
 
 ```r
 datashield.workspaces(conns$armadillo)
-#>             lastAccessDate                               ETag                               name   size user
-#> 1 2020-08-28T08:06:24.318Z "79ea8e26a41a0f43716040c5f09466c0" armadillo:my-workspace-overwritten 172072     
-#> 2 2020-08-28T08:06:22.796Z "7de51b96e6d15e9ab13b9ef52fe3547f"   armadillo:my-workspace-version-2   3610     
-#> 3 2020-08-28T08:06:22.158Z "7de51b96e6d15e9ab13b9ef52fe3547f"             armadillo:my-workspace   3610
+#>             lastAccessDate                               ETag                               name    size user
+#> 1 2020-08-28T09:29:44.627Z "3b38edc7e73d0eb4fd4b423d2d182a1f"            armadillo:failing-merge 1276869     
+#> 2 2020-08-28T10:35:54.640Z "79ea8e26a41a0f43716040c5f09466c0" armadillo:my-workspace-overwritten  172072     
+#> 3 2020-08-28T10:35:52.861Z "7de51b96e6d15e9ab13b9ef52fe3547f"   armadillo:my-workspace-version-2    3610     
+#> 4 2020-08-28T10:35:52.147Z "7de51b96e6d15e9ab13b9ef52fe3547f"             armadillo:my-workspace    3610
 ```
 
 Remove workspaces.
@@ -484,10 +531,16 @@ Remove workspaces.
 ```r
 datashield.workspace_rm(conns, "my-workspace-overwritten")
 datashield.workspaces(conns)
-#>      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user lastAccessDate..2020.08.28T08.06.22.796Z.
-#> 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-28T08:06:22.796Z
-#> 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-28T08:06:22.796Z
-#>   lastAccessDate..2020.08.28T08.06.22.158Z. size.3610L size.3610L.1
-#> 1                  2020-08-28T08:06:22.158Z       3610         3610
-#> 2                  2020-08-28T08:06:22.158Z       3610         3610
+#>      server name..armadillo.failing.merge. name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user
+#> 1 armadillo        armadillo:failing-merge        armadillo:my-workspace-version-2        armadillo:my-workspace     
+#> 2 armadillo        armadillo:failing-merge        armadillo:my-workspace-version-2        armadillo:my-workspace     
+#> 3 armadillo        armadillo:failing-merge        armadillo:my-workspace-version-2        armadillo:my-workspace     
+#>   lastAccessDate..2020.08.28T09.29.44.627Z. lastAccessDate..2020.08.28T10.35.52.861Z.
+#> 1                  2020-08-28T09:29:44.627Z                  2020-08-28T10:35:52.861Z
+#> 2                  2020-08-28T09:29:44.627Z                  2020-08-28T10:35:52.861Z
+#> 3                  2020-08-28T09:29:44.627Z                  2020-08-28T10:35:52.861Z
+#>   lastAccessDate..2020.08.28T10.35.52.147Z. size.1276869L size.3610L size.3610L.1
+#> 1                  2020-08-28T10:35:52.147Z       1276869       3610         3610
+#> 2                  2020-08-28T10:35:52.147Z       1276869       3610         3610
+#> 3                  2020-08-28T10:35:52.147Z       1276869       3610         3610
 ```

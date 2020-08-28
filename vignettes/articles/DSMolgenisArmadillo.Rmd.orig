@@ -172,6 +172,13 @@ ds.colnames("core_yearlyrep_1_3", datasources = conns)
 ds.dim("core_yearlyrep_1_3", datasources = conns)
 ```
 
+```{r, strip the redundant columns}
+# strip the redundant columns
+ds.dataFrame(x = c("core_yearlyrep_1_3$child_id", "core_yearlyrep_1_3$age_years", "core_yearlyrep_1_3$dogs_",  "core_yearlyrep_1_3$cats_",  "core_yearlyrep_1_3$pets_"),
+             completeCases = TRUE,
+             newobj = "core_yearlyrep_1_3_stripped",
+             datasources = conns)
+```
 
 ### Transform data
 In general you need 2 methods to work with data that is stored in long format, the `reshape` and `merge` functions in DataSHIELD. You can reshape data with the Armadillo to transform data from [wide-format to long-format](https://www.theanalysisfactor.com/wide-and-long-data/) and vice versa. 
@@ -180,7 +187,7 @@ You can do this using the `ds.reshape` function:
 
 ```{r, reshape yearly repeated data}
 # reshape the data for the wide-format variables (yearlyrep)
-ds.reShape(data.name='core_yearlyrep_1_3',
+ds.reShape(data.name='core_yearlyrep_1_3_stripped',
            timevar.name = 'age_years',
            idvar.name = 'child_id',
            v.names=c("pets_", "cats_", "dogs_"),
@@ -199,6 +206,7 @@ When you reshaped and subsetted the data you often need to merge your dataframe 
 
 ```{r, merge both data frames into one}
 # merge non-repeated table with wide-format repeated table
+# make sure the disclosure measure regarding stringshort is set to '100'
 ds.merge(x.name = 'core_nonrep',
          y.name = 'core_yearlyrep_1_3_wide',
          by.x.names = 'child_id',
