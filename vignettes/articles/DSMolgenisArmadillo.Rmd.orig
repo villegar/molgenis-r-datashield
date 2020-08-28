@@ -82,7 +82,7 @@ builder$append(server = "armadillo",
                user = "",
                password = "",
                token = token,
-               table = "gecko/1_1-core-1_0/nonrep",
+               table = "gecko/2_1-core-1_0/nonrep",
                driver = "ArmadilloDriver")
 
 # create loginframe
@@ -163,7 +163,10 @@ datashield.assign.table(conns = conns,
 ds.dim("core_yearlyrep", datasources = conns)
 
 # subset the data to the first 2 years
-ds.dataFrameSubset(df.name = 'core_yearlyrep', newobj = 'core_yearlyrep_1_3', V1.name = "patientrep$year", V2.name = "2", Boolean.operator  = '<=') 
+ds.dataFrameSubset(df.name = 'core_yearlyrep', newobj = 'core_yearlyrep_1_3', V1.name = "core_yearlyrep$age_years", V2.name = "2", Boolean.operator  = '<=') 
+
+# check the columns
+ds.colnames("core_yearlyrep_1_3", datasources = conns)
 
 # check dimensions again
 ds.dim("core_yearlyrep_1_3", datasources = conns)
@@ -178,9 +181,9 @@ You can do this using the `ds.reshape` function:
 ```{r, reshape yearly repeated data}
 # reshape the data for the wide-format variables (yearlyrep)
 ds.reShape(data.name='core_yearlyrep_1_3',
-           timevar.name = 'year',
-           idvar.name = 'id',
-           v.names=c("height", "weight"),
+           timevar.name = 'age_years',
+           idvar.name = 'child_id',
+           v.names=c("pets_", "cats_", "dogs_"),
            direction = 'wide',
            newobj = "core_yearlyrep_1_3_wide",
            datasources = conns
@@ -198,8 +201,8 @@ When you reshaped and subsetted the data you often need to merge your dataframe 
 # merge non-repeated table with wide-format repeated table
 ds.merge(x.name = 'core_nonrep',
          y.name = 'core_yearlyrep_1_3_wide',
-         by.x.names = 'id',
-         by.y.names = 'id',
+         by.x.names = 'child_id',
+         by.y.names = 'child_id',
          newobj = 'analysis_df',
          datasources = conns
 )
@@ -217,7 +220,7 @@ There are a variety of analysis you can perform in DataSHIELD. You can perform b
 You execute a summary on the a variable within you analysis frame. It will return summary statistics.
 
 ```{r, summarize the data}
-ds.summary("analysis_df$height.1", datasources = conns)
+ds.summary("analysis_df$pets_.1", datasources = conns)
 ```
 
 #### Advanced statistical methods
@@ -246,7 +249,7 @@ yi <- c(armadillo_glm$coefficients["pets_preg", "Estimate"])
 sei <- c(armadillo_glm$coefficients["pets_preg", "Std. Error"])
 
 # random effects model:
-res <- metafor::rma(yi, sei = standard_error)
+res <- metafor::rma(yi, sei = sei)
 res
 metafor::forest(res, xlab = "OR", transf = exp, refline = 1, slab = c("armadillo_glm"))
 ```
@@ -258,17 +261,24 @@ You can directly create figures with the DataSHIELD methods. For example:
 ds.contourPlot(x = "outcome_nonrep$asthma_ever_CHICOS", y = "outcome_nonrep$pets_preg", datasources = conns)
 ```
 
+```{r, logout}
+# cleanup the session
+datashield.logout(conns)
+```
+
 ### Workspaces
 To store the assigned data in the Armadillo service, you can use workspaces to make sure a certain state of the data is maintained on the service.
 
 Saving the workspaces can be done during `datashield.logout` or at runtime.
 
 ```{r, saving workspaces}
+conns <- datashield.login(login = logindata)
+
 # reassign data from a Armadillo table
 datashield.assign.table(conns = conns,
-                        table = "gecko/1_1-core-1_0/nonrep",
+                        table = "gecko/2_1-core-1_0/nonrep",
                         symbol = "J",
-                        variables = c("age", "name"))
+                        variables = c("recruit_age", "child_id"))
 
 # save the workspace duringg logout
 datashield.logout(conns, save = "my-workspace")
@@ -295,7 +305,7 @@ conns <- datashield.login(logins = logindata)
 
 # assign data to make sure something is in the workspace
 datashield.assign.table(conns = conns, 
-                        table = "gecko/1_1-core-1_0/nonrep", 
+                        table = "gecko/2_1-core-1_0/nonrep", 
                         symbol = "H")
 
 datashield.workspace_save(conns, "my-workspace-overwritten")

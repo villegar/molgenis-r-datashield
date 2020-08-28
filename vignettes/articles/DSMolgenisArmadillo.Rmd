@@ -56,11 +56,7 @@ Load the necessary packages.
 
 ```r
 library(dsBaseClient)
-#> Loading required package: DSI
-#> Loading required package: progress
-#> Loading required package: R6
 library(DSMolgenisArmadillo)
-#> Loading required package: MolgenisAuth
 ```
 
 ### Authenticate
@@ -82,9 +78,9 @@ armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
 token <- armadillo.get_token(armadillo_url)
-#> [1] "We're opening a browser so you can log in with code 8T88SN"
+#> [1] "We're opening a browser so you can log in with code ZDGJFZ"
 token
-#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDA2NTEsImlhdCI6MTU5ODU5NzA1MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6ImM1ZGRlMWUxLTk1YzUtNGViNy04YzM0LTEyOTZhYzUzNTYyZSIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUBydWcubmwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2lkbyIsImF0X2hhc2giOiI0UWhKa09xX3lNZVN6Z3RpVFQteEdBIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.fgYOBxJHVdq-DPOfRjA_V5GFjIEbyH4iXjwbIDAu7_IuPiHJKAHVfXqwqM64JYCVg3LbbgURZgaWoACaMnjLysJOayKmYoHK7FrvK12S9xtsWzLpeHnDlHdSciBZtYgfBxc0JbZGEgT8Chxz6mbr011nY8nvPZzoieIHM0UItvDFE1r3zo0kYnKU9B6zBHlwg-ezMVWfFfiQBhojpT-gwEbNHOdeDmHSuqVty38YAGLpygDfE22GaonCLTV4InJlBkXurSILMIXtzN-jkv5nSGTeuFQGqSrbdN1TAAcFC4pcwaBFYMD2HTnjflnbl2mF3eTXVQnV0aqlQwRkTgWJCQ"
+#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDQyNjgsImlhdCI6MTU5ODYwMDY2OCwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJ5NkJwX3JpZzBTX09obTVrTUdJMWFBIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.iIX9xP-2_HHBtN28F76GMz4gQMETeeLk-40L91AZmudrHOzzMzv_SrGHmofP670DNwbUG8HBQJeFYZtS89VemO_5PZDkS1vdwgZouU2C48DHzqHSDU_23FcVABmQ3UN5_ByJUOkvF4pM16rvGPFG1uyxVq-mlsVKK_cYd_VOcGLIqdL4qttcFnctLN289L9C4-_pu1YmAJpFEIojkI-AxMIrgbHd69bh6ET06WCDhLwC7jeMKqzapE5QXru7Wu3_AQV_crMlvDA5NsSfTgG2wHfuZFq8tXpLnKf6BBrTPUvNUvGoHrt-X09KtlkRAmELcPUN-eEsIZUnPUJex7ENhw"
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
@@ -92,28 +88,26 @@ builder$append(server = "armadillo",
                user = "",
                password = "",
                token = token,
-               table = "gecko/1_1-core-1_0/nonrep",
+               table = "gecko/2_1-core-1_0/nonrep",
                driver = "ArmadilloDriver")
 
 # create loginframe
 logindata <- builder$build()
 logindata
 #>      server                                url                     table resource          driver user password
-#> 1 armadillo https://armadillo.dev.molgenis.org gecko/1_1-core-1_0/nonrep          ArmadilloDriver              
-#>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      token
-#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDA2NTEsImlhdCI6MTU5ODU5NzA1MSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6ImM1ZGRlMWUxLTk1YzUtNGViNy04YzM0LTEyOTZhYzUzNTYyZSIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUBydWcubmwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoic2lkbyIsImF0X2hhc2giOiI0UWhKa09xX3lNZVN6Z3RpVFQteEdBIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.fgYOBxJHVdq-DPOfRjA_V5GFjIEbyH4iXjwbIDAu7_IuPiHJKAHVfXqwqM64JYCVg3LbbgURZgaWoACaMnjLysJOayKmYoHK7FrvK12S9xtsWzLpeHnDlHdSciBZtYgfBxc0JbZGEgT8Chxz6mbr011nY8nvPZzoieIHM0UItvDFE1r3zo0kYnKU9B6zBHlwg-ezMVWfFfiQBhojpT-gwEbNHOdeDmHSuqVty38YAGLpygDfE22GaonCLTV4InJlBkXurSILMIXtzN-jkv5nSGTeuFQGqSrbdN1TAAcFC4pcwaBFYMD2HTnjflnbl2mF3eTXVQnV0aqlQwRkTgWJCQ
+#> 1 armadillo https://armadillo.dev.molgenis.org gecko/2_1-core-1_0/nonrep          ArmadilloDriver              
+#>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  token
+#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTg2MDQyNjgsImlhdCI6MTU5ODYwMDY2OCwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJ5NkJwX3JpZzBTX09obTVrTUdJMWFBIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.iIX9xP-2_HHBtN28F76GMz4gQMETeeLk-40L91AZmudrHOzzMzv_SrGHmofP670DNwbUG8HBQJeFYZtS89VemO_5PZDkS1vdwgZouU2C48DHzqHSDU_23FcVABmQ3UN5_ByJUOkvF4pM16rvGPFG1uyxVq-mlsVKK_cYd_VOcGLIqdL4qttcFnctLN289L9C4-_pu1YmAJpFEIojkI-AxMIrgbHd69bh6ET06WCDhLwC7jeMKqzapE5QXru7Wu3_AQV_crMlvDA5NsSfTgG2wHfuZFq8tXpLnKf6BBrTPUvNUvGoHrt-X09KtlkRAmELcPUN-eEsIZUnPUJex7ENhw
 #>   options
 #> 1
 
 datashield.logout(conns)
-#> Error in curl::handle_setopt(handle, .list = req$options): handle is dead
 
 # login into server
 conns <- datashield.login(logins = logindata, assign = FALSE)
 #> 
 #> Logging into the collaborating servers
-#>   Logged in all servers [================================================================] 100% / 1s
-#> Warning: armadillo will be excluded because table gecko/1_1-core-1_0/nonrep is not accessible
+#>   Logged in all servers [================================================================] 100% / 0s
 ```
 
 The superuser has a simple username and password which you can fill in in the login dataframe.
@@ -128,7 +122,7 @@ datashield.assign.table(conns = conns,
                         table = "gecko/2_1-core-1_0/nonrep",
                         symbol = "D",
                         variables = c("recruit_age", "child_id"))
-#>   Assigned all table (D <- ...) [========================================================] 100% / 1s
+#>   Assigned all table (D <- ...) [========================================================] 100% / 0s
 ```
 
 #### Symbol assignment
@@ -183,7 +177,6 @@ When you have assigned symbols in R, you check which tables (`data.frame`'s) are
 datashield.assign.table(conns = conns, 
                         table = "gecko/2_1-core-1_0/nonrep", 
                         symbol = "core_nonrep")
-#>   Assigned all table (core_nonrep <- ...) [==============================================] 100% / 0s
 ```
 
 
@@ -219,7 +212,6 @@ Before you are working with the data you can subset to a specific range of varia
 datashield.assign.table(conns = conns,
                         table = "gecko/2_1-core-1_0/yearlyrep",
                         symbol = "core_yearlyrep")
-#>   Assigned all table (core_yearlyrep <- ...) [===========================================] 100% / 0s
 
 # check dimensions of repeatead measures
 ds.dim("core_yearlyrep", datasources = conns)
@@ -230,12 +222,31 @@ ds.dim("core_yearlyrep", datasources = conns)
 #> [1] 19000    34
 
 # subset the data to the first 2 years
-ds.dataFrameSubset(df.name = 'core_yearlyrep', newobj = 'core_yearlyrep_1_3', V1.name = "patientrep$year", V2.name = "2", Boolean.operator  = '<=') 
-#> Error: There are some DataSHIELD errors, list them with datashield.errors()
+ds.dataFrameSubset(df.name = 'core_yearlyrep', newobj = 'core_yearlyrep_1_3', V1.name = "core_yearlyrep$age_years", V2.name = "2", Boolean.operator  = '<=') 
+#>   Aggregated (dataFrameSubsetDS1("core_yearlyrep", "core_yearlyrep$age_years", ) [=======] 100% / 1s
+#>   Assigned expr. (core_yearlyrep_1_3 <- dataFrameSubsetDS2("core_yearlyrep", "core_yearlyrep$age_...
+#> $is.object.created
+#> [1] "A data object <core_yearlyrep_1_3> has been created in all specified data sources"
+#> 
+#> $validity.check
+#> [1] "<core_yearlyrep_1_3> appears valid in all sources"
+
+# check the columns
+ds.colnames("core_yearlyrep_1_3", datasources = conns)
+#> $armadillo
+#>  [1] "row_id"            "child_id"          "age_years"         "cohab_"            "occup_m_"          "occupcode_m_"      "edu_m_"           
+#>  [8] "occup_f1_"         "occup_f1_fath"     "occup_f2_"         "occup_f2_fath"     "occupcode_f1_"     "occupcode_f1_fath" "occupcode_f2_"    
+#> [15] "occupcode_f2_fath" "edu_f1_"           "edu_f1_fath"       "edu_f2_"           "edu_f2_fath"       "childcare_"        "childcarerel_"    
+#> [22] "childcareprof_"    "childcarecentre_"  "smk_exp"           "pets_"             "cats_"             "cats_quant_"       "dogs_"            
+#> [29] "dogs_quant_"       "mental_exp"        "hhincome_"         "fam_splitup"       "famsize_child"     "famsize_adult"
 
 # check dimensions again
 ds.dim("core_yearlyrep_1_3", datasources = conns)
-#> Error: There are some DataSHIELD errors, list them with datashield.errors()
+#> $`dimensions of core_yearlyrep_1_3 in armadillo`
+#> [1] 3000   34
+#> 
+#> $`dimensions of core_yearlyrep_1_3 in combined studies`
+#> [1] 3000   34
 ```
 
 
@@ -248,21 +259,32 @@ You can do this using the `ds.reshape` function:
 ```r
 # reshape the data for the wide-format variables (yearlyrep)
 ds.reShape(data.name='core_yearlyrep_1_3',
-           timevar.name = 'year',
-           idvar.name = 'id',
-           v.names=c("height", "weight"),
+           timevar.name = 'age_years',
+           idvar.name = 'child_id',
+           v.names=c("pets_", "cats_", "dogs_"),
            direction = 'wide',
            newobj = "core_yearlyrep_1_3_wide",
            datasources = conns
 )
-#> Error: There are some DataSHIELD errors, list them with datashield.errors()
+#>   Assigned expr. (core_yearlyrep_1_3_wide <- reShapeDS("core_yearlyrep_1_3", NULL, "pets_,cats_,d...
+#> $is.object.created
+#> [1] "A data object <core_yearlyrep_1_3_wide> has been created in all specified data sources"
+#> 
+#> $validity.check
+#> [1] "<core_yearlyrep_1_3_wide> appears valid in all sources"
 ```
 
 
 ```r
 # show the reshaped columns of the new data frame
 ds.colnames("core_yearlyrep_1_3_wide", datasources = conns)
-#> Error: The input object(s) core_yearlyrep_1_3_wide is(are) not defined on one or more of the studies!
+#> $armadillo
+#>  [1] "row_id"            "child_id"          "cohab_"            "occup_m_"          "occupcode_m_"      "edu_m_"            "occup_f1_"        
+#>  [8] "occup_f1_fath"     "occup_f2_"         "occup_f2_fath"     "occupcode_f1_"     "occupcode_f1_fath" "occupcode_f2_"     "occupcode_f2_fath"
+#> [15] "edu_f1_"           "edu_f1_fath"       "edu_f2_"           "edu_f2_fath"       "childcare_"        "childcarerel_"     "childcareprof_"   
+#> [22] "childcarecentre_"  "smk_exp"           "cats_quant_"       "dogs_quant_"       "mental_exp"        "hhincome_"         "fam_splitup"      
+#> [29] "famsize_child"     "famsize_adult"     "pets_.0"           "cats_.0"           "dogs_.0"           "pets_.1"           "cats_.1"          
+#> [36] "dogs_.1"           "pets_.2"           "cats_.2"           "dogs_.2"
 ```
 
 When you reshaped and subsetted the data you often need to merge your dataframe with others to get your analysis dataframe. You can do this using the `ds.merge` function:
@@ -272,8 +294,8 @@ When you reshaped and subsetted the data you often need to merge your dataframe 
 # merge non-repeated table with wide-format repeated table
 ds.merge(x.name = 'core_nonrep',
          y.name = 'core_yearlyrep_1_3_wide',
-         by.x.names = 'id',
-         by.y.names = 'id',
+         by.x.names = 'child_id',
+         by.y.names = 'child_id',
          newobj = 'analysis_df',
          datasources = conns
 )
@@ -303,7 +325,7 @@ You execute a summary on the a variable within you analysis frame. It will retur
 
 
 ```r
-ds.summary("analysis_df$height.1", datasources = conns)
+ds.summary("analysis_df$pets_.1", datasources = conns)
 #> Error: The input object must be a 'data.frame', 'character', factor', 'integer', 'list', 'logical', 'matrix' or 'numeric'.
 ```
 
@@ -345,22 +367,18 @@ Do the meta analysis and install prerequisites.
 
 ```r
 install.packages("metafor")
-#> 
-#> The downloaded binary packages are in
-#> 	/var/folders/8t/kzhvhl2n5r55q1dpxf35zyr00000gn/T//RtmpqbYRwt/downloaded_packages
+#> Error in install.packages : Updating loaded packages
 ```
 
 
 ```r
 # meta analysis
-yi <- c(gecko$coefficients["pets_preg", "Estimate"])
-#> Error in eval(expr, envir, enclos): object 'gecko' not found
-sei <- c(gecko$coefficients["pets_preg", "Std. Error"])
-#> Error in eval(expr, envir, enclos): object 'gecko' not found
+yi <- c(armadillo_glm$coefficients["pets_preg", "Estimate"])
+sei <- c(armadillo_glm$coefficients["pets_preg", "Std. Error"])
 
 # random effects model:
-res <- metafor::rma(yi, sei = standard_error)
-#> Error in eval(mf.yi, data, enclos = sys.frame(sys.parent())): object 'yi' not found
+res <- metafor::rma(yi, sei = sei)
+#> Error in metafor::rma(yi, sei = sei): Specify the desired outcome measure via the 'measure' argument.
 res
 #> Error in eval(expr, envir, enclos): object 'res' not found
 metafor::forest(res, xlab = "OR", transf = exp, refline = 1, slab = c("armadillo_glm"))
@@ -375,6 +393,12 @@ You can directly create figures with the DataSHIELD methods. For example:
 ds.contourPlot(x = "outcome_nonrep$asthma_ever_CHICOS", y = "outcome_nonrep$pets_preg", datasources = conns)
 ```
 
+
+```r
+# cleanup the session
+datashield.logout(conns)
+```
+
 ### Workspaces
 To store the assigned data in the Armadillo service, you can use workspaces to make sure a certain state of the data is maintained on the service.
 
@@ -382,15 +406,23 @@ Saving the workspaces can be done during `datashield.logout` or at runtime.
 
 
 ```r
+conns <- datashield.login(login = logindata)
+#> 
+#> Logging into the collaborating servers
+
 # reassign data from a Armadillo table
 datashield.assign.table(conns = conns,
-                        table = "gecko/1_1-core-1_0/nonrep",
+                        table = "gecko/2_1-core-1_0/nonrep",
                         symbol = "J",
-                        variables = c("age", "name"))
+                        variables = c("recruit_age", "child_id"))
+#> ```
+
+```
+#>   Assigned all table (J <- ...) [========================================================] 100% / 0s
 
 # save the workspace duringg logout
 datashield.logout(conns, save = "my-workspace")
-#>   Logged out from all servers [==========================================================] 100% / 1s
+#>   Logged out from all servers [==========================================================] 100% / 0s
 
 # restore workspace during logging in
 conns <- datashield.login(logins = logindata, 
@@ -399,13 +431,12 @@ conns <- datashield.login(logins = logindata,
 #> 
 #> Logging into the collaborating servers
 #>   Logged in all servers [================================================================] 100% / 0s
-#> Warning: armadillo will be excluded because table gecko/1_1-core-1_0/nonrep is not accessible
 
 # check if the workspace is restored correctly
 # should contain 'J'
 datashield.symbols(conns)
 #> $armadillo
-#> [1] "analysis_df"    "core_nonrep"    "core_yearlyrep" "K"              "outcome_nonrep"
+#> [1] "J"
 
 # save workspace at runtime
 datashield.workspace_save(conns, "my-workspace-version-2")
@@ -417,16 +448,16 @@ You can overwrite workspaces using the same name again when saving the workspace
 ```r
 # make sure we start with an empty workspace
 datashield.logout(conns)
+#>   Logged out from all servers [==========================================================] 100% / 0s
 conns <- datashield.login(logins = logindata)
 #> 
 #> Logging into the collaborating servers
-#> Warning: armadillo will be excluded because table gecko/1_1-core-1_0/nonrep is not accessible
 
 # assign data to make sure something is in the workspace
 datashield.assign.table(conns = conns, 
-                        table = "gecko/1_1-core-1_0/nonrep", 
+                        table = "gecko/2_1-core-1_0/nonrep", 
                         symbol = "H")
-#> Error: There are some DataSHIELD errors, list them with datashield.errors()
+#>   Assigned all table (H <- ...) [========================================================] 100% / 0s
 
 datashield.workspace_save(conns, "my-workspace-overwritten")
 datashield.workspace_save(conns, "my-workspace-overwritten")
@@ -438,11 +469,10 @@ You can list the workspaces as well.
 ```r
 # list all workspaces for this user
 datashield.workspaces(conns$armadillo)
-#>             lastAccessDate                               ETag                               name    size user
-#> 1 2020-08-26T12:55:18.793Z "aeeabe163d73bf0f264f45a5631cf67c"              armadillo:glm-failure     557     
-#> 2 2020-08-28T06:44:26.517Z "e8f9a3425e7d53c7897378918fa6d98a" armadillo:my-workspace-overwritten      48     
-#> 3 2020-08-28T06:44:25.755Z "e56a54dfc3f627cebd3986bfe6ffe147"   armadillo:my-workspace-version-2 1061526     
-#> 4 2020-08-28T06:44:24.463Z "e56a54dfc3f627cebd3986bfe6ffe147"             armadillo:my-workspace 1061526
+#>             lastAccessDate                               ETag                               name   size user
+#> 1 2020-08-28T07:44:38.236Z "79ea8e26a41a0f43716040c5f09466c0" armadillo:my-workspace-overwritten 172072     
+#> 2 2020-08-28T07:44:36.572Z "7de51b96e6d15e9ab13b9ef52fe3547f"   armadillo:my-workspace-version-2   3610     
+#> 3 2020-08-28T07:44:35.773Z "7de51b96e6d15e9ab13b9ef52fe3547f"             armadillo:my-workspace   3610
 ```
 
 Remove workspaces.
@@ -453,12 +483,10 @@ Remove workspaces.
 datashield.workspace_rm(conns, "my-workspace-overwritten")
 # list the workspaces to make sure the overwritten one is deleted
 datashield.workspaces(conns)
-#>      server name..armadillo.glm.failure. name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user lastAccessDate..2020.08.26T12.55.18.793Z.
-#> 1 armadillo        armadillo:glm-failure        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-26T12:55:18.793Z
-#> 2 armadillo        armadillo:glm-failure        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-26T12:55:18.793Z
-#> 3 armadillo        armadillo:glm-failure        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-26T12:55:18.793Z
-#>   lastAccessDate..2020.08.28T06.44.25.755Z. lastAccessDate..2020.08.28T06.44.24.463Z. size.557L size.1061526L size.1061526L.1
-#> 1                  2020-08-28T06:44:25.755Z                  2020-08-28T06:44:24.463Z       557       1061526         1061526
-#> 2                  2020-08-28T06:44:25.755Z                  2020-08-28T06:44:24.463Z       557       1061526         1061526
-#> 3                  2020-08-28T06:44:25.755Z                  2020-08-28T06:44:24.463Z       557       1061526         1061526
+#>      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user lastAccessDate..2020.08.28T07.44.36.572Z.
+#> 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-28T07:44:36.572Z
+#> 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace                       2020-08-28T07:44:36.572Z
+#>   lastAccessDate..2020.08.28T07.44.35.773Z. size.3610L size.3610L.1
+#> 1                  2020-08-28T07:44:35.773Z       3610         3610
+#> 2                  2020-08-28T07:44:35.773Z       3610         3610
 ```
