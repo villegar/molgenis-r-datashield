@@ -242,8 +242,8 @@ install.packages("metafor")
 
 ```{r, meta-analysis}
 # meta analysis
-yi <- c(gecko$coefficients["pets_preg", "Estimate"])
-sei <- c(gecko$coefficients["pets_preg", "Std. Error"])
+yi <- c(armadillo_glm$coefficients["pets_preg", "Estimate"])
+sei <- c(armadillo_glm$coefficients["pets_preg", "Std. Error"])
 
 # random effects model:
 res <- metafor::rma(yi, sei = standard_error)
