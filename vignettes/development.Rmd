@@ -31,7 +31,37 @@ devtools::test()
 ```
 
 ```
-## Error in tibble(domain = "#HttpOnly_example.org", name = "JSESSIONID", : could not find function "tibble"
+## Testing DSMolgenisArmadillo
+```
+
+```
+## ✓ |  OK F W S | Context
+## ⠏ |   0       | ArmadilloConnection⠹ |   3       | ArmadilloConnection⠸ |  54       | ArmadilloConnection⠇ |  99       | ArmadilloConnection⠦ | 106 1     | ArmadilloConnectionx | 112 1     | ArmadilloConnection [20.4 s]
+## ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ArmadilloConnection.R:408: error: dsAssignExpr, when called synchronously, waits for result
+## Failed to connect to example.org port 8080: Operation timed out
+## Backtrace:
+##  1. DSI::dsAggregate(connection, "ls()", async = FALSE)
+##  2. DSMolgenisArmadillo::dsAggregate(connection, "ls()", async = FALSE)
+##  3. DSMolgenisArmadillo::.retry_until_last_result(conn) R/ArmadilloConnection.R:408:6
+##  4. httr::RETRY(...) R/utils.R:70:2
+## ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ⠏ |   0       | ArmadilloDriver⠸ |  34       | ArmadilloDriver✓ |  34       | ArmadilloDriver [0.1 s]
+## ⠏ |   0       | ArmadilloOAuth✓ |  11       | ArmadilloOAuth
+## ⠏ |   0       | ArmadilloResult✓ |  14       | ArmadilloResult
+## ⠏ |   0       | utils⠙ |  21     1 | utils✓ |  25     1 | utils [0.1 s]
+## ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## test-utils.R:78: skip: .deparse deparses vectors
+## Reason: I still don't get the .deparse arguments
+## ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## 
+## ══ Results ══════════════════════════════════════════════════════════════════════════════════════════════════════════════
+## Duration: 20.8 s
+## 
+## OK:       196
+## Failed:   1
+## Warnings: 0
+## Skipped:  1
 ```
 
 
@@ -140,8 +170,8 @@ dsListTables(conns$armadillo)
 ```
 
 ```
-## [1] "gecko/1_1-outcome-1_0/nonrep"    "gecko/1_1-outcome-1_0/yearlyrep" "gecko/2_1-core-1_0/monthlyrep"   "gecko/2_1-core-1_0/nonrep"      
-## [5] "gecko/2_1-core-1_0/trimesterrep" "gecko/2_1-core-1_0/yearlyrep"
+## [1] "gecko/1_1-outcome-1_0/nonrep"    "gecko/1_1-outcome-1_0/yearlyrep" "gecko/2_1-core-1_0/monthlyrep"  
+## [4] "gecko/2_1-core-1_0/nonrep"       "gecko/2_1-core-1_0/trimesterrep" "gecko/2_1-core-1_0/yearlyrep"
 ```
 
 #### Methods and packages
@@ -158,10 +188,6 @@ conns <- datashield.login(logins = logindata, assign = F)
 ```
 ## 
 ## Logging into the collaborating servers
-```
-
-```
-## Warning: armadillo will be excluded because table gecko/1_1-core-1_0/nonrep is not accessible
 ```
 
 ```r

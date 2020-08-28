@@ -9,8 +9,9 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+  collapse = TRUE, comment = "#>", out.width = "100%",
+  fig.width = 7, fig.height = 4, dpi = 150, fig.path = "DSMolgenisArmadillo-",
+  message = FALSE, warning = FALSE, error = FALSE
 )
 ```
 
@@ -70,7 +71,7 @@ We are currently only using the oauth flow in production environments.
 ```{r, authenticate with authentication server}
 # method 1: using oauth on the central server
 # specify server url
-armadillo_url <- "https://armadillo.dev.molgenis.org"
+armadillo_url <- "http://localhost:8080"
 
 # get token from central authentication server
 token <- armadillo.get_token(armadillo_url)
@@ -262,11 +263,19 @@ metafor::forest(res, xlab = "OR", transf = exp, refline = 1, slab = c("armadillo
 #### Creating figures
 You can directly create figures with the DataSHIELD methods. For example:
 
-```{r, create a boxplot, eval = FALSE}
-ds.contourPlot(x = "outcome_nonrep$asthma_ever_CHICOS", y = "outcome_nonrep$pets_preg", datasources = conns)
+```{r, create-a-histogram}
+# create histogram
+ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
 ```
 
-```{r, logout}
+
+```{r, create-a-heatmap}
+# create a heatmap
+ds.heatmapPlot(x = "analysis_df$pets_.1", y = "analysis_df$dogs_.1", datasources = conns)
+```
+
+```{r, logout to clean session}
+# logout
 datashield.logout(conns)
 ```
 
