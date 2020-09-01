@@ -46,13 +46,13 @@ We use vignettes to expose the usage of the package. It includes examples of reg
 The vignettes are automatically build and you can run them locally with the following command:
 
 ```{r, prepare vignettes, eval = FALSE}
-knitr::knit("vignettes/articles/DSMolgenisArmadillo.Rmd.orig", output = "vignettes/articles/DSMolgenisArmadillo.Rmd")
+knitr::knit("vignettes/DSMolgenisArmadillo.Rmd.orig", output = "vignettes/DSMolgenisArmadillo.Rmd")
 ```
 
 If you only want the R-output use:
 
 ```{r, generate R-code of vignettes, eval = FALSE}
-knitr::purl("vignettes/articles/DSMolgenisArmadillo.Rmd.orig", output = "vignettes/articles/DSMolgenisArmadillo.R")
+knitr::purl("vignettes/DSMolgenisArmadillo.Rmd.orig", output = "vignettes/DSMolgenisArmadillo.R")
 ```
 
 ### Tips and tricks
@@ -62,16 +62,21 @@ Some tips and tricks when you developing on DSMolgenisArmadillo
 You can login with basic auth when you are developing. The default credentials are username: admin and password: admin.
 
 ```{r, login frame with basic authentication}
+library(DSMolgenisArmadillo)
+
 armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
-               url = armadillo_url
+               url = armadillo_url,
                user = "admin",
                password = "admin",
-               token = token,
-               table = "gecko/1_1-core-1_0/nonrep",
+               table = "gecko/2_1-core-1_0/nonrep",
                driver = "ArmadilloDriver")
+
+logindata <- builder$build()
+
+conns <- datashield.login(login = logindata, assign = TRUE)
 ```
 
 #### Version of the package
@@ -85,14 +90,14 @@ dsGetInfo(armadillo())
 You can use several methods checking if tables in DataSHIELD. For checking existence of the tables you can use the following methods.
 
 ```{r, check if table exists}
-dsHasTable(conns$armadillo, "gecko/1_1-core-1_0/nonrep")
-dsHasTable(conns$armadillo, "gecko/1_1-core-1_0/nonrep")
+dsHasTable(conns$armadillo, "gecko/2_1-core-1_0/nonrep")
+dsHasTable(conns$armadillo, "gecko/1_1-outcome-1_0/nonrep")
 ```
 
 To check the accessibility you can use the `table_status` methods.
 
 ```{r, check if the table nonrep is accessible}
-datashield.table_status(conns, "gecko/1_1-core-1_0/nonrep")
+datashield.table_status(conns, "gecko/2_1-core-1_0/nonrep")
 ```
 
 To check which tables are assigned you can use the `dsListTables` function.
