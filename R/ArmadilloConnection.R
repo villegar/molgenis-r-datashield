@@ -405,7 +405,7 @@ methods::setMethod(
     if (async) {
       result <- NULL
     } else {
-      result <- unserialize(httr::content(response))
+      result <- .retry_until_last_result(conn)
     }
     methods::new("ArmadilloResult",
       conn = conn,

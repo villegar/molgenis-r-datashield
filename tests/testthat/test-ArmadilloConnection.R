@@ -352,9 +352,11 @@ test_that("dsAggregate executes deparsed query", {
 
 test_that("dsAssignExpr, when called synchronously, waits for result", {
   post <- mock(list(status_code = 200))
+  retry <- mock(list(status_code = 200))
   httr_content <- mock(base::serialize("Hello World!", NULL))
   result <- with_mock(
     "httr::POST" = post,
+    "httr::RETRY" = retry,
     "httr::content" = httr_content,
     dsAggregate(connection, "ls()", async = FALSE)
   )
@@ -364,6 +366,13 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     path = "/execute",
     body = "ls()",
     config = httr::add_headers("Content-Type" = "text/plain")
+  )
+  expect_args(retry, 1,
+    verb = "GET",
+    handle = handle,
+    path = "/lastresult",
+    terminate_on = c(200, 404, 401),
+    config = httr::add_headers("Accept" = "application/octet-stream")
   )
   expect_s4_class(result, "ArmadilloResult")
   expect_equal(dsFetch(result), "Hello World!")

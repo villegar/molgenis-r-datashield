@@ -1,0 +1,330 @@
+---
+title: "Use the Armadillo"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using Armadillo to perform analysis with DataSHIELD}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, comment = "#>", out.width = "100%",
+  fig.width = 7, fig.height = 4, dpi = 150, fig.path = "DSMolgenisArmadillo-",
+  message = FALSE, warning = FALSE, error = FALSE
+)
+```
+
+## Usage
+When you start to use Armadillo as a backend for DataSHIELD you can use the `DSMolgenisArmadillo` package for research purposes.
+There is a default workflow in DataSHIELD to do analysis. There are several steps that you need to take.
+
+- [Install](#install)
+- [Authenticate](#authenticate)
+- [Assign data](#assign-data)
+- [Transform data](#transform-data)
+- [Performing analysis](#performing-analysis)
+- [Workspaces](#workspaces)
+
+### Install
+The DataSHIELD Armadillo package is available on the MOLGENIS CRAN (https://registry.molgenis.org/repository/R). You can install it by executing the following code-block:
+
+```{r, install Armadillo DataSHIELD package, eval = FALSE}
+install.packages("DSI")
+install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/R", dependencies = TRUE)
+```
+
+Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis. This needs to be a client which is version 6.0 or higher.
+
+```{r, install the Armadillo DataSHIELD client}
+# install the DataSHIELD client
+install.packages("dsBase", repos = c("http://cran.datashield.org", "http://cran.us.r-project.org"), dependencies = TRUE)
+```
+
+**Experimental versions**
+
+If you are interested in using exeperimental versions you can use our own CRAN repository:
+
+```{r, install an experimental version of the Armadillo DataSHIELD client, eval = FALSE}
+# install experimental Armadillo client
+install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/r-hosted-snapshots")
+```
+
+Load the necessary packages.
+
+```{r, load the necessary packages}
+library(dsBaseClient)
+library(DSMolgenisArmadillo)
+```
+
+### Authenticate
+The login procedure consists of building a login dataframe and performing the login on the Armadillo server. The important part is to specify the driver. This should be `ArmadilloDriver`. 
+
+We support authentication 2 flows. 
+- as normal user (using oauth on the central authentication server)
+- as superuser (using basic authentication, username and password based)
+
+We are currently only using the oauth flow in production environments.
+- Authenticate using the authentication server
+- Authenticate using the superuser credentials
+
+```{r, authenticate with authentication server}
+# method 1: using oauth on the central server
+# specify server url
+armadillo_url <- "http://localhost:8080"
+
+# get token from central authentication server
+token <- armadillo.get_token(armadillo_url)
+token
+# build the login dataframe
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "armadillo",
+               url = armadillo_url,
+               user = "",
+               password = "",
+               token = token,
+               table = "gecko/2_1-core-1_0/nonrep",
+               driver = "ArmadilloDriver")
+
+# create loginframe
+logindata <- builder$build()
+logindata
+
+datashield.logout(conns)
+
+# login into server
+conns <- datashield.login(logins = logindata, assign = FALSE)
+```
+
+The superuser has a simple username and password which you can fill in in the login dataframe.
+
+### Assign data
+To work with DataSHIELD you need to be able to query data. You can do this by assigning data in the Armadillo service.
+
+```{r, assigning data}
+# assign data in the Armadillo service
+datashield.assign.table(conns = conns,
+                        table = "gecko/2_1-core-1_0/nonrep",
+                        symbol = "D",
+                        variables = c("recruit_age", "child_id"))
+```
+
+#### Symbol assignment
+For each of the tables assigned in the Aramdillo a symbol is created in each of the servers. 
+You can remove the symbol from the workspace on the server by executing the following code:
+
+```{r, assign and check symbols}
+# list the current symbols
+datashield.symbols(conns)
+# remove the symbol
+datashield.rm(conns = conns, "D")
+# list the current symbols without the deleted one
+datashield.symbols(conns)
+```
+
+#### Assign data using expressions
+You can assign values from tables to symbols, but you can use hardcoded expressions as well.
+
+```{r, assign random data to K}
+# assign random data to 'K'
+datashield.assign.expr(conns = conns, symbol = "K", "c(10,50,100)")
+```
+
+```{r, calculate the mean}
+# calculate the mean of 'K' to see that the assignment has worked
+ds.mean("K", datasources = conns)
+```
+
+#### Assign data from tables
+When you have assigned symbols in R, you check which tables (`data.frame`'s) are available on the Armadillo.
+
+```{r, assign data using the table assignment method}
+# assign the data again
+datashield.assign.table(conns = conns, 
+                        table = "gecko/2_1-core-1_0/nonrep", 
+                        symbol = "core_nonrep")
+```
+
+```{r, show columns within the data frame}
+# check the columns in the non-repeated data
+ds.colnames("core_nonrep", datasources = conns)
+```
+
+
+### Subsetting data
+Before you are working with the data you can subset to a specific range of variables you want to use in the set.
+
+```{r, subset the data to the first 3 years}
+# assign the repeated data to reshape
+datashield.assign.table(conns = conns,
+                        table = "gecko/2_1-core-1_0/yearlyrep",
+                        symbol = "core_yearlyrep")
+
+# check dimensions of repeatead measures
+ds.dim("core_yearlyrep", datasources = conns)
+
+# subset the data to the first 2 years
+ds.dataFrameSubset(df.name = 'core_yearlyrep', newobj = 'core_yearlyrep_1_3', V1.name = "core_yearlyrep$age_years", V2.name = "2", Boolean.operator  = '<=') 
+
+# check the columns
+ds.colnames("core_yearlyrep_1_3", datasources = conns)
+
+# check dimensions again
+ds.dim("core_yearlyrep_1_3", datasources = conns)
+```
+
+```{r, strip the redundant columns}
+# strip the redundant columns
+ds.dataFrame(x = c("core_yearlyrep_1_3$child_id", "core_yearlyrep_1_3$age_years", "core_yearlyrep_1_3$dogs_",  "core_yearlyrep_1_3$cats_",  "core_yearlyrep_1_3$pets_"),
+             completeCases = TRUE,
+             newobj = "core_yearlyrep_1_3_stripped",
+             datasources = conns)
+```
+
+### Transform data
+In general you need 2 methods to work with data that is stored in long format, the `reshape` and `merge` functions in DataSHIELD. You can reshape data with the Armadillo to transform data from [wide-format to long-format](https://www.theanalysisfactor.com/wide-and-long-data/) and vice versa. 
+
+You can do this using the `ds.reshape` function:
+
+```{r, reshape yearly repeated data}
+# reshape the data for the wide-format variables (yearlyrep)
+ds.reShape(data.name='core_yearlyrep_1_3_stripped',
+           timevar.name = 'age_years',
+           idvar.name = 'child_id',
+           v.names=c("pets_", "cats_", "dogs_"),
+           direction = 'wide',
+           newobj = "core_yearlyrep_1_3_wide",
+           datasources = conns
+)
+```
+
+```{r, show columnnames from wide format data}
+# show the reshaped columns of the new data frame
+ds.colnames("core_yearlyrep_1_3_wide", datasources = conns)
+```
+
+When you reshaped and subsetted the data you often need to merge your dataframe with others to get your analysis dataframe. You can do this using the `ds.merge` function:
+
+```{r, merge both data frames into one}
+# merge non-repeated table with wide-format repeated table
+# make sure the disclosure measure regarding stringshort is set to '100'
+ds.merge(x.name = 'core_nonrep',
+         y.name = 'core_yearlyrep_1_3_wide',
+         by.x.names = 'child_id',
+         by.y.names = 'child_id',
+         newobj = 'analysis_df',
+         datasources = conns
+)
+```
+
+```{r, check the merged variables}
+ds.colnames("analysis_df", datasources = conns)
+```
+
+### Performing analysis
+There are a variety of analysis you can perform in DataSHIELD. You can perform basic merthods such as summary statistics and more advanced methods susch as GLM.
+
+#### Simple statistical methods
+You execute a summary on the a variable within you analysis frame. It will return summary statistics.
+
+```{r, summarize the data}
+ds.summary("analysis_df$pets_.1", datasources = conns)
+```
+
+#### Advanced statistical methods
+When you finished the analysis dataframe, you can perform the actual analysis. You can use a wide variety of functions. The example below is showing the `glm`. After that you can create a 
+
+```{r, perform the GLM method} 
+datashield.assign.table(conns = conns,
+                        table = "gecko/1_1-outcome-1_0/nonrep",
+                        symbol = "outcome_nonrep")
+
+armadillo_glm <- ds.glm(formula = 'asthma_ever_CHICOS~pets_preg',
+        data = 'outcome_nonrep',
+        family = 'binomial',
+        datasources = conns)
+```
+
+Do the meta analysis and install prerequisites.
+
+```{r, install prerequisites for meta analysis}
+install.packages("metafor")
+```
+
+```{r, meta-analysis}
+yi <- c(armadillo_glm$coefficients["pets_preg", "Estimate"])
+sei <- c(armadillo_glm$coefficients["pets_preg", "Std. Error"])
+
+res <- metafor::rma(yi, sei = sei)
+res
+metafor::forest(res, xlab = "OR", transf = exp, refline = 1, slab = c("armadillo_glm"))
+```
+
+#### Creating figures
+You can directly create figures with the DataSHIELD methods. For example:
+
+```{r, create-a-histogram}
+# create histogram
+ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
+```
+
+
+```{r, create-a-heatmap}
+# create a heatmap
+ds.heatmapPlot(x = "analysis_df$pets_.1", y = "analysis_df$dogs_.1", datasources = conns)
+```
+
+```{r, logout to clean session}
+# logout
+datashield.logout(conns)
+```
+
+### Workspaces
+To store the assigned data in the Armadillo service, you can use workspaces to make sure a certain state of the data is maintained on the service.
+
+Saving the workspaces can be done during `datashield.logout` or at runtime.
+
+```{r, saving workspaces}
+conns <- datashield.login(login = logindata)
+
+datashield.assign.table(conns = conns,
+                        table = "gecko/2_1-core-1_0/nonrep",
+                        symbol = "J",
+                        variables = c("recruit_age", "child_id"))
+
+datashield.logout(conns, save = "my-workspace")
+
+conns <- datashield.login(logins = logindata, 
+                          assign = FALSE, 
+                          restore = "my-workspace")
+
+datashield.symbols(conns)
+datashield.workspace_save(conns, "my-workspace-version-2")
+```
+
+You can overwrite workspaces using the same name again when saving the workspace.
+
+```{r, overwrite using the same name}
+datashield.logout(conns)
+conns <- datashield.login(logins = logindata)
+
+datashield.assign.table(conns = conns, 
+                        table = "gecko/2_1-core-1_0/nonrep", 
+                        symbol = "H")
+
+datashield.workspace_save(conns, "my-workspace-overwritten")
+datashield.workspace_save(conns, "my-workspace-overwritten")
+```
+
+You can list the workspaces as well.
+
+```{r, list workspaces}
+datashield.workspaces(conns$armadillo)
+```
+
+Remove workspaces.
+
+```{r, remove a workspace}
+datashield.workspace_rm(conns, "my-workspace-overwritten")
+datashield.workspaces(conns)
+```
