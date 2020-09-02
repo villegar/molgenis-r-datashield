@@ -360,6 +360,13 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     "httr::content" = httr_content,
     dsAggregate(connection, "ls()", async = FALSE)
   )
+  expect_args(post, 1,
+    handle = handle,
+    query = list(async = FALSE),
+    path = "/execute",
+    body = "ls()",
+    config = httr::add_headers("Content-Type" = "text/plain")
+  )
   expect_args(retry, 1,
     verb = "GET",
     handle = handle,
