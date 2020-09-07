@@ -46,13 +46,9 @@ builder$append(server = "armadillo",
 logindata <- builder$build()
 logindata
 
-datashield.logout(conns)
-
 # login into server
 conns <- datashield.login(logins = logindata, assign = FALSE)
 ```
-
-The superuser has a simple username and password which you can fill in in the login dataframe.
 
 ### Assign data
 To work with DataSHIELD you need to be able to query data. You can do this by assigning data in the Armadillo service.

@@ -1,7 +1,5 @@
 ---
 title: "Using workspaces"
-author: "Sido Haakma"
-date: "9/3/2020"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using workspaces}

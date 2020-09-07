@@ -18,42 +18,416 @@ The login procedure consists of building a login dataframe and performing the lo
 We use oauth to authenticate in DataSHIELD.
 
 
+```r
+# Load the necessary packages.
+library(dsBaseClient)
+library(DSMolgenisArmadillo)
+
+# specify server url
+armadillo_url <- "https://armadillo.dev.molgenis.org"
+
+# get token from central authentication server
+token <- armadillo.get_token(armadillo_url)
+#> [1] "We're opening a browser so you can log in with code RN8FN5"
+token
+#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTk0NzQ1MjUsImlhdCI6MTU5OTQ3MDkyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJ1eXN6RHRTZ25SX2piWHdmMjA2RWxnIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.WdYKrImDysKRlpfWA1obF-0bHbHNNkIx-RnpDtfkhsOdsmHtg4tvHwNw86I-3AuWd5HzvnU0_QLNk5VXZFn8mpjwM5B_XBd5Ncd1RI-sq__LuDFiyLaBWNbd2wbkR0cwhRSw9KW22kUxLunEuNfKpkMvcE0e-FvY1zyjgBi2h32g09kO3Njaao6QMJ0Z2eChMXZgp1gAbEkxZBWK7baElAo-wHVlfAaqwLtoWur1YYRYs-qgMuX5WjVJnsqoesNLzvCTiJZOD423MK-g87i8KrJDhPFJGHQ2tmYbAaPUUZ7uVTLtcztoBIPXi1pWKr3Nodb7LXao7j7EqhM0RH1qXg"
+# build the login dataframe
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "armadillo",
+               url = armadillo_url,
+               token = token,
+               table = "gecko/2_1-core-1_0/nonrep",
+               driver = "ArmadilloDriver")
+
+# create loginframe
+logindata <- builder$build()
+logindata
+#>      server                                url                     table resource          driver user
+#> 1 armadillo https://armadillo.dev.molgenis.org gecko/2_1-core-1_0/nonrep          ArmadilloDriver     
+#>   password
+#> 1         
+#>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  token
+#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTk0NzQ1MjUsImlhdCI6MTU5OTQ3MDkyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJ1eXN6RHRTZ25SX2piWHdmMjA2RWxnIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.WdYKrImDysKRlpfWA1obF-0bHbHNNkIx-RnpDtfkhsOdsmHtg4tvHwNw86I-3AuWd5HzvnU0_QLNk5VXZFn8mpjwM5B_XBd5Ncd1RI-sq__LuDFiyLaBWNbd2wbkR0cwhRSw9KW22kUxLunEuNfKpkMvcE0e-FvY1zyjgBi2h32g09kO3Njaao6QMJ0Z2eChMXZgp1gAbEkxZBWK7baElAo-wHVlfAaqwLtoWur1YYRYs-qgMuX5WjVJnsqoesNLzvCTiJZOD423MK-g87i8KrJDhPFJGHQ2tmYbAaPUUZ7uVTLtcztoBIPXi1pWKr3Nodb7LXao7j7EqhM0RH1qXg
+#>   options
+#> 1
+
+# login into server
+conns <- datashield.login(logins = logindata, assign = FALSE)
+```
+
+### Assign data
+To work with DataSHIELD you need to be able to query data. You can do this by assigning data in the Armadillo service.
+
+
+```r
+# assign data in the Armadillo service
+datashield.assign.table(conns = conns,
+                        table = "gecko/2_1-core-1_0/nonrep",
+                        symbol = "D",
+                        variables = c("recruit_age", "child_id"))
+```
+
+#### Symbol assignment
+For each of the tables assigned in the Aramdillo a symbol is created in each of the servers. 
+You can remove the symbol from the workspace on the server by executing the following code:
+
+
+```r
+# list the current symbols
+datashield.symbols(conns)
+#> $armadillo
+#> [1] "D"
+# remove the symbol
+datashield.rm(conns = conns, "D")
+# list the current symbols without the deleted one
+datashield.symbols(conns)
+#> $armadillo
+#> character(0)
+```
+
+#### Assign data using expressions
+You can assign values from tables to symbols, but you can use hardcoded expressions as well.
+
+
+```r
+# assign random data to 'K'
+datashield.assign.expr(conns = conns, symbol = "K", "c(10,50,100)")
+```
+
+
+```r
+# calculate the mean of 'K' to see that the assignment has worked
+ds.mean("K", datasources = conns)
+#> $Mean.by.Study
+#>           EstimatedMean Nmissing Nvalid Ntotal
+#> armadillo      53.33333        0      3      3
+#> 
+#> $Nstudies
+#> [1] 1
+#> 
+#> $ValidityMessage
+#>           ValidityMessage 
+#> armadillo "VALID ANALYSIS"
+```
+
+#### Assign data from tables
+When you have assigned symbols in R, you check which tables (`data.frame`'s) are available on the Armadillo.
+
+
+```r
+# assign the data again
+datashield.assign.table(conns = conns, 
+                        table = "gecko/2_1-core-1_0/nonrep", 
+                        symbol = "core_nonrep")
+```
+
+
+```r
+# check the columns in the non-repeated data
+ds.colnames("core_nonrep", datasources = conns)
+#> $armadillo
+#>   [1] "row_id"              "child_id"            "mother_id"           "cohort_id"          
+#>   [5] "preg_no"             "child_no"            "coh_country"         "recruit_age"        
+#>   [9] "cob_m"               "ethn1_m"             "ethn2_m"             "ethn3_m"            
+#>  [13] "agebirth_m_y"        "agebirth_m_d"        "death_m"             "death_m_age"        
+#>  [17] "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"    
+#>  [21] "latepreg_weight_mes" "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"      
+#>  [25] "height_m"            "height_mes_m"        "prepreg_dia"         "preg_dia"           
+#>  [29] "preg_thyroid"        "preg_fever"          "preeclam"            "preg_ht"            
+#>  [33] "asthma_m"            "prepreg_psych"       "preg_psych"          "ppd"                
+#>  [37] "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"           
+#>  [41] "prepreg_alc"         "prepreg_alc_unit"    "preg_alc"            "preg_alc_unit"      
+#>  [45] "folic_prepreg"       "folic_preg12"        "folic_post12"        "parity_m"           
+#>  [49] "preg_plan"           "mar"                 "ivf"                 "outcome"            
+#>  [53] "mode_delivery"       "plac_abrup"          "cob_p"               "cob_p_fath"         
+#>  [57] "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"        
+#>  [61] "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"     "death_p"            
+#>  [65] "death_p_age"         "death_p_fath"        "weight_f1"           "weight_mes_f1"      
+#>  [69] "weight_f1_fath"      "height_f1"           "height_mes_f1"       "height_f1_fath"     
+#>  [73] "dia_bf"              "asthma_bf"           "psych_bf"            "smk_p"              
+#>  [77] "smk_cig_p"           "smk_fath"            "birth_month"         "birth_year"         
+#>  [81] "apgar"               "neo_unit"            "sex"                 "plurality"          
+#>  [85] "ga_lmp"              "ga_us"               "ga_mr"               "ga_bj"              
+#>  [89] "birth_weight"        "birth_length"        "birth_head_circum"   "weight_who_ga"      
+#>  [93] "plac_weight"         "con_anomalies"       "major_con_anomalies" "cer_palsy"          
+#>  [97] "sibling_pos"         "death_child"         "death_child_age"     "breastfed_excl"     
+#> [101] "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"    
+#> [105] "cats_preg"           "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"
+```
+
+
+### Subsetting data
+Before you are working with the data you can subset to a specific range of variables you want to use in the set.
+
+
+```r
+# assign the repeated data to reshape
+datashield.assign.table(conns = conns,
+                        table = "gecko/2_1-core-1_0/yearlyrep",
+                        symbol = "core_yearlyrep")
+
+# check dimensions of repeatead measures
+ds.dim("core_yearlyrep", datasources = conns)
+#> $`dimensions of core_yearlyrep in armadillo`
+#> [1] 19000    34
+#> 
+#> $`dimensions of core_yearlyrep in combined studies`
+#> [1] 19000    34
+
+# subset the data to the first 2 years
+ds.dataFrameSubset(df.name = 'core_yearlyrep', newobj = 'core_yearlyrep_1_3', V1.name = "core_yearlyrep$age_years", V2.name = "2", Boolean.operator  = '<=') 
+#> $is.object.created
+#> [1] "A data object <core_yearlyrep_1_3> has been created in all specified data sources"
+#> 
+#> $validity.check
+#> [1] "<core_yearlyrep_1_3> appears valid in all sources"
+
+# check the columns
+ds.colnames("core_yearlyrep_1_3", datasources = conns)
+#> $armadillo
+#>  [1] "row_id"            "child_id"          "age_years"         "cohab_"            "occup_m_"         
+#>  [6] "occupcode_m_"      "edu_m_"            "occup_f1_"         "occup_f1_fath"     "occup_f2_"        
+#> [11] "occup_f2_fath"     "occupcode_f1_"     "occupcode_f1_fath" "occupcode_f2_"     "occupcode_f2_fath"
+#> [16] "edu_f1_"           "edu_f1_fath"       "edu_f2_"           "edu_f2_fath"       "childcare_"       
+#> [21] "childcarerel_"     "childcareprof_"    "childcarecentre_"  "smk_exp"           "pets_"            
+#> [26] "cats_"             "cats_quant_"       "dogs_"             "dogs_quant_"       "mental_exp"       
+#> [31] "hhincome_"         "fam_splitup"       "famsize_child"     "famsize_adult"
+
+# check dimensions again
+ds.dim("core_yearlyrep_1_3", datasources = conns)
+#> $`dimensions of core_yearlyrep_1_3 in armadillo`
+#> [1] 3000   34
+#> 
+#> $`dimensions of core_yearlyrep_1_3 in combined studies`
+#> [1] 3000   34
+```
+
+
+```r
+# strip the redundant columns
+ds.dataFrame(x = c("core_yearlyrep_1_3$child_id", "core_yearlyrep_1_3$age_years", "core_yearlyrep_1_3$dogs_",  "core_yearlyrep_1_3$cats_",  "core_yearlyrep_1_3$pets_"),
+             completeCases = TRUE,
+             newobj = "core_yearlyrep_1_3_stripped",
+             datasources = conns)
+#> $is.object.created
+#> [1] "A data object <core_yearlyrep_1_3_stripped> has been created in all specified data sources"
+#> 
+#> $validity.check
+#> [1] "<core_yearlyrep_1_3_stripped> appears valid in all sources"
+```
+
+### Transform data
+In general you need 2 methods to work with data that is stored in long format, the `reshape` and `merge` functions in DataSHIELD. You can reshape data with the Armadillo to transform data from [wide-format to long-format](https://www.theanalysisfactor.com/wide-and-long-data/) and vice versa. 
+
+You can do this using the `ds.reshape` function:
+
+
+```r
+# reshape the data for the wide-format variables (yearlyrep)
+ds.reShape(data.name='core_yearlyrep_1_3_stripped',
+           timevar.name = 'age_years',
+           idvar.name = 'child_id',
+           v.names=c("pets_", "cats_", "dogs_"),
+           direction = 'wide',
+           newobj = "core_yearlyrep_1_3_wide",
+           datasources = conns
+)
+#> $is.object.created
+#> [1] "A data object <core_yearlyrep_1_3_wide> has been created in all specified data sources"
+#> 
+#> $validity.check
+#> [1] "<core_yearlyrep_1_3_wide> appears valid in all sources"
+```
+
+
+```r
+# show the reshaped columns of the new data frame
+ds.colnames("core_yearlyrep_1_3_wide", datasources = conns)
+#> $armadillo
+#>  [1] "child_id" "pets_.0"  "cats_.0"  "dogs_.0"  "pets_.1"  "cats_.1"  "dogs_.1"  "pets_.2"  "cats_.2" 
+#> [10] "dogs_.2"
+```
+
+When you reshaped and subsetted the data you often need to merge your dataframe with others to get your analysis dataframe. You can do this using the `ds.merge` function:
+
+
+```r
+# merge non-repeated table with wide-format repeated table
+# make sure the disclosure measure regarding stringshort is set to '100'
+ds.merge(x.name = 'core_nonrep',
+         y.name = 'core_yearlyrep_1_3_wide',
+         by.x.names = 'child_id',
+         by.y.names = 'child_id',
+         newobj = 'analysis_df',
+         datasources = conns
+)
+#> $is.object.created
+#> [1] "A data object <analysis_df> has been created in all specified data sources"
+#> 
+#> $validity.check
+#> [1] "<analysis_df> appears valid in all sources"
+```
+
+
+```r
+ds.colnames("analysis_df", datasources = conns)
+#> $armadillo
+#>   [1] "child_id"            "row_id"              "mother_id"           "cohort_id"          
+#>   [5] "preg_no"             "child_no"            "coh_country"         "recruit_age"        
+#>   [9] "cob_m"               "ethn1_m"             "ethn2_m"             "ethn3_m"            
+#>  [13] "agebirth_m_y"        "agebirth_m_d"        "death_m"             "death_m_age"        
+#>  [17] "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"    
+#>  [21] "latepreg_weight_mes" "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"      
+#>  [25] "height_m"            "height_mes_m"        "prepreg_dia"         "preg_dia"           
+#>  [29] "preg_thyroid"        "preg_fever"          "preeclam"            "preg_ht"            
+#>  [33] "asthma_m"            "prepreg_psych"       "preg_psych"          "ppd"                
+#>  [37] "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"           
+#>  [41] "prepreg_alc"         "prepreg_alc_unit"    "preg_alc"            "preg_alc_unit"      
+#>  [45] "folic_prepreg"       "folic_preg12"        "folic_post12"        "parity_m"           
+#>  [49] "preg_plan"           "mar"                 "ivf"                 "outcome"            
+#>  [53] "mode_delivery"       "plac_abrup"          "cob_p"               "cob_p_fath"         
+#>  [57] "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"        
+#>  [61] "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"     "death_p"            
+#>  [65] "death_p_age"         "death_p_fath"        "weight_f1"           "weight_mes_f1"      
+#>  [69] "weight_f1_fath"      "height_f1"           "height_mes_f1"       "height_f1_fath"     
+#>  [73] "dia_bf"              "asthma_bf"           "psych_bf"            "smk_p"              
+#>  [77] "smk_cig_p"           "smk_fath"            "birth_month"         "birth_year"         
+#>  [81] "apgar"               "neo_unit"            "sex"                 "plurality"          
+#>  [85] "ga_lmp"              "ga_us"               "ga_mr"               "ga_bj"              
+#>  [89] "birth_weight"        "birth_length"        "birth_head_circum"   "weight_who_ga"      
+#>  [93] "plac_weight"         "con_anomalies"       "major_con_anomalies" "cer_palsy"          
+#>  [97] "sibling_pos"         "death_child"         "death_child_age"     "breastfed_excl"     
+#> [101] "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"    
+#> [105] "cats_preg"           "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"    
+#> [109] "pets_.0"             "cats_.0"             "dogs_.0"             "pets_.1"            
+#> [113] "cats_.1"             "dogs_.1"             "pets_.2"             "cats_.2"            
+#> [117] "dogs_.2"
+```
+
+### Save your work
+When you finished building your analysis frame you can save it using [workspaces](https://molgenis.github.io/molgenis-r-datashield/articles/workspaces.html)
+
+### Performing analysis
+There are a variety of analysis you can perform in DataSHIELD. You can perform basic merthods such as summary statistics and more advanced methods susch as GLM.
+
+#### Simple statistical methods
+You execute a summary on the a variable within you analysis frame. It will return summary statistics.
+
+
+```r
+ds.summary("analysis_df$pets_.1", datasources = conns)
+#> $armadillo
+#> $armadillo$class
+#> [1] "numeric"
+#> 
+#> $armadillo$length
+#> [1] 1000
+#> 
+#> $armadillo$`quantiles & mean`
+#>      5%     10%     25%     50%     75%     90%     95%    Mean 
+#>   8.000  15.000  32.750  61.000  90.000 108.000 113.000  60.954
+```
+
+#### Advanced statistical methods
+When you finished the analysis dataframe, you can perform the actual analysis. You can use a wide variety of functions. The example below is showing the `glm`. After that you can create a 
+
+
+```r
+datashield.assign.table(conns = conns,
+                        table = "gecko/1_1-outcome-1_0/nonrep",
+                        symbol = "outcome_nonrep")
+
+armadillo_glm <- ds.glm(formula = 'asthma_ever_CHICOS~pets_preg',
+        data = 'outcome_nonrep',
+        family = 'binomial',
+        datasources = conns)
+```
+
+Do the meta analysis and install prerequisites.
+
+
+```r
+install.packages("metafor")
+#> Error in install.packages : Updating loaded packages
+```
+
+
+```r
+yi <- c(armadillo_glm$coefficients["pets_preg", "Estimate"])
+sei <- c(armadillo_glm$coefficients["pets_preg", "Std. Error"])
+
+res <- metafor::rma(yi, sei = sei)
+res
+#> 
+#> Fixed-Effects Model (k = 1)
+#> 
+#> I^2 (total heterogeneity / total variability):   0.00%
+#> H^2 (total variability / sampling variability):  1.00
+#> 
+#> Test for Heterogeneity:
+#> Q(df = 0) = 0.0000, p-val = 1.0000
+#> 
+#> Model Results:
+#> 
+#> estimate      se     zval    pval    ci.lb   ci.ub 
+#>  -0.1310  0.1267  -1.0343  0.3010  -0.3793  0.1173    
+#> 
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+metafor::forest(res, xlab = "OR", transf = exp, refline = 1, slab = c("armadillo_glm"))
+```
+
+<img src="DSMolgenisArmadillo-meta-analysis-1.png" title="plot of chunk meta-analysis" alt="plot of chunk meta-analysis" width="100%" />
+
+#### Creating figures
+You can directly create figures with the DataSHIELD methods. For example:
+
+
+```r
+# create histogram
+ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
+```
+
+<img src="DSMolgenisArmadillo-create-a-histogram-1.png" title="plot of chunk create-a-histogram" alt="plot of chunk create-a-histogram" width="100%" />
+
+```
+#> $breaks
+#>  [1]  34.40373 115.17616 195.94859 276.72101 357.49344 438.26587 519.03830 599.81072 680.58315 761.35558
+#> [11] 842.12800
+#> 
+#> $counts
+#>  [1] 103 103  91 102 108 103 103  98 117  72
+#> 
+#> $density
+#>  [1] 0.0012751876 0.0012751876 0.0011266221 0.0012628072 0.0013370899 0.0012751876 0.0012751876
+#>  [8] 0.0012132853 0.0014485141 0.0008913933
+#> 
+#> $mids
+#>  [1]  74.78995 155.56237 236.33480 317.10723 397.87965 478.65208 559.42451 640.19694 720.96936 801.74179
+#> 
+#> $xname
+#> [1] "xvect"
+#> 
+#> $equidist
+#> [1] TRUE
+#> 
+#> attr(,"class")
+#> [1] "histogram"
+```
 
 
 
+```r
+# create a heatmap
+ds.heatmapPlot(x = "analysis_df$pets_.1", y = "analysis_df$dogs_.1", datasources = conns)
+```
+
+<img src="DSMolgenisArmadillo-create-a-heatmap-1.png" title="plot of chunk create-a-heatmap" alt="plot of chunk create-a-heatmap" width="100%" />
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```r
+# logout
+datashield.logout(conns)
+```
 
 

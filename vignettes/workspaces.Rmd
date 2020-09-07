@@ -1,0 +1,197 @@
+---
+title: "Using workspaces"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using workspaces}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+To store the assigned data in the Armadillo service, you can use workspaces to make sure a certain state of the data is maintained on the service.
+
+Saving the workspaces can be done during `datashield.logout` or at runtime.
+
+
+```r
+library(dsBaseClient)
+library(DSMolgenisArmadillo)
+
+# specify server url
+armadillo_url <- "https://armadillo.dev.molgenis.org"
+
+# get token from central authentication server
+token <- armadillo.get_token(armadillo_url)
+```
+
+```
+## [1] "We're opening a browser so you can log in with code 88SX9L"
+```
+
+```r
+token
+```
+
+```
+## [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTk0NzQ1OTAsImlhdCI6MTU5OTQ3MDk5MCwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImp0aSI6ImFkNzljZGE4LTg3NDUtNDRjNS1hNWNiLWRlMzg3NzdkYjE0MiIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJXcWhOSk9WWU9qZ2p3VVJaWGdnTHZnIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.DqxbmJwgWctOvNp4hyUupAsFWz4H0p_10wpuZgM58tods8valFi5rMYlCRjABSOd4PhUaZNIjwOrbiCv3_93kxC9qHvisJJYGj4hVX4RGwkPY1-hBn49wZL60ek1VFTPwVJNiMHK1TS-HtyOz-z6bcJujaBZ4giQDHY3PuO7tmarEvyZz1_bIPO118YQyPVJJ3qvsezEP5g6lJ6Zw0W8Fd2PYgkryFgxbl3ZzqmZPip8QeDqnRZRGnXgynBHlI4Xv4TJrCcfXYkqnzBrS_b66FlA2bCyMhTkgK3UFjbWOuXEqfYdHdmU0fDbs8LnojcobzxfeG8wo3kEpchKeATrVA"
+```
+
+```r
+# build the login dataframe
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "armadillo",
+               url = armadillo_url,
+               token = token,
+               table = "gecko/2_1-core-1_0/nonrep",
+               driver = "ArmadilloDriver")
+
+# create loginframe
+logindata <- builder$build()
+logindata
+```
+
+```
+##      server                                url                     table resource          driver user
+## 1 armadillo https://armadillo.dev.molgenis.org gecko/2_1-core-1_0/nonrep          ArmadilloDriver     
+##   password
+## 1         
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              token
+## 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTk0NzQ1OTAsImlhdCI6MTU5OTQ3MDk5MCwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImp0aSI6ImFkNzljZGE4LTg3NDUtNDRjNS1hNWNiLWRlMzg3NzdkYjE0MiIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJXcWhOSk9WWU9qZ2p3VVJaWGdnTHZnIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.DqxbmJwgWctOvNp4hyUupAsFWz4H0p_10wpuZgM58tods8valFi5rMYlCRjABSOd4PhUaZNIjwOrbiCv3_93kxC9qHvisJJYGj4hVX4RGwkPY1-hBn49wZL60ek1VFTPwVJNiMHK1TS-HtyOz-z6bcJujaBZ4giQDHY3PuO7tmarEvyZz1_bIPO118YQyPVJJ3qvsezEP5g6lJ6Zw0W8Fd2PYgkryFgxbl3ZzqmZPip8QeDqnRZRGnXgynBHlI4Xv4TJrCcfXYkqnzBrS_b66FlA2bCyMhTkgK3UFjbWOuXEqfYdHdmU0fDbs8LnojcobzxfeG8wo3kEpchKeATrVA
+##   options
+## 1
+```
+
+```r
+conns <- datashield.login(login = logindata)
+```
+
+```
+## 
+## Logging into the collaborating servers
+```
+
+```r
+datashield.assign.table(conns = conns,
+                        table = "gecko/2_1-core-1_0/nonrep",
+                        symbol = "J",
+                        variables = c("recruit_age", "child_id"))
+```
+
+```
+## ```
+
+```
+##   Assigned all table (J <- ...) [========================================================] 100% / 0s
+```
+
+```r
+datashield.logout(conns, save = "my-workspace")
+```
+
+```
+##   Logged out from all servers [==========================================================] 100% / 0s
+```
+
+```r
+conns <- datashield.login(logins = logindata, 
+                          assign = FALSE, 
+                          restore = "my-workspace")
+```
+
+```
+## 
+## Logging into the collaborating servers
+##   Logged in all servers [================================================================] 100% / 0s
+```
+
+```r
+datashield.symbols(conns)
+```
+
+```
+## $armadillo
+## [1] "J"
+```
+
+```r
+datashield.workspace_save(conns, "my-workspace-version-2")
+```
+
+You can overwrite workspaces using the same name again when saving the workspace.
+
+
+```r
+datashield.logout(conns)
+conns <- datashield.login(logins = logindata)
+```
+
+```
+## 
+## Logging into the collaborating servers
+```
+
+```r
+datashield.assign.table(conns = conns, 
+                        table = "gecko/2_1-core-1_0/nonrep", 
+                        symbol = "H")
+```
+
+```
+## ```
+
+```
+##   Assigned all table (H <- ...) [========================================================] 100% / 0s
+```
+
+```r
+datashield.workspace_save(conns, "my-workspace-overwritten")
+datashield.workspace_save(conns, "my-workspace-overwritten")
+```
+
+You can list the workspaces as well.
+
+
+```r
+datashield.workspaces(conns$armadillo)
+```
+
+```
+##             lastAccessDate                               ETag                               name    size
+## 1 2020-08-28T09:29:44.627Z "3b38edc7e73d0eb4fd4b423d2d182a1f"            armadillo:failing-merge 1276869
+## 2 2020-09-07T09:29:52.638Z "79ea8e26a41a0f43716040c5f09466c0" armadillo:my-workspace-overwritten  172072
+## 3 2020-09-07T09:29:51.471Z "7de51b96e6d15e9ab13b9ef52fe3547f"   armadillo:my-workspace-version-2    3610
+## 4 2020-09-07T09:29:50.861Z "7de51b96e6d15e9ab13b9ef52fe3547f"             armadillo:my-workspace    3610
+##   user
+## 1     
+## 2     
+## 3     
+## 4
+```
+
+Remove workspaces.
+
+
+```r
+datashield.workspace_rm(conns, "my-workspace-overwritten")
+datashield.workspaces(conns)
+```
+
+```
+##      server name..armadillo.failing.merge. name..armadillo.my.workspace.version.2.
+## 1 armadillo        armadillo:failing-merge        armadillo:my-workspace-version-2
+## 2 armadillo        armadillo:failing-merge        armadillo:my-workspace-version-2
+## 3 armadillo        armadillo:failing-merge        armadillo:my-workspace-version-2
+##   name..armadillo.my.workspace. user lastAccessDate..2020.08.28T09.29.44.627Z.
+## 1        armadillo:my-workspace                       2020-08-28T09:29:44.627Z
+## 2        armadillo:my-workspace                       2020-08-28T09:29:44.627Z
+## 3        armadillo:my-workspace                       2020-08-28T09:29:44.627Z
+##   lastAccessDate..2020.09.07T09.29.51.471Z. lastAccessDate..2020.09.07T09.29.50.861Z. size.1276869L
+## 1                  2020-09-07T09:29:51.471Z                  2020-09-07T09:29:50.861Z       1276869
+## 2                  2020-09-07T09:29:51.471Z                  2020-09-07T09:29:50.861Z       1276869
+## 3                  2020-09-07T09:29:51.471Z                  2020-09-07T09:29:50.861Z       1276869
+##   size.3610L size.3610L.1
+## 1       3610         3610
+## 2       3610         3610
+## 3       3610         3610
+```
