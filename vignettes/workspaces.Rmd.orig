@@ -24,7 +24,7 @@ armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
 token <- armadillo.get_token(armadillo_url)
-token
+
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
@@ -35,7 +35,6 @@ builder$append(server = "armadillo",
 
 # create loginframe
 logindata <- builder$build()
-logindata
 
 conns <- datashield.login(login = logindata)
 
@@ -46,8 +45,8 @@ datashield.assign.table(conns = conns,
 
 datashield.logout(conns, save = "my-workspace")
 
-conns <- datashield.login(logins = logindata, 
-                          assign = FALSE, 
+conns <- datashield.login(logins = logindata,
+                          assign = FALSE,
                           restore = "my-workspace")
 
 datashield.symbols(conns)
@@ -60,8 +59,8 @@ You can overwrite workspaces using the same name again when saving the workspace
 datashield.logout(conns)
 conns <- datashield.login(logins = logindata)
 
-datashield.assign.table(conns = conns, 
-                        table = "gecko/2_1-core-1_0/nonrep", 
+datashield.assign.table(conns = conns,
+                        table = "gecko/2_1-core-1_0/nonrep",
                         symbol = "H")
 
 datashield.workspace_save(conns, "my-workspace-overwritten")
