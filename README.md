@@ -8,11 +8,11 @@ A DSI implementation for the [Armadillo DataSHIELD Service](https://github.com/m
 **Part of the MOLGENIS suite**
 
 ## Overview
-You can use DSMolgenisArmadillo to analyse data shared in Armadillo servers using DataSHIELD. DataSHIELD allows exceution of a subset of analysis methods available in R. Methods such as:
+You can use DSMolgenisArmadillo to analyse data shared in Armadillo servers using DataSHIELD. DataSHIELD allows execution of a subset of analysis methods available in R. Methods such as:
 
 `ds.mean()`
 `ds.glm()`
-`ds.SLMA()`
+`ds.lmerSLMA()`
 
 For more detailed documentation check: [https://cran.datashield.org/](https://cran.datashield.org/).
 
@@ -31,15 +31,6 @@ Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actu
 install.packages("dsBase", repos = c("http://cran.datashield.org", "http://cran.us.r-project.org"), dependencies = TRUE)
 ```
 
-> **Experimental versions**
->
-> If you are interested in using exeperimental versions you can use our own CRAN repository:
->
->```R
-> # install experimental Armadillo client
-> install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/r-hosted-snapshots")
-> ```
-
 ## Usage
 To use the DataSHIELD Armadillo client and perform analysis in DataSHIELD there a few basic steps you need to take.
 
@@ -55,7 +46,6 @@ armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
 token <- armadillo.get_token(armadillo_url)
-token
 ```
 
 ### Building the login frame
@@ -72,11 +62,10 @@ builder$append(server = "armadillo",
 
 # create loginframe
 logindata <- builder$build()
-logindata
 ```
 
 ### Login and assign the data
-Assigning the data means that you will prepare the data to be available in the analysis environment.
+Assigning the data means that you will assign the data to a symbol in the analysis environment.
 
 ```R
 # login into server
@@ -95,5 +84,5 @@ ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
 ```
 
 ## Documentation
-Check the [howto](https://molgenis.github.io/molgenis-r-datashield/articles/DSMolgenisArmadillo.html) for detailled documentation.
+Check the [package documentation](https://molgenis.github.io/molgenis-r-datashield/articles/DSMolgenisArmadillo.html) for details.
 
