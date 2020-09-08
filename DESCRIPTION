@@ -35,7 +35,8 @@ Suggests:
     mockery,
     testthat (>= 2.1.0),
     tibble,
-    rmarkdown
+    rmarkdown,
+    metafor
 Description: DataSHIELD implementation for the Armadillo DataSHIELD service. Part of the MOLGENIS suite.
 License: LGPL (>= 2.1)
 URL: https://github.com/molgenis/molgenis-r-datashield,
