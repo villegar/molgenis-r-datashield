@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -98,7 +98,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/development.html">Develop the DSMolgenisArmadillo</a>
+      <a href="../articles/development.html">Develop DSMolgenisArmadillo</a>
+    </li>
+    <li>
+      <a href="../articles/workspaces.html">Using workspaces</a>
     </li>
   </ul>
 </li>
@@ -134,15 +137,15 @@
 
     <pre class="usage"><span class='co'># S4 method for ArmadilloDriver</span>
 <span class='fu'>dsConnect</span>(
-  <span class='no'>drv</span>,
-  <span class='no'>name</span>,
-  <span class='kw'>restore</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>username</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>password</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='no'>url</span>,
-  <span class='kw'>opts</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>...</span>
+  <span class='kw'>drv</span>,
+  <span class='kw'>name</span>,
+  restore = <span class='kw'>NULL</span>,
+  username = <span class='st'>""</span>,
+  password = <span class='st'>""</span>,
+  token = <span class='st'>""</span>,
+  <span class='kw'>url</span>,
+  opts = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -208,7 +211,7 @@ for details). Can be provided by "Armadillo.opts" option.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

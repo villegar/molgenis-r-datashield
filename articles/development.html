@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Develop the DSMolgenisArmadillo • DSMolgenisArmadillo</title>
+<title>Develop DSMolgenisArmadillo • DSMolgenisArmadillo</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Develop the DSMolgenisArmadillo">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Develop DSMolgenisArmadillo">
 <meta property="og:description" content="DSMolgenisArmadillo">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -57,7 +57,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/development.html">Develop the DSMolgenisArmadillo</a>
+      <a href="../articles/development.html">Develop DSMolgenisArmadillo</a>
+    </li>
+    <li>
+      <a href="../articles/workspaces.html">Using workspaces</a>
     </li>
   </ul>
 </li>
@@ -82,7 +85,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Develop the DSMolgenisArmadillo</h1>
+      <h1 data-toc-skip>Develop DSMolgenisArmadillo</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/molgenis/molgenis-r-datashield/blob/master/vignettes/development.Rmd"><code>vignettes/development.Rmd</code></a></small>
@@ -92,69 +95,65 @@
 
     
     
-<div id="development" class="section level2">
-<h2 class="hasAnchor">
-<a href="#development" class="anchor"></a>Development</h2>
-<p>The following main subjects will be explained:</p>
-<ul>
-<li><a href="#Testing">Testing</a></li>
-<li><a href="#vignettes">Vignettes</a></li>
-<li><a href="#tips-and-tricks">Tips and tricks</a></li>
-</ul>
 <div id="testing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#testing" class="anchor"></a>Testing</h3>
 <p>The test are run each time you file a pull request on github. You can run the test locally as well using the following commands:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r">
-# run all tests
-
-devtools::test()
-#&gt; ✓ |  OK F W S | Context
-#&gt; 
-⠏ |   0       | ArmadilloConnection
-⠏ |  40       | ArmadilloConnection
-⠇ |  69       | ArmadilloConnection
-⠋ | 111       | ArmadilloConnection
-✓ | 121       | ArmadilloConnection [0.3 s]
-#&gt; 
-⠏ |   0       | ArmadilloDriver
-✓ |  34       | ArmadilloDriver
-#&gt; 
-⠏ |   0       | ArmadilloOAuth
-✓ |  11       | ArmadilloOAuth
-#&gt; 
-⠏ |   0       | ArmadilloResult
-✓ |  14       | ArmadilloResult
-#&gt; 
-⠏ |   0       | utils
-⠇ |  18     1 | utils
-✓ |  25     1 | utils [0.1 s]
-#&gt; ─────────────────────────────────────────────────────────────────────────────
-#&gt; test-utils.R:78: skip: .deparse deparses vectors
-#&gt; Reason: I still don't get the .deparse arguments
-#&gt; ─────────────────────────────────────────────────────────────────────────────
-#&gt; 
-#&gt; ══ Results ══════════════════════════════════════════════════════════════════
-#&gt; Duration: 0.8 s
-#&gt; 
-#&gt; OK:       205
-#&gt; Failed:   0
-#&gt; Warnings: 0
-#&gt; Skipped:  1</pre></body></html></div>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># run a single test file</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># load prerequisites</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(tibble)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># run all tests</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">devtools<span class="op">::</span><span class="kw">test</span>()</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; ✓ |  OK F W S | Context</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>ArmadilloConnection</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">⠋ <span class="op">|</span><span class="st">   </span><span class="dv">1</span>       <span class="op">|</span><span class="st"> </span>ArmadilloConnection</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">⠦ <span class="op">|</span><span class="st">  </span><span class="dv">77</span>       <span class="op">|</span><span class="st"> </span>ArmadilloConnection</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">✓ <span class="op">|</span><span class="st"> </span><span class="dv">128</span>       <span class="op">|</span><span class="st"> </span>ArmadilloConnection [<span class="fl">0.5</span> s]</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>ArmadilloDriver</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">✓ <span class="op">|</span><span class="st">  </span><span class="dv">34</span>       <span class="op">|</span><span class="st"> </span>ArmadilloDriver</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>ArmadilloOAuth</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">✓ <span class="op">|</span><span class="st">  </span><span class="dv">11</span>       <span class="op">|</span><span class="st"> </span>ArmadilloOAuth</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>ArmadilloResult</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">✓ <span class="op">|</span><span class="st">  </span><span class="dv">14</span>       <span class="op">|</span><span class="st"> </span>ArmadilloResult</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>utils</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">✓ <span class="op">|</span><span class="st">  </span><span class="dv">25</span>     <span class="dv">1</span> <span class="op">|</span><span class="st"> </span>utils</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt; ───────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt; test-utils.R:78: skip: .deparse deparses vectors</span></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co">#&gt; Reason: I still don't get the .deparse arguments</span></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co">#&gt; ───────────────────────────────────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="co">#&gt; ══ Results ════════════════════════════════════════════════════════════════════════════════════════════════</span></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co">#&gt; Duration: 0.7 s</span></a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"><span class="co">#&gt; OK:       212</span></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="co">#&gt; Failed:   0</span></a>
+<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="co">#&gt; Warnings: 0</span></a>
+<a class="sourceLine" id="cb1-35" data-line-number="35"><span class="co">#&gt; Skipped:  1</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># run a single test file</span>
 <span class="co"># make sure you have the test file open</span>
 <span class="co"># e.g. test-ArmadilloResult.R</span>
 
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/test.html">test_file</a></span>()</pre></body></html></div>
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/test.html">test_file</a></span>()
+</pre></div>
 </div>
 <div id="vignettes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#vignettes" class="anchor"></a>Vignettes</h3>
 <p>We use vignettes to expose the usage of the package. It includes examples of regular use cases and shows you how to setup the package.</p>
 <p>The vignettes are automatically build and you can run them locally with the following command:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html">knit</a></span>(<span class="st">"vignettes/DSMolgenisArmadillo.Rmd.orig"</span>, <span class="kw">output</span> <span class="kw">=</span> <span class="st">"vignettes/DSMolgenisArmadillo.Rmd"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html">knit</a></span>(<span class="st">"vignettes/DSMolgenisArmadillo.Rmd.orig"</span>, output = <span class="st">"vignettes/DSMolgenisArmadillo.Rmd"</span>)
+</pre></div>
 <p>If you only want the R-output use:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html">purl</a></span>(<span class="st">"vignettes/DSMolgenisArmadillo.Rmd.orig"</span>, <span class="kw">output</span> <span class="kw">=</span> <span class="st">"vignettes/DSMolgenisArmadillo.R"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html">purl</a></span>(<span class="st">"vignettes/DSMolgenisArmadillo.Rmd.orig"</span>, output = <span class="st">"vignettes/DSMolgenisArmadillo.R"</span>)
+</pre></div>
 </div>
 <div id="tips-and-tricks" class="section level3">
 <h3 class="hasAnchor">
@@ -164,47 +163,57 @@ devtools::test()
 <h4 class="hasAnchor">
 <a href="#authentication" class="anchor"></a>Authentication</h4>
 <p>You can login with basic auth when you are developing. The default credentials are username: admin and password: admin.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DSMolgenisArmadillo</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/molgenis/molgenis-r-datashield">DSMolgenisArmadillo</a></span>)
 
-<span class="no">armadillo_url</span> <span class="kw">&lt;-</span> <span class="st">"https://armadillo.dev.molgenis.org"</span>
+<span class="kw">armadillo_url</span> <span class="op">&lt;-</span> <span class="st">"https://armadillo.dev.molgenis.org"</span>
 
-<span class="no">builder</span> <span class="kw">&lt;-</span> <span class="kw pkg">DSI</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/DSI/man/newDSLoginBuilder.html">newDSLoginBuilder</a></span>()
-<span class="no">builder</span>$<span class="fu"><a href="https://rdrr.io/r/base/append.html">append</a></span>(<span class="kw">server</span> <span class="kw">=</span> <span class="st">"armadillo"</span>,
-               <span class="kw">url</span> <span class="kw">=</span> <span class="no">armadillo_url</span>,
-               <span class="kw">user</span> <span class="kw">=</span> <span class="st">"admin"</span>,
-               <span class="kw">password</span> <span class="kw">=</span> <span class="st">"admin"</span>,
-               <span class="kw">table</span> <span class="kw">=</span> <span class="st">"gecko/2_1-core-1_0/nonrep"</span>,
-               <span class="kw">driver</span> <span class="kw">=</span> <span class="st">"ArmadilloDriver"</span>)
+<span class="kw">builder</span> <span class="op">&lt;-</span> <span class="kw">DSI</span>::<span class="fu"><a href="https://rdrr.io/pkg/DSI/man/newDSLoginBuilder.html">newDSLoginBuilder</a></span>()
+<span class="kw">builder</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/append.html">append</a></span>(server = <span class="st">"armadillo"</span>,
+               url = <span class="kw">armadillo_url</span>,
+               user = <span class="st">"admin"</span>,
+               password = <span class="st">"admin"</span>,
+               table = <span class="st">"gecko/2_1-core-1_0/nonrep"</span>,
+               driver = <span class="st">"ArmadilloDriver"</span>)
 
-<span class="no">logindata</span> <span class="kw">&lt;-</span> <span class="no">builder</span>$<span class="fu"><a href="https://rdrr.io/r/utils/PkgUtils.html">build</a></span>()
+<span class="kw">logindata</span> <span class="op">&lt;-</span> <span class="kw">builder</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/utils/PkgUtils.html">build</a></span>()
 
-<span class="no">conns</span> <span class="kw">&lt;-</span> <span class="fu">datashield.login</span>(<span class="kw">login</span> <span class="kw">=</span> <span class="no">logindata</span>, <span class="kw">assign</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<span class="kw">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span>(login = <span class="kw">logindata</span>, assign = <span class="fl">TRUE</span>)
+</pre></div>
 </div>
 <div id="version-of-the-package" class="section level4">
 <h4 class="hasAnchor">
 <a href="#version-of-the-package" class="anchor"></a>Version of the package</h4>
 <p>You can determine which version of the DSMolgenisArmadillo you are running by executing the following code:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu">dsGetInfo</span>(<span class="fu"><a href="../reference/armadillo.html">armadillo</a></span>())
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu">dsGetInfo</span>(<span class="fu"><a href="../reference/armadillo.html">armadillo</a></span>())
 <span class="co">#&gt; $driver.version</span>
-<span class="co">#&gt; [1] '1.1.3.9000'</span></pre></body></html></div>
+<span class="co">#&gt; [1] '1.1.3.9001'</span>
+</pre></div>
 </div>
 <div id="table-handling" class="section level4">
 <h4 class="hasAnchor">
 <a href="#table-handling" class="anchor"></a>Table handling</h4>
 <p>You can use several methods checking if tables in DataSHIELD. For checking existence of the tables you can use the following methods.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu">dsHasTable</span>(<span class="no">conns</span>$<span class="no">armadillo</span>, <span class="st">"gecko/2_1-core-1_0/nonrep"</span>)
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu">dsHasTable</span>(<span class="kw">conns</span><span class="op">$</span><span class="kw">armadillo</span>, <span class="st">"gecko/2_1-core-1_0/nonrep"</span>)
 <span class="co">#&gt; [1] TRUE</span>
-<span class="fu">dsHasTable</span>(<span class="no">conns</span>$<span class="no">armadillo</span>, <span class="st">"gecko/1_1-outcome-1_0/nonrep"</span>)
-<span class="co">#&gt; [1] TRUE</span></pre></body></html></div>
+<span class="fu">dsHasTable</span>(<span class="kw">conns</span><span class="op">$</span><span class="kw">armadillo</span>, <span class="st">"gecko/1_1-outcome-1_0/nonrep"</span>)
+<span class="co">#&gt; [1] TRUE</span>
+</pre></div>
 <p>To check the accessibility you can use the <code>table_status</code> methods.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu">datashield.table_status</span>(<span class="no">conns</span>, <span class="st">"gecko/2_1-core-1_0/nonrep"</span>)
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu">datashield.table_status</span>(<span class="kw">conns</span>, <span class="st">"gecko/2_1-core-1_0/nonrep"</span>)
 <span class="co">#&gt;      server                     table accessible</span>
-<span class="co">#&gt; 1 armadillo gecko/2_1-core-1_0/nonrep       TRUE</span></pre></body></html></div>
+<span class="co">#&gt; 1 armadillo gecko/2_1-core-1_0/nonrep       TRUE</span>
+</pre></div>
 <p>To check which tables are assigned you can use the <code>dsListTables</code> function.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu">dsListTables</span>(<span class="no">conns</span>$<span class="no">armadillo</span>)
-<span class="co">#&gt; [1] "gecko/1_1-outcome-1_0/nonrep"    "gecko/1_1-outcome-1_0/yearlyrep"</span>
-<span class="co">#&gt; [3] "gecko/2_1-core-1_0/monthlyrep"   "gecko/2_1-core-1_0/nonrep"      </span>
-<span class="co">#&gt; [5] "gecko/2_1-core-1_0/trimesterrep" "gecko/2_1-core-1_0/yearlyrep"</span></pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu">dsListTables</span>(<span class="kw">conns</span><span class="op">$</span><span class="kw">armadillo</span>)
+<span class="co">#&gt; [1] "chicago/crime/crimes"            "gecko/1_1-outcome-1_0/nonrep"    "gecko/1_1-outcome-1_0/yearlyrep"</span>
+<span class="co">#&gt; [4] "gecko/2_1-core-1_0/monthlyrep"   "gecko/2_1-core-1_0/nonrep"       "gecko/2_1-core-1_0/trimesterrep"</span>
+<span class="co">#&gt; [7] "gecko/2_1-core-1_0/yearlyrep"    "load-test/data/patient"</span>
+</pre></div>
 </div>
 <div id="methods-and-packages" class="section level4">
 <h4 class="hasAnchor">
@@ -214,8 +223,9 @@ devtools::test()
 <h5 class="hasAnchor">
 <a href="#available-packages-serverside" class="anchor"></a>Available packages (serverside)</h5>
 <p>The available packages displayed by the method, are the serverside R-packages. Which means the packages available on the Armadillo.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">conns</span> <span class="kw">&lt;-</span> <span class="fu">datashield.login</span>(<span class="kw">logins</span> <span class="kw">=</span> <span class="no">logindata</span>, <span class="kw">assign</span> <span class="kw">=</span> <span class="no">F</span>)
-<span class="fu">dsListPackages</span>(<span class="no">conns</span>$<span class="no">armadillo</span>)
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="kw">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span>(logins = <span class="kw">logindata</span>, assign = <span class="kw">F</span>)
+<span class="fu">dsListPackages</span>(<span class="kw">conns</span><span class="op">$</span><span class="kw">armadillo</span>)
 <span class="co">#&gt;              name   version</span>
 <span class="co">#&gt; 1           arrow     1.0.0</span>
 <span class="co">#&gt; 2      assertthat     0.2.1</span>
@@ -283,253 +293,136 @@ devtools::test()
 <span class="co">#&gt; 64       survival     3.1-8</span>
 <span class="co">#&gt; 65          tcltk     3.6.3</span>
 <span class="co">#&gt; 66          tools     3.6.3</span>
-<span class="co">#&gt; 67          utils     3.6.3</span></pre></body></html></div>
+<span class="co">#&gt; 67          utils     3.6.3</span>
+</pre></div>
 </div>
 <div id="available-methods-clientside" class="section level5">
 <h5 class="hasAnchor">
 <a href="#available-methods-clientside" class="anchor"></a>Available methods (clientside)</h5>
 <p>These are the available methods on the Armadillo server.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu">datashield.methods</span>(<span class="kw">conns</span> <span class="kw">=</span> <span class="no">conns</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"aggregate"</span>)
-<span class="co">#&gt;                        name                            value version package</span>
-<span class="co">#&gt; 1              is.character               base::is.character    NULL    base</span>
-<span class="co">#&gt; 2        dataFrameSubsetDS1       dsBase::dataFrameSubsetDS1   6.0.1  dsBase</span>
-<span class="co">#&gt; 3                meanSdGpDS               dsBase::meanSdGpDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 4             scatterPlotDS            dsBase::scatterPlotDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 5                 setSeedDS                dsBase::setSeedDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 6              matrixDetDS1             dsBase::matrixDetDS1   6.0.1  dsBase</span>
-<span class="co">#&gt; 7                   numNaDS                  dsBase::numNaDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 8                  asListDS                 dsBase::asListDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 9                is.numeric                 base::is.numeric    NULL    base</span>
-<span class="co">#&gt; 10                   t.test                    stats::t.test    NULL   stats</span>
-<span class="co">#&gt; 11                  is.list                    base::is.list    NULL    base</span>
-<span class="co">#&gt; 12                 lengthDS                 dsBase::lengthDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 13            heatmapPlotDS            dsBase::heatmapPlotDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 14                    dimDS                    dsBase::dimDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 15                  is.null                    base::is.null    NULL    base</span>
-<span class="co">#&gt; 16                   meanDS                   dsBase::meanDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 17                  tableDS                  dsBase::tableDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 18                is.factor                  base::is.factor    NULL    base</span>
-<span class="co">#&gt; 19                    corDS                    dsBase::corDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 20          testObjExistsDS          dsBase::testObjExistsDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 21                isValidDS                dsBase::isValidDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 22                table1DDS                dsBase::table1DDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 23              asFactorDS1              dsBase::asFactorDS1   6.0.1  dsBase</span>
-<span class="co">#&gt; 24                   glmDS2                   dsBase::glmDS2   6.0.1  dsBase</span>
-<span class="co">#&gt; 25                   glmDS1                   dsBase::glmDS1   6.0.1  dsBase</span>
-<span class="co">#&gt; 26                    covDS                    dsBase::covDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 27              lmerSLMADS2              dsBase::lmerSLMADS2   6.0.1  dsBase</span>
-<span class="co">#&gt; 28                     rmDS                     dsBase::rmDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 29                   exists                     base::exists    NULL    base</span>
-<span class="co">#&gt; 30                  rangeDS                  dsBase::rangeDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 31                table2DDS                dsBase::table2DDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 32                     NROW                       base::NROW    NULL    base</span>
-<span class="co">#&gt; 33              scoreVectDS              dsBase::scoreVectDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 34                 tapplyDS                 dsBase::tapplyDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 35                 levelsDS                 dsBase::levelsDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 36            densityGridDS            dsBase::densityGridDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 37                 lexisDS1                 dsBase::lexisDS1   6.0.1  dsBase</span>
-<span class="co">#&gt; 38             histogramDS1             dsBase::histogramDS1   6.0.1  dsBase</span>
-<span class="co">#&gt; 39             histogramDS2             dsBase::histogramDS2   6.0.1  dsBase</span>
-<span class="co">#&gt; 40                 tableDS2                 dsBase::tableDS2   6.0.1  dsBase</span>
-<span class="co">#&gt; 41          checkNegValueDS          dsBase::checkNegValueDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 42           quantileMeanDS           dsBase::quantileMeanDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 43                tTestFDS2                dsBase::tTestFDS2   6.0.1  dsBase</span>
-<span class="co">#&gt; 44                    varDS                    dsBase::varDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 45               colnamesDS               dsBase::colnamesDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 46                     lsDS                     dsBase::lsDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 47                  classDS                  dsBase::classDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 48                   isNaDS                   dsBase::isNaDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 49 listDisclosureSettingsDS dsBase::listDisclosureSettingsDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 50             glmerSLMADS2             dsBase::glmerSLMADS2   6.0.1  dsBase</span>
-<span class="co">#&gt; 51               glmSLMADS1               dsBase::glmSLMADS1   6.0.1  dsBase</span>
-<span class="co">#&gt; 52               glmSLMADS2               dsBase::glmSLMADS2   6.0.1  dsBase</span>
-<span class="co">#&gt; 53          recodeValuesDS1          dsBase::recodeValuesDS1   6.0.1  dsBase</span>
-<span class="co">#&gt; 54                  namesDS                  dsBase::namesDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 55                corTestDS                dsBase::corTestDS   6.0.1  dsBase</span>
-<span class="co">#&gt; 56                messageDS                dsBase::messageDS   6.0.1  dsBase</span>
-<span class="co">#&gt;         type    class    server</span>
-<span class="co">#&gt; 1  aggregate function armadillo</span>
-<span class="co">#&gt; 2  aggregate function armadillo</span>
-<span class="co">#&gt; 3  aggregate function armadillo</span>
-<span class="co">#&gt; 4  aggregate function armadillo</span>
-<span class="co">#&gt; 5  aggregate function armadillo</span>
-<span class="co">#&gt; 6  aggregate function armadillo</span>
-<span class="co">#&gt; 7  aggregate function armadillo</span>
-<span class="co">#&gt; 8  aggregate function armadillo</span>
-<span class="co">#&gt; 9  aggregate function armadillo</span>
-<span class="co">#&gt; 10 aggregate function armadillo</span>
-<span class="co">#&gt; 11 aggregate function armadillo</span>
-<span class="co">#&gt; 12 aggregate function armadillo</span>
-<span class="co">#&gt; 13 aggregate function armadillo</span>
-<span class="co">#&gt; 14 aggregate function armadillo</span>
-<span class="co">#&gt; 15 aggregate function armadillo</span>
-<span class="co">#&gt; 16 aggregate function armadillo</span>
-<span class="co">#&gt; 17 aggregate function armadillo</span>
-<span class="co">#&gt; 18 aggregate function armadillo</span>
-<span class="co">#&gt; 19 aggregate function armadillo</span>
-<span class="co">#&gt; 20 aggregate function armadillo</span>
-<span class="co">#&gt; 21 aggregate function armadillo</span>
-<span class="co">#&gt; 22 aggregate function armadillo</span>
-<span class="co">#&gt; 23 aggregate function armadillo</span>
-<span class="co">#&gt; 24 aggregate function armadillo</span>
-<span class="co">#&gt; 25 aggregate function armadillo</span>
-<span class="co">#&gt; 26 aggregate function armadillo</span>
-<span class="co">#&gt; 27 aggregate function armadillo</span>
-<span class="co">#&gt; 28 aggregate function armadillo</span>
-<span class="co">#&gt; 29 aggregate function armadillo</span>
-<span class="co">#&gt; 30 aggregate function armadillo</span>
-<span class="co">#&gt; 31 aggregate function armadillo</span>
-<span class="co">#&gt; 32 aggregate function armadillo</span>
-<span class="co">#&gt; 33 aggregate function armadillo</span>
-<span class="co">#&gt; 34 aggregate function armadillo</span>
-<span class="co">#&gt; 35 aggregate function armadillo</span>
-<span class="co">#&gt; 36 aggregate function armadillo</span>
-<span class="co">#&gt; 37 aggregate function armadillo</span>
-<span class="co">#&gt; 38 aggregate function armadillo</span>
-<span class="co">#&gt; 39 aggregate function armadillo</span>
-<span class="co">#&gt; 40 aggregate function armadillo</span>
-<span class="co">#&gt; 41 aggregate function armadillo</span>
-<span class="co">#&gt; 42 aggregate function armadillo</span>
-<span class="co">#&gt; 43 aggregate function armadillo</span>
-<span class="co">#&gt; 44 aggregate function armadillo</span>
-<span class="co">#&gt; 45 aggregate function armadillo</span>
-<span class="co">#&gt; 46 aggregate function armadillo</span>
-<span class="co">#&gt; 47 aggregate function armadillo</span>
-<span class="co">#&gt; 48 aggregate function armadillo</span>
-<span class="co">#&gt; 49 aggregate function armadillo</span>
-<span class="co">#&gt; 50 aggregate function armadillo</span>
-<span class="co">#&gt; 51 aggregate function armadillo</span>
-<span class="co">#&gt; 52 aggregate function armadillo</span>
-<span class="co">#&gt; 53 aggregate function armadillo</span>
-<span class="co">#&gt; 54 aggregate function armadillo</span>
-<span class="co">#&gt; 55 aggregate function armadillo</span>
-<span class="co">#&gt; 56 aggregate function armadillo</span>
-<span class="fu">datashield.methods</span>(<span class="kw">conns</span> <span class="kw">=</span> <span class="no">conns</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"assign"</span>)
-<span class="co">#&gt;                  name                      value version package   type</span>
-<span class="co">#&gt; 1    changeRefGroupDS   dsBase::changeRefGroupDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 2  dataFrameSubsetDS2 dsBase::dataFrameSubsetDS2   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 3        matrixDiagDS       dsBase::matrixDiagDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 4         asNumericDS        dsBase::asNumericDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 5          asMatrixDS         dsBase::asMatrixDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 6        matrixDetDS2       dsBase::matrixDetDS2   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 7   matrixTransposeDS  dsBase::matrixTransposeDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 8             mergeDS            dsBase::mergeDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 9             cbindDS            dsBase::cbindDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 10           asListDS           dsBase::asListDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 11                log                  base::log    NULL    base assign</span>
-<span class="co">#&gt; 12           matrixDS           dsBase::matrixDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 13         asFactorDS         dsBase::asFactorDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 14     tableDS.assign     dsBase::tableDS.assign   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 15              repDS              dsBase::repDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 16            rPoisDS            dsBase::rPoisDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 17           unListDS           dsBase::unListDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 18     matrixInvertDS     dsBase::matrixInvertDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 19    tapplyDS.assign    dsBase::tapplyDS.assign   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 20              seqDS              dsBase::seqDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 21    dataFrameFillDS    dsBase::dataFrameFillDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 22           subsetDS           dsBase::subsetDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 23            rNormDS            dsBase::rNormDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 24     recodeLevelsDS     dsBase::recodeLevelsDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 25    dataFrameSortDS    dsBase::dataFrameSortDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 26           rBinomDS           dsBase::rBinomDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 27                cDS                dsBase::cDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 28        dataFrameDS        dsBase::dataFrameDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 29        asFactorDS2        dsBase::asFactorDS2   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 30    completeCasesDS    dsBase::completeCasesDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 31       matrixMultDS       dsBase::matrixMultDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 32             seedDS             dsBase::seedDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 33    subsetByClassDS    dsBase::subsetByClassDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 34              cbind                base::cbind    NULL    base assign</span>
-<span class="co">#&gt; 35             unlist               base::unlist    NULL    base assign</span>
-<span class="co">#&gt; 36            rbindDS            dsBase::rbindDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 37          reShapeDS          dsBase::reShapeDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 38            rUnifDS            dsBase::rUnifDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 39         as.numeric           base::as.numeric    NULL    base assign</span>
-<span class="co">#&gt; 40               list                 base::list    NULL    base assign</span>
-<span class="co">#&gt; 41        asIntegerDS        dsBase::asIntegerDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 42           lexisDS2           dsBase::lexisDS2   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 43            as.null              base::as.null    NULL    base assign</span>
-<span class="co">#&gt; 44                sum                  base::sum    NULL    base assign</span>
-<span class="co">#&gt; 45           lexisDS3           dsBase::lexisDS3   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 46        asLogicalDS        dsBase::asLogicalDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 47   matrixDimnamesDS   dsBase::matrixDimnamesDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 48     complete.cases      stats::complete.cases    NULL   stats assign</span>
-<span class="co">#&gt; 49             listDS             dsBase::listDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 50             attach               base::attach    NULL    base assign</span>
-<span class="co">#&gt; 51      asCharacterDS      dsBase::asCharacterDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 52                exp                  base::exp    NULL    base assign</span>
-<span class="co">#&gt; 53    recodeValuesDS2    dsBase::recodeValuesDS2   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 54                  c                    base::c    NULL    base assign</span>
-<span class="co">#&gt; 55        replaceNaDS        dsBase::replaceNaDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 56       rowColCalcDS       dsBase::rowColCalcDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 57           sampleDS           dsBase::sampleDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 58       as.character         base::as.character    NULL    base assign</span>
-<span class="co">#&gt; 59                rep                  base::rep    NULL    base assign</span>
-<span class="co">#&gt; 60            BooleDS            dsBase::BooleDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt; 61     asDataMatrixDS     dsBase::asDataMatrixDS   6.0.1  dsBase assign</span>
-<span class="co">#&gt;       class    server</span>
-<span class="co">#&gt; 1  function armadillo</span>
-<span class="co">#&gt; 2  function armadillo</span>
-<span class="co">#&gt; 3  function armadillo</span>
-<span class="co">#&gt; 4  function armadillo</span>
-<span class="co">#&gt; 5  function armadillo</span>
-<span class="co">#&gt; 6  function armadillo</span>
-<span class="co">#&gt; 7  function armadillo</span>
-<span class="co">#&gt; 8  function armadillo</span>
-<span class="co">#&gt; 9  function armadillo</span>
-<span class="co">#&gt; 10 function armadillo</span>
-<span class="co">#&gt; 11 function armadillo</span>
-<span class="co">#&gt; 12 function armadillo</span>
-<span class="co">#&gt; 13 function armadillo</span>
-<span class="co">#&gt; 14 function armadillo</span>
-<span class="co">#&gt; 15 function armadillo</span>
-<span class="co">#&gt; 16 function armadillo</span>
-<span class="co">#&gt; 17 function armadillo</span>
-<span class="co">#&gt; 18 function armadillo</span>
-<span class="co">#&gt; 19 function armadillo</span>
-<span class="co">#&gt; 20 function armadillo</span>
-<span class="co">#&gt; 21 function armadillo</span>
-<span class="co">#&gt; 22 function armadillo</span>
-<span class="co">#&gt; 23 function armadillo</span>
-<span class="co">#&gt; 24 function armadillo</span>
-<span class="co">#&gt; 25 function armadillo</span>
-<span class="co">#&gt; 26 function armadillo</span>
-<span class="co">#&gt; 27 function armadillo</span>
-<span class="co">#&gt; 28 function armadillo</span>
-<span class="co">#&gt; 29 function armadillo</span>
-<span class="co">#&gt; 30 function armadillo</span>
-<span class="co">#&gt; 31 function armadillo</span>
-<span class="co">#&gt; 32 function armadillo</span>
-<span class="co">#&gt; 33 function armadillo</span>
-<span class="co">#&gt; 34 function armadillo</span>
-<span class="co">#&gt; 35 function armadillo</span>
-<span class="co">#&gt; 36 function armadillo</span>
-<span class="co">#&gt; 37 function armadillo</span>
-<span class="co">#&gt; 38 function armadillo</span>
-<span class="co">#&gt; 39 function armadillo</span>
-<span class="co">#&gt; 40 function armadillo</span>
-<span class="co">#&gt; 41 function armadillo</span>
-<span class="co">#&gt; 42 function armadillo</span>
-<span class="co">#&gt; 43 function armadillo</span>
-<span class="co">#&gt; 44 function armadillo</span>
-<span class="co">#&gt; 45 function armadillo</span>
-<span class="co">#&gt; 46 function armadillo</span>
-<span class="co">#&gt; 47 function armadillo</span>
-<span class="co">#&gt; 48 function armadillo</span>
-<span class="co">#&gt; 49 function armadillo</span>
-<span class="co">#&gt; 50 function armadillo</span>
-<span class="co">#&gt; 51 function armadillo</span>
-<span class="co">#&gt; 52 function armadillo</span>
-<span class="co">#&gt; 53 function armadillo</span>
-<span class="co">#&gt; 54 function armadillo</span>
-<span class="co">#&gt; 55 function armadillo</span>
-<span class="co">#&gt; 56 function armadillo</span>
-<span class="co">#&gt; 57 function armadillo</span>
-<span class="co">#&gt; 58 function armadillo</span>
-<span class="co">#&gt; 59 function armadillo</span>
-<span class="co">#&gt; 60 function armadillo</span>
-<span class="co">#&gt; 61 function armadillo</span></pre></body></html></div>
-</div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu">datashield.methods</span>(conns = <span class="kw">conns</span>, type = <span class="st">"aggregate"</span>)
+<span class="co">#&gt;                        name                            value version package      type    class    server</span>
+<span class="co">#&gt; 1              is.character               base::is.character    NULL    base aggregate function armadillo</span>
+<span class="co">#&gt; 2        dataFrameSubsetDS1       dsBase::dataFrameSubsetDS1   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 3                meanSdGpDS               dsBase::meanSdGpDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 4             scatterPlotDS            dsBase::scatterPlotDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 5                 setSeedDS                dsBase::setSeedDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 6              matrixDetDS1             dsBase::matrixDetDS1   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 7                   numNaDS                  dsBase::numNaDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 8                  asListDS                 dsBase::asListDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 9                is.numeric                 base::is.numeric    NULL    base aggregate function armadillo</span>
+<span class="co">#&gt; 10                   t.test                    stats::t.test    NULL   stats aggregate function armadillo</span>
+<span class="co">#&gt; 11                  is.list                    base::is.list    NULL    base aggregate function armadillo</span>
+<span class="co">#&gt; 12                 lengthDS                 dsBase::lengthDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 13            heatmapPlotDS            dsBase::heatmapPlotDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 14                    dimDS                    dsBase::dimDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 15                  is.null                    base::is.null    NULL    base aggregate function armadillo</span>
+<span class="co">#&gt; 16                   meanDS                   dsBase::meanDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 17                  tableDS                  dsBase::tableDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 18                is.factor                  base::is.factor    NULL    base aggregate function armadillo</span>
+<span class="co">#&gt; 19                    corDS                    dsBase::corDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 20          testObjExistsDS          dsBase::testObjExistsDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 21                isValidDS                dsBase::isValidDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 22                table1DDS                dsBase::table1DDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 23              asFactorDS1              dsBase::asFactorDS1   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 24                   glmDS2                   dsBase::glmDS2   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 25                   glmDS1                   dsBase::glmDS1   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 26                    covDS                    dsBase::covDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 27              lmerSLMADS2              dsBase::lmerSLMADS2   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 28                     rmDS                     dsBase::rmDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 29                   exists                     base::exists    NULL    base aggregate function armadillo</span>
+<span class="co">#&gt; 30                  rangeDS                  dsBase::rangeDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 31                table2DDS                dsBase::table2DDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 32                     NROW                       base::NROW    NULL    base aggregate function armadillo</span>
+<span class="co">#&gt; 33              scoreVectDS              dsBase::scoreVectDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 34                 tapplyDS                 dsBase::tapplyDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 35                 levelsDS                 dsBase::levelsDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 36            densityGridDS            dsBase::densityGridDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 37                 lexisDS1                 dsBase::lexisDS1   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 38             histogramDS1             dsBase::histogramDS1   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 39             histogramDS2             dsBase::histogramDS2   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 40                 tableDS2                 dsBase::tableDS2   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 41          checkNegValueDS          dsBase::checkNegValueDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 42           quantileMeanDS           dsBase::quantileMeanDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 43                tTestFDS2                dsBase::tTestFDS2   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 44                    varDS                    dsBase::varDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 45               colnamesDS               dsBase::colnamesDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 46                     lsDS                     dsBase::lsDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 47                  classDS                  dsBase::classDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 48                   isNaDS                   dsBase::isNaDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 49 listDisclosureSettingsDS dsBase::listDisclosureSettingsDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 50             glmerSLMADS2             dsBase::glmerSLMADS2   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 51               glmSLMADS1               dsBase::glmSLMADS1   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 52               glmSLMADS2               dsBase::glmSLMADS2   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 53          recodeValuesDS1          dsBase::recodeValuesDS1   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 54                  namesDS                  dsBase::namesDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 55                corTestDS                dsBase::corTestDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="co">#&gt; 56                messageDS                dsBase::messageDS   6.0.1  dsBase aggregate function armadillo</span>
+<span class="fu">datashield.methods</span>(conns = <span class="kw">conns</span>, type = <span class="st">"assign"</span>)
+<span class="co">#&gt;                  name                      value version package   type    class    server</span>
+<span class="co">#&gt; 1    changeRefGroupDS   dsBase::changeRefGroupDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 2  dataFrameSubsetDS2 dsBase::dataFrameSubsetDS2   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 3        matrixDiagDS       dsBase::matrixDiagDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 4         asNumericDS        dsBase::asNumericDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 5          asMatrixDS         dsBase::asMatrixDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 6        matrixDetDS2       dsBase::matrixDetDS2   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 7   matrixTransposeDS  dsBase::matrixTransposeDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 8             mergeDS            dsBase::mergeDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 9             cbindDS            dsBase::cbindDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 10           asListDS           dsBase::asListDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 11                log                  base::log    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 12           matrixDS           dsBase::matrixDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 13         asFactorDS         dsBase::asFactorDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 14     tableDS.assign     dsBase::tableDS.assign   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 15              repDS              dsBase::repDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 16            rPoisDS            dsBase::rPoisDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 17           unListDS           dsBase::unListDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 18     matrixInvertDS     dsBase::matrixInvertDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 19    tapplyDS.assign    dsBase::tapplyDS.assign   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 20              seqDS              dsBase::seqDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 21    dataFrameFillDS    dsBase::dataFrameFillDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 22           subsetDS           dsBase::subsetDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 23            rNormDS            dsBase::rNormDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 24     recodeLevelsDS     dsBase::recodeLevelsDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 25    dataFrameSortDS    dsBase::dataFrameSortDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 26           rBinomDS           dsBase::rBinomDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 27                cDS                dsBase::cDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 28        dataFrameDS        dsBase::dataFrameDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 29        asFactorDS2        dsBase::asFactorDS2   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 30    completeCasesDS    dsBase::completeCasesDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 31       matrixMultDS       dsBase::matrixMultDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 32             seedDS             dsBase::seedDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 33    subsetByClassDS    dsBase::subsetByClassDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 34              cbind                base::cbind    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 35             unlist               base::unlist    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 36            rbindDS            dsBase::rbindDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 37          reShapeDS          dsBase::reShapeDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 38            rUnifDS            dsBase::rUnifDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 39         as.numeric           base::as.numeric    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 40               list                 base::list    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 41        asIntegerDS        dsBase::asIntegerDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 42           lexisDS2           dsBase::lexisDS2   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 43            as.null              base::as.null    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 44                sum                  base::sum    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 45           lexisDS3           dsBase::lexisDS3   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 46        asLogicalDS        dsBase::asLogicalDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 47   matrixDimnamesDS   dsBase::matrixDimnamesDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 48     complete.cases      stats::complete.cases    NULL   stats assign function armadillo</span>
+<span class="co">#&gt; 49             listDS             dsBase::listDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 50             attach               base::attach    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 51      asCharacterDS      dsBase::asCharacterDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 52                exp                  base::exp    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 53    recodeValuesDS2    dsBase::recodeValuesDS2   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 54                  c                    base::c    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 55        replaceNaDS        dsBase::replaceNaDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 56       rowColCalcDS       dsBase::rowColCalcDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 57           sampleDS           dsBase::sampleDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 58       as.character         base::as.character    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 59                rep                  base::rep    NULL    base assign function armadillo</span>
+<span class="co">#&gt; 60            BooleDS            dsBase::BooleDS   6.0.1  dsBase assign function armadillo</span>
+<span class="co">#&gt; 61     asDataMatrixDS     dsBase::asDataMatrixDS   6.0.1  dsBase assign function armadillo</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -537,9 +430,7 @@ devtools::test()
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -550,7 +441,7 @@ devtools::test()
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

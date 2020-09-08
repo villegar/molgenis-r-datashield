@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -57,7 +57,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/development.html">Develop the DSMolgenisArmadillo</a>
+      <a href="articles/development.html">Develop DSMolgenisArmadillo</a>
+    </li>
+    <li>
+      <a href="articles/workspaces.html">Using workspaces</a>
     </li>
   </ul>
 </li>
@@ -86,7 +89,90 @@
 <a href="#dsmolgenisarmadillo" class="anchor"></a>DSMolgenisArmadillo</h1></div>
 
 <p>A DSI implementation for the <a href="https://github.com/molgenis/molgenis-service-datashield">Armadillo DataSHIELD Service</a>. <strong>Part of the MOLGENIS suite</strong></p>
-<p>Check the howto here: <a href="https://molgenis.github.io/molgenis-r-datashield/articles/DSMolgenisArmadillo.html">howto</a>.</p>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p>You can use DSMolgenisArmadillo to analyse data shared in Armadillo servers using DataSHIELD. DataSHIELD allows execution of a subset of analysis methods available in R. Methods such as:</p>
+<p><code><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.mean.html">ds.mean()</a></code> <code><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.glm.html">ds.glm()</a></code> <code><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.lmerSLMA.html">ds.lmerSLMA()</a></code></p>
+<p>For more detailed documentation check: <a href="https://cran.datashield.org/">https://cran.datashield.org/</a>.</p>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>The DataSHIELD Armadillo package is available on the MOLGENIS CRAN (<a href="https://registry.molgenis.org/repository/R" class="uri">https://registry.molgenis.org/repository/R</a>). You can install it by executing the following code-block:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"DSI"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"DSMolgenisArmadillo"</span>, repos = <span class="st">"https://registry.molgenis.org/repository/R"</span>, dependencies = <span class="fl">TRUE</span>)
+</pre></div>
+<p>Make sure you install the DataSHIELD client (<code>dsBaseClient</code>) to perform the actual analysis. This needs to be a client which is version 6.0.0 or higher.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># install the DataSHIELD client</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"dsBase"</span>, repos = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"http://cran.datashield.org"</span>, <span class="st">"http://cran.us.r-project.org"</span>), dependencies = <span class="fl">TRUE</span>)
+</pre></div>
+</div>
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
+<p>To use the DataSHIELD Armadillo client and perform analysis in DataSHIELD there a few basic steps you need to take.</p>
+<div id="get-a-token-from-the-id-server" class="section level3">
+<h3 class="hasAnchor">
+<a href="#get-a-token-from-the-id-server" class="anchor"></a>Get a token from the ID server</h3>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co"># Load the necessary packages.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">dsBaseClient</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/molgenis/molgenis-r-datashield">DSMolgenisArmadillo</a></span>)
+
+<span class="co"># specify server url</span>
+<span class="kw">armadillo_url</span> <span class="op">&lt;-</span> <span class="st">"https://armadillo.dev.molgenis.org"</span>
+
+<span class="co"># get token from central authentication server</span>
+<span class="kw">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/armadillo.get_token.html">armadillo.get_token</a></span>(<span class="kw">armadillo_url</span>)
+</pre></div>
+</div>
+<div id="build-the-login-frame" class="section level3">
+<h3 class="hasAnchor">
+<a href="#build-the-login-frame" class="anchor"></a>Build the login frame</h3>
+<p>You need to specify the project, the folder and the table name(s) you want to access.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># build the login dataframe</span>
+<span class="kw">builder</span> <span class="op">&lt;-</span> <span class="kw">DSI</span>::<span class="fu"><a href="https://rdrr.io/pkg/DSI/man/newDSLoginBuilder.html">newDSLoginBuilder</a></span>()
+<span class="kw">builder</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/append.html">append</a></span>(server = <span class="st">"armadillo"</span>,
+               url = <span class="kw">armadillo_url</span>,
+               token = <span class="kw">token</span>,
+               table = <span class="st">"gecko/2_1-core-1_0/nonrep"</span>,
+               driver = <span class="st">"ArmadilloDriver"</span>)
+
+<span class="co"># create loginframe</span>
+<span class="kw">logindata</span> <span class="op">&lt;-</span> <span class="kw">builder</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/utils/PkgUtils.html">build</a></span>()
+</pre></div>
+</div>
+<div id="login-and-assign-the-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#login-and-assign-the-data" class="anchor"></a>Login and assign the data</h3>
+<p>Assigning the data means that you will assign the data to a symbol in the analysis environment.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># login into server</span>
+<span class="kw">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span>(logins = <span class="kw">logindata</span>, assign = <span class="fl">TRUE</span>)
+</pre></div>
+</div>
+<div id="perform-an-analysis" class="section level3">
+<h3 class="hasAnchor">
+<a href="#perform-an-analysis" class="anchor"></a>Perform an analysis</h3>
+<p>DataSHIELD has a range of methods you can use to perform analysis. Check: the <a href="https://cran.datashield.org/web/#client-packages">dsBaseClient</a> documentation to see which methods are available.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co"># calculate the mean</span>
+<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.mean.html">ds.mean</a></span>(<span class="st">"core_nonrep$coh_country"</span>, datasources = <span class="kw">conns</span>)
+
+<span class="co"># create a histogram</span>
+<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.histogram.html">ds.histogram</a></span>(x = <span class="st">"core_nonrep$coh_country"</span>, datasources = <span class="kw">conns</span>)
+</pre></div>
+</div>
+</div>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<p>Check the <a href="https://molgenis.github.io/molgenis-r-datashield/articles/DSMolgenisArmadillo.html">package documentation</a> for details.</p>
+</div>
 </div>
   </div>
 
@@ -131,7 +217,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
