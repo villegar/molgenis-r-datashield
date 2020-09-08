@@ -34,7 +34,7 @@ install.packages("dsBase", repos = c("http://cran.datashield.org", "http://cran.
 ## Usage
 To use the DataSHIELD Armadillo client and perform analysis in DataSHIELD there a few basic steps you need to take.
 
-### Get the Armadillo token
+### Get a token from the ID server
 
 ```R
 # Load the necessary packages.
@@ -48,7 +48,7 @@ armadillo_url <- "https://armadillo.dev.molgenis.org"
 token <- armadillo.get_token(armadillo_url)
 ```
 
-### Building the login frame
+### Build the login frame
 You need to specify the project, the folder and the table name(s) you want to access.
 
 ```R
@@ -72,7 +72,7 @@ Assigning the data means that you will assign the data to a symbol in the analys
 conns <- datashield.login(logins = logindata, assign = TRUE)
 ```
 
-### Performing analysis
+### Perform an analysis
 DataSHIELD has a range of methods you can use to perform analysis. Check: the [dsBaseClient](https://cran.datashield.org/web/#client-packages) documentation to see which methods are available.
 
 ```R
