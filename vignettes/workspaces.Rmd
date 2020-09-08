@@ -26,7 +26,7 @@ token <- armadillo.get_token(armadillo_url)
 ```
 
 ```
-## [1] "We're opening a browser so you can log in with code FWRRVF"
+## [1] "We're opening a browser so you can log in with code QR4XJ9"
 ```
 
 ```r
@@ -49,6 +49,10 @@ conns <- datashield.login(login = logindata)
 ## Logging into the collaborating servers
 ```
 
+```
+##   Logged in all servers [================================================================] 100% / 0s
+```
+
 ```r
 datashield.assign.table(conns = conns,
                         table = "gecko/2_1-core-1_0/nonrep",
@@ -57,21 +61,12 @@ datashield.assign.table(conns = conns,
 ```
 
 ```
-## ```
-
-```
-##   Assigned all table (J <- ...) [========================================================] 100% / 0s
+##   Assigned all table (J <- ...) [========================================================] 100% / 0s
 ```
 
 ```r
 datashield.logout(conns, save = "my-workspace")
-```
 
-```
-##   Logged out from all servers [==========================================================] 100% / 0s
-```
-
-```r
 conns <- datashield.login(logins = logindata,
                           assign = FALSE,
                           restore = "my-workspace")
@@ -100,6 +95,13 @@ You can overwrite workspaces using the same name again when saving the workspace
 
 ```r
 datashield.logout(conns)
+```
+
+```
+##   Logged out from all servers [==========================================================] 100% / 1s
+```
+
+```r
 conns <- datashield.login(logins = logindata)
 ```
 
@@ -115,10 +117,7 @@ datashield.assign.table(conns = conns,
 ```
 
 ```
-## ```
-
-```
-##   Assigned all table (H <- ...) [========================================================] 100% / 0s
+##   Assigned all table (H <- ...) [========================================================] 100% / 0s
 ```
 
 ```r
@@ -135,9 +134,9 @@ datashield.workspaces(conns$armadillo)
 
 ```
 ##             lastAccessDate                               ETag                               name   size user
-## 1 2020-09-08T09:53:01.153Z "79ea8e26a41a0f43716040c5f09466c0" armadillo:my-workspace-overwritten 172072     
-## 2 2020-09-08T09:53:00.125Z "7de51b96e6d15e9ab13b9ef52fe3547f"   armadillo:my-workspace-version-2   3610     
-## 3 2020-09-08T09:52:59.614Z "7de51b96e6d15e9ab13b9ef52fe3547f"             armadillo:my-workspace   3610
+## 1 2020-09-08T10:14:42.345Z "79ea8e26a41a0f43716040c5f09466c0" armadillo:my-workspace-overwritten 172072     
+## 2 2020-09-08T10:14:40.907Z "7de51b96e6d15e9ab13b9ef52fe3547f"   armadillo:my-workspace-version-2   3610     
+## 3 2020-09-08T10:14:40.524Z "7de51b96e6d15e9ab13b9ef52fe3547f"             armadillo:my-workspace   3610
 ```
 
 Remove workspaces.
@@ -152,7 +151,7 @@ datashield.workspaces(conns)
 ##      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user
 ## 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
 ## 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
-##   lastAccessDate..2020.09.08T09.53.00.125Z. lastAccessDate..2020.09.08T09.52.59.614Z. size.3610L size.3610L.1
-## 1                  2020-09-08T09:53:00.125Z                  2020-09-08T09:52:59.614Z       3610         3610
-## 2                  2020-09-08T09:53:00.125Z                  2020-09-08T09:52:59.614Z       3610         3610
+##   lastAccessDate..2020.09.08T10.14.40.907Z. lastAccessDate..2020.09.08T10.14.40.524Z. size.3610L size.3610L.1
+## 1                  2020-09-08T10:14:40.907Z                  2020-09-08T10:14:40.524Z       3610         3610
+## 2                  2020-09-08T10:14:40.907Z                  2020-09-08T10:14:40.524Z       3610         3610
 ```

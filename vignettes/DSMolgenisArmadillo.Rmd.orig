@@ -212,7 +212,7 @@ When you finished building your analysis frame you can save it using
 
 ### Performing analysis
 There are a variety of analysis you can perform in DataSHIELD. You can perform
-basic methods such as summary statistics and more advanced methods susch as GLM.
+basic methods such as summary statistics and more advanced methods such as GLM.
 
 #### Simple statistical methods
 You execute a summary on the a variable within you analysis frame. It will

@@ -15,7 +15,7 @@ To store the assigned data in the Armadillo service, you can use workspaces to m
 
 Saving the workspaces can be done during `datashield.logout` or at runtime.
 
-```{r, saving workspaces}
+```{r, saving workspaces, messages=FALSE}
 library(dsBaseClient)
 library(DSMolgenisArmadillo)
 
