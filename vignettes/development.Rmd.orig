@@ -1,8 +1,8 @@
 ---
-title: "Develop the DSMolgenisArmadillo"
+title: "Develop DSMolgenisArmadillo"
 output: html_vignette
 vignette: >
-  %\VignetteIndexEntry{Developing the Armadillo DataSHIELD implementation}
+  %\VignetteIndexEntry{Develop DSMolgenisArmadillo}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,20 +15,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Development
-The following main subjects will be explained:
-
-- [Testing](#Testing)
-- [Vignettes](#vignettes)
-- [Tips and tricks](#tips-and-tricks)
-
 ### Testing
 The test are run each time you file a pull request on github. You can run the test locally as well using the following commands:
 
 ```{r, show how to test the package}
+# load prerequisites
+library(tibble)
 
 # run all tests
-
 devtools::test()
 ```
 
