@@ -10,12 +10,10 @@ vignette: >
 
 
 When you start to use Armadillo as a backend for DataSHIELD you can use the `DSMolgenisArmadillo` package for research purposes.
-There is a default workflow in DataSHIELD to do analysis. There are several steps that you need to take:
+There is a default workflow in DataSHIELD to do analysis. These are the steps that you need to take:
 
 ### Authenticate
-The login procedure consists of building a login dataframe and performing the login on the Armadillo server. The important part is to specify the driver. This should be `ArmadilloDriver`. 
-
-We use oauth to authenticate in DataSHIELD.
+First obtain a token from the authentication server to authenticate in DataSHIELD.
 
 
 ```r
@@ -28,69 +26,39 @@ armadillo_url <- "https://armadillo.dev.molgenis.org"
 
 # get token from central authentication server
 token <- armadillo.get_token(armadillo_url)
-#> [1] "We're opening a browser so you can log in with code RN8FN5"
-token
-#> [1] "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTk0NzQ1MjUsImlhdCI6MTU5OTQ3MDkyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJ1eXN6RHRTZ25SX2piWHdmMjA2RWxnIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.WdYKrImDysKRlpfWA1obF-0bHbHNNkIx-RnpDtfkhsOdsmHtg4tvHwNw86I-3AuWd5HzvnU0_QLNk5VXZFn8mpjwM5B_XBd5Ncd1RI-sq__LuDFiyLaBWNbd2wbkR0cwhRSw9KW22kUxLunEuNfKpkMvcE0e-FvY1zyjgBi2h32g09kO3Njaao6QMJ0Z2eChMXZgp1gAbEkxZBWK7baElAo-wHVlfAaqwLtoWur1YYRYs-qgMuX5WjVJnsqoesNLzvCTiJZOD423MK-g87i8KrJDhPFJGHQ2tmYbAaPUUZ7uVTLtcztoBIPXi1pWKr3Nodb7LXao7j7EqhM0RH1qXg"
+#> [1] "We're opening a browser so you can log in with code CG3FHG"
+```
+
+Then build a login dataframe and perform the login on the Armadillo server.
+The important part is to specify the driver. This should be `ArmadilloDriver`.
+
+```r
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
                url = armadillo_url,
                token = token,
-               table = "gecko/2_1-core-1_0/nonrep",
                driver = "ArmadilloDriver")
 
 # create loginframe
 logindata <- builder$build()
-logindata
-#>      server                                url                     table resource          driver user
-#> 1 armadillo https://armadillo.dev.molgenis.org gecko/2_1-core-1_0/nonrep          ArmadilloDriver     
-#>   password
-#> 1         
-#>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  token
-#> 1 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlcwbmltejhpYU9DLW16OXNaTVRiVzRfbFdMMCJ9.eyJhdWQiOiI3ODliOTQxNy1jYTJiLTQ3MDctYWI5Yy00NzEzNzNkOTFiYTAiLCJleHAiOjE1OTk0NzQ1MjUsImlhdCI6MTU5OTQ3MDkyNSwiaXNzIjoiaHR0cHM6Ly9hdXRoLm1vbGdlbmlzLm9yZyIsInN1YiI6IjliY2E3MzJjLThjMjEtNDNkMi1iNTU1LTI3YWZiZjgyZTJmMyIsImF1dGhlbnRpY2F0aW9uVHlwZSI6IlBBU1NXT1JEIiwiZW1haWwiOiJzLmhhYWttYUB1bWNnLm5sIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJ1eXN6RHRTZ25SX2piWHdmMjA2RWxnIiwiYXBwbGljYXRpb25JZCI6Ijc4OWI5NDE3LWNhMmItNDcwNy1hYjljLTQ3MTM3M2Q5MWJhMCIsInJvbGVzIjpbIlNVIl0sInBvbGljeSI6InJlYWR3cml0ZSJ9.WdYKrImDysKRlpfWA1obF-0bHbHNNkIx-RnpDtfkhsOdsmHtg4tvHwNw86I-3AuWd5HzvnU0_QLNk5VXZFn8mpjwM5B_XBd5Ncd1RI-sq__LuDFiyLaBWNbd2wbkR0cwhRSw9KW22kUxLunEuNfKpkMvcE0e-FvY1zyjgBi2h32g09kO3Njaao6QMJ0Z2eChMXZgp1gAbEkxZBWK7baElAo-wHVlfAaqwLtoWur1YYRYs-qgMuX5WjVJnsqoesNLzvCTiJZOD423MK-g87i8KrJDhPFJGHQ2tmYbAaPUUZ7uVTLtcztoBIPXi1pWKr3Nodb7LXao7j7EqhM0RH1qXg
-#>   options
-#> 1
 
 # login into server
 conns <- datashield.login(logins = logindata, assign = FALSE)
 ```
 
+> You can append multiple servers to the login frame to perform an analysis
+across multiple cohorts.
+
 ### Assign data
-To work with DataSHIELD you need to be able to query data. You can do this by assigning data in the Armadillo service.
-
-
-```r
-# assign data in the Armadillo service
-datashield.assign.table(conns = conns,
-                        table = "gecko/2_1-core-1_0/nonrep",
-                        symbol = "D",
-                        variables = c("recruit_age", "child_id"))
-```
-
-#### Symbol assignment
-For each of the tables assigned in the Aramdillo a symbol is created in each of the servers. 
-You can remove the symbol from the workspace on the server by executing the following code:
-
-
-```r
-# list the current symbols
-datashield.symbols(conns)
-#> $armadillo
-#> [1] "D"
-# remove the symbol
-datashield.rm(conns = conns, "D")
-# list the current symbols without the deleted one
-datashield.symbols(conns)
-#> $armadillo
-#> character(0)
-```
+To work with DataSHIELD you need to be able to query data.
+You can do this by assigning data in the Armadillo service.
 
 #### Assign data using expressions
-You can assign values from tables to symbols, but you can use hardcoded expressions as well.
-
+You can assign values from expressions to symbols.
 
 ```r
-# assign random data to 'K'
+# assign some data to 'K'
 datashield.assign.expr(conns = conns, symbol = "K", "c(10,50,100)")
 ```
 
@@ -111,14 +79,26 @@ ds.mean("K", datasources = conns)
 ```
 
 #### Assign data from tables
-When you have assigned symbols in R, you check which tables (`data.frame`'s) are available on the Armadillo.
+You can check which tables (`data.frame`'s) are available on the Armadillo.
 
 
 ```r
-# assign the data again
-datashield.assign.table(conns = conns, 
-                        table = "gecko/2_1-core-1_0/nonrep", 
-                        symbol = "core_nonrep")
+datashield.tables(conns)
+#> $armadillo
+#> [1] "chicago/crime/crimes"            "gecko/1_1-outcome-1_0/nonrep"    "gecko/1_1-outcome-1_0/yearlyrep"
+#> [4] "gecko/2_1-core-1_0/monthlyrep"   "gecko/2_1-core-1_0/nonrep"       "gecko/2_1-core-1_0/trimesterrep"
+#> [7] "gecko/2_1-core-1_0/yearlyrep"    "load-test/data/patient"
+```
+
+And load data from one of these tables.
+
+```r
+# assign table data to a symbol
+datashield.assign.table(
+  conns = conns,
+  table = "gecko/2_1-core-1_0/nonrep",
+  symbol = "core_nonrep"
+)
 ```
 
 
@@ -155,16 +135,42 @@ ds.colnames("core_nonrep", datasources = conns)
 #> [105] "cats_preg"           "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"
 ```
 
+#### Assign data at login time
+You can also specify a table in the login frame and assign the data when you
+login.
+
+
+```r
+# build the login dataframe
+builder <- DSI::newDSLoginBuilder()
+builder$append(server = "armadillo",
+               url = armadillo_url,
+               token = token,
+               driver = "ArmadilloDriver",
+               table = "gecko/2_1-core-1_0/nonrep")
+
+# create loginframe
+logindata <- builder$build()
+
+# login into server
+conns <- datashield.login(
+  logins = logindata,
+  assign = TRUE,
+  symbol = "core_nonrep")
+```
 
 ### Subsetting data
-Before you are working with the data you can subset to a specific range of variables you want to use in the set.
+Before you are working with the data you can subset to a specific range of
+variables you want to use in the set.
 
 
 ```r
 # assign the repeated data to reshape
-datashield.assign.table(conns = conns,
-                        table = "gecko/2_1-core-1_0/yearlyrep",
-                        symbol = "core_yearlyrep")
+datashield.assign.table(
+  conns = conns,
+  table = "gecko/2_1-core-1_0/yearlyrep",
+  symbol = "core_yearlyrep"
+)
 
 # check dimensions of repeatead measures
 ds.dim("core_yearlyrep", datasources = conns)
@@ -175,7 +181,13 @@ ds.dim("core_yearlyrep", datasources = conns)
 #> [1] 19000    34
 
 # subset the data to the first 2 years
-ds.dataFrameSubset(df.name = 'core_yearlyrep', newobj = 'core_yearlyrep_1_3', V1.name = "core_yearlyrep$age_years", V2.name = "2", Boolean.operator  = '<=') 
+ds.dataFrameSubset(
+  df.name = "core_yearlyrep",
+  newobj = "core_yearlyrep_1_3",
+  V1.name = "core_yearlyrep$age_years",
+  V2.name = "2",
+  Boolean.operator = "<="
+)
 #> $is.object.created
 #> [1] "A data object <core_yearlyrep_1_3> has been created in all specified data sources"
 #> 
@@ -205,10 +217,16 @@ ds.dim("core_yearlyrep_1_3", datasources = conns)
 
 ```r
 # strip the redundant columns
-ds.dataFrame(x = c("core_yearlyrep_1_3$child_id", "core_yearlyrep_1_3$age_years", "core_yearlyrep_1_3$dogs_",  "core_yearlyrep_1_3$cats_",  "core_yearlyrep_1_3$pets_"),
-             completeCases = TRUE,
-             newobj = "core_yearlyrep_1_3_stripped",
-             datasources = conns)
+ds.dataFrame(
+  x = c("core_yearlyrep_1_3$child_id",
+        "core_yearlyrep_1_3$age_years",
+        "core_yearlyrep_1_3$dogs_",
+        "core_yearlyrep_1_3$cats_",
+        "core_yearlyrep_1_3$pets_"),
+  completeCases = TRUE,
+  newobj = "core_yearlyrep_1_3_stripped",
+  datasources = conns
+)
 #> $is.object.created
 #> [1] "A data object <core_yearlyrep_1_3_stripped> has been created in all specified data sources"
 #> 
@@ -217,20 +235,24 @@ ds.dataFrame(x = c("core_yearlyrep_1_3$child_id", "core_yearlyrep_1_3$age_years"
 ```
 
 ### Transform data
-In general you need 2 methods to work with data that is stored in long format, the `reshape` and `merge` functions in DataSHIELD. You can reshape data with the Armadillo to transform data from [wide-format to long-format](https://www.theanalysisfactor.com/wide-and-long-data/) and vice versa. 
+In general you need 2 methods to work with data that is stored in long format,
+the `reshape` and `merge` functions in DataSHIELD. You can reshape data with
+the Armadillo to transform data from [wide-format to long-format](https://www.theanalysisfactor.com/wide-and-long-data/) and
+vice versa.
 
 You can do this using the `ds.reshape` function:
 
 
 ```r
 # reshape the data for the wide-format variables (yearlyrep)
-ds.reShape(data.name='core_yearlyrep_1_3_stripped',
-           timevar.name = 'age_years',
-           idvar.name = 'child_id',
-           v.names=c("pets_", "cats_", "dogs_"),
-           direction = 'wide',
-           newobj = "core_yearlyrep_1_3_wide",
-           datasources = conns
+ds.reShape(
+  data.name = "core_yearlyrep_1_3_stripped",
+  timevar.name = "age_years",
+  idvar.name = "child_id",
+  v.names = c("pets_", "cats_", "dogs_"),
+  direction = "wide",
+  newobj = "core_yearlyrep_1_3_wide",
+  datasources = conns
 )
 #> $is.object.created
 #> [1] "A data object <core_yearlyrep_1_3_wide> has been created in all specified data sources"
@@ -248,18 +270,21 @@ ds.colnames("core_yearlyrep_1_3_wide", datasources = conns)
 #> [10] "dogs_.2"
 ```
 
-When you reshaped and subsetted the data you often need to merge your dataframe with others to get your analysis dataframe. You can do this using the `ds.merge` function:
+When you reshaped and subsetted the data you often need to merge your dataframe
+with others to get your analysis dataframe. You can do this using the `ds.merge`
+function:
 
 
 ```r
 # merge non-repeated table with wide-format repeated table
 # make sure the disclosure measure regarding stringshort is set to '100'
-ds.merge(x.name = 'core_nonrep',
-         y.name = 'core_yearlyrep_1_3_wide',
-         by.x.names = 'child_id',
-         by.y.names = 'child_id',
-         newobj = 'analysis_df',
-         datasources = conns
+ds.merge(
+  x.name = "core_nonrep",
+  y.name = "core_yearlyrep_1_3_wide",
+  by.x.names = "child_id",
+  by.y.names = "child_id",
+  newobj = "analysis_df",
+  datasources = conns
 )
 #> $is.object.created
 #> [1] "A data object <analysis_df> has been created in all specified data sources"
@@ -305,13 +330,16 @@ ds.colnames("analysis_df", datasources = conns)
 ```
 
 ### Save your work
-When you finished building your analysis frame you can save it using [workspaces](https://molgenis.github.io/molgenis-r-datashield/articles/workspaces.html)
+When you finished building your analysis frame you can save it using
+[workspaces](workspaces.html).
 
 ### Performing analysis
-There are a variety of analysis you can perform in DataSHIELD. You can perform basic merthods such as summary statistics and more advanced methods susch as GLM.
+There are a variety of analysis you can perform in DataSHIELD. You can perform
+basic methods such as summary statistics and more advanced methods susch as GLM.
 
 #### Simple statistical methods
-You execute a summary on the a variable within you analysis frame. It will return summary statistics.
+You execute a summary on the a variable within you analysis frame. It will
+return summary statistics.
 
 
 ```r
@@ -329,26 +357,30 @@ ds.summary("analysis_df$pets_.1", datasources = conns)
 ```
 
 #### Advanced statistical methods
-When you finished the analysis dataframe, you can perform the actual analysis. You can use a wide variety of functions. The example below is showing the `glm`. After that you can create a 
+When you finished the analysis dataframe, you can perform the actual analysis.
+You can use a wide variety of functions. The example below is showing the `glm`.
 
 
 ```r
-datashield.assign.table(conns = conns,
-                        table = "gecko/1_1-outcome-1_0/nonrep",
-                        symbol = "outcome_nonrep")
+datashield.assign.table(
+  conns = conns,
+  table = "gecko/1_1-outcome-1_0/nonrep",
+  symbol = "outcome_nonrep"
+)
 
-armadillo_glm <- ds.glm(formula = 'asthma_ever_CHICOS~pets_preg',
-        data = 'outcome_nonrep',
-        family = 'binomial',
-        datasources = conns)
+armadillo_glm <- ds.glm(
+  formula = "asthma_ever_CHICOS~pets_preg",
+  data = "outcome_nonrep",
+  family = "binomial",
+  datasources = conns
+)
 ```
 
 Do the meta analysis and install prerequisites.
 
 
 ```r
-install.packages("metafor")
-#> Error in install.packages : Updating loaded packages
+if (!require('metafor')) install.packages('metafor')
 ```
 
 
@@ -399,8 +431,8 @@ ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
 #>  [1] 103 103  91 102 108 103 103  98 117  72
 #> 
 #> $density
-#>  [1] 0.0012751876 0.0012751876 0.0011266221 0.0012628072 0.0013370899 0.0012751876 0.0012751876
-#>  [8] 0.0012132853 0.0014485141 0.0008913933
+#>  [1] 0.0012751876 0.0012751876 0.0011266221 0.0012628072 0.0013370899 0.0012751876 0.0012751876 0.0012132853
+#>  [9] 0.0014485141 0.0008913933
 #> 
 #> $mids
 #>  [1]  74.78995 155.56237 236.33480 317.10723 397.87965 478.65208 559.42451 640.19694 720.96936 801.74179
@@ -429,5 +461,3 @@ ds.heatmapPlot(x = "analysis_df$pets_.1", y = "analysis_df$dogs_.1", datasources
 # logout
 datashield.logout(conns)
 ```
-
-
