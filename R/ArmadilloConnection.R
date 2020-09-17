@@ -95,17 +95,62 @@ methods::setMethod(
   }
 )
 
+#' List Armadillo DataSHIELD Service resources
+#'
+#' List Armadillo DataSHIELD Service resources that may be accessible for
+#' performing DataSHIELD operations.
+#'
+#' @param conn \code{\link{ArmadilloConnection-class}} class object
+#'
+#' @return The fully qualified names of the resources.
+#'
+#' @seealso \code{\link{dsListResources}}
+#' @importMethodsFrom DSI dsListResources
+#' @export
+methods::setMethod(
+  "dsListResources", "ArmadilloConnection", function(conn) {
+    response <- httr::GET(handle = conn@handle, path = "/resources")
+    .handle_request_error(response)
+    .unlist_character_list(httr::content(response))
+  }
+)
+
+#' Verify resource exists.
+#'
+#' @param conn \code{\link{ArmadilloConnection-class}} class object.
+#' @param resource The identifier of the resource
+#'
+#' @return TRUE if resource exists.
+#'
+#' @importMethodsFrom DSI dsHasResource
+#' @export
+methods::setMethod(
+  "dsHasResource", "ArmadilloConnection", function(conn, resource) {
+    response <- httr::HEAD(
+      handle = conn@handle,
+      path = paste0("/resources/", resource)
+    )
+    .handle_request_error(response)
+
+    response$status_code == 200
+  }
+)
+
 #' Armadillo DataShield Service asynchronous support
 #'
 #' List of DataSHIELD operations on which Armadillo DataSHIELD Service supports
 #' asynchronicity.
 #'
 #' When a \code{\link{DSResult-class}} object is returned on aggregation or
-#' assignment operation, the raw result can be accessed asynchronously, allowing
-#' parallelization of DataSHIELD calls over multpile servers. The returned named
-#' list of logicals will specify if asynchronicity is supported for:
-#' aggregation operation ('aggregate'), table assignment operation
-#' ('assignTable'), expression assignment operation ('assignExpr').
+#' assignment operation, the raw result can be accessed asynchronously,
+#' allowing parallelization of DataSHIELD calls over multpile servers.
+#' The returned named list of logicals will specify if asynchronicity is
+#' supported for:
+#' aggregation operation ('aggregate'),
+#' table assignment operation ('assignTable'),
+#' resource assignment operation ('assignResource')
+#' and expression assignment operation ('assignExpr').
+#'
 #' @param conn \code{\link{ArmadilloConnection-class}} class object
 #'
 #' @return The named list of logicals detailing the asynchronicity support.
@@ -114,7 +159,12 @@ methods::setMethod(
 #' @export
 methods::setMethod(
   "dsIsAsync", "ArmadilloConnection", function(conn) {
-    list(aggregate = TRUE, assignTable = TRUE, assignExpr = TRUE)
+    list(
+      aggregate = TRUE,
+      assignTable = TRUE,
+      assignResource = TRUE,
+      assignExpr = TRUE
+    )
   }
 )
 
@@ -201,6 +251,46 @@ methods::setMethod(
     methods::new("ArmadilloResult",
       conn = conn,
       rval = list(result = result, async = async)
+    )
+  }
+)
+
+#' Assign a resource
+#'
+#' Assign a resource in the DataSHIELD R session.
+#'
+#' @param conn An object that inherits from \code{\link{DSConnection-class}}.
+#' @param symbol Name of the R symbol.
+#' @param resource Fully qualified name of a resource reference in the data
+#' repository.
+#' @param async Whether the result of the call should be retrieved
+#' asynchronously.
+#'
+#' @return A \code{\link{ArmadilloResult-class}} object.
+#'
+#' @importMethodsFrom DSI dsAssignResource
+#' @export
+methods::setMethod(
+  "dsAssignResource", "ArmadilloConnection",
+  function(conn, symbol, resource, async = TRUE) {
+
+    query <- list(resource = resource, symbol = symbol, async = async)
+    response <- httr::POST(
+      handle = conn@handle,
+      path = "/load-resource",
+      query = query
+    )
+    .handle_request_error(response)
+
+    if (async) {
+      result <- NULL
+    } else {
+      result <- .retry_until_last_result(conn)
+    }
+
+    methods::new("ArmadilloResult",
+                 conn = conn,
+                 rval = list(result = result, async = async)
     )
   }
 )

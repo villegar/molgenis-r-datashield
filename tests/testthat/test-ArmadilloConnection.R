@@ -58,7 +58,7 @@ test_that("dsHasTable returns FALSE if table doesnot exist", {
 test_that("dsIsAsync returns boolean list", {
   expect_equal(
     dsIsAsync(connection),
-    list(aggregate = TRUE, assignTable = TRUE, assignExpr = TRUE)
+    list(aggregate = TRUE, assignTable = TRUE, assignResource = TRUE, assignExpr = TRUE)
   )
 })
 
