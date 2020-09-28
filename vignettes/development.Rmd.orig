@@ -26,6 +26,11 @@ library(tibble)
 devtools::test()
 ```
 
+```{r, run all tests without breaking, eval = FALSE}
+# run all tests without stopping when tests fail
+devtools::test(reporter = ProgressReporter$new(max_failures = 999999))
+```
+
 ```{r, test a single file, eval = FALSE}
 # run a single test file
 # make sure you have the test file open
