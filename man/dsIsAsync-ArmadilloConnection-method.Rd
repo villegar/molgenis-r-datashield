@@ -18,9 +18,12 @@ asynchronicity.
 }
 \details{
 When a \code{\link{DSResult-class}} object is returned on aggregation or
-assignment operation, the raw result can be accessed asynchronously, allowing
-parallelization of DataSHIELD calls over multpile servers. The returned named
-list of logicals will specify if asynchronicity is supported for:
-aggregation operation ('aggregate'), table assignment operation
-('assignTable'), expression assignment operation ('assignExpr').
+assignment operation, the raw result can be accessed asynchronously,
+allowing parallelization of DataSHIELD calls over multpile servers.
+The returned named list of logicals will specify if asynchronicity is
+supported for:
+aggregation operation ('aggregate'),
+table assignment operation ('assignTable'),
+resource assignment operation ('assignResource')
+and expression assignment operation ('assignExpr').
 }

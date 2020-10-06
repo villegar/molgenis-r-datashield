@@ -31,6 +31,19 @@ test_that("dsListTables retrieves tables", {
   expect_equal(result, unlist(tables))
 })
 
+test_that("dsListResources retrieves resources", {
+  resources <- list("a", "b")
+  get <- mock(list(status_code = 200))
+  content <- mock(resources)
+  result <- with_mock(
+    "httr::GET" = get,
+    "httr::content" = content,
+    dsListResources(connection)
+  )
+  expect_args(get, 1, handle = handle, path = "/resources")
+  expect_equal(result, unlist(resources))
+})
+
 test_that("dsHasTable returns TRUE if table exists", {
   head <- mock(list(status_code = 200))
   with_mock(
@@ -55,10 +68,37 @@ test_that("dsHasTable returns FALSE if table doesnot exist", {
   )
 })
 
+test_that("dsHasResource returns TRUE if resource exists", {
+  head <- mock(list(status_code = 200))
+  with_mock(
+    "httr::HEAD" = head,
+    expect_true(dsHasResource(connection, "project/folder/name"))
+  )
+  expect_args(head, 1,
+    handle = handle,
+    path = "/resources/project/folder/name"
+  )
+})
+
+test_that("dsHasResource returns FALSE if table doesnot exist", {
+  head <- mock(list(status_code = 404))
+  with_mock(
+    "httr::HEAD" = head,
+    expect_false(dsHasResource(connection, "project/folder/name"))
+  )
+  expect_args(head, 1,
+    handle = handle,
+    path = "/resources/project/folder/name"
+  )
+})
+
 test_that("dsIsAsync returns boolean list", {
   expect_equal(
     dsIsAsync(connection),
-    list(aggregate = TRUE, assignTable = TRUE, assignResource = TRUE, assignExpr = TRUE)
+    list(aggregate = TRUE,
+         assignTable = TRUE,
+         assignResource = TRUE,
+         assignExpr = TRUE)
   )
 })
 
@@ -141,6 +181,45 @@ test_that("dsAssignTable, when called synchronously, waits for result", {
       table = "project/folder/name.parquet", symbol = "D",
       async = TRUE
     )
+  )
+  expect_s4_class(result, "ArmadilloResult")
+})
+
+test_that("dsAssignResource assigns resource to symbol", {
+  post <- mock(list(status_code = 200))
+  result <- with_mock(
+    "httr::POST" = post,
+    dsAssignResource(connection, "D", "project/folder/name")
+  )
+  expect_args(post, 1,
+              handle = handle,
+              path = "/load-resource",
+              query = list(
+                resource = "project/folder/name",
+                symbol = "D",
+                async = TRUE
+              )
+  )
+  expect_s4_class(result, "ArmadilloResult")
+})
+
+test_that("dsAssignResource, when called synchronously, waits for result", {
+  post <- mock(list(status_code = 200))
+  retry <- mock(list(status_code = 200))
+  httr_content <- mock(NULL)
+  result <- with_mock(
+    "httr::POST" = post,
+    "httr::RETRY" = retry,
+    "httr::content" = httr_content,
+    dsAssignResource(connection, "D", "project/folder/name")
+  )
+  expect_args(post, 1,
+              handle = handle,
+              path = "/load-resource",
+              query = list(
+                resource = "project/folder/name", symbol = "D",
+                async = TRUE
+              )
   )
   expect_s4_class(result, "ArmadilloResult")
 })

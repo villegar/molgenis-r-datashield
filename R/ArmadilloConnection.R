@@ -273,7 +273,6 @@ methods::setMethod(
 methods::setMethod(
   "dsAssignResource", "ArmadilloConnection",
   function(conn, symbol, resource, async = TRUE) {
-
     query <- list(resource = resource, symbol = symbol, async = async)
     response <- httr::POST(
       handle = conn@handle,
@@ -289,8 +288,8 @@ methods::setMethod(
     }
 
     methods::new("ArmadilloResult",
-                 conn = conn,
-                 rval = list(result = result, async = async)
+      conn = conn,
+      rval = list(result = result, async = async)
     )
   }
 )
