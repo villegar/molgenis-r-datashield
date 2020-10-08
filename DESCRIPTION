@@ -1,6 +1,6 @@
 Package: DSMolgenisArmadillo
 Type: Package
-Version: 1.2.1.9000
+Version: 1.2.1.9001
 Title: DataSHIELD implementation for the Armadillo
 Authors@R: 
     c(person(given = "Sido",
