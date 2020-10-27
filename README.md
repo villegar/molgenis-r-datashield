@@ -28,7 +28,7 @@ Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actu
 
 ```R
 # install the DataSHIELD client
-install.packages("dsBase", repos = c("http://cran.datashield.org", "http://cran.us.r-project.org"), dependencies = TRUE)
+install.packages("dsBaseClient", repos = c("http://cran.datashield.org", "http://cran.us.r-project.org"), dependencies = TRUE)
 ```
 
 ## Usage
