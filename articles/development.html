@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -139,8 +139,7 @@
 <span class="co"># make sure you have the test file open</span>
 <span class="co"># e.g. test-ArmadilloResult.R</span>
 
-<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/test.html">test_file</a></span>()
-</pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/test.html">test_file</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 </div>
 <div id="vignettes" class="section level3">
 <h3 class="hasAnchor">
@@ -148,12 +147,10 @@
 <p>We use vignettes to expose the usage of the package. It includes examples of regular use cases and shows you how to setup the package.</p>
 <p>The vignettes are automatically build and you can run them locally with the following command:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html">knit</a></span>(<span class="st">"vignettes/DSMolgenisArmadillo.Rmd.orig"</span>, output = <span class="st">"vignettes/DSMolgenisArmadillo.Rmd"</span>)
-</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html">knit</a></span><span class="op">(</span><span class="st">"vignettes/DSMolgenisArmadillo.Rmd.orig"</span>, output <span class="op">=</span> <span class="st">"vignettes/DSMolgenisArmadillo.Rmd"</span><span class="op">)</span></pre></div>
 <p>If you only want the R-output use:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html">purl</a></span>(<span class="st">"vignettes/DSMolgenisArmadillo.Rmd.orig"</span>, output = <span class="st">"vignettes/DSMolgenisArmadillo.R"</span>)
-</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html">purl</a></span><span class="op">(</span><span class="st">"vignettes/DSMolgenisArmadillo.Rmd.orig"</span>, output <span class="op">=</span> <span class="st">"vignettes/DSMolgenisArmadillo.R"</span><span class="op">)</span></pre></div>
 </div>
 <div id="tips-and-tricks" class="section level3">
 <h3 class="hasAnchor">
@@ -164,56 +161,51 @@
 <a href="#authentication" class="anchor"></a>Authentication</h4>
 <p>You can login with basic auth when you are developing. The default credentials are username: admin and password: admin.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/molgenis/molgenis-r-datashield">DSMolgenisArmadillo</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/molgenis/molgenis-r-datashield">DSMolgenisArmadillo</a></span><span class="op">)</span>
 
-<span class="kw">armadillo_url</span> <span class="op">&lt;-</span> <span class="st">"https://armadillo.dev.molgenis.org"</span>
+<span class="va">armadillo_url</span> <span class="op">&lt;-</span> <span class="st">"https://armadillo.dev.molgenis.org"</span>
 
-<span class="kw">builder</span> <span class="op">&lt;-</span> <span class="kw">DSI</span>::<span class="fu"><a href="https://rdrr.io/pkg/DSI/man/newDSLoginBuilder.html">newDSLoginBuilder</a></span>()
-<span class="kw">builder</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/append.html">append</a></span>(server = <span class="st">"armadillo"</span>,
-               url = <span class="kw">armadillo_url</span>,
-               user = <span class="st">"admin"</span>,
-               password = <span class="st">"admin"</span>,
-               table = <span class="st">"gecko/2_1-core-1_0/nonrep"</span>,
-               driver = <span class="st">"ArmadilloDriver"</span>)
+<span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">DSI</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DSI/man/newDSLoginBuilder.html">newDSLoginBuilder</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">builder</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"armadillo"</span>,
+               url <span class="op">=</span> <span class="va">armadillo_url</span>,
+               user <span class="op">=</span> <span class="st">"admin"</span>,
+               password <span class="op">=</span> <span class="st">"admin"</span>,
+               table <span class="op">=</span> <span class="st">"gecko/2_1-core-1_0/nonrep"</span>,
+               driver <span class="op">=</span> <span class="st">"ArmadilloDriver"</span><span class="op">)</span>
 
-<span class="kw">logindata</span> <span class="op">&lt;-</span> <span class="kw">builder</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/utils/PkgUtils.html">build</a></span>()
+<span class="va">logindata</span> <span class="op">&lt;-</span> <span class="va">builder</span><span class="op">$</span><span class="fu">build</span><span class="op">(</span><span class="op">)</span>
 
-<span class="kw">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span>(login = <span class="kw">logindata</span>, assign = <span class="fl">TRUE</span>)
-</pre></div>
+<span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span><span class="op">(</span>login <span class="op">=</span> <span class="va">logindata</span>, assign <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 </div>
 <div id="version-of-the-package" class="section level4">
 <h4 class="hasAnchor">
 <a href="#version-of-the-package" class="anchor"></a>Version of the package</h4>
 <p>You can determine which version of the DSMolgenisArmadillo you are running by executing the following code:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu">dsGetInfo</span>(<span class="fu"><a href="../reference/armadillo.html">armadillo</a></span>())
+<span class="fu">dsGetInfo</span><span class="op">(</span><span class="fu"><a href="../reference/armadillo.html">armadillo</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; $driver.version</span>
-<span class="co">#&gt; [1] '1.1.3.9001'</span>
-</pre></div>
+<span class="co">#&gt; [1] '1.1.3.9001'</span></pre></div>
 </div>
 <div id="table-handling" class="section level4">
 <h4 class="hasAnchor">
 <a href="#table-handling" class="anchor"></a>Table handling</h4>
 <p>You can use several methods checking if tables in DataSHIELD. For checking existence of the tables you can use the following methods.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu">dsHasTable</span>(<span class="kw">conns</span><span class="op">$</span><span class="kw">armadillo</span>, <span class="st">"gecko/2_1-core-1_0/nonrep"</span>)
+<span class="fu">dsHasTable</span><span class="op">(</span><span class="va">conns</span><span class="op">$</span><span class="va">armadillo</span>, <span class="st">"gecko/2_1-core-1_0/nonrep"</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span>
-<span class="fu">dsHasTable</span>(<span class="kw">conns</span><span class="op">$</span><span class="kw">armadillo</span>, <span class="st">"gecko/1_1-outcome-1_0/nonrep"</span>)
-<span class="co">#&gt; [1] TRUE</span>
-</pre></div>
+<span class="fu">dsHasTable</span><span class="op">(</span><span class="va">conns</span><span class="op">$</span><span class="va">armadillo</span>, <span class="st">"gecko/1_1-outcome-1_0/nonrep"</span><span class="op">)</span>
+<span class="co">#&gt; [1] TRUE</span></pre></div>
 <p>To check the accessibility you can use the <code>table_status</code> methods.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu">datashield.table_status</span>(<span class="kw">conns</span>, <span class="st">"gecko/2_1-core-1_0/nonrep"</span>)
+<span class="fu">datashield.table_status</span><span class="op">(</span><span class="va">conns</span>, <span class="st">"gecko/2_1-core-1_0/nonrep"</span><span class="op">)</span>
 <span class="co">#&gt;      server                     table accessible</span>
-<span class="co">#&gt; 1 armadillo gecko/2_1-core-1_0/nonrep       TRUE</span>
-</pre></div>
+<span class="co">#&gt; 1 armadillo gecko/2_1-core-1_0/nonrep       TRUE</span></pre></div>
 <p>To check which tables are assigned you can use the <code>dsListTables</code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu">dsListTables</span>(<span class="kw">conns</span><span class="op">$</span><span class="kw">armadillo</span>)
+<span class="fu">dsListTables</span><span class="op">(</span><span class="va">conns</span><span class="op">$</span><span class="va">armadillo</span><span class="op">)</span>
 <span class="co">#&gt; [1] "chicago/crime/crimes"            "gecko/1_1-outcome-1_0/nonrep"    "gecko/1_1-outcome-1_0/yearlyrep"</span>
 <span class="co">#&gt; [4] "gecko/2_1-core-1_0/monthlyrep"   "gecko/2_1-core-1_0/nonrep"       "gecko/2_1-core-1_0/trimesterrep"</span>
-<span class="co">#&gt; [7] "gecko/2_1-core-1_0/yearlyrep"    "load-test/data/patient"</span>
-</pre></div>
+<span class="co">#&gt; [7] "gecko/2_1-core-1_0/yearlyrep"    "load-test/data/patient"</span></pre></div>
 </div>
 <div id="methods-and-packages" class="section level4">
 <h4 class="hasAnchor">
@@ -224,8 +216,8 @@
 <a href="#available-packages-serverside" class="anchor"></a>Available packages (serverside)</h5>
 <p>The available packages displayed by the method, are the serverside R-packages. Which means the packages available on the Armadillo.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span>(logins = <span class="kw">logindata</span>, assign = <span class="kw">F</span>)
-<span class="fu">dsListPackages</span>(<span class="kw">conns</span><span class="op">$</span><span class="kw">armadillo</span>)
+<span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span><span class="op">(</span>logins <span class="op">=</span> <span class="va">logindata</span>, assign <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
+<span class="fu">dsListPackages</span><span class="op">(</span><span class="va">conns</span><span class="op">$</span><span class="va">armadillo</span><span class="op">)</span>
 <span class="co">#&gt;              name   version</span>
 <span class="co">#&gt; 1           arrow     1.0.0</span>
 <span class="co">#&gt; 2      assertthat     0.2.1</span>
@@ -293,15 +285,14 @@
 <span class="co">#&gt; 64       survival     3.1-8</span>
 <span class="co">#&gt; 65          tcltk     3.6.3</span>
 <span class="co">#&gt; 66          tools     3.6.3</span>
-<span class="co">#&gt; 67          utils     3.6.3</span>
-</pre></div>
+<span class="co">#&gt; 67          utils     3.6.3</span></pre></div>
 </div>
 <div id="available-methods-clientside" class="section level5">
 <h5 class="hasAnchor">
 <a href="#available-methods-clientside" class="anchor"></a>Available methods (clientside)</h5>
 <p>These are the available methods on the Armadillo server.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="fu">datashield.methods</span>(conns = <span class="kw">conns</span>, type = <span class="st">"aggregate"</span>)
+<span class="fu">datashield.methods</span><span class="op">(</span>conns <span class="op">=</span> <span class="va">conns</span>, type <span class="op">=</span> <span class="st">"aggregate"</span><span class="op">)</span>
 <span class="co">#&gt;                        name                            value version package      type    class    server</span>
 <span class="co">#&gt; 1              is.character               base::is.character    NULL    base aggregate function armadillo</span>
 <span class="co">#&gt; 2        dataFrameSubsetDS1       dsBase::dataFrameSubsetDS1   6.0.1  dsBase aggregate function armadillo</span>
@@ -359,7 +350,7 @@
 <span class="co">#&gt; 54                  namesDS                  dsBase::namesDS   6.0.1  dsBase aggregate function armadillo</span>
 <span class="co">#&gt; 55                corTestDS                dsBase::corTestDS   6.0.1  dsBase aggregate function armadillo</span>
 <span class="co">#&gt; 56                messageDS                dsBase::messageDS   6.0.1  dsBase aggregate function armadillo</span>
-<span class="fu">datashield.methods</span>(conns = <span class="kw">conns</span>, type = <span class="st">"assign"</span>)
+<span class="fu">datashield.methods</span><span class="op">(</span>conns <span class="op">=</span> <span class="va">conns</span>, type <span class="op">=</span> <span class="st">"assign"</span><span class="op">)</span>
 <span class="co">#&gt;                  name                      value version package   type    class    server</span>
 <span class="co">#&gt; 1    changeRefGroupDS   dsBase::changeRefGroupDS   6.0.1  dsBase assign function armadillo</span>
 <span class="co">#&gt; 2  dataFrameSubsetDS2 dsBase::dataFrameSubsetDS2   6.0.1  dsBase assign function armadillo</span>
@@ -421,8 +412,7 @@
 <span class="co">#&gt; 58       as.character         base::as.character    NULL    base assign function armadillo</span>
 <span class="co">#&gt; 59                rep                  base::rep    NULL    base assign function armadillo</span>
 <span class="co">#&gt; 60            BooleDS            dsBase::BooleDS   6.0.1  dsBase assign function armadillo</span>
-<span class="co">#&gt; 61     asDataMatrixDS     dsBase::asDataMatrixDS   6.0.1  dsBase assign function armadillo</span>
-</pre></div>
+<span class="co">#&gt; 61     asDataMatrixDS     dsBase::asDataMatrixDS   6.0.1  dsBase assign function armadillo</span></pre></div>
 </div>
 </div>
 </div>
@@ -441,7 +431,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

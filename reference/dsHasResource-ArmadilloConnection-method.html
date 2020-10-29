@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Assign a table — dsAssignTable,ArmadilloConnection-method • DSMolgenisArmadillo</title>
+<title>Verify resource exists. — dsHasResource,ArmadilloConnection-method • DSMolgenisArmadillo</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Assign a table — dsAssignTable,ArmadilloConnection-method" />
-<meta property="og:description" content="Assign a R-data.frame in the DataSHIELD R session." />
+<meta property="og:title" content="Verify resource exists. — dsHasResource,ArmadilloConnection-method" />
+<meta property="og:description" content="Verify resource exists." />
 
 
 
@@ -126,67 +126,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Assign a table</h1>
+    <h1>Verify resource exists.</h1>
     <small class="dont-index">Source: <a href='https://github.com/molgenis/molgenis-r-datashield/blob/master/R/ArmadilloConnection.R'><code>R/ArmadilloConnection.R</code></a></small>
-    <div class="hidden name"><code>dsAssignTable-ArmadilloConnection-method.Rd</code></div>
+    <div class="hidden name"><code>dsHasResource-ArmadilloConnection-method.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Assign a R-data.frame in the DataSHIELD R session.</p>
+    <p>Verify resource exists.</p>
     </div>
 
     <pre class="usage"><span class='co'># S4 method for ArmadilloConnection</span>
-<span class='fu'>dsAssignTable</span><span class='op'>(</span>
-  <span class='va'>conn</span>,
-  <span class='va'>symbol</span>,
-  <span class='va'>table</span>,
-  variables <span class='op'>=</span> <span class='cn'>NULL</span>,
-  missings <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  identifiers <span class='op'>=</span> <span class='cn'>NULL</span>,
-  id.name <span class='op'>=</span> <span class='cn'>NULL</span>,
-  async <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+<span class='fu'>dsHasResource</span><span class='op'>(</span><span class='va'>conn</span>, <span class='va'>resource</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>conn</th>
-      <td><p><code><a href='ArmadilloConnection-class.html'>ArmadilloConnection-class</a></code> object.</p></td>
+      <td><p><code><a href='ArmadilloConnection-class.html'>ArmadilloConnection-class</a></code> class object.</p></td>
     </tr>
     <tr>
-      <th>symbol</th>
-      <td><p>Name of the R symbol.</p></td>
-    </tr>
-    <tr>
-      <th>table</th>
-      <td><p>Fully qualified name of the table.</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to load.</p></td>
-    </tr>
-    <tr>
-      <th>missings</th>
-      <td><p>Not supported</p></td>
-    </tr>
-    <tr>
-      <th>identifiers</th>
-      <td><p>Not supported</p></td>
-    </tr>
-    <tr>
-      <th>id.name</th>
-      <td><p>Not supported</p></td>
-    </tr>
-    <tr>
-      <th>async</th>
-      <td><p>When set, do not wait for the result.</p></td>
+      <th>resource</th>
+      <td><p>The identifier of the resource</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code><a href='ArmadilloResult-class.html'>ArmadilloResult-class</a></code> object.</p>
+    <p>TRUE if resource exists.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
