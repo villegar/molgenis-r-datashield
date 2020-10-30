@@ -1,6 +1,6 @@
 Package: DSMolgenisArmadillo
 Type: Package
-Version: 1.3.0.9000
+Version: 1.3.0.9001
 Title: DataSHIELD client for MOLGENIS Armadillo
 Description: This package is used to perform the remote and 'non-disclosive'
     analysis of sensitive research data on a MOLGENIS Armadillo DataSHIELD
