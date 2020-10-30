@@ -4,9 +4,12 @@
 \name{DSMolgenisArmadillo-package}
 \alias{DSMolgenisArmadillo}
 \alias{DSMolgenisArmadillo-package}
-\title{DSMolgenisArmadillo: DataSHIELD Implementation for MOLGENIS Armadillo}
+\title{DSMolgenisArmadillo: DataSHIELD client for MOLGENIS Armadillo}
 \description{
-DataSHIELD implementation for the Armadillo DataSHIELD service. Part of the MOLGENIS suite.
+This package is used to perform the remote and 'non-disclosive'
+    analysis of sensitive research data on a MOLGENIS Armadillo DataSHIELD
+    server. MOLGENIS Armadillo is a light-weight implementation of the
+    DataSHIELD API using a file store and an RServe server.
 }
 \seealso{
 Useful links:
