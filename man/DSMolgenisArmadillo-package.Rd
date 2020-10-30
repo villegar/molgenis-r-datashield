@@ -4,7 +4,7 @@
 \name{DSMolgenisArmadillo-package}
 \alias{DSMolgenisArmadillo}
 \alias{DSMolgenisArmadillo-package}
-\title{DSMolgenisArmadillo: DataSHIELD implementation for the Armadillo}
+\title{DSMolgenisArmadillo: DataSHIELD Implementation for MOLGENIS Armadillo}
 \description{
 DataSHIELD implementation for the Armadillo DataSHIELD service. Part of the MOLGENIS suite.
 }
