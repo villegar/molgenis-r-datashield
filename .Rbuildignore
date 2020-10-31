@@ -9,3 +9,7 @@ test.RData
 ^docs$
 ^pkgdown$
 ^\.travis\.yml$
+^cran-comments\.md$
+^README\.Rmd$
+^docs$
+^DSMolgenisArmadillo_.*\.tar\.gz$

@@ -3,3 +3,8 @@ r:
   - oldrel
   - release
   - devel
+
+branches:
+  only:
+  - master
+  - /^v\d+\.\d+(\.\d+)?(-\S*)?$/

@@ -4,19 +4,20 @@
 \name{DSMolgenisArmadillo-package}
 \alias{DSMolgenisArmadillo}
 \alias{DSMolgenisArmadillo-package}
-\title{DSMolgenisArmadillo: DataSHIELD client for MOLGENIS Armadillo}
+\title{DSMolgenisArmadillo: 'DataSHIELD' Client for 'MOLGENIS Armadillo'}
 \description{
-This package is used to perform the remote and 'non-disclosive'
-    analysis of sensitive research data on a MOLGENIS Armadillo DataSHIELD
-    server. MOLGENIS Armadillo is a light-weight implementation of the
-    DataSHIELD API using a file store and an RServe server.
+'DataSHIELD' is an infrastructure and series of R packages that 
+    enables the remote and 'non-disclosive' analysis of sensitive research data.
+    This package is the 'DataSHIELD' interface implementation to analyze data
+    shared on a 'MOLGENIS Armadillo' server. 'MOLGENIS Armadillo' is a
+    light-weight 'DataSHIELD' server using a file store and an 'RServe' server.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/molgenis/molgenis-r-datashield}
-  \item \url{https://molgenis.github.io/molgenis-r-datashield}
-  \item Report bugs at \url{https://github.com/molgenis/molgenis-r-datashield/issues}
+  \item \url{https://github.com/molgenis/molgenis-r-datashield/}
+  \item \url{https://molgenis.github.io/molgenis-r-datashield/}
+  \item Report bugs at \url{https://github.com/molgenis/molgenis-r-datashield/issues/}
 }
 
 }
@@ -27,6 +28,11 @@ Authors:
 \itemize{
   \item Tommy de Boer \email{t.de.boer01@umcg.nl} (\href{https://orcid.org/0000-0002-4492-7225}{ORCID})
   \item Fleur Kelpin \email{f.kelpin@umcg.nl} (\href{https://orcid.org/0000-0003-1527-5130}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item MOLGENIS org \email{molgenis-support@umcg.nl} [copyright holder, funder]
 }
 
 }

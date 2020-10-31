@@ -55,7 +55,7 @@ pipeline {
                         env.TAG = sh(script: "grep Version DESCRIPTION | head -n1 | cut -d':' -f2", returnStdout: true).trim()
                     }
                     sh "R CMD build ."
-                    sh "R CMD check ${PACKAGE}_${TAG}.tar.gz"
+                    sh "R CMD check --as-cran ${PACKAGE}_${TAG}.tar.gz"
                 }
             }
             post {
@@ -85,7 +85,7 @@ pipeline {
                     sh "git commit -a -m 'Increment version number'"
                     sh "echo 'Building ${PACKAGE} v${TAG}'"
                     sh "R CMD build ."
-                    sh "R CMD check ${PACKAGE}_${TAG}.tar.gz"
+                    sh "R CMD check --as-cran ${PACKAGE}_${TAG}.tar.gz"
                     sh "Rscript -e 'quit(save = \"no\", status = length(lintr::lint_package(linters=lintr::with_defaults(object_usage_linter = NULL))))'"
                 }
             }
@@ -145,7 +145,7 @@ pipeline {
                     sh "git commit -a -m 'Increment version number'"
                     sh "echo \"Releasing ${PACKAGE} v${TAG}\""
                     sh "R CMD build ."
-                    sh "R CMD check ${PACKAGE}_${TAG}.tar.gz"
+                    sh "R CMD check --as-cran ${PACKAGE}_${TAG}.tar.gz"
                     container('curl') {
                         sh "set +x; curl -v --user '${NEXUS_USER}:${NEXUS_PASS}' --upload-file ${PACKAGE}_${TAG}.tar.gz ${REGISTRY}/src/contrib/${PACKAGE}_${TAG}.tar.gz"
                     }
