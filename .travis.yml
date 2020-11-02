@@ -1,8 +1,6 @@
 language: r
 r:
-  - oldrel
   - release
-  - devel
 
 branches:
   only:
@@ -13,3 +11,6 @@ repos:
   CRAN: https://cloud.r-project.org
   datashield: https://cran.datashield.org/
   molgenis: https://registry.molgenis.org/repository/R
+
+r_packages:
+  - MolgenisAuth
