@@ -8,3 +8,8 @@ branches:
   only:
   - master
   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+
+repos:
+  CRAN: https://cloud.r-project.org
+  datashield: https://cran.datashield.org/
+  molgenis: https://registry.molgenis.org/repository/R

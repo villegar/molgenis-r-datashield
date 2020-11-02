@@ -60,4 +60,6 @@ Collate:
     'ArmadilloResult.R'
     'DSMolgenisArmadillo-package.R'
     'utils.R'
-Additional_repositories: https://cran.datashield.org/
+Additional_repositories: https://cran.datashield.org/,
+    https://registry.molgenis.org/repository/R/
+    
