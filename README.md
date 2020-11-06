@@ -107,8 +107,6 @@ documentation to see which methods are available.
 
     # calculate the mean
     ds.mean("core_nonrep$coh_country", datasources = conns)
-    #> [1] "aggregate"
-    #> `meanDS(core_nonrep$coh_country)`
     #> $Mean.by.Study
     #>           EstimatedMean Nmissing Nvalid Ntotal
     #> armadillo       431.105        0   1000   1000
@@ -122,32 +120,24 @@ documentation to see which methods are available.
 
     # create a histogram
     ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
-    #> [1] "aggregate"
-    #> exists("core_nonrep")
-    #> [1] "aggregate"
-    #> classDS("core_nonrep$coh_country")
-    #> [1] "aggregate"
-    #> `histogramDS1(core_nonrep$coh_country,1,3,0.25)`
-    #> [1] "aggregate"
-    #> "histogramDS2(core_nonrep$coh_country,10,34.5963555689156,841.038183310907,1,3,0.25)"
     #> Warning: armadillo: 0 invalid cells
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
     #> $breaks
-    #>  [1]  34.59636 115.24054 195.88472 276.52890 357.17309 437.81727 518.46145
-    #>  [8] 599.10563 679.74982 760.39400 841.03818
+    #>  [1]  35.24049 117.79616 200.35183 282.90750 365.46318 448.01885 530.57452
+    #>  [8] 613.13019 695.68587 778.24154 860.79721
     #> 
     #> $counts
-    #>  [1] 103 103  91 102 107 101 106  97 116  74
+    #>  [1] 106 108  88 114 104 100 114 105 107  54
     #> 
     #> $density
-    #>  [1] 0.0012772155 0.0012772155 0.0011284137 0.0012648153 0.0013268161
-    #>  [6] 0.0012524152 0.0013144159 0.0012028146 0.0014384175 0.0009176111
+    #>  [1] 0.0012839820 0.0013082081 0.0010659473 0.0013808863 0.0012597560
+    #>  [6] 0.0012113038 0.0013808863 0.0012718690 0.0012960951 0.0006541041
     #> 
     #> $mids
-    #>  [1]  74.91845 155.56263 236.20681 316.85100 397.49518 478.13936 558.78354
-    #>  [8] 639.42773 720.07191 800.71609
+    #>  [1]  76.51832 159.07399 241.62967 324.18534 406.74101 489.29668 571.85236
+    #>  [8] 654.40803 736.96370 819.51938
     #> 
     #> $xname
     #> [1] "xvect"
