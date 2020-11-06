@@ -97,7 +97,7 @@ DataSHIELD has a range of methods you can use to perform analysis. Check: the [d
 # calculate the mean
 ds.mean("core_nonrep$coh_country", datasources = conns)
 ```
-```{r create a histogram}
+```{r create-a-histogram}
 # create a histogram
 ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
 ```

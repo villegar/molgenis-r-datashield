@@ -115,7 +115,7 @@ documentation to see which methods are available.
     ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
     #> Warning: armadillo: 0 invalid cells
 
-<img src="man/figures/README-create a histogram-1.png" width="100%" />
+<img src="man/figures/README-create-a-histogram-1.png" width="100%" />
 
     #> $breaks
     #>  [1]  35.24049 117.79616 200.35183 282.90750 365.46318 448.01885 530.57452
