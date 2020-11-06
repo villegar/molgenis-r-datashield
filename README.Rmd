@@ -41,14 +41,6 @@ install.packages("DSI")
 install.packages("DSMolgenisArmadillo")
 ```
 
-The DataSHIELD Armadillo package is also available on the MOLGENIS CRAN (https://registry.molgenis.org/repository/R/).
-You can install it by executing the following code-block:
-
-```{r eval = FALSE}
-install.packages("DSI")
-install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/R", dependencies = TRUE)
-```
-
 Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis. This needs to be a client which is version 6.0.0 or higher.
 
 ```{r eval = FALSE}
@@ -101,10 +93,11 @@ conns <- datashield.login(logins = logindata, symbol = "core_nonrep", variables 
 ### Perform an analysis
 DataSHIELD has a range of methods you can use to perform analysis. Check: the [dsBaseClient](https://cran.datashield.org/web/#client-packages) documentation to see which methods are available.
 
-```{r}
+```{r calculate the mean}
 # calculate the mean
 ds.mean("core_nonrep$coh_country", datasources = conns)
-
+```
+```{r create a histogram}
 # create a histogram
 ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
 ```

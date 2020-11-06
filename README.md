@@ -34,13 +34,6 @@ You can install the released version of DSMolgenisArmadillo from
     install.packages("DSI")
     install.packages("DSMolgenisArmadillo")
 
-The DataSHIELD Armadillo package is also available on the MOLGENIS CRAN
-(<a href="https://registry.molgenis.org/repository/R/" class="uri">https://registry.molgenis.org/repository/R/</a>).
-You can install it by executing the following code-block:
-
-    install.packages("DSI")
-    install.packages("DSMolgenisArmadillo", repos = "https://registry.molgenis.org/repository/R", dependencies = TRUE)
-
 Make sure you install the DataSHIELD client (`dsBaseClient`) to perform
 the actual analysis. This needs to be a client which is version 6.0.0 or
 higher.
@@ -122,7 +115,7 @@ documentation to see which methods are available.
     ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
     #> Warning: armadillo: 0 invalid cells
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-create a histogram-1.png" width="100%" />
 
     #> $breaks
     #>  [1]  35.24049 117.79616 200.35183 282.90750 365.46318 448.01885 530.57452
