@@ -34,7 +34,7 @@ pipeline {
                 container('r') {
                     sh "apt-get update && apt-get install libharfbuzz-dev libfribidi-dev -y"
                     sh "Rscript -e \"git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')\""
-                    sh "install2.r --error --repos https://cloud.r-project.org devtools pkgdown MolgenisAuth fields metafor DSI"
+                    sh "install2.r --error --repos https://cloud.r-project.org devtools pkgdown mockery MolgenisAuth fields metafor DSI"
                     sh "install2.r --error --repos https://cran.datashield.org dsBaseClient"
                     sh "installGithub.r fdlk/lintr"
                     sh "mkdir -m 700 -p /root/.ssh"
