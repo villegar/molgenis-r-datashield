@@ -41,7 +41,7 @@ install.packages("DSI")
 install.packages("DSMolgenisArmadillo")
 ```
 
-The DataSHIELD Armadillo package is also available on the MOLGENIS CRAN (https://registry.molgenis.org/repository/R).
+The DataSHIELD Armadillo package is also available on the MOLGENIS CRAN (https://registry.molgenis.org/repository/R/).
 You can install it by executing the following code-block:
 
 ```{r eval = FALSE}
