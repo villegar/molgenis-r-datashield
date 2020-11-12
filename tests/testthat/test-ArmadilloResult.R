@@ -1,4 +1,4 @@
-test_that("getInfo retrieves last command for pending result", {
+test_that("getInfo awaits pending result and retrieves command info", {
   result <- methods::new("ArmadilloResult",
     conn = connection,
     rval = list(result = NULL, async = TRUE)
@@ -16,6 +16,7 @@ test_that("getInfo retrieves last command for pending result", {
   )
   content <- mock(last_command)
   info <- with_mock(
+    "DSMolgenisArmadillo:::.retry_until_last_result" = mock(NULL),
     "httr::GET" = get,
     "httr::content" = content,
     dsGetInfo(result)

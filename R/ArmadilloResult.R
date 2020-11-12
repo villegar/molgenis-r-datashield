@@ -22,7 +22,8 @@ methods::setClass("ArmadilloResult",
 
 #' Get result info
 #'
-#' Get the information about a command (if still available).
+#' Await completion and get the information about a command
+#' (if still available).
 #'
 #' @param dsObj \code{\link{ArmadilloResult-class}} class object
 #' @param ... Unused, needed for compatibility with generic.
@@ -37,6 +38,7 @@ methods::setMethod(
   "dsGetInfo", "ArmadilloResult",
   function(dsObj, ...) { # nolint
     if (dsObj@rval$async) {
+      .retry_until_last_result(dsObj@conn)
       result <- httr::GET(
         handle = dsObj@conn@handle,
         path = "/lastcommand"

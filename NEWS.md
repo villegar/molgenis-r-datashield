@@ -1,3 +1,7 @@
+# DSMolgenisArmadillo (development version)
+
+* Fix #41: dsGetInfo should await result
+
 # DSMolgenisArmadillo 1.3.3
 
 # DSMolgenisArmadillo 1.3.2
