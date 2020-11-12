@@ -17,5 +17,6 @@ being executed (`expression`) and if the query is complete
 (`{ "status" = "COMPLETED" }`).
 }
 \description{
-Get the information about a command (if still available).
+Await completion and get the information about a command
+(if still available).
 }
