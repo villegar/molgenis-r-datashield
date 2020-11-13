@@ -5,7 +5,7 @@
 
 ## R CMD check results
 
-0 errors ✓ | 0 warnings ✓ | 1 note x
+0 errors ✓ | 0 warnings ✓ | 2 notes x
 
   Maintainer: ‘Fleur Kelpin <f.kelpin@umcg.nl>’
   
@@ -17,3 +17,6 @@
     dsBaseClient   yes   https://cran.datashield.org/
 
 * This is a new release.
+* Researchers using this package will typically use dsBaseClient for the analysis.
+The datashield organisation publish to their own repository but we'd like to point out
+the existence of the dsBaseClient package to people who install DSMolgenisArmadillo.
