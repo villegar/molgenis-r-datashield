@@ -63,11 +63,11 @@ test_that("dsFetch retrieves last result for pending result", {
 
 test_that("dsIsCompleted retrieves status of COMPLETED async command", {
   result <- methods::new("ArmadilloResult",
-                         conn = connection,
-                         rval = list(result = NULL, async = TRUE)
+    conn = connection,
+    rval = list(result = NULL, async = TRUE)
   )
 
-  content <- mock(list(status = 'COMPLETED'))
+  content <- mock(list(status = "COMPLETED"))
   get <- mock(content)
 
   value <- with_mock(
@@ -78,17 +78,18 @@ test_that("dsIsCompleted retrieves status of COMPLETED async command", {
 
   expect_equal(value, TRUE)
   expect_args(get, 1,
-              handle = connection@handle,
-              path = "/lastcommand")
+    handle = connection@handle,
+    path = "/lastcommand"
+  )
 })
 
 test_that("dsIsCompleted retrieves status of RUNNING async command", {
   result <- methods::new("ArmadilloResult",
-                         conn = connection,
-                         rval = list(result = NULL, async = TRUE)
+    conn = connection,
+    rval = list(result = NULL, async = TRUE)
   )
 
-  content <- mock(list(status = 'RUNNING'))
+  content <- mock(list(status = "RUNNING"))
   get <- mock(content)
 
   value <- with_mock(
@@ -99,14 +100,15 @@ test_that("dsIsCompleted retrieves status of RUNNING async command", {
 
   expect_equal(value, FALSE)
   expect_args(get, 1,
-              handle = connection@handle,
-              path = "/lastcommand")
+    handle = connection@handle,
+    path = "/lastcommand"
+  )
 })
 
 test_that("dsIsCompleted returns status of sync command", {
   result <- methods::new("ArmadilloResult",
-                         conn = connection,
-                         rval = list(result = NULL, async = FALSE)
+    conn = connection,
+    rval = list(result = NULL, async = FALSE)
   )
 
   value <- dsIsCompleted(result)

@@ -552,10 +552,7 @@ methods::setMethod(
 methods::setMethod(
   "dsKeepAlive", "ArmadilloConnection",
   function(conn) { # nolint
-    try (
-      httr::GET(handle = conn@handle, path = "/actuator/info"),
-      silent = TRUE
-    )
+    try(httr::GET(handle = conn@handle, path = "/actuator/info"), silent = TRUE)
     invisible(NULL)
   }
 )
