@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            label 'r-4.0.3'
+            inheritFrom 'r-4.0.3'
         }
     }
     environment {
