@@ -1,5 +1,7 @@
 # DSMolgenisArmadillo (development version)
 
+* Upgrade to DSI 1.2
+
 # DSMolgenisArmadillo 1.3.4
 
 * Fix #41: dsGetInfo should await result
