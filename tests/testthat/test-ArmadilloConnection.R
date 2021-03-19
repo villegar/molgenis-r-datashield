@@ -511,3 +511,16 @@ test_that("dsGetInfo returns server info", {
     path = "/actuator/info"
   )
 })
+
+test_that("dsKeepAlive pings server info endpoint", {
+  get <- mock(list(status_code = 200))
+  result <- with_mock(
+    "httr::GET" = get,
+    dsKeepAlive(connection)
+  )
+
+  expect_args(get, 1,
+              handle = handle,
+              path = "/actuator/info"
+  )
+})
