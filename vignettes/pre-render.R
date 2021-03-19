@@ -12,4 +12,3 @@ knitr::knit("vignettes/development.Rmd.orig",
 knitr::knit("vignettes/workspaces.Rmd.orig",
   output = "vignettes/workspaces.Rmd"
 )
-
