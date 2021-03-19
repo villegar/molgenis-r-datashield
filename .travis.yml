@@ -10,6 +10,7 @@ branches:
 repos:
   CRAN: https://cloud.r-project.org
   datashield: https://cran.datashield.org/
+  obiba: https://cran.obiba.org/
   molgenis: https://registry.molgenis.org/repository/R
 
 r_packages:
