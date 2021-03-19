@@ -95,10 +95,12 @@ test_that("dsHasResource returns FALSE if table doesnot exist", {
 test_that("dsIsAsync returns boolean list", {
   expect_equal(
     dsIsAsync(connection),
-    list(aggregate = TRUE,
-         assignTable = TRUE,
-         assignResource = TRUE,
-         assignExpr = TRUE)
+    list(
+      aggregate = TRUE,
+      assignTable = TRUE,
+      assignResource = TRUE,
+      assignExpr = TRUE
+    )
   )
 })
 
@@ -192,13 +194,13 @@ test_that("dsAssignResource assigns resource to symbol", {
     dsAssignResource(connection, "D", "project/folder/name")
   )
   expect_args(post, 1,
-              handle = handle,
-              path = "/load-resource",
-              query = list(
-                resource = "project/folder/name",
-                symbol = "D",
-                async = TRUE
-              )
+    handle = handle,
+    path = "/load-resource",
+    query = list(
+      resource = "project/folder/name",
+      symbol = "D",
+      async = TRUE
+    )
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -214,12 +216,12 @@ test_that("dsAssignResource, when called synchronously, waits for result", {
     dsAssignResource(connection, "D", "project/folder/name")
   )
   expect_args(post, 1,
-              handle = handle,
-              path = "/load-resource",
-              query = list(
-                resource = "project/folder/name", symbol = "D",
-                async = TRUE
-              )
+    handle = handle,
+    path = "/load-resource",
+    query = list(
+      resource = "project/folder/name", symbol = "D",
+      async = TRUE
+    )
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -506,6 +508,19 @@ test_that("dsGetInfo returns server info", {
     cookies <- connection@cookies
   )
   expect_equivalent(result, expected)
+  expect_args(get, 1,
+    handle = handle,
+    path = "/actuator/info"
+  )
+})
+
+test_that("dsKeepAlive pings server info endpoint", {
+  get <- mock(list(status_code = 200))
+  result <- with_mock(
+    "httr::GET" = get,
+    dsKeepAlive(connection)
+  )
+
   expect_args(get, 1,
     handle = handle,
     path = "/actuator/info"

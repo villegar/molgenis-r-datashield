@@ -70,3 +70,33 @@ methods::setMethod(
     }
   }
 )
+
+
+#' Get whether the operation is completed
+#'
+#' Get whether the result from a previous assignment or aggregation operation
+#' was completed, either with a successful status or a failed one. This call
+#' must not wait for the completion, immediate response is expected. Once the
+#' result is identified as being completed, the raw result the operation can be
+#' got directly.
+#'
+#' @param res \code{\link{ArmadilloResult-class}} object.
+#'
+#' @return TRUE if operation is completed.
+#'
+#' @importMethodsFrom DSI dsIsCompleted
+#' @export
+methods::setMethod(
+  "dsIsCompleted", "ArmadilloResult",
+  function(res) { # nolint
+    if (res@rval$async) {
+      result <- httr::GET(
+        handle = res@conn@handle,
+        path = "/lastcommand"
+      )
+      httr::content(result)$status == "COMPLETED"
+    } else {
+      TRUE
+    }
+  }
+)

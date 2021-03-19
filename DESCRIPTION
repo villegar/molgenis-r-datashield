@@ -29,7 +29,7 @@ Authors@R:
 Maintainer: Fleur Kelpin <f.kelpin@umcg.nl>
 Depends: 
     R (>= 3.6),
-    DSI (>= 1.1.0),
+    DSI (>= 1.2.0),
     MolgenisAuth
 Imports: 
     methods,
@@ -60,4 +60,4 @@ Collate:
     'ArmadilloResult.R'
     'DSMolgenisArmadillo-package.R'
     'utils.R'
-Additional_repositories: https://cran.datashield.org/
+Additional_repositories: https://cran.obiba.org/
