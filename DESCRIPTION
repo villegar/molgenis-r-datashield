@@ -10,7 +10,7 @@ Description: 'DataSHIELD' is an infrastructure and series of R packages that
 Authors@R: 
     c(person(given = "Sido",
              family = "Haakma",
-             role = c("aut"),
+             role = c("aut", "cre"),
              email = "s.haakma@rug.nl",
              comment = c(ORCID = "0000-0003-1278-9144")),
       person(given = "Tommy",
@@ -20,13 +20,13 @@ Authors@R:
              comment = c(ORCID = "0000-0002-4492-7225")),
       person(given = "Fleur",
              family = "Kelpin",
-             role = c("aut", "cre"),
-             email = "f.kelpin@umcg.nl",
+             role = c("aut"),
+             email = "fleur@kelpin.nl",
              comment = c(ORCID = "0000-0003-1527-5130")),
       person(given = "MOLGENIS org",
              role = c("cph", "fnd"),
              email = "molgenis-support@umcg.nl"))
-Maintainer: Fleur Kelpin <f.kelpin@umcg.nl>
+Maintainer: Sido Haakma <s.haakma@rug.nl>
 Depends: 
     R (>= 3.6),
     DSI (>= 1.2.0),
