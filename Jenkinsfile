@@ -20,6 +20,7 @@ pipeline {
                 container('vault') {
                     script {
                         env.GITHUB_TOKEN = sh(script: 'vault read -field=value secret/ops/token/github', returnStdout: true)
+                        env.GITHUB_PAT = env.GITHUB_TOKEN
                         env.GITHUB_DEPLOY_PRIVATE_KEY_BASE64 = sh(script: 'vault read -field=ssh_private_base64 secret/ops/account/github', returnStdout: true)
                         env.CODECOV_TOKEN = sh(script: 'vault read -field=molgenis-r-datashield secret/ops/token/codecov', returnStdout: true)
                         env.NEXUS_USER = sh(script: 'vault read -field=username secret/ops/account/nexus', returnStdout: true)
@@ -33,10 +34,8 @@ pipeline {
                 sh "git fetch --tags"
                 container('r') {
                     sh "apt-get update && apt-get install libharfbuzz-dev libfribidi-dev -y"
-                    sh "install2.r --error git2r"
+                    sh "install2.r -r https://cloud.r-project.org -r https://cran.obiba.org --error git2r devtools pkgdown mockery MolgenisAuth fields metafor DSI gridExtra dsBaseClient"
                     sh "Rscript -e \"git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')\""
-                    sh "install2.r --error --repos https://cloud.r-project.org devtools pkgdown mockery MolgenisAuth fields metafor DSI gridExtra"
-                    sh "install2.r --error --repos https://cran.obiba.org dsBaseClient"
                     sh "installGithub.r fdlk/lintr"
                     sh "mkdir -m 700 -p /root/.ssh"
                     sh "ssh-keyscan -H -t rsa github.com  > ~/.ssh/known_hosts"
