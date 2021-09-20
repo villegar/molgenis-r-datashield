@@ -4,8 +4,7 @@ DSMolgenisArmadillo
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
-[![Build
-Status](https://travis-ci.com/molgenis/molgenis-r-datashield.svg?branch=master)](https://travis-ci.com/molgenis/molgenis-r-datashield)
+[![Build Status](https://app.travis-ci.com/molgenis/molgenis-r-datashield.svg?branch=master)](https://app.travis-ci.com/github/molgenis/molgenis-r-datashield)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/DSMolgenisArmadillo)](https://CRAN.R-project.org/package=DSMolgenisArmadillo)
 [![codecov](https://codecov.io/gh/molgenis/molgenis-r-datashield/branch/master/graph/badge.svg)](https://codecov.io/gh/molgenis/molgenis-r-datashield)
