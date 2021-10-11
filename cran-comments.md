@@ -1,4 +1,8 @@
-## 1.3.5
+## 1.3.6 Changed maintainer
+* Make Sido maintainer
+* Fix the travis badge
+
+## 1.3.5 Implemented changes in common interface DSI
 * This release implements two methods required to work with DSI 1.2.0.
 
 ## Test environments
