@@ -1,4 +1,4 @@
-# 1.3.7 Checked on FAILED in async requests
+## 1.3.7 Checked on FAILED in async requests
 
 * Fix: infinite loop is caused by not checking on FAILED state in async request
 
