@@ -95,7 +95,7 @@ methods::setMethod(
         path = "/lastcommand"
       )
       status <- httr::content(result)$status
-      status == 'COMPLETED' || status == 'FAILED'
+      status == "COMPLETED" || status == "FAILED"
     } else {
       TRUE
     }

@@ -88,16 +88,16 @@ test_that("dsIsCompleted retrieves status of FAILED async command", {
                          conn = connection,
                          rval = list(result = NULL, async = TRUE)
   )
-  
+
   content <- mock(list(status = "FAILED"))
   get <- mock(content)
-  
+
   value <- with_mock(
     "httr::GET" = get,
     "httr::content" = content,
     dsIsCompleted(result)
   )
-  
+
   expect_equal(value, TRUE)
   expect_args(get, 1,
               handle = connection@handle,
