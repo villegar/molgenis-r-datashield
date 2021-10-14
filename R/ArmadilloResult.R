@@ -94,7 +94,8 @@ methods::setMethod(
         handle = res@conn@handle,
         path = "/lastcommand"
       )
-      httr::content(result)$status == "COMPLETED"
+      status <- httr::content(result)$status
+      status == 'COMPLETED' || status == 'FAILED'
     } else {
       TRUE
     }
