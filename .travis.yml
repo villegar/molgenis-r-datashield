@@ -13,5 +13,8 @@ repos:
   obiba: https://cran.obiba.org/
   molgenis: https://registry.molgenis.org/repository/R
 
+env:
+  - _R_CHECK_FORCE_SUGGESTS_=0
+
 r_packages:
   - MolgenisAuth
