@@ -18,6 +18,37 @@ test_that("dsDisconnect saves the workspace", {
   expect_args(post, 1, handle = handle, path = "/workspaces/keepit")
 })
 
+test_that("dsListProfiles retrieves profiles", {
+  profiles <- list(
+    available = list("default", "exposome"),
+    current = "exposome")
+  get <- mock(list(status_code = 200))
+  content <- mock(profiles)
+  result <- with_mock(
+    "httr::GET" = get,
+    "httr::content" = content,
+    dsListProfiles(connection)
+  )
+  expect_args(get, 1, handle = handle, path = "/profiles")
+  expect_equal(result, profiles)
+})
+
+
+test_that("dsListProfiles returns default result if none found", {
+  get <- mock(list(status_code = 404))
+  content <- mock(profiles)
+  result <- with_mock(
+    "httr::GET" = get,
+    "httr::content" = content,
+    dsListProfiles(connection)
+  )
+  expect_args(get, 1, handle = handle, path = "/profiles")
+  expect_equal(result, list(
+    available = "default",
+    current = "default"
+  ))
+})
+
 test_that("dsListTables retrieves tables", {
   tables <- list("a", "b")
   get <- mock(list(status_code = 200))

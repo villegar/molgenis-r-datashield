@@ -6,11 +6,7 @@
 \alias{DSMolgenisArmadillo-package}
 \title{DSMolgenisArmadillo: 'DataSHIELD' Client for 'MOLGENIS Armadillo'}
 \description{
-'DataSHIELD' is an infrastructure and series of R packages that 
-    enables the remote and 'non-disclosive' analysis of sensitive research data.
-    This package is the 'DataSHIELD' interface implementation to analyze data
-    shared on a 'MOLGENIS Armadillo' server. 'MOLGENIS Armadillo' is a
-    light-weight 'DataSHIELD' server using a file store and an 'RServe' server.
+'DataSHIELD' is an infrastructure and series of R packages that enables the remote and 'non-disclosive' analysis of sensitive research data. This package is the 'DataSHIELD' interface implementation to analyze data shared on a 'MOLGENIS Armadillo' server. 'MOLGENIS Armadillo' is a light-weight 'DataSHIELD' server using a file store and an 'RServe' server.
 }
 \seealso{
 Useful links:

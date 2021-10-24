@@ -33,6 +33,7 @@ armadillo <- function() {
 #' @param password The password to authenticate with.
 #' @param token The ID token to authenticate with.
 #' @param url URL of the server.
+#' @param profile the profile to select, default "default"
 #' @param opts Curl options as described by httr (call httr::httr_options()
 #' for details). Can be provided by "Armadillo.opts" option.
 #' @param ... Unused, needed for compatibility with generic.
@@ -46,7 +47,7 @@ armadillo <- function() {
 methods::setMethod(
   "dsConnect", "ArmadilloDriver",
   function(drv, name, restore = NULL, username = "", password = "",
-           token = "", url, opts = list(), ...) {
+           token = "", url, profile = "default", opts = list(), ...) {
     handle <- httr::handle(url)
 
     if (stringr::str_length(username) > 0) {
@@ -66,12 +67,18 @@ methods::setMethod(
         httr::add_headers("Authorization" = paste0("Bearer ", token))
     }
 
-    response <- httr::GET(
+    profile_to_select <- if (profile == "") "default" else profile
+
+    response <- httr::POST(
       handle = handle,
-      path = "/tables",
+      path = "/select-profile",
+      body = profile_to_select,
       config = auth_header
     )
     .handle_request_error(response)
+    if (response$status == 404 && profile_to_select != "default") {
+      stop(paste0("Profile not found: '", profile, "'"))
+    }
     cookies <- httr::cookies(response)
 
     # Restore users workspace

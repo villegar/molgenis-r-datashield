@@ -53,6 +53,19 @@ methods::setMethod(
   }
 )
 
+methods::setMethod(
+  "dsListProfiles", "ArmadilloConnection", function(conn) {
+    response <- httr::GET(handle = conn@handle, path = "/profiles")
+    .handle_request_error(response)
+    if (response$status_code == 404) {
+      # endpoint not implemented, fake it!
+      list(available = "default", current = "default")
+    } else {
+      httr::content(response)
+    }
+  }
+)
+
 #' List Armadillo DataSHIELD Service tables
 #'
 #' List Armadillo DataSHIELD Service tables that may be accessible for
