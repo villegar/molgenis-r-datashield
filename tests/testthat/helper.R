@@ -1,7 +1,7 @@
 library(mockery)
 library(tibble)
 
-cookies <- tibble(
+cookies <- tibble::tibble(
   domain = "#HttpOnly_example.org",
   name = "JSESSIONID",
   value = "abcde"
