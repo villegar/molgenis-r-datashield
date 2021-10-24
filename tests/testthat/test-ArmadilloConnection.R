@@ -19,7 +19,9 @@ test_that("dsDisconnect saves the workspace", {
 })
 
 test_that("dsListProfiles retrieves profiles", {
-  profiles <- list(available=list("default", "exposome"), current="exposome")
+  profiles <- list(
+    available = list("default", "exposome"),
+    current = "exposome")
   get <- mock(list(status_code = 200))
   content <- mock(profiles)
   result <- with_mock(

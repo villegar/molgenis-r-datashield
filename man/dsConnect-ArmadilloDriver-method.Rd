@@ -12,6 +12,7 @@
   password = "",
   token = "",
   url,
+  profile = "default",
   opts = list(),
   ...
 )
@@ -32,6 +33,8 @@ R session.}
 \item{token}{The ID token to authenticate with.}
 
 \item{url}{URL of the server.}
+
+\item{profile}{the profile to select, default "default"}
 
 \item{opts}{Curl options as described by httr (call httr::httr_options()
 for details). Can be provided by "Armadillo.opts" option.}
