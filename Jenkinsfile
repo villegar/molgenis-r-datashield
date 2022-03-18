@@ -37,11 +37,11 @@ pipeline {
                 sh "git fetch --tags"
                 container('r') {
                     sh "apt-get update && apt-get install libharfbuzz-dev libfribidi-dev -y"
-                    sh "install2.r -r https://cloud.r-project.org -r https://cran.obiba.org --error git2r devtools pkgdown mockery MolgenisAuth fields metafor DSI gridExtra dsBaseClient"
+                    sh "install2.r -r https://cloud.r-project.org -r https://cran.obiba.org --error git2r devtools pkgdown mockery MolgenisAuth fields metafor DSI gridExtra dsBaseClient ellipsis vctrs"
                     sh "Rscript -e \"git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')\""
                     sh "installGithub.r fdlk/lintr"
                     sh "mkdir -m 700 -p /root/.ssh"
-                    sh "ssh-keyscan -H -t rsa github.com  > ~/.ssh/known_hosts"
+                    sh "ssh-keyscan -H -t rsa github.com > ~/.ssh/known_hosts"
                 }
             }
         }
