@@ -1,4 +1,4 @@
-# DSMolgenisArmadillo (development version)
+# DSMolgenisArmadillo 1.4.1
 
 # DSMolgenisArmadillo 1.4.0
 
