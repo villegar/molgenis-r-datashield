@@ -23,6 +23,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -35,18 +37,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/DSMolgenisArmadillo.html">Get started</a>
 </li>
@@ -74,7 +70,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/molgenis/molgenis-r-datashield/">
+  <a href="https://github.com/molgenis/molgenis-r-datashield/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,37 +87,37 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="dsmolgenisarmadillo" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#dsmolgenisarmadillo" class="anchor"></a>DSMolgenisArmadillo</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="dsmolgenisarmadillo">DSMolgenisArmadillo<a class="anchor" aria-label="anchor" href="#dsmolgenisarmadillo"></a>
+</h1></div>
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
-<p>A DSI implementation for the <a href="https://github.com/molgenis/molgenis-service-armadillo/">MOLGENIS Armadillo DataSHIELD Service</a>.</p>
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
+<p>A DSI implementation for the <a href="https://github.com/molgenis/molgenis-service-armadillo/" class="external-link">MOLGENIS Armadillo DataSHIELD Service</a>.</p>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p>You can use DSMolgenisArmadillo to analyse data shared in MOLGENIS Armadillo servers using DataSHIELD. DataSHIELD allows execution of a subset of analysis methods available in R. Methods such as:</p>
 <p><code>ds.mean()</code> <code>ds.glm()</code> <code>ds.lmerSLMA()</code></p>
-<p>For more detailed documentation check: <a href="https://cran.datashield.org/" class="uri">https://cran.datashield.org/</a>.</p>
+<p>For more detailed documentation check: <a href="https://cran.datashield.org/" class="external-link uri">https://cran.datashield.org/</a>.</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of DSMolgenisArmadillo from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the released version of DSMolgenisArmadillo from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"DSI"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"DSMolgenisArmadillo"</span>)</span></code></pre></div>
 <p>Make sure you install the DataSHIELD client (<code>dsBaseClient</code>) to perform the actual analysis. This needs to be a client which is version 6.0.0 or higher.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the DataSHIELD client</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"dsBaseClient"</span>, <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">"http://cran.datashield.org"</span>, <span class="st">"https://cloud.r-project.org/"</span>), <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
 <p>To use the DataSHIELD Armadillo client and perform analysis in DataSHIELD there a few basic steps you need to take.</p>
-<div id="get-a-token-from-the-id-server" class="section level3">
-<h3 class="hasAnchor">
-<a href="#get-a-token-from-the-id-server" class="anchor"></a>Get a token from the ID server</h3>
+<div class="section level3">
+<h3 id="get-a-token-from-the-id-server">Get a token from the ID server<a class="anchor" aria-label="anchor" href="#get-a-token-from-the-id-server"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the necessary packages.</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dsBaseClient)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Loading required package: DSI</span></span>
@@ -136,9 +132,9 @@
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># get token from central authentication server</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>token <span class="ot">&lt;-</span> <span class="fu">armadillo.get_token</span>(armadillo_url)</span></code></pre></div>
 </div>
-<div id="build-the-login-frame" class="section level3">
-<h3 class="hasAnchor">
-<a href="#build-the-login-frame" class="anchor"></a>Build the login frame</h3>
+<div class="section level3">
+<h3 id="build-the-login-frame">Build the login frame<a class="anchor" aria-label="anchor" href="#build-the-login-frame"></a>
+</h3>
 <p>You need to specify the project, the folder and the table name(s) you want to access.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># build the login dataframe</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>builder <span class="ot">&lt;-</span> DSI<span class="sc">::</span><span class="fu">newDSLoginBuilder</span>()</span>
@@ -151,9 +147,9 @@
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># create loginframe</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>logindata <span class="ot">&lt;-</span> builder<span class="sc">$</span><span class="fu">build</span>()</span></code></pre></div>
 </div>
-<div id="login-and-assign-the-data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#login-and-assign-the-data" class="anchor"></a>Login and assign the data</h3>
+<div class="section level3">
+<h3 id="login-and-assign-the-data">Login and assign the data<a class="anchor" aria-label="anchor" href="#login-and-assign-the-data"></a>
+</h3>
 <p>Assigning the data means that you will assign the data to a symbol in the analysis environment.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># login into server</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>conns <span class="ot">&lt;-</span> <span class="fu">datashield.login</span>(<span class="at">logins =</span> logindata, <span class="at">symbol =</span> <span class="st">"core_nonrep"</span>, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"coh_country"</span>), <span class="at">assign =</span> <span class="cn">TRUE</span>)</span>
@@ -162,10 +158,10 @@
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Assigning table data...</span></span></code></pre></div>
 </div>
-<div id="perform-an-analysis" class="section level3">
-<h3 class="hasAnchor">
-<a href="#perform-an-analysis" class="anchor"></a>Perform an analysis</h3>
-<p>DataSHIELD has a range of methods you can use to perform analysis. Check: the <a href="https://cran.datashield.org/web/#client-packages">dsBaseClient</a> documentation to see which methods are available.</p>
+<div class="section level3">
+<h3 id="perform-an-analysis">Perform an analysis<a class="anchor" aria-label="anchor" href="#perform-an-analysis"></a>
+</h3>
+<p>DataSHIELD has a range of methods you can use to perform analysis. Check: the <a href="https://cran.datashield.org/web/#client-packages" class="external-link">dsBaseClient</a> documentation to see which methods are available.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mean</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ds.mean</span>(<span class="st">"core_nonrep$coh_country"</span>, <span class="at">datasources =</span> conns)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $Mean.by.Study</span></span>
@@ -208,60 +204,71 @@
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "histogram"</span></span></code></pre></div>
 </div>
 </div>
-<div id="documentation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#documentation" class="anchor"></a>Documentation</h2>
-<p>Check the <a href="https://molgenis.github.io/molgenis-r-datashield/articles/DSMolgenisArmadillo.html">package documentation</a> for details.</p>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<p>Check the <a href="https://molgenis.github.io/molgenis-r-datashield/articles/DSMolgenisArmadillo.html" class="external-link">package documentation</a> for details.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=DSMolgenisArmadillo">https://​cloud.r-project.org/​package=DSMolgenisArmadillo</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/molgenis/molgenis-r-datashield/">https://​github.com/​molgenis/​molgenis-r-datashield/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/molgenis/molgenis-r-datashield/issues/">https://​github.com/​molgenis/​molgenis-r-datashield/​issues/​</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=DSMolgenisArmadillo" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/molgenis/molgenis-r-datashield/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/molgenis/molgenis-r-datashield/issues/" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>LGPL (&gt;= 2.1)</li>
 </ul>
 </div>
-<div class="developers">
-<h2>Developers</h2>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li>Sido Haakma <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-1278-9144" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Tommy de Boer <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-4492-7225" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Fleur Kelpin <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1527-5130" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html#citation">Citing DSMolgenisArmadillo</a></li>
+</ul>
+</div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Mariska Slofstra <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-0400-0468" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Sido Haakma <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1278-9144" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Tommy de Boer <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-4492-7225" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Fleur Kelpin <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1527-5130" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>MOLGENIS org <br><small class="roles"> Copyright holder, funder </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://app.travis-ci.com/github/molgenis/molgenis-r-datashield/"><img src="https://api.travis-ci.com/molgenis/molgenis-r-datashield.svg?branch=master" alt="Build Status"></a></li>
-<li><a href="https://CRAN.R-project.org/package=DSMolgenisArmadillo"><img src="https://www.r-pkg.org/badges/version/DSMolgenisArmadillo" alt="CRAN status"></a></li>
-<li><a href="https://app.codecov.io/gh/molgenis/molgenis-r-datashield"><img src="https://codecov.io/gh/molgenis/molgenis-r-datashield/branch/master/graph/badge.svg?token=b661qHT3BO" alt="codecov"></a></li>
+<li><a href="https://app.travis-ci.com/github/molgenis/molgenis-r-datashield/" class="external-link"><img src="https://api.travis-ci.com/molgenis/molgenis-r-datashield.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://CRAN.R-project.org/package=DSMolgenisArmadillo" class="external-link"><img src="https://www.r-pkg.org/badges/version/DSMolgenisArmadillo" alt="CRAN status"></a></li>
+<li><a href="https://app.codecov.io/gh/molgenis/molgenis-r-datashield" class="external-link"><img src="https://codecov.io/gh/molgenis/molgenis-r-datashield/branch/master/graph/badge.svg?token=b661qHT3BO" alt="codecov"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Sido Haakma, Tommy de Boer, Fleur Kelpin, MOLGENIS org.</p>
+  <p></p>
+<p>Developed by Mariska Slofstra, Sido Haakma, Tommy de Boer, Fleur Kelpin, MOLGENIS org.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -269,6 +276,8 @@
 
   
 
+
+  
 
   </body>
 </html>

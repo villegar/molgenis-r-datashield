@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/DSMolgenisArmadillo.html">Get started</a>
 </li>
@@ -70,7 +66,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/molgenis/molgenis-r-datashield/">
+  <a href="https://github.com/molgenis/molgenis-r-datashield/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -85,13 +81,13 @@
 
       
 
-      </header><script src="workspaces_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using workspaces</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/molgenis/molgenis-r-datashield/blob/master/vignettes/workspaces.Rmd"><code>vignettes/workspaces.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/molgenis/molgenis-r-datashield/blob/HEAD/vignettes/workspaces.Rmd" class="external-link"><code>vignettes/workspaces.Rmd</code></a></small>
       <div class="hidden name"><code>workspaces.Rmd</code></div>
 
     </div>
@@ -101,18 +97,18 @@
 <p>To store the assigned data in the Armadillo service, you can use workspaces to make sure a certain state of the data is maintained on the service.</p>
 <p>Saving the workspaces can be done during <code>datashield.logout</code> or at runtime.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">dsBaseClient</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/molgenis/molgenis-r-datashield/">DSMolgenisArmadillo</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">dsBaseClient</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/molgenis/molgenis-r-datashield/" class="external-link">DSMolgenisArmadillo</a></span><span class="op">)</span>
 
 <span class="co"># specify server url</span>
 <span class="va">armadillo_url</span> <span class="op">&lt;-</span> <span class="st">"https://armadillo.dev.molgenis.org"</span>
 
 <span class="co"># get token from central authentication server</span>
 <span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/armadillo.get_token.html">armadillo.get_token</a></span><span class="op">(</span><span class="va">armadillo_url</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "We're opening a browser so you can log in with code QR4XJ9"</code></pre>
+<pre><code><span class="co">## [1] "We're opening a browser so you can log in with code QR4XJ9"</span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># build the login dataframe</span>
-<span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">DSI</span><span class="fu">::</span><span class="fu"><a href="https://datashield.github.io/DSI/reference/newDSLoginBuilder.html">newDSLoginBuilder</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">DSI</span><span class="fu">::</span><span class="fu"><a href="https://datashield.github.io/DSI/reference/newDSLoginBuilder.html" class="external-link">newDSLoginBuilder</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">builder</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"armadillo"</span>,
                url <span class="op">=</span> <span class="va">armadillo_url</span>,
                token <span class="op">=</span> <span class="va">token</span>,
@@ -122,67 +118,67 @@
 <span class="co"># create loginframe</span>
 <span class="va">logindata</span> <span class="op">&lt;-</span> <span class="va">builder</span><span class="op">$</span><span class="fu">build</span><span class="op">(</span><span class="op">)</span>
 
-<span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span><span class="op">(</span>login <span class="op">=</span> <span class="va">logindata</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Logging into the collaborating servers</code></pre>
+<span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.login.html" class="external-link">datashield.login</a></span><span class="op">(</span>login <span class="op">=</span> <span class="va">logindata</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">## Logging into the collaborating servers</span></code></pre>
 <pre><code>## 
   Logged in all servers [================================================================] 100% / 0s</code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">datashield.assign.table</span><span class="op">(</span>conns <span class="op">=</span> <span class="va">conns</span>,
+<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.table.html" class="external-link">datashield.assign.table</a></span><span class="op">(</span>conns <span class="op">=</span> <span class="va">conns</span>,
                         table <span class="op">=</span> <span class="st">"gecko/2_1-core-1_0/nonrep"</span>,
                         symbol <span class="op">=</span> <span class="st">"J"</span>,
-                        variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"recruit_age"</span>, <span class="st">"child_id"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+                        variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"recruit_age"</span>, <span class="st">"child_id"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
   Assigned all table (J &lt;- ...) [========================================================] 100% / 0s</code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">datashield.logout</span><span class="op">(</span><span class="va">conns</span>, save <span class="op">=</span> <span class="st">"my-workspace"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.logout.html" class="external-link">datashield.logout</a></span><span class="op">(</span><span class="va">conns</span>, save <span class="op">=</span> <span class="st">"my-workspace"</span><span class="op">)</span>
 
-<span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span><span class="op">(</span>logins <span class="op">=</span> <span class="va">logindata</span>,
+<span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.login.html" class="external-link">datashield.login</a></span><span class="op">(</span>logins <span class="op">=</span> <span class="va">logindata</span>,
                           assign <span class="op">=</span> <span class="cn">FALSE</span>,
                           restore <span class="op">=</span> <span class="st">"my-workspace"</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Logging into the collaborating servers</code></pre>
+<pre><code><span class="co">## </span>
+<span class="co">## Logging into the collaborating servers</span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">datashield.symbols</span><span class="op">(</span><span class="va">conns</span><span class="op">)</span></code></pre></div>
-<pre><code>## $armadillo
-## [1] "J"</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.symbols.html" class="external-link">datashield.symbols</a></span><span class="op">(</span><span class="va">conns</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## $armadillo</span>
+<span class="co">## [1] "J"</span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">datashield.workspace_save</span><span class="op">(</span><span class="va">conns</span>, <span class="st">"my-workspace-version-2"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.workspace_save.html" class="external-link">datashield.workspace_save</a></span><span class="op">(</span><span class="va">conns</span>, <span class="st">"my-workspace-version-2"</span><span class="op">)</span></code></pre></div>
 <p>You can overwrite workspaces using the same name again when saving the workspace.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">datashield.logout</span><span class="op">(</span><span class="va">conns</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.logout.html" class="external-link">datashield.logout</a></span><span class="op">(</span><span class="va">conns</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
   Logged out from all servers [==========================================================] 100% / 1s</code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu">datashield.login</span><span class="op">(</span>logins <span class="op">=</span> <span class="va">logindata</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Logging into the collaborating servers</code></pre>
+<code class="sourceCode R"><span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.login.html" class="external-link">datashield.login</a></span><span class="op">(</span>logins <span class="op">=</span> <span class="va">logindata</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">## Logging into the collaborating servers</span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">datashield.assign.table</span><span class="op">(</span>conns <span class="op">=</span> <span class="va">conns</span>,
+<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.table.html" class="external-link">datashield.assign.table</a></span><span class="op">(</span>conns <span class="op">=</span> <span class="va">conns</span>,
                         table <span class="op">=</span> <span class="st">"gecko/2_1-core-1_0/nonrep"</span>,
                         symbol <span class="op">=</span> <span class="st">"H"</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
   Assigned all table (H &lt;- ...) [========================================================] 100% / 0s</code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">datashield.workspace_save</span><span class="op">(</span><span class="va">conns</span>, <span class="st">"my-workspace-overwritten"</span><span class="op">)</span>
-<span class="fu">datashield.workspace_save</span><span class="op">(</span><span class="va">conns</span>, <span class="st">"my-workspace-overwritten"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.workspace_save.html" class="external-link">datashield.workspace_save</a></span><span class="op">(</span><span class="va">conns</span>, <span class="st">"my-workspace-overwritten"</span><span class="op">)</span>
+<span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.workspace_save.html" class="external-link">datashield.workspace_save</a></span><span class="op">(</span><span class="va">conns</span>, <span class="st">"my-workspace-overwritten"</span><span class="op">)</span></code></pre></div>
 <p>You can list the workspaces as well.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">datashield.workspaces</span><span class="op">(</span><span class="va">conns</span><span class="op">$</span><span class="va">armadillo</span><span class="op">)</span></code></pre></div>
-<pre><code>##             lastAccessDate                               ETag                               name   size user
-## 1 2020-09-08T10:14:42.345Z "79ea8e26a41a0f43716040c5f09466c0" armadillo:my-workspace-overwritten 172072     
-## 2 2020-09-08T10:14:40.907Z "7de51b96e6d15e9ab13b9ef52fe3547f"   armadillo:my-workspace-version-2   3610     
-## 3 2020-09-08T10:14:40.524Z "7de51b96e6d15e9ab13b9ef52fe3547f"             armadillo:my-workspace   3610</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.workspaces.html" class="external-link">datashield.workspaces</a></span><span class="op">(</span><span class="va">conns</span><span class="op">$</span><span class="va">armadillo</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##             lastAccessDate                               ETag                               name   size user</span>
+<span class="co">## 1 2020-09-08T10:14:42.345Z "79ea8e26a41a0f43716040c5f09466c0" armadillo:my-workspace-overwritten 172072     </span>
+<span class="co">## 2 2020-09-08T10:14:40.907Z "7de51b96e6d15e9ab13b9ef52fe3547f"   armadillo:my-workspace-version-2   3610     </span>
+<span class="co">## 3 2020-09-08T10:14:40.524Z "7de51b96e6d15e9ab13b9ef52fe3547f"             armadillo:my-workspace   3610</span></code></pre>
 <p>Remove workspaces.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">datashield.workspace_rm</span><span class="op">(</span><span class="va">conns</span>, <span class="st">"my-workspace-overwritten"</span><span class="op">)</span>
-<span class="fu">datashield.workspaces</span><span class="op">(</span><span class="va">conns</span><span class="op">)</span></code></pre></div>
-<pre><code>##      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user
-## 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
-## 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     
-##   lastAccessDate..2020.09.08T10.14.40.907Z. lastAccessDate..2020.09.08T10.14.40.524Z. size.3610L size.3610L.1
-## 1                  2020-09-08T10:14:40.907Z                  2020-09-08T10:14:40.524Z       3610         3610
-## 2                  2020-09-08T10:14:40.907Z                  2020-09-08T10:14:40.524Z       3610         3610</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.workspace_rm.html" class="external-link">datashield.workspace_rm</a></span><span class="op">(</span><span class="va">conns</span>, <span class="st">"my-workspace-overwritten"</span><span class="op">)</span>
+<span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.workspaces.html" class="external-link">datashield.workspaces</a></span><span class="op">(</span><span class="va">conns</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##      server name..armadillo.my.workspace.version.2. name..armadillo.my.workspace. user</span>
+<span class="co">## 1 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     </span>
+<span class="co">## 2 armadillo        armadillo:my-workspace-version-2        armadillo:my-workspace     </span>
+<span class="co">##   lastAccessDate..2020.09.08T10.14.40.907Z. lastAccessDate..2020.09.08T10.14.40.524Z. size.3610L size.3610L.1</span>
+<span class="co">## 1                  2020-09-08T10:14:40.907Z                  2020-09-08T10:14:40.524Z       3610         3610</span>
+<span class="co">## 2                  2020-09-08T10:14:40.907Z                  2020-09-08T10:14:40.524Z       3610         3610</span></code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -194,11 +190,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sido Haakma, Tommy de Boer, Fleur Kelpin, MOLGENIS org.</p>
+  <p></p>
+<p>Developed by Mariska Slofstra, Sido Haakma, Tommy de Boer, Fleur Kelpin, MOLGENIS org.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -206,6 +204,8 @@
 
   
 
+
+  
 
   </body>
 </html>
