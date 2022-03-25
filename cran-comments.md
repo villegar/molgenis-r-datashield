@@ -1,3 +1,12 @@
+## 1.4.1 Changed maintainer
+
+* Make Mariska maintainer
+
+## 1.4.0 Added profiles feature
+
+* Add profiles
+* Bump DSI to 1.3.0
+
 ## 1.3.7 Checked on FAILED in async requests
 
 * Fix: infinite loop is caused by not checking on FAILED state in async request
