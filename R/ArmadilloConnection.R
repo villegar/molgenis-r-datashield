@@ -21,7 +21,8 @@ methods::setClass("ArmadilloConnection",
     name = "character",
     handle = "handle",
     user = "character",
-    cookies = "list"
+    cookies = "list",
+    token = "character"
   )
 )
 
@@ -45,17 +46,26 @@ methods::setMethod(
     if (!is.null(save)) {
       response <- httr::POST(
         handle = conn@handle,
-        path = paste0("/workspaces/", save)
+        path = paste0("/workspaces/", save),
+        config = httr::add_headers(.get_auth_header(conn))
       )
       .handle_request_error(response)
     }
-    httr::POST(handle = conn@handle, path = "/logout")
+    httr::POST(
+      handle = conn@handle, 
+      path = "/logout",
+      config = httr::add_headers(.get_auth_header(conn))
+    )
   }
 )
 
 methods::setMethod(
   "dsListProfiles", "ArmadilloConnection", function(conn) {
-    response <- httr::GET(handle = conn@handle, path = "/profiles")
+    response <- httr::GET(
+      handle = conn@handle, 
+      path = "/profiles", 
+      config = httr::add_headers(.get_auth_header(conn))
+      )
     .handle_request_error(response)
     if (response$status_code == 404) {
       # endpoint not implemented, fake it!
@@ -80,7 +90,11 @@ methods::setMethod(
 #' @export
 methods::setMethod(
   "dsListTables", "ArmadilloConnection", function(conn) {
-    response <- httr::GET(handle = conn@handle, path = "/tables")
+    response <- httr::GET(
+      handle = conn@handle, 
+      path = "/tables",
+      config = httr::add_headers(.get_auth_header(conn))
+      )
     .handle_request_error(response)
     .unlist_character_list(httr::content(response))
   }
@@ -100,8 +114,10 @@ methods::setMethod(
   "dsHasTable", "ArmadilloConnection", function(conn, table) {
     response <- httr::HEAD(
       handle = conn@handle,
-      path = paste0("/tables/", table)
+      path = paste0("/tables/", table),
+      config = httr::add_headers(.get_auth_header(conn))
     )
+    
     .handle_request_error(response)
 
     response$status_code == 200
@@ -122,7 +138,11 @@ methods::setMethod(
 #' @export
 methods::setMethod(
   "dsListResources", "ArmadilloConnection", function(conn) {
-    response <- httr::GET(handle = conn@handle, path = "/resources")
+    response <- httr::GET(
+      handle = conn@handle, 
+      path = "/resources",
+      config = httr::add_headers(.get_auth_header(conn))
+      )
     .handle_request_error(response)
     .unlist_character_list(httr::content(response))
   }
@@ -141,7 +161,8 @@ methods::setMethod(
   "dsHasResource", "ArmadilloConnection", function(conn, resource) {
     response <- httr::HEAD(
       handle = conn@handle,
-      path = paste0("/resources/", resource)
+      path = paste0("/resources/", resource),
+      config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
 
@@ -194,7 +215,11 @@ methods::setMethod(
 methods::setMethod(
   "dsListSymbols", "ArmadilloConnection",
   function(conn) {
-    response <- httr::GET(handle = conn@handle, path = "/symbols")
+    response <- httr::GET(
+      handle = conn@handle, 
+      path = "/symbols",
+      config = httr::add_headers(.get_auth_header(conn))
+      )
     .handle_request_error(response)
     .unlist_character_list(httr::content(response))
   }
@@ -216,7 +241,8 @@ methods::setMethod(
   function(conn, symbol) {
     response <- httr::DELETE(
       handle = conn@handle,
-      path = paste0("/symbols/", symbol)
+      path = paste0("/symbols/", symbol),
+      config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
   }
@@ -251,7 +277,8 @@ methods::setMethod(
     response <- httr::POST(
       handle = conn@handle,
       path = "/load-table",
-      query = query
+      query = query,
+      config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
 
@@ -290,7 +317,8 @@ methods::setMethod(
     response <- httr::POST(
       handle = conn@handle,
       path = "/load-resource",
-      query = query
+      query = query,
+      config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
 
@@ -325,7 +353,8 @@ methods::setMethod(
   function(conn, type = "aggregate") {
     response <- httr::GET(
       handle = conn@handle,
-      path = paste0("/methods/", type)
+      path = paste0("/methods/", type),
+      config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
 
@@ -352,7 +381,8 @@ methods::setMethod(
   function(conn) {
     response <- httr::GET(
       handle = conn@handle,
-      path = "/packages"
+      path = "/packages",
+      config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
 
@@ -379,7 +409,8 @@ methods::setMethod(
   function(conn) {
     response <- httr::GET(
       handle = conn@handle,
-      path = "/workspaces"
+      path = "/workspaces",
+      config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
 
@@ -404,7 +435,8 @@ methods::setMethod(
   function(conn, name) {
     response <- httr::POST(
       handle = conn@handle,
-      path = paste0("/workspaces/", name)
+      path = paste0("/workspaces/", name),
+      config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
   }
@@ -424,7 +456,8 @@ methods::setMethod(
   function(conn, name) {
     response <- httr::DELETE(
       handle = conn@handle,
-      path = paste0("/workspaces/", name)
+      path = paste0("/workspaces/", name),
+      config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
   }
@@ -455,7 +488,7 @@ methods::setMethod(
       query = list(async = async),
       path = paste0("/symbols/", symbol),
       body = .deparse(expr),
-      config = httr::add_headers("Content-Type" = "text/plain")
+      config = httr::add_headers(c("Content-Type" = "text/plain", .get_auth_header(conn)))
     )
 
     .handle_request_error(response)
@@ -499,7 +532,7 @@ methods::setMethod(
       query = list(async = async),
       path = "/execute",
       body = .deparse(expr),
-      config = httr::add_headers("Content-Type" = "text/plain")
+      config = httr::add_headers(c("Content-Type" = "text/plain", .get_auth_header(conn)))
     )
 
     .handle_request_error(response)
@@ -539,7 +572,8 @@ methods::setMethod(
   function(dsObj, ...) { # nolint
     response <- httr::GET(
       handle = dsObj@handle,
-      path = "/actuator/info"
+      path = "/actuator/info",
+      config = httr::add_headers(.get_auth_header(dsObj))
     )
     .handle_request_error(response)
     result <- httr::content(response)
@@ -565,7 +599,11 @@ methods::setMethod(
 methods::setMethod(
   "dsKeepAlive", "ArmadilloConnection",
   function(conn) { # nolint
-    try(httr::GET(handle = conn@handle, path = "/actuator/info"), silent = TRUE)
+    try(httr::GET(
+      handle = conn@handle, 
+      path = "/actuator/info",
+      config = httr::add_headers(.get_auth_header(conn))
+      ), silent = TRUE)
     invisible(NULL)
   }
 )

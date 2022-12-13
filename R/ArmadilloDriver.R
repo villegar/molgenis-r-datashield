@@ -86,7 +86,8 @@ methods::setMethod(
       restore_response <- httr::POST(
         handle = handle,
         query = list(id = restore),
-        path = "/load-workspace"
+        path = "/load-workspace",
+        config = auth_header
       )
       .handle_request_error(restore_response)
     }
@@ -95,7 +96,8 @@ methods::setMethod(
       name = name,
       handle = handle,
       user = username,
-      cookies = cookies
+      cookies = cookies,
+      token = token
     )
   }
 )

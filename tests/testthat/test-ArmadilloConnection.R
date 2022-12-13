@@ -5,7 +5,10 @@ test_that("dsDisconnect calls /logout endpoint ", {
     dsDisconnect(connection)
   )
   expect_called(post, 1)
-  expect_args(post, 1, handle = handle, path = "/logout")
+  expect_args(post, 1, 
+              handle = handle, 
+              path = "/logout",
+              config = httr::add_headers("Authorization" = "Bearer token"))
 })
 
 test_that("dsDisconnect saves the workspace", {
@@ -15,7 +18,10 @@ test_that("dsDisconnect saves the workspace", {
     dsDisconnect(connection, save = "keepit")
   )
   expect_called(post, 2)
-  expect_args(post, 1, handle = handle, path = "/workspaces/keepit")
+  expect_args(post, 1, 
+              handle = handle, 
+              path = "/workspaces/keepit",
+              config = httr::add_headers("Authorization" = "Bearer token"))
 })
 
 test_that("dsListProfiles retrieves profiles", {
@@ -29,7 +35,10 @@ test_that("dsListProfiles retrieves profiles", {
     "httr::content" = content,
     dsListProfiles(connection)
   )
-  expect_args(get, 1, handle = handle, path = "/profiles")
+  expect_args(get, 1, 
+              handle = handle, 
+              path = "/profiles",
+              config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, profiles)
 })
 
@@ -42,7 +51,10 @@ test_that("dsListProfiles returns default result if none found", {
     "httr::content" = content,
     dsListProfiles(connection)
   )
-  expect_args(get, 1, handle = handle, path = "/profiles")
+  expect_args(get, 1, 
+              handle = handle, 
+              path = "/profiles",
+              config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, list(
     available = "default",
     current = "default"
@@ -58,7 +70,10 @@ test_that("dsListTables retrieves tables", {
     "httr::content" = content,
     dsListTables(connection)
   )
-  expect_args(get, 1, handle = handle, path = "/tables")
+  expect_args(get, 1, 
+              handle = handle, 
+              path = "/tables",
+              config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, unlist(tables))
 })
 
@@ -71,7 +86,10 @@ test_that("dsListResources retrieves resources", {
     "httr::content" = content,
     dsListResources(connection)
   )
-  expect_args(get, 1, handle = handle, path = "/resources")
+  expect_args(get, 1, 
+              handle = handle, 
+              path = "/resources",
+              config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, unlist(resources))
 })
 
@@ -83,7 +101,8 @@ test_that("dsHasTable returns TRUE if table exists", {
   )
   expect_args(head, 1,
     handle = handle,
-    path = "/tables/project/folder/name.parquet"
+    path = "/tables/project/folder/name.parquet",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -95,7 +114,8 @@ test_that("dsHasTable returns FALSE if table doesnot exist", {
   )
   expect_args(head, 1,
     handle = handle,
-    path = "/tables/project/folder/name.parquet"
+    path = "/tables/project/folder/name.parquet",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -107,7 +127,8 @@ test_that("dsHasResource returns TRUE if resource exists", {
   )
   expect_args(head, 1,
     handle = handle,
-    path = "/resources/project/folder/name"
+    path = "/resources/project/folder/name",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -119,7 +140,8 @@ test_that("dsHasResource returns FALSE if table doesnot exist", {
   )
   expect_args(head, 1,
     handle = handle,
-    path = "/resources/project/folder/name"
+    path = "/resources/project/folder/name",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -144,7 +166,10 @@ test_that("dsListSymbols returns symbols", {
     "httr::content" = content,
     dsListSymbols(connection)
   )
-  expect_args(get, 1, handle = handle, path = "/symbols")
+  expect_args(get, 1, 
+              handle = handle, 
+              path = "/symbols",
+              config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, unlist(symbols))
 })
 
@@ -154,7 +179,10 @@ test_that("dsRmSymbol removes symbol", {
     "httr::DELETE" = delete,
     dsRmSymbol(connection, "D")
   )
-  expect_args(delete, 1, handle = handle, path = "/symbols/D")
+  expect_args(delete, 1, 
+              handle = handle, 
+              path = "/symbols/D",
+              config = httr::add_headers("Authorization" = "Bearer token"))
 })
 
 test_that("dsAssignTable assigns table to symbol", {
@@ -170,7 +198,8 @@ test_that("dsAssignTable assigns table to symbol", {
       table = "project/folder/name.parquet",
       symbol = "D",
       async = TRUE
-    )
+    ),
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -192,7 +221,8 @@ test_that("dsAssignTable allows variable selection", {
       symbol = "D",
       async = TRUE,
       variables = "foo,bar"
-    )
+    ),
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -213,7 +243,8 @@ test_that("dsAssignTable, when called synchronously, waits for result", {
     query = list(
       table = "project/folder/name.parquet", symbol = "D",
       async = TRUE
-    )
+    ),
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -231,7 +262,8 @@ test_that("dsAssignResource assigns resource to symbol", {
       resource = "project/folder/name",
       symbol = "D",
       async = TRUE
-    )
+    ),
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -252,7 +284,8 @@ test_that("dsAssignResource, when called synchronously, waits for result", {
     query = list(
       resource = "project/folder/name", symbol = "D",
       async = TRUE
-    )
+    ),
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -278,7 +311,10 @@ test_that("dsListMethods returns assign methods", {
     dsListMethods(connection, type = "assign")
   )
 
-  expect_args(get, 1, handle = handle, path = "/methods/assign")
+  expect_args(get, 1, 
+              handle = handle, 
+              path = "/methods/assign", 
+              config = httr::add_headers("Authorization" = "Bearer token"))
 
   expected <- tibble(
     name = list("foo", "bar"),
@@ -354,7 +390,7 @@ test_that("dsListWorkspaces lists workspaces", {
       "2020-05-06T13:09:00.725Z",
       "2020-05-06T13:09:07.617Z"
     ),
-    user = "admin"
+    user = NA_character_
   ))
 })
 
@@ -368,7 +404,8 @@ test_that("dsSaveWorkspace saves workspace", {
 
   expect_args(post, 1,
     handle = handle,
-    path = "/workspaces/keepit"
+    path = "/workspaces/keepit",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -382,7 +419,8 @@ test_that("dsRmWorkspace removes workspace", {
 
   expect_args(delete, 1,
     handle = handle,
-    path = "/workspaces/keepit"
+    path = "/workspaces/keepit",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -398,7 +436,7 @@ test_that("dsAssignExpr assigns expression to symbol", {
     query = list(async = TRUE),
     path = "/symbols/D",
     body = "ls()",
-    config = httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -414,7 +452,7 @@ test_that("dsAssignExpr deparses function calls in expression", {
     query = list(async = TRUE),
     path = "/symbols/D",
     body = "ls()",
-    config = httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
   )
 })
 
@@ -433,14 +471,14 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     query = list(async = FALSE),
     path = "/symbols/D",
     body = "ls()",
-    config = httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
   )
   expect_args(retry, 1,
     verb = "GET",
     handle = handle,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    config = httr::add_headers("Accept" = "application/octet-stream")
+    config = httr::add_headers(c("Accept" = "application/octet-stream", "Authorization" = "Bearer token"))
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -457,7 +495,7 @@ test_that("dsAggregate executes deparsed query", {
     query = list(async = TRUE),
     path = "/execute",
     body = "ls()",
-    config = httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -477,14 +515,14 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     query = list(async = FALSE),
     path = "/execute",
     body = "ls()",
-    config = httr::add_headers("Content-Type" = "text/plain")
+    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
   )
   expect_args(retry, 1,
     verb = "GET",
     handle = handle,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    config = httr::add_headers("Accept" = "application/octet-stream")
+    config = httr::add_headers(c("Accept" = "application/octet-stream", "Authorization" = "Bearer token"))
   )
   expect_s4_class(result, "ArmadilloResult")
   expect_equal(dsFetch(result), "Hello World!")
@@ -534,14 +572,15 @@ test_that("dsGetInfo returns server info", {
   expected <- list(
     git = server_info$git,
     build = server_info$build,
-    url <- connection@handle$url,
-    name <- connection@name,
-    cookies <- connection@cookies
+    url = connection@handle$url,
+    name = connection@name,
+    cookies = connection@cookies
   )
   expect_equivalent(result, expected)
   expect_args(get, 1,
     handle = handle,
-    path = "/actuator/info"
+    path = "/actuator/info",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -554,6 +593,7 @@ test_that("dsKeepAlive pings server info endpoint", {
 
   expect_args(get, 1,
     handle = handle,
-    path = "/actuator/info"
+    path = "/actuator/info",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
