@@ -11,6 +11,7 @@ setOldClass("handle")
 #' @slot handle The handle used to connect with the server
 #' @slot user The username used to authenticate
 #' @slot cookies The cookies set by the server
+#' @slot token An optional authentication token (JWT)
 #'
 #' @importClassesFrom DSI DSConnection
 #' @export
