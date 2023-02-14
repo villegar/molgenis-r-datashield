@@ -5,8 +5,8 @@ test_that("dsDisconnect calls /logout endpoint ", {
     dsDisconnect(connection)
   )
   expect_called(post, 1)
-  expect_args(post, 1, 
-              handle = handle, 
+  expect_args(post, 1,
+              handle = handle,
               path = "/logout",
               config = httr::add_headers("Authorization" = "Bearer token"))
 })
@@ -18,8 +18,8 @@ test_that("dsDisconnect saves the workspace", {
     dsDisconnect(connection, save = "keepit")
   )
   expect_called(post, 2)
-  expect_args(post, 1, 
-              handle = handle, 
+  expect_args(post, 1,
+              handle = handle,
               path = "/workspaces/keepit",
               config = httr::add_headers("Authorization" = "Bearer token"))
 })
@@ -35,8 +35,8 @@ test_that("dsListProfiles retrieves profiles", {
     "httr::content" = content,
     dsListProfiles(connection)
   )
-  expect_args(get, 1, 
-              handle = handle, 
+  expect_args(get, 1,
+              handle = handle,
               path = "/profiles",
               config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, profiles)
@@ -51,8 +51,8 @@ test_that("dsListProfiles returns default result if none found", {
     "httr::content" = content,
     dsListProfiles(connection)
   )
-  expect_args(get, 1, 
-              handle = handle, 
+  expect_args(get, 1,
+              handle = handle,
               path = "/profiles",
               config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, list(
@@ -70,8 +70,8 @@ test_that("dsListTables retrieves tables", {
     "httr::content" = content,
     dsListTables(connection)
   )
-  expect_args(get, 1, 
-              handle = handle, 
+  expect_args(get, 1,
+              handle = handle,
               path = "/tables",
               config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, unlist(tables))
@@ -86,8 +86,8 @@ test_that("dsListResources retrieves resources", {
     "httr::content" = content,
     dsListResources(connection)
   )
-  expect_args(get, 1, 
-              handle = handle, 
+  expect_args(get, 1,
+              handle = handle,
               path = "/resources",
               config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, unlist(resources))
@@ -166,8 +166,8 @@ test_that("dsListSymbols returns symbols", {
     "httr::content" = content,
     dsListSymbols(connection)
   )
-  expect_args(get, 1, 
-              handle = handle, 
+  expect_args(get, 1,
+              handle = handle,
               path = "/symbols",
               config = httr::add_headers("Authorization" = "Bearer token"))
   expect_equal(result, unlist(symbols))
@@ -179,8 +179,8 @@ test_that("dsRmSymbol removes symbol", {
     "httr::DELETE" = delete,
     dsRmSymbol(connection, "D")
   )
-  expect_args(delete, 1, 
-              handle = handle, 
+  expect_args(delete, 1,
+              handle = handle,
               path = "/symbols/D",
               config = httr::add_headers("Authorization" = "Bearer token"))
 })
@@ -311,9 +311,9 @@ test_that("dsListMethods returns assign methods", {
     dsListMethods(connection, type = "assign")
   )
 
-  expect_args(get, 1, 
-              handle = handle, 
-              path = "/methods/assign", 
+  expect_args(get, 1,
+              handle = handle,
+              path = "/methods/assign",
               config = httr::add_headers("Authorization" = "Bearer token"))
 
   expected <- tibble(
@@ -436,7 +436,8 @@ test_that("dsAssignExpr assigns expression to symbol", {
     query = list(async = TRUE),
     path = "/symbols/D",
     body = "ls()",
-    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
+    config = httr::add_headers(c("Content-Type" = "text/plain",
+                                 "Authorization" = "Bearer token"))
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -452,7 +453,8 @@ test_that("dsAssignExpr deparses function calls in expression", {
     query = list(async = TRUE),
     path = "/symbols/D",
     body = "ls()",
-    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
+    config = httr::add_headers(c("Content-Type" = "text/plain",
+                                 "Authorization" = "Bearer token"))
   )
 })
 
@@ -471,14 +473,16 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     query = list(async = FALSE),
     path = "/symbols/D",
     body = "ls()",
-    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
+    config = httr::add_headers(c("Content-Type" = "text/plain",
+                                 "Authorization" = "Bearer token"))
   )
   expect_args(retry, 1,
     verb = "GET",
     handle = handle,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    config = httr::add_headers(c("Accept" = "application/octet-stream", "Authorization" = "Bearer token"))
+    config = httr::add_headers(c("Accept" = "application/octet-stream",
+                                 "Authorization" = "Bearer token"))
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -495,7 +499,8 @@ test_that("dsAggregate executes deparsed query", {
     query = list(async = TRUE),
     path = "/execute",
     body = "ls()",
-    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
+    config = httr::add_headers(c("Content-Type" = "text/plain",
+                                 "Authorization" = "Bearer token"))
   )
   expect_s4_class(result, "ArmadilloResult")
 })
@@ -515,14 +520,16 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     query = list(async = FALSE),
     path = "/execute",
     body = "ls()",
-    config = httr::add_headers(c("Content-Type" = "text/plain", "Authorization" = "Bearer token"))
+    config = httr::add_headers(c("Content-Type" = "text/plain",
+                                 "Authorization" = "Bearer token"))
   )
   expect_args(retry, 1,
     verb = "GET",
     handle = handle,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    config = httr::add_headers(c("Accept" = "application/octet-stream", "Authorization" = "Bearer token"))
+    config = httr::add_headers(c("Accept" = "application/octet-stream",
+                                 "Authorization" = "Bearer token"))
   )
   expect_s4_class(result, "ArmadilloResult")
   expect_equal(dsFetch(result), "Hello World!")

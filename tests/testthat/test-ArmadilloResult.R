@@ -58,7 +58,8 @@ test_that("dsFetch retrieves last result for pending result", {
     handle = connection@handle,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    httr::add_headers(c("Accept" = "application/octet-stream", "Authorization" = "Bearer token"))
+    httr::add_headers(c("Accept" = "application/octet-stream",
+                        "Authorization" = "Bearer token"))
   )
 })
 

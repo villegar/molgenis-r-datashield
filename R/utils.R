@@ -72,7 +72,8 @@
     handle = conn@handle,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    config = httr::add_headers(c("Accept" = "application/octet-stream", .get_auth_header(conn)))
+    config = httr::add_headers(c("Accept" = "application/octet-stream",
+                                 .get_auth_header(conn)))
   )
 
   .handle_request_error(response)
@@ -142,9 +143,9 @@
 }
 
 #' Creates an authorization header if the connection was created using a token.
-#' 
+#'
 #' @param conn HTTR connection
-#' 
+#'
 #' @noRd
 .get_auth_header <- function(conn) {
   if (stringr::str_length(conn@token) > 0) {
