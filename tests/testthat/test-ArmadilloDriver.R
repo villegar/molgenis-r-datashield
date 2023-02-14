@@ -160,7 +160,8 @@ test_that("dsConnect restores user workspace", {
   expect_args(httr_post, 2,
     handle = handle,
     query = list(id = "keepit"),
-    path = "/load-workspace"
+    path = "/load-workspace",
+    config = httr::add_headers("Authorization" = "Basic YWRtaW46YWRtaW4=")
   )
 })
 

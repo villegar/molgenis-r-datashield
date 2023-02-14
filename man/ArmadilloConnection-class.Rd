@@ -18,6 +18,8 @@ An Armadillo connection implementing the DataSHIELD Interface (DSI)
 \item{\code{user}}{The username used to authenticate}
 
 \item{\code{cookies}}{The cookies set by the server}
+
+\item{\code{token}}{An optional authentication token (JWT)}
 }}
 
 \keyword{internal}

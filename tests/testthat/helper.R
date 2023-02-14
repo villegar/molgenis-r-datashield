@@ -8,8 +8,7 @@ cookies <- tibble::tibble(
 )
 handle <- httr::handle(url = "http://example.org:8080")
 connection <- methods::new("ArmadilloConnection",
-  name = "name",
   handle = handle,
-  user = "admin",
-  cookies = cookies
+  cookies = cookies,
+  token = "token"
 )

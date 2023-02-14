@@ -41,7 +41,8 @@ methods::setMethod(
       .retry_until_last_result(dsObj@conn)
       result <- httr::GET(
         handle = dsObj@conn@handle,
-        path = "/lastcommand"
+        path = "/lastcommand",
+        config = httr::add_headers(.get_auth_header(dsObj@conn))
       )
       httr::content(result)
     } else {
@@ -92,7 +93,8 @@ methods::setMethod(
     if (res@rval$async) {
       result <- httr::GET(
         handle = res@conn@handle,
-        path = "/lastcommand"
+        path = "/lastcommand",
+        config = httr::add_headers(.get_auth_header(res@conn))
       )
       status <- httr::content(result)$status
       status == "COMPLETED" || status == "FAILED"

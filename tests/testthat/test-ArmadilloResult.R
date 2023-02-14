@@ -25,7 +25,8 @@ test_that("getInfo awaits pending result and retrieves command info", {
   expect_equal(info, last_command)
   expect_args(get, 1,
     handle = connection@handle,
-    path = "/lastcommand"
+    path = "/lastcommand",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -57,7 +58,8 @@ test_that("dsFetch retrieves last result for pending result", {
     handle = connection@handle,
     path = "/lastresult",
     terminate_on = c(200, 404, 401),
-    httr::add_headers("Accept" = "application/octet-stream")
+    httr::add_headers(c("Accept" = "application/octet-stream",
+                        "Authorization" = "Bearer token"))
   )
 })
 
@@ -79,7 +81,8 @@ test_that("dsIsCompleted retrieves status of COMPLETED async command", {
   expect_equal(value, TRUE)
   expect_args(get, 1,
     handle = connection@handle,
-    path = "/lastcommand"
+    path = "/lastcommand",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -101,7 +104,8 @@ test_that("dsIsCompleted retrieves status of FAILED async command", {
   expect_equal(value, TRUE)
   expect_args(get, 1,
               handle = connection@handle,
-              path = "/lastcommand"
+              path = "/lastcommand",
+              config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
@@ -123,7 +127,8 @@ test_that("dsIsCompleted retrieves status of RUNNING async command", {
   expect_equal(value, FALSE)
   expect_args(get, 1,
     handle = connection@handle,
-    path = "/lastcommand"
+    path = "/lastcommand",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
