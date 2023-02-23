@@ -54,7 +54,7 @@ a few basic steps you need to take.
 
 ### Get a token from the ID server
 
-```{r}
+``` R
 # Load the necessary packages.
 library(dsBaseClient)
 library(DSMolgenisArmadillo)
@@ -69,7 +69,7 @@ token <- armadillo.get_token(armadillo_url)
 ### Build the login frame
 You need to specify the project, the folder and the table name(s) you want to access.
 
-```{r}
+``` R
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
 builder$append(server = "armadillo",
@@ -85,7 +85,7 @@ logindata <- builder$build()
 ### Login and assign the data
 Assigning the data means that you will assign the data to a symbol in the analysis environment.
 
-```{r}
+``` R
 # login into server
 conns <- datashield.login(logins = logindata, symbol = "core_nonrep", variables = c("coh_country"), assign = TRUE)
 ```
@@ -93,15 +93,36 @@ conns <- datashield.login(logins = logindata, symbol = "core_nonrep", variables 
 ### Perform an analysis
 DataSHIELD has a range of methods you can use to perform analysis. Check: the [dsBaseClient](https://cran.datashield.org/web/#client-packages) documentation to see which methods are available.
 
-```{r calculate the mean}
+``` R
 # calculate the mean
 ds.mean("core_nonrep$coh_country", datasources = conns)
 ```
-```{r create-a-histogram}
+``` R
 # create a histogram
 ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
 ```
 
 ## Documentation
 Check the [package documentation](https://molgenis.github.io/molgenis-r-datashield/articles/DSMolgenisArmadillo.html) for details.
+
+## Armadillo 2
+The newest version (2.x) of DSMolgenisArmadillo will be only compatible with Armadillo version 3. If you still use Armadillo 2, you should use the 1.4.1 version of DSMolgenisArmadillo You can install this specific version the following commands:
+
+For windows:
+``` R
+packageurl <- "https://cran.rstudio.com/bin/windows/contrib/4.2/DSMolgenisArmadillo_1.4.1.zip"
+install.packages(packageurl, repos=NULL, type="source")
+```
+
+For Mac:
+``` R
+packageurl <- "hhttps://cran.rstudio.com/bin/macosx/contrib/4.2/DSMolgenisArmadillo_1.4.1.tgz"
+install.packages(packageurl, repos=NULL, type="source")
+```
+
+For Linux:
+``` R
+packageurl <- "https://cran.rstudio.com/src/contrib/DSMolgenisArmadillo_1.4.1.tar.gz"
+install.packages(packageurl, repos=NULL, type="source")
+```
 
