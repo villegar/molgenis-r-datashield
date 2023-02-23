@@ -1,3 +1,7 @@
+## 2.0.0 Armadillo 3 compatibility
+* Make compatible for armadillo 3
+* Breaks compatibility with armadillo 2
+
 ## 1.4.1 Changed maintainer
 
 * Make Mariska maintainer
