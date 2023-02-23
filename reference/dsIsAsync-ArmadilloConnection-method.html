@@ -18,7 +18,7 @@ asynchronicity."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -71,22 +71,25 @@ asynchronicity.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for ArmadilloConnection</span>
-<span class="fu">dsIsAsync</span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for ArmadilloConnection</span></span>
+<span><span class="fu"><a href="https://datashield.github.io/DSI/reference/dsIsAsync.html" class="external-link">dsIsAsync</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>conn</dt>
 <dd><p><code><a href="ArmadilloConnection-class.html">ArmadilloConnection-class</a></code> class object</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The named list of logicals detailing the asynchronicity support.</p>
+    
+
+<p>The named list of logicals detailing the asynchronicity support.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>When a <code>DSResult-class</code> object is returned on aggregation or
+    <p>When a <code><a href="https://datashield.github.io/DSI/reference/DSResult-class.html" class="external-link">DSResult-class</a></code> object is returned on aggregation or
 assignment operation, the raw result can be accessed asynchronously,
 allowing parallelization of DataSHIELD calls over multpile servers.
 The returned named list of logicals will specify if asynchronicity is
@@ -109,7 +112,7 @@ and expression assignment operation ('assignExpr').</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

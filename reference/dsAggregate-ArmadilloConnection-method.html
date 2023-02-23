@@ -19,7 +19,7 @@ configuration."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/l
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -73,21 +73,26 @@ configuration.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for ArmadilloConnection</span>
-<span class="fu">dsAggregate</span><span class="op">(</span><span class="va">conn</span>, <span class="va">expr</span>, async <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for ArmadilloConnection</span></span>
+<span><span class="fu"><a href="https://datashield.github.io/DSI/reference/dsAggregate.html" class="external-link">dsAggregate</a></span><span class="op">(</span><span class="va">conn</span>, <span class="va">expr</span>, async <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>conn</dt>
 <dd><p><code><a href="ArmadilloConnection-class.html">ArmadilloConnection-class</a></code> object.</p></dd>
+
+
 <dt>expr</dt>
 <dd><p>Expression to evaluate.</p></dd>
+
+
 <dt>async</dt>
 <dd><p>Whether the result of the call should be retrieved
 asynchronously. When TRUE (default) the calls are parallelized over the
 connections, when the connection supports that feature, with an extra
 overhead of requests.</p></dd>
+
 </dl></div>
 
   </div>
@@ -102,7 +107,7 @@ overhead of requests.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -100,30 +100,30 @@
 </h3>
 <p>First obtain a token from the authentication server to authenticate in DataSHIELD.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Load the necessary packages.</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">dsBaseClient</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/molgenis/molgenis-r-datashield/" class="external-link">DSMolgenisArmadillo</a></span><span class="op">)</span>
-
-<span class="co"># specify server url</span>
-<span class="va">armadillo_url</span> <span class="op">&lt;-</span> <span class="st">"https://armadillo.dev.molgenis.org"</span>
-
-<span class="co"># get token from central authentication server</span>
-<span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/armadillo.get_token.html">armadillo.get_token</a></span><span class="op">(</span><span class="va">armadillo_url</span><span class="op">)</span>
-<span class="co">#&gt; [1] "We're opening a browser so you can log in with code CG3FHG"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Load the necessary packages.</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">dsBaseClient</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/molgenis/molgenis-r-datashield/" class="external-link">DSMolgenisArmadillo</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># specify server url</span></span>
+<span><span class="va">armadillo_url</span> <span class="op">&lt;-</span> <span class="st">"https://armadillo.dev.molgenis.org"</span></span>
+<span></span>
+<span><span class="co"># get token from central authentication server</span></span>
+<span><span class="va">token</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/armadillo.get_token.html">armadillo.get_token</a></span><span class="op">(</span><span class="va">armadillo_url</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "We're opening a browser so you can log in with code CG3FHG"</span></span></code></pre></div>
 <p>Then build a login dataframe and perform the login on the Armadillo server. The important part is to specify the driver. This should be <code>ArmadilloDriver</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># build the login dataframe</span>
-<span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">DSI</span><span class="fu">::</span><span class="fu"><a href="https://datashield.github.io/DSI/reference/newDSLoginBuilder.html" class="external-link">newDSLoginBuilder</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">builder</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"armadillo"</span>,
-               url <span class="op">=</span> <span class="va">armadillo_url</span>,
-               token <span class="op">=</span> <span class="va">token</span>,
-               driver <span class="op">=</span> <span class="st">"ArmadilloDriver"</span><span class="op">)</span>
-
-<span class="co"># create loginframe</span>
-<span class="va">logindata</span> <span class="op">&lt;-</span> <span class="va">builder</span><span class="op">$</span><span class="fu">build</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># login into server</span>
-<span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.login.html" class="external-link">datashield.login</a></span><span class="op">(</span>logins <span class="op">=</span> <span class="va">logindata</span>, assign <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># build the login dataframe</span></span>
+<span><span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">DSI</span><span class="fu">::</span><span class="fu"><a href="https://datashield.github.io/DSI/reference/newDSLoginBuilder.html" class="external-link">newDSLoginBuilder</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">builder</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"armadillo"</span>,</span>
+<span>               url <span class="op">=</span> <span class="va">armadillo_url</span>,</span>
+<span>               token <span class="op">=</span> <span class="va">token</span>,</span>
+<span>               driver <span class="op">=</span> <span class="st">"ArmadilloDriver"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create loginframe</span></span>
+<span><span class="va">logindata</span> <span class="op">&lt;-</span> <span class="va">builder</span><span class="op">$</span><span class="fu">build</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># login into server</span></span>
+<span><span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.login.html" class="external-link">datashield.login</a></span><span class="op">(</span>logins <span class="op">=</span> <span class="va">logindata</span>, assign <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p>You can append multiple servers to the login frame to perform an analysis across multiple cohorts.</p>
 </blockquote>
@@ -137,93 +137,93 @@
 </h4>
 <p>You can assign values from expressions to symbols.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># assign some data to 'K'</span>
-<span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.expr.html" class="external-link">datashield.assign.expr</a></span><span class="op">(</span>conns <span class="op">=</span> <span class="va">conns</span>, symbol <span class="op">=</span> <span class="st">"K"</span>, <span class="st">"c(10,50,100)"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># assign some data to 'K'</span></span>
+<span><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.expr.html" class="external-link">datashield.assign.expr</a></span><span class="op">(</span>conns <span class="op">=</span> <span class="va">conns</span>, symbol <span class="op">=</span> <span class="st">"K"</span>, <span class="st">"c(10,50,100)"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># calculate the mean of 'K' to see that the assignment has worked</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.mean.html" class="external-link">ds.mean</a></span><span class="op">(</span><span class="st">"K"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span>
-<span class="co">#&gt; $Mean.by.Study</span>
-<span class="co">#&gt;           EstimatedMean Nmissing Nvalid Ntotal</span>
-<span class="co">#&gt; armadillo      53.33333        0      3      3</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $Nstudies</span>
-<span class="co">#&gt; [1] 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $ValidityMessage</span>
-<span class="co">#&gt;           ValidityMessage </span>
-<span class="co">#&gt; armadillo "VALID ANALYSIS"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># calculate the mean of 'K' to see that the assignment has worked</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.mean.html" class="external-link">ds.mean</a></span><span class="op">(</span><span class="st">"K"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $Mean.by.Study</span></span>
+<span><span class="co">#&gt;           EstimatedMean Nmissing Nvalid Ntotal</span></span>
+<span><span class="co">#&gt; armadillo      53.33333        0      3      3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Nstudies</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ValidityMessage</span></span>
+<span><span class="co">#&gt;           ValidityMessage </span></span>
+<span><span class="co">#&gt; armadillo "VALID ANALYSIS"</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="assign-data-from-tables">Assign data from tables<a class="anchor" aria-label="anchor" href="#assign-data-from-tables"></a>
 </h4>
 <p>You can check which tables (<code>data.frame</code>’s) are available on the Armadillo.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.tables.html" class="external-link">datashield.tables</a></span><span class="op">(</span><span class="va">conns</span><span class="op">)</span>
-<span class="co">#&gt; $armadillo</span>
-<span class="co">#&gt; [1] "chicago/crime/crimes"            "gecko/1_1-outcome-1_0/nonrep"    "gecko/1_1-outcome-1_0/yearlyrep"</span>
-<span class="co">#&gt; [4] "gecko/2_1-core-1_0/monthlyrep"   "gecko/2_1-core-1_0/nonrep"       "gecko/2_1-core-1_0/trimesterrep"</span>
-<span class="co">#&gt; [7] "gecko/2_1-core-1_0/yearlyrep"    "load-test/data/patient"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.tables.html" class="external-link">datashield.tables</a></span><span class="op">(</span><span class="va">conns</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $armadillo</span></span>
+<span><span class="co">#&gt; [1] "chicago/crime/crimes"            "gecko/1_1-outcome-1_0/nonrep"    "gecko/1_1-outcome-1_0/yearlyrep"</span></span>
+<span><span class="co">#&gt; [4] "gecko/2_1-core-1_0/monthlyrep"   "gecko/2_1-core-1_0/nonrep"       "gecko/2_1-core-1_0/trimesterrep"</span></span>
+<span><span class="co">#&gt; [7] "gecko/2_1-core-1_0/yearlyrep"    "load-test/data/patient"</span></span></code></pre></div>
 <p>And load data from one of these tables.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># assign table data to a symbol</span>
-<span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.table.html" class="external-link">datashield.assign.table</a></span><span class="op">(</span>
-  conns <span class="op">=</span> <span class="va">conns</span>,
-  table <span class="op">=</span> <span class="st">"gecko/2_1-core-1_0/nonrep"</span>,
-  symbol <span class="op">=</span> <span class="st">"core_nonrep"</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># assign table data to a symbol</span></span>
+<span><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.table.html" class="external-link">datashield.assign.table</a></span><span class="op">(</span></span>
+<span>  conns <span class="op">=</span> <span class="va">conns</span>,</span>
+<span>  table <span class="op">=</span> <span class="st">"gecko/2_1-core-1_0/nonrep"</span>,</span>
+<span>  symbol <span class="op">=</span> <span class="st">"core_nonrep"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># check the columns in the non-repeated data</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.colnames.html" class="external-link">ds.colnames</a></span><span class="op">(</span><span class="st">"core_nonrep"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span>
-<span class="co">#&gt; $armadillo</span>
-<span class="co">#&gt;   [1] "row_id"              "child_id"            "mother_id"           "cohort_id"          </span>
-<span class="co">#&gt;   [5] "preg_no"             "child_no"            "coh_country"         "recruit_age"        </span>
-<span class="co">#&gt;   [9] "cob_m"               "ethn1_m"             "ethn2_m"             "ethn3_m"            </span>
-<span class="co">#&gt;  [13] "agebirth_m_y"        "agebirth_m_d"        "death_m"             "death_m_age"        </span>
-<span class="co">#&gt;  [17] "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"    </span>
-<span class="co">#&gt;  [21] "latepreg_weight_mes" "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"      </span>
-<span class="co">#&gt;  [25] "height_m"            "height_mes_m"        "prepreg_dia"         "preg_dia"           </span>
-<span class="co">#&gt;  [29] "preg_thyroid"        "preg_fever"          "preeclam"            "preg_ht"            </span>
-<span class="co">#&gt;  [33] "asthma_m"            "prepreg_psych"       "preg_psych"          "ppd"                </span>
-<span class="co">#&gt;  [37] "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"           </span>
-<span class="co">#&gt;  [41] "prepreg_alc"         "prepreg_alc_unit"    "preg_alc"            "preg_alc_unit"      </span>
-<span class="co">#&gt;  [45] "folic_prepreg"       "folic_preg12"        "folic_post12"        "parity_m"           </span>
-<span class="co">#&gt;  [49] "preg_plan"           "mar"                 "ivf"                 "outcome"            </span>
-<span class="co">#&gt;  [53] "mode_delivery"       "plac_abrup"          "cob_p"               "cob_p_fath"         </span>
-<span class="co">#&gt;  [57] "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"        </span>
-<span class="co">#&gt;  [61] "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"     "death_p"            </span>
-<span class="co">#&gt;  [65] "death_p_age"         "death_p_fath"        "weight_f1"           "weight_mes_f1"      </span>
-<span class="co">#&gt;  [69] "weight_f1_fath"      "height_f1"           "height_mes_f1"       "height_f1_fath"     </span>
-<span class="co">#&gt;  [73] "dia_bf"              "asthma_bf"           "psych_bf"            "smk_p"              </span>
-<span class="co">#&gt;  [77] "smk_cig_p"           "smk_fath"            "birth_month"         "birth_year"         </span>
-<span class="co">#&gt;  [81] "apgar"               "neo_unit"            "sex"                 "plurality"          </span>
-<span class="co">#&gt;  [85] "ga_lmp"              "ga_us"               "ga_mr"               "ga_bj"              </span>
-<span class="co">#&gt;  [89] "birth_weight"        "birth_length"        "birth_head_circum"   "weight_who_ga"      </span>
-<span class="co">#&gt;  [93] "plac_weight"         "con_anomalies"       "major_con_anomalies" "cer_palsy"          </span>
-<span class="co">#&gt;  [97] "sibling_pos"         "death_child"         "death_child_age"     "breastfed_excl"     </span>
-<span class="co">#&gt; [101] "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"    </span>
-<span class="co">#&gt; [105] "cats_preg"           "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># check the columns in the non-repeated data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.colnames.html" class="external-link">ds.colnames</a></span><span class="op">(</span><span class="st">"core_nonrep"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $armadillo</span></span>
+<span><span class="co">#&gt;   [1] "row_id"              "child_id"            "mother_id"           "cohort_id"          </span></span>
+<span><span class="co">#&gt;   [5] "preg_no"             "child_no"            "coh_country"         "recruit_age"        </span></span>
+<span><span class="co">#&gt;   [9] "cob_m"               "ethn1_m"             "ethn2_m"             "ethn3_m"            </span></span>
+<span><span class="co">#&gt;  [13] "agebirth_m_y"        "agebirth_m_d"        "death_m"             "death_m_age"        </span></span>
+<span><span class="co">#&gt;  [17] "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"    </span></span>
+<span><span class="co">#&gt;  [21] "latepreg_weight_mes" "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"      </span></span>
+<span><span class="co">#&gt;  [25] "height_m"            "height_mes_m"        "prepreg_dia"         "preg_dia"           </span></span>
+<span><span class="co">#&gt;  [29] "preg_thyroid"        "preg_fever"          "preeclam"            "preg_ht"            </span></span>
+<span><span class="co">#&gt;  [33] "asthma_m"            "prepreg_psych"       "preg_psych"          "ppd"                </span></span>
+<span><span class="co">#&gt;  [37] "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"           </span></span>
+<span><span class="co">#&gt;  [41] "prepreg_alc"         "prepreg_alc_unit"    "preg_alc"            "preg_alc_unit"      </span></span>
+<span><span class="co">#&gt;  [45] "folic_prepreg"       "folic_preg12"        "folic_post12"        "parity_m"           </span></span>
+<span><span class="co">#&gt;  [49] "preg_plan"           "mar"                 "ivf"                 "outcome"            </span></span>
+<span><span class="co">#&gt;  [53] "mode_delivery"       "plac_abrup"          "cob_p"               "cob_p_fath"         </span></span>
+<span><span class="co">#&gt;  [57] "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"        </span></span>
+<span><span class="co">#&gt;  [61] "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"     "death_p"            </span></span>
+<span><span class="co">#&gt;  [65] "death_p_age"         "death_p_fath"        "weight_f1"           "weight_mes_f1"      </span></span>
+<span><span class="co">#&gt;  [69] "weight_f1_fath"      "height_f1"           "height_mes_f1"       "height_f1_fath"     </span></span>
+<span><span class="co">#&gt;  [73] "dia_bf"              "asthma_bf"           "psych_bf"            "smk_p"              </span></span>
+<span><span class="co">#&gt;  [77] "smk_cig_p"           "smk_fath"            "birth_month"         "birth_year"         </span></span>
+<span><span class="co">#&gt;  [81] "apgar"               "neo_unit"            "sex"                 "plurality"          </span></span>
+<span><span class="co">#&gt;  [85] "ga_lmp"              "ga_us"               "ga_mr"               "ga_bj"              </span></span>
+<span><span class="co">#&gt;  [89] "birth_weight"        "birth_length"        "birth_head_circum"   "weight_who_ga"      </span></span>
+<span><span class="co">#&gt;  [93] "plac_weight"         "con_anomalies"       "major_con_anomalies" "cer_palsy"          </span></span>
+<span><span class="co">#&gt;  [97] "sibling_pos"         "death_child"         "death_child_age"     "breastfed_excl"     </span></span>
+<span><span class="co">#&gt; [101] "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"    </span></span>
+<span><span class="co">#&gt; [105] "cats_preg"           "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="assign-data-at-login-time">Assign data at login time<a class="anchor" aria-label="anchor" href="#assign-data-at-login-time"></a>
 </h4>
 <p>You can also specify a table in the login frame and assign the data when you login.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># build the login dataframe</span>
-<span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">DSI</span><span class="fu">::</span><span class="fu"><a href="https://datashield.github.io/DSI/reference/newDSLoginBuilder.html" class="external-link">newDSLoginBuilder</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">builder</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"armadillo"</span>,
-               url <span class="op">=</span> <span class="va">armadillo_url</span>,
-               token <span class="op">=</span> <span class="va">token</span>,
-               driver <span class="op">=</span> <span class="st">"ArmadilloDriver"</span>,
-               table <span class="op">=</span> <span class="st">"gecko/2_1-core-1_0/nonrep"</span><span class="op">)</span>
-
-<span class="co"># create loginframe</span>
-<span class="va">logindata</span> <span class="op">&lt;-</span> <span class="va">builder</span><span class="op">$</span><span class="fu">build</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co"># login into server</span>
-<span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.login.html" class="external-link">datashield.login</a></span><span class="op">(</span>
-  logins <span class="op">=</span> <span class="va">logindata</span>,
-  assign <span class="op">=</span> <span class="cn">TRUE</span>,
-  symbol <span class="op">=</span> <span class="st">"core_nonrep"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># build the login dataframe</span></span>
+<span><span class="va">builder</span> <span class="op">&lt;-</span> <span class="fu">DSI</span><span class="fu">::</span><span class="fu"><a href="https://datashield.github.io/DSI/reference/newDSLoginBuilder.html" class="external-link">newDSLoginBuilder</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">builder</span><span class="op">$</span><span class="fu">append</span><span class="op">(</span>server <span class="op">=</span> <span class="st">"armadillo"</span>,</span>
+<span>               url <span class="op">=</span> <span class="va">armadillo_url</span>,</span>
+<span>               token <span class="op">=</span> <span class="va">token</span>,</span>
+<span>               driver <span class="op">=</span> <span class="st">"ArmadilloDriver"</span>,</span>
+<span>               table <span class="op">=</span> <span class="st">"gecko/2_1-core-1_0/nonrep"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create loginframe</span></span>
+<span><span class="va">logindata</span> <span class="op">&lt;-</span> <span class="va">builder</span><span class="op">$</span><span class="fu">build</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># login into server</span></span>
+<span><span class="va">conns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.login.html" class="external-link">datashield.login</a></span><span class="op">(</span></span>
+<span>  logins <span class="op">=</span> <span class="va">logindata</span>,</span>
+<span>  assign <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  symbol <span class="op">=</span> <span class="st">"core_nonrep"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -231,70 +231,70 @@
 </h3>
 <p>Before you are working with the data you can subset to a specific range of variables you want to use in the set.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># assign the repeated data to reshape</span>
-<span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.table.html" class="external-link">datashield.assign.table</a></span><span class="op">(</span>
-  conns <span class="op">=</span> <span class="va">conns</span>,
-  table <span class="op">=</span> <span class="st">"gecko/2_1-core-1_0/yearlyrep"</span>,
-  symbol <span class="op">=</span> <span class="st">"core_yearlyrep"</span>
-<span class="op">)</span>
-
-<span class="co"># check dimensions of repeatead measures</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.dim.html" class="external-link">ds.dim</a></span><span class="op">(</span><span class="st">"core_yearlyrep"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span>
-<span class="co">#&gt; $`dimensions of core_yearlyrep in armadillo`</span>
-<span class="co">#&gt; [1] 19000    34</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`dimensions of core_yearlyrep in combined studies`</span>
-<span class="co">#&gt; [1] 19000    34</span>
-
-<span class="co"># subset the data to the first 2 years</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.dataFrameSubset.html" class="external-link">ds.dataFrameSubset</a></span><span class="op">(</span>
-  df.name <span class="op">=</span> <span class="st">"core_yearlyrep"</span>,
-  newobj <span class="op">=</span> <span class="st">"core_yearlyrep_1_3"</span>,
-  V1.name <span class="op">=</span> <span class="st">"core_yearlyrep$age_years"</span>,
-  V2.name <span class="op">=</span> <span class="st">"2"</span>,
-  Boolean.operator <span class="op">=</span> <span class="st">"&lt;="</span>
-<span class="op">)</span>
-<span class="co">#&gt; $is.object.created</span>
-<span class="co">#&gt; [1] "A data object &lt;core_yearlyrep_1_3&gt; has been created in all specified data sources"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $validity.check</span>
-<span class="co">#&gt; [1] "&lt;core_yearlyrep_1_3&gt; appears valid in all sources"</span>
-
-<span class="co"># check the columns</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.colnames.html" class="external-link">ds.colnames</a></span><span class="op">(</span><span class="st">"core_yearlyrep_1_3"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span>
-<span class="co">#&gt; $armadillo</span>
-<span class="co">#&gt;  [1] "row_id"            "child_id"          "age_years"         "cohab_"            "occup_m_"         </span>
-<span class="co">#&gt;  [6] "occupcode_m_"      "edu_m_"            "occup_f1_"         "occup_f1_fath"     "occup_f2_"        </span>
-<span class="co">#&gt; [11] "occup_f2_fath"     "occupcode_f1_"     "occupcode_f1_fath" "occupcode_f2_"     "occupcode_f2_fath"</span>
-<span class="co">#&gt; [16] "edu_f1_"           "edu_f1_fath"       "edu_f2_"           "edu_f2_fath"       "childcare_"       </span>
-<span class="co">#&gt; [21] "childcarerel_"     "childcareprof_"    "childcarecentre_"  "smk_exp"           "pets_"            </span>
-<span class="co">#&gt; [26] "cats_"             "cats_quant_"       "dogs_"             "dogs_quant_"       "mental_exp"       </span>
-<span class="co">#&gt; [31] "hhincome_"         "fam_splitup"       "famsize_child"     "famsize_adult"</span>
-
-<span class="co"># check dimensions again</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.dim.html" class="external-link">ds.dim</a></span><span class="op">(</span><span class="st">"core_yearlyrep_1_3"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span>
-<span class="co">#&gt; $`dimensions of core_yearlyrep_1_3 in armadillo`</span>
-<span class="co">#&gt; [1] 3000   34</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`dimensions of core_yearlyrep_1_3 in combined studies`</span>
-<span class="co">#&gt; [1] 3000   34</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># assign the repeated data to reshape</span></span>
+<span><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.table.html" class="external-link">datashield.assign.table</a></span><span class="op">(</span></span>
+<span>  conns <span class="op">=</span> <span class="va">conns</span>,</span>
+<span>  table <span class="op">=</span> <span class="st">"gecko/2_1-core-1_0/yearlyrep"</span>,</span>
+<span>  symbol <span class="op">=</span> <span class="st">"core_yearlyrep"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check dimensions of repeatead measures</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.dim.html" class="external-link">ds.dim</a></span><span class="op">(</span><span class="st">"core_yearlyrep"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`dimensions of core_yearlyrep in armadillo`</span></span>
+<span><span class="co">#&gt; [1] 19000    34</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`dimensions of core_yearlyrep in combined studies`</span></span>
+<span><span class="co">#&gt; [1] 19000    34</span></span>
+<span></span>
+<span><span class="co"># subset the data to the first 2 years</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.dataFrameSubset.html" class="external-link">ds.dataFrameSubset</a></span><span class="op">(</span></span>
+<span>  df.name <span class="op">=</span> <span class="st">"core_yearlyrep"</span>,</span>
+<span>  newobj <span class="op">=</span> <span class="st">"core_yearlyrep_1_3"</span>,</span>
+<span>  V1.name <span class="op">=</span> <span class="st">"core_yearlyrep$age_years"</span>,</span>
+<span>  V2.name <span class="op">=</span> <span class="st">"2"</span>,</span>
+<span>  Boolean.operator <span class="op">=</span> <span class="st">"&lt;="</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; $is.object.created</span></span>
+<span><span class="co">#&gt; [1] "A data object &lt;core_yearlyrep_1_3&gt; has been created in all specified data sources"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $validity.check</span></span>
+<span><span class="co">#&gt; [1] "&lt;core_yearlyrep_1_3&gt; appears valid in all sources"</span></span>
+<span></span>
+<span><span class="co"># check the columns</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.colnames.html" class="external-link">ds.colnames</a></span><span class="op">(</span><span class="st">"core_yearlyrep_1_3"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $armadillo</span></span>
+<span><span class="co">#&gt;  [1] "row_id"            "child_id"          "age_years"         "cohab_"            "occup_m_"         </span></span>
+<span><span class="co">#&gt;  [6] "occupcode_m_"      "edu_m_"            "occup_f1_"         "occup_f1_fath"     "occup_f2_"        </span></span>
+<span><span class="co">#&gt; [11] "occup_f2_fath"     "occupcode_f1_"     "occupcode_f1_fath" "occupcode_f2_"     "occupcode_f2_fath"</span></span>
+<span><span class="co">#&gt; [16] "edu_f1_"           "edu_f1_fath"       "edu_f2_"           "edu_f2_fath"       "childcare_"       </span></span>
+<span><span class="co">#&gt; [21] "childcarerel_"     "childcareprof_"    "childcarecentre_"  "smk_exp"           "pets_"            </span></span>
+<span><span class="co">#&gt; [26] "cats_"             "cats_quant_"       "dogs_"             "dogs_quant_"       "mental_exp"       </span></span>
+<span><span class="co">#&gt; [31] "hhincome_"         "fam_splitup"       "famsize_child"     "famsize_adult"</span></span>
+<span></span>
+<span><span class="co"># check dimensions again</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.dim.html" class="external-link">ds.dim</a></span><span class="op">(</span><span class="st">"core_yearlyrep_1_3"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`dimensions of core_yearlyrep_1_3 in armadillo`</span></span>
+<span><span class="co">#&gt; [1] 3000   34</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`dimensions of core_yearlyrep_1_3 in combined studies`</span></span>
+<span><span class="co">#&gt; [1] 3000   34</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># strip the redundant columns</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.dataFrame.html" class="external-link">ds.dataFrame</a></span><span class="op">(</span>
-  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"core_yearlyrep_1_3$child_id"</span>,
-        <span class="st">"core_yearlyrep_1_3$age_years"</span>,
-        <span class="st">"core_yearlyrep_1_3$dogs_"</span>,
-        <span class="st">"core_yearlyrep_1_3$cats_"</span>,
-        <span class="st">"core_yearlyrep_1_3$pets_"</span><span class="op">)</span>,
-  completeCases <span class="op">=</span> <span class="cn">TRUE</span>,
-  newobj <span class="op">=</span> <span class="st">"core_yearlyrep_1_3_stripped"</span>,
-  datasources <span class="op">=</span> <span class="va">conns</span>
-<span class="op">)</span>
-<span class="co">#&gt; $is.object.created</span>
-<span class="co">#&gt; [1] "A data object &lt;core_yearlyrep_1_3_stripped&gt; has been created in all specified data sources"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $validity.check</span>
-<span class="co">#&gt; [1] "&lt;core_yearlyrep_1_3_stripped&gt; appears valid in all sources"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># strip the redundant columns</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.dataFrame.html" class="external-link">ds.dataFrame</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"core_yearlyrep_1_3$child_id"</span>,</span>
+<span>        <span class="st">"core_yearlyrep_1_3$age_years"</span>,</span>
+<span>        <span class="st">"core_yearlyrep_1_3$dogs_"</span>,</span>
+<span>        <span class="st">"core_yearlyrep_1_3$cats_"</span>,</span>
+<span>        <span class="st">"core_yearlyrep_1_3$pets_"</span><span class="op">)</span>,</span>
+<span>  completeCases <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  newobj <span class="op">=</span> <span class="st">"core_yearlyrep_1_3_stripped"</span>,</span>
+<span>  datasources <span class="op">=</span> <span class="va">conns</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; $is.object.created</span></span>
+<span><span class="co">#&gt; [1] "A data object &lt;core_yearlyrep_1_3_stripped&gt; has been created in all specified data sources"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $validity.check</span></span>
+<span><span class="co">#&gt; [1] "&lt;core_yearlyrep_1_3_stripped&gt; appears valid in all sources"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="transform-data">Transform data<a class="anchor" aria-label="anchor" href="#transform-data"></a>
@@ -302,77 +302,77 @@
 <p>In general you need 2 methods to work with data that is stored in long format, the <code>reshape</code> and <code>merge</code> functions in DataSHIELD. You can reshape data with the Armadillo to transform data from <a href="https://www.theanalysisfactor.com/wide-and-long-data/" class="external-link">wide-format to long-format</a> and vice versa.</p>
 <p>You can do this using the <code>ds.reshape</code> function:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># reshape the data for the wide-format variables (yearlyrep)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.reShape.html" class="external-link">ds.reShape</a></span><span class="op">(</span>
-  data.name <span class="op">=</span> <span class="st">"core_yearlyrep_1_3_stripped"</span>,
-  timevar.name <span class="op">=</span> <span class="st">"age_years"</span>,
-  idvar.name <span class="op">=</span> <span class="st">"child_id"</span>,
-  v.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pets_"</span>, <span class="st">"cats_"</span>, <span class="st">"dogs_"</span><span class="op">)</span>,
-  direction <span class="op">=</span> <span class="st">"wide"</span>,
-  newobj <span class="op">=</span> <span class="st">"core_yearlyrep_1_3_wide"</span>,
-  datasources <span class="op">=</span> <span class="va">conns</span>
-<span class="op">)</span>
-<span class="co">#&gt; $is.object.created</span>
-<span class="co">#&gt; [1] "A data object &lt;core_yearlyrep_1_3_wide&gt; has been created in all specified data sources"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $validity.check</span>
-<span class="co">#&gt; [1] "&lt;core_yearlyrep_1_3_wide&gt; appears valid in all sources"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># reshape the data for the wide-format variables (yearlyrep)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.reShape.html" class="external-link">ds.reShape</a></span><span class="op">(</span></span>
+<span>  data.name <span class="op">=</span> <span class="st">"core_yearlyrep_1_3_stripped"</span>,</span>
+<span>  timevar.name <span class="op">=</span> <span class="st">"age_years"</span>,</span>
+<span>  idvar.name <span class="op">=</span> <span class="st">"child_id"</span>,</span>
+<span>  v.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pets_"</span>, <span class="st">"cats_"</span>, <span class="st">"dogs_"</span><span class="op">)</span>,</span>
+<span>  direction <span class="op">=</span> <span class="st">"wide"</span>,</span>
+<span>  newobj <span class="op">=</span> <span class="st">"core_yearlyrep_1_3_wide"</span>,</span>
+<span>  datasources <span class="op">=</span> <span class="va">conns</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; $is.object.created</span></span>
+<span><span class="co">#&gt; [1] "A data object &lt;core_yearlyrep_1_3_wide&gt; has been created in all specified data sources"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $validity.check</span></span>
+<span><span class="co">#&gt; [1] "&lt;core_yearlyrep_1_3_wide&gt; appears valid in all sources"</span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># show the reshaped columns of the new data frame</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.colnames.html" class="external-link">ds.colnames</a></span><span class="op">(</span><span class="st">"core_yearlyrep_1_3_wide"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span>
-<span class="co">#&gt; $armadillo</span>
-<span class="co">#&gt;  [1] "child_id" "pets_.0"  "cats_.0"  "dogs_.0"  "pets_.1"  "cats_.1"  "dogs_.1"  "pets_.2"  "cats_.2" </span>
-<span class="co">#&gt; [10] "dogs_.2"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># show the reshaped columns of the new data frame</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.colnames.html" class="external-link">ds.colnames</a></span><span class="op">(</span><span class="st">"core_yearlyrep_1_3_wide"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $armadillo</span></span>
+<span><span class="co">#&gt;  [1] "child_id" "pets_.0"  "cats_.0"  "dogs_.0"  "pets_.1"  "cats_.1"  "dogs_.1"  "pets_.2"  "cats_.2" </span></span>
+<span><span class="co">#&gt; [10] "dogs_.2"</span></span></code></pre></div>
 <p>When you reshaped and subsetted the data you often need to merge your dataframe with others to get your analysis dataframe. You can do this using the <code>ds.merge</code> function:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># merge non-repeated table with wide-format repeated table</span>
-<span class="co"># make sure the disclosure measure regarding stringshort is set to '100'</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.merge.html" class="external-link">ds.merge</a></span><span class="op">(</span>
-  x.name <span class="op">=</span> <span class="st">"core_nonrep"</span>,
-  y.name <span class="op">=</span> <span class="st">"core_yearlyrep_1_3_wide"</span>,
-  by.x.names <span class="op">=</span> <span class="st">"child_id"</span>,
-  by.y.names <span class="op">=</span> <span class="st">"child_id"</span>,
-  newobj <span class="op">=</span> <span class="st">"analysis_df"</span>,
-  datasources <span class="op">=</span> <span class="va">conns</span>
-<span class="op">)</span>
-<span class="co">#&gt; $is.object.created</span>
-<span class="co">#&gt; [1] "A data object &lt;analysis_df&gt; has been created in all specified data sources"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $validity.check</span>
-<span class="co">#&gt; [1] "&lt;analysis_df&gt; appears valid in all sources"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># merge non-repeated table with wide-format repeated table</span></span>
+<span><span class="co"># make sure the disclosure measure regarding stringshort is set to '100'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.merge.html" class="external-link">ds.merge</a></span><span class="op">(</span></span>
+<span>  x.name <span class="op">=</span> <span class="st">"core_nonrep"</span>,</span>
+<span>  y.name <span class="op">=</span> <span class="st">"core_yearlyrep_1_3_wide"</span>,</span>
+<span>  by.x.names <span class="op">=</span> <span class="st">"child_id"</span>,</span>
+<span>  by.y.names <span class="op">=</span> <span class="st">"child_id"</span>,</span>
+<span>  newobj <span class="op">=</span> <span class="st">"analysis_df"</span>,</span>
+<span>  datasources <span class="op">=</span> <span class="va">conns</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; $is.object.created</span></span>
+<span><span class="co">#&gt; [1] "A data object &lt;analysis_df&gt; has been created in all specified data sources"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $validity.check</span></span>
+<span><span class="co">#&gt; [1] "&lt;analysis_df&gt; appears valid in all sources"</span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.colnames.html" class="external-link">ds.colnames</a></span><span class="op">(</span><span class="st">"analysis_df"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span>
-<span class="co">#&gt; $armadillo</span>
-<span class="co">#&gt;   [1] "child_id"            "row_id"              "mother_id"           "cohort_id"          </span>
-<span class="co">#&gt;   [5] "preg_no"             "child_no"            "coh_country"         "recruit_age"        </span>
-<span class="co">#&gt;   [9] "cob_m"               "ethn1_m"             "ethn2_m"             "ethn3_m"            </span>
-<span class="co">#&gt;  [13] "agebirth_m_y"        "agebirth_m_d"        "death_m"             "death_m_age"        </span>
-<span class="co">#&gt;  [17] "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"    </span>
-<span class="co">#&gt;  [21] "latepreg_weight_mes" "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"      </span>
-<span class="co">#&gt;  [25] "height_m"            "height_mes_m"        "prepreg_dia"         "preg_dia"           </span>
-<span class="co">#&gt;  [29] "preg_thyroid"        "preg_fever"          "preeclam"            "preg_ht"            </span>
-<span class="co">#&gt;  [33] "asthma_m"            "prepreg_psych"       "preg_psych"          "ppd"                </span>
-<span class="co">#&gt;  [37] "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"           </span>
-<span class="co">#&gt;  [41] "prepreg_alc"         "prepreg_alc_unit"    "preg_alc"            "preg_alc_unit"      </span>
-<span class="co">#&gt;  [45] "folic_prepreg"       "folic_preg12"        "folic_post12"        "parity_m"           </span>
-<span class="co">#&gt;  [49] "preg_plan"           "mar"                 "ivf"                 "outcome"            </span>
-<span class="co">#&gt;  [53] "mode_delivery"       "plac_abrup"          "cob_p"               "cob_p_fath"         </span>
-<span class="co">#&gt;  [57] "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"        </span>
-<span class="co">#&gt;  [61] "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"     "death_p"            </span>
-<span class="co">#&gt;  [65] "death_p_age"         "death_p_fath"        "weight_f1"           "weight_mes_f1"      </span>
-<span class="co">#&gt;  [69] "weight_f1_fath"      "height_f1"           "height_mes_f1"       "height_f1_fath"     </span>
-<span class="co">#&gt;  [73] "dia_bf"              "asthma_bf"           "psych_bf"            "smk_p"              </span>
-<span class="co">#&gt;  [77] "smk_cig_p"           "smk_fath"            "birth_month"         "birth_year"         </span>
-<span class="co">#&gt;  [81] "apgar"               "neo_unit"            "sex"                 "plurality"          </span>
-<span class="co">#&gt;  [85] "ga_lmp"              "ga_us"               "ga_mr"               "ga_bj"              </span>
-<span class="co">#&gt;  [89] "birth_weight"        "birth_length"        "birth_head_circum"   "weight_who_ga"      </span>
-<span class="co">#&gt;  [93] "plac_weight"         "con_anomalies"       "major_con_anomalies" "cer_palsy"          </span>
-<span class="co">#&gt;  [97] "sibling_pos"         "death_child"         "death_child_age"     "breastfed_excl"     </span>
-<span class="co">#&gt; [101] "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"    </span>
-<span class="co">#&gt; [105] "cats_preg"           "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"    </span>
-<span class="co">#&gt; [109] "pets_.0"             "cats_.0"             "dogs_.0"             "pets_.1"            </span>
-<span class="co">#&gt; [113] "cats_.1"             "dogs_.1"             "pets_.2"             "cats_.2"            </span>
-<span class="co">#&gt; [117] "dogs_.2"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.colnames.html" class="external-link">ds.colnames</a></span><span class="op">(</span><span class="st">"analysis_df"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $armadillo</span></span>
+<span><span class="co">#&gt;   [1] "child_id"            "row_id"              "mother_id"           "cohort_id"          </span></span>
+<span><span class="co">#&gt;   [5] "preg_no"             "child_no"            "coh_country"         "recruit_age"        </span></span>
+<span><span class="co">#&gt;   [9] "cob_m"               "ethn1_m"             "ethn2_m"             "ethn3_m"            </span></span>
+<span><span class="co">#&gt;  [13] "agebirth_m_y"        "agebirth_m_d"        "death_m"             "death_m_age"        </span></span>
+<span><span class="co">#&gt;  [17] "prepreg_weight"      "prepreg_weight_mes"  "prepreg_weight_ga"   "latepreg_weight"    </span></span>
+<span><span class="co">#&gt;  [21] "latepreg_weight_mes" "latepreg_weight_ga"  "preg_gain"           "preg_gain_mes"      </span></span>
+<span><span class="co">#&gt;  [25] "height_m"            "height_mes_m"        "prepreg_dia"         "preg_dia"           </span></span>
+<span><span class="co">#&gt;  [29] "preg_thyroid"        "preg_fever"          "preeclam"            "preg_ht"            </span></span>
+<span><span class="co">#&gt;  [33] "asthma_m"            "prepreg_psych"       "preg_psych"          "ppd"                </span></span>
+<span><span class="co">#&gt;  [37] "prepreg_smk"         "prepreg_cig"         "preg_smk"            "preg_cig"           </span></span>
+<span><span class="co">#&gt;  [41] "prepreg_alc"         "prepreg_alc_unit"    "preg_alc"            "preg_alc_unit"      </span></span>
+<span><span class="co">#&gt;  [45] "folic_prepreg"       "folic_preg12"        "folic_post12"        "parity_m"           </span></span>
+<span><span class="co">#&gt;  [49] "preg_plan"           "mar"                 "ivf"                 "outcome"            </span></span>
+<span><span class="co">#&gt;  [53] "mode_delivery"       "plac_abrup"          "cob_p"               "cob_p_fath"         </span></span>
+<span><span class="co">#&gt;  [57] "ethn1_p"             "ethn2_p"             "ethn3_p"             "ethn_p_fath"        </span></span>
+<span><span class="co">#&gt;  [61] "agebirth_p_y"        "agebirth_p_d"        "agebirth_p_fath"     "death_p"            </span></span>
+<span><span class="co">#&gt;  [65] "death_p_age"         "death_p_fath"        "weight_f1"           "weight_mes_f1"      </span></span>
+<span><span class="co">#&gt;  [69] "weight_f1_fath"      "height_f1"           "height_mes_f1"       "height_f1_fath"     </span></span>
+<span><span class="co">#&gt;  [73] "dia_bf"              "asthma_bf"           "psych_bf"            "smk_p"              </span></span>
+<span><span class="co">#&gt;  [77] "smk_cig_p"           "smk_fath"            "birth_month"         "birth_year"         </span></span>
+<span><span class="co">#&gt;  [81] "apgar"               "neo_unit"            "sex"                 "plurality"          </span></span>
+<span><span class="co">#&gt;  [85] "ga_lmp"              "ga_us"               "ga_mr"               "ga_bj"              </span></span>
+<span><span class="co">#&gt;  [89] "birth_weight"        "birth_length"        "birth_head_circum"   "weight_who_ga"      </span></span>
+<span><span class="co">#&gt;  [93] "plac_weight"         "con_anomalies"       "major_con_anomalies" "cer_palsy"          </span></span>
+<span><span class="co">#&gt;  [97] "sibling_pos"         "death_child"         "death_child_age"     "breastfed_excl"     </span></span>
+<span><span class="co">#&gt; [101] "breastfed_any"       "breastfed_ever"      "solid_food"          "childcare_intro"    </span></span>
+<span><span class="co">#&gt; [105] "cats_preg"           "dogs_preg"           "cats_quant_preg"     "dogs_quant_preg"    </span></span>
+<span><span class="co">#&gt; [109] "pets_.0"             "cats_.0"             "dogs_.0"             "pets_.1"            </span></span>
+<span><span class="co">#&gt; [113] "cats_.1"             "dogs_.1"             "pets_.2"             "cats_.2"            </span></span>
+<span><span class="co">#&gt; [117] "dogs_.2"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="save-your-work">Save your work<a class="anchor" aria-label="anchor" href="#save-your-work"></a>
@@ -388,61 +388,61 @@
 </h4>
 <p>You execute a summary on the a variable within you analysis frame. It will return summary statistics.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.summary.html" class="external-link">ds.summary</a></span><span class="op">(</span><span class="st">"analysis_df$pets_.1"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span>
-<span class="co">#&gt; $armadillo</span>
-<span class="co">#&gt; $armadillo$class</span>
-<span class="co">#&gt; [1] "numeric"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $armadillo$length</span>
-<span class="co">#&gt; [1] 1000</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $armadillo$`quantiles &amp; mean`</span>
-<span class="co">#&gt;      5%     10%     25%     50%     75%     90%     95%    Mean </span>
-<span class="co">#&gt;   8.000  15.000  32.750  61.000  90.000 108.000 113.000  60.954</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.summary.html" class="external-link">ds.summary</a></span><span class="op">(</span><span class="st">"analysis_df$pets_.1"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $armadillo</span></span>
+<span><span class="co">#&gt; $armadillo$class</span></span>
+<span><span class="co">#&gt; [1] "numeric"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $armadillo$length</span></span>
+<span><span class="co">#&gt; [1] 1000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $armadillo$`quantiles &amp; mean`</span></span>
+<span><span class="co">#&gt;      5%     10%     25%     50%     75%     90%     95%    Mean </span></span>
+<span><span class="co">#&gt;   8.000  15.000  32.750  61.000  90.000 108.000 113.000  60.954</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="advanced-statistical-methods">Advanced statistical methods<a class="anchor" aria-label="anchor" href="#advanced-statistical-methods"></a>
 </h4>
 <p>When you finished the analysis dataframe, you can perform the actual analysis. You can use a wide variety of functions. The example below is showing the <code>glm</code>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.table.html" class="external-link">datashield.assign.table</a></span><span class="op">(</span>
-  conns <span class="op">=</span> <span class="va">conns</span>,
-  table <span class="op">=</span> <span class="st">"gecko/1_1-outcome-1_0/nonrep"</span>,
-  symbol <span class="op">=</span> <span class="st">"outcome_nonrep"</span>
-<span class="op">)</span>
-
-<span class="va">armadillo_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.glm.html" class="external-link">ds.glm</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="st">"asthma_ever_CHICOS~pets_preg"</span>,
-  data <span class="op">=</span> <span class="st">"outcome_nonrep"</span>,
-  family <span class="op">=</span> <span class="st">"binomial"</span>,
-  datasources <span class="op">=</span> <span class="va">conns</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.assign.table.html" class="external-link">datashield.assign.table</a></span><span class="op">(</span></span>
+<span>  conns <span class="op">=</span> <span class="va">conns</span>,</span>
+<span>  table <span class="op">=</span> <span class="st">"gecko/1_1-outcome-1_0/nonrep"</span>,</span>
+<span>  symbol <span class="op">=</span> <span class="st">"outcome_nonrep"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">armadillo_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.glm.html" class="external-link">ds.glm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="st">"asthma_ever_CHICOS~pets_preg"</span>,</span>
+<span>  data <span class="op">=</span> <span class="st">"outcome_nonrep"</span>,</span>
+<span>  family <span class="op">=</span> <span class="st">"binomial"</span>,</span>
+<span>  datasources <span class="op">=</span> <span class="va">conns</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Do the meta analysis and install prerequisites.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://www.metafor-project.org" class="external-link">'metafor'</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'metafor'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://www.metafor-project.org" class="external-link">'metafor'</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'metafor'</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">yi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">armadillo_glm</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="st">"pets_preg"</span>, <span class="st">"Estimate"</span><span class="op">]</span><span class="op">)</span>
-<span class="va">sei</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">armadillo_glm</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="st">"pets_preg"</span>, <span class="st">"Std. Error"</span><span class="op">]</span><span class="op">)</span>
-
-<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html" class="external-link">rma</a></span><span class="op">(</span><span class="va">yi</span>, sei <span class="op">=</span> <span class="va">sei</span><span class="op">)</span>
-<span class="va">res</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Fixed-Effects Model (k = 1)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; I^2 (total heterogeneity / total variability):   0.00%</span>
-<span class="co">#&gt; H^2 (total variability / sampling variability):  1.00</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Test for Heterogeneity:</span>
-<span class="co">#&gt; Q(df = 0) = 0.0000, p-val = 1.0000</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Model Results:</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; estimate      se     zval    pval    ci.lb   ci.ub </span>
-<span class="co">#&gt;  -0.1310  0.1267  -1.0343  0.3010  -0.3793  0.1173    </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
-<span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/forest.html" class="external-link">forest</a></span><span class="op">(</span><span class="va">res</span>, xlab <span class="op">=</span> <span class="st">"OR"</span>, transf <span class="op">=</span> <span class="va">exp</span>, refline <span class="op">=</span> <span class="fl">1</span>, slab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"armadillo_glm"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">yi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">armadillo_glm</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="st">"pets_preg"</span>, <span class="st">"Estimate"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">sei</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">armadillo_glm</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="st">"pets_preg"</span>, <span class="st">"Std. Error"</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html" class="external-link">rma</a></span><span class="op">(</span><span class="va">yi</span>, sei <span class="op">=</span> <span class="va">sei</span><span class="op">)</span></span>
+<span><span class="va">res</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Fixed-Effects Model (k = 1)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; I^2 (total heterogeneity / total variability):   0.00%</span></span>
+<span><span class="co">#&gt; H^2 (total variability / sampling variability):  1.00</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Test for Heterogeneity:</span></span>
+<span><span class="co">#&gt; Q(df = 0) = 0.0000, p-val = 1.0000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model Results:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; estimate      se     zval    pval    ci.lb   ci.ub </span></span>
+<span><span class="co">#&gt;  -0.1310  0.1267  -1.0343  0.3010  -0.3793  0.1173    </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/forest.html" class="external-link">forest</a></span><span class="op">(</span><span class="va">res</span>, xlab <span class="op">=</span> <span class="st">"OR"</span>, transf <span class="op">=</span> <span class="va">exp</span>, refline <span class="op">=</span> <span class="fl">1</span>, slab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"armadillo_glm"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DSMolgenisArmadillo-meta-analysis-1.png" title="plot of chunk meta-analysis" alt="plot of chunk meta-analysis" width="100%"></p>
 </div>
 <div class="section level4">
@@ -450,38 +450,38 @@
 </h4>
 <p>You can directly create figures with the DataSHIELD methods. For example:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># create histogram</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.histogram.html" class="external-link">ds.histogram</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"core_nonrep$coh_country"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># create histogram</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.histogram.html" class="external-link">ds.histogram</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"core_nonrep$coh_country"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DSMolgenisArmadillo-create-a-histogram-1.png" title="plot of chunk create-a-histogram" alt="plot of chunk create-a-histogram" width="100%"></p>
-<pre><code><span class="co">#&gt; $breaks</span>
-<span class="co">#&gt;  [1]  34.40373 115.17616 195.94859 276.72101 357.49344 438.26587 519.03830 599.81072 680.58315 761.35558</span>
-<span class="co">#&gt; [11] 842.12800</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $counts</span>
-<span class="co">#&gt;  [1] 103 103  91 102 108 103 103  98 117  72</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $density</span>
-<span class="co">#&gt;  [1] 0.0012751876 0.0012751876 0.0011266221 0.0012628072 0.0013370899 0.0012751876 0.0012751876 0.0012132853</span>
-<span class="co">#&gt;  [9] 0.0014485141 0.0008913933</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $mids</span>
-<span class="co">#&gt;  [1]  74.78995 155.56237 236.33480 317.10723 397.87965 478.65208 559.42451 640.19694 720.96936 801.74179</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $xname</span>
-<span class="co">#&gt; [1] "xvect"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $equidist</span>
-<span class="co">#&gt; [1] TRUE</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"class")</span>
-<span class="co">#&gt; [1] "histogram"</span></code></pre>
+<pre><code><span><span class="co">#&gt; $breaks</span></span>
+<span><span class="co">#&gt;  [1]  34.40373 115.17616 195.94859 276.72101 357.49344 438.26587 519.03830 599.81072 680.58315 761.35558</span></span>
+<span><span class="co">#&gt; [11] 842.12800</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $counts</span></span>
+<span><span class="co">#&gt;  [1] 103 103  91 102 108 103 103  98 117  72</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $density</span></span>
+<span><span class="co">#&gt;  [1] 0.0012751876 0.0012751876 0.0011266221 0.0012628072 0.0013370899 0.0012751876 0.0012751876 0.0012132853</span></span>
+<span><span class="co">#&gt;  [9] 0.0014485141 0.0008913933</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $mids</span></span>
+<span><span class="co">#&gt;  [1]  74.78995 155.56237 236.33480 317.10723 397.87965 478.65208 559.42451 640.19694 720.96936 801.74179</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $xname</span></span>
+<span><span class="co">#&gt; [1] "xvect"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $equidist</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "histogram"</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># create a heatmap</span>
-<span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.heatmapPlot.html" class="external-link">ds.heatmapPlot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"analysis_df$pets_.1"</span>, y <span class="op">=</span> <span class="st">"analysis_df$dogs_.1"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># create a heatmap</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/dsBaseClient/man/ds.heatmapPlot.html" class="external-link">ds.heatmapPlot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"analysis_df$pets_.1"</span>, y <span class="op">=</span> <span class="st">"analysis_df$dogs_.1"</span>, datasources <span class="op">=</span> <span class="va">conns</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DSMolgenisArmadillo-create-a-heatmap-1.png" title="plot of chunk create-a-heatmap" alt="plot of chunk create-a-heatmap" width="100%"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># logout</span>
-<span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.logout.html" class="external-link">datashield.logout</a></span><span class="op">(</span><span class="va">conns</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># logout</span></span>
+<span><span class="fu"><a href="https://datashield.github.io/DSI/reference/datashield.logout.html" class="external-link">datashield.logout</a></span><span class="op">(</span><span class="va">conns</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -501,7 +501,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

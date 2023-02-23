@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -69,50 +69,71 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for ArmadilloDriver</span>
-<span class="fu">dsConnect</span><span class="op">(</span>
-  <span class="va">drv</span>,
-  <span class="va">name</span>,
-  restore <span class="op">=</span> <span class="cn">NULL</span>,
-  username <span class="op">=</span> <span class="st">""</span>,
-  password <span class="op">=</span> <span class="st">""</span>,
-  token <span class="op">=</span> <span class="st">""</span>,
-  <span class="va">url</span>,
-  profile <span class="op">=</span> <span class="st">"default"</span>,
-  opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for ArmadilloDriver</span></span>
+<span><span class="fu"><a href="https://datashield.github.io/DSI/reference/dsConnect.html" class="external-link">dsConnect</a></span><span class="op">(</span></span>
+<span>  <span class="va">drv</span>,</span>
+<span>  <span class="va">name</span>,</span>
+<span>  restore <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  username <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  password <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  token <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  <span class="va">url</span>,</span>
+<span>  profile <span class="op">=</span> <span class="st">"default"</span>,</span>
+<span>  opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>drv</dt>
 <dd><p><code><a href="ArmadilloDriver-class.html">ArmadilloDriver-class</a></code> class object.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Name of the connection, which must be unique among all the
 DataSHIELD connections.</p></dd>
+
+
 <dt>restore</dt>
 <dd><p>Workspace name to be restored in the newly created DataSHIELD
 R session.</p></dd>
+
+
 <dt>username</dt>
 <dd><p>The username to authenticate with.</p></dd>
+
+
 <dt>password</dt>
 <dd><p>The password to authenticate with.</p></dd>
+
+
 <dt>token</dt>
 <dd><p>The ID token to authenticate with.</p></dd>
+
+
 <dt>url</dt>
 <dd><p>URL of the server.</p></dd>
+
+
 <dt>profile</dt>
 <dd><p>the profile to select, default "default"</p></dd>
+
+
 <dt>opts</dt>
 <dd><p>Curl options as described by httr (call httr::httr_options()
 for details). Can be provided by "Armadillo.opts" option.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Unused, needed for compatibility with generic.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code><a href="ArmadilloConnection-class.html">ArmadilloConnection-class</a></code> object.</p>
+    
+
+<p>A <code><a href="ArmadilloConnection-class.html">ArmadilloConnection-class</a></code> object.</p>
     </div>
 
   </div>
@@ -127,7 +148,7 @@ for details). Can be provided by "Armadillo.opts" option.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

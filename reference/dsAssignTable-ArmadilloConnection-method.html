@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DSMolgenisArmadillo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -69,41 +69,58 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for ArmadilloConnection</span>
-<span class="fu">dsAssignTable</span><span class="op">(</span>
-  <span class="va">conn</span>,
-  <span class="va">symbol</span>,
-  <span class="va">table</span>,
-  variables <span class="op">=</span> <span class="cn">NULL</span>,
-  missings <span class="op">=</span> <span class="cn">FALSE</span>,
-  identifiers <span class="op">=</span> <span class="cn">NULL</span>,
-  id.name <span class="op">=</span> <span class="cn">NULL</span>,
-  async <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for ArmadilloConnection</span></span>
+<span><span class="fu"><a href="https://datashield.github.io/DSI/reference/dsAssignTable.html" class="external-link">dsAssignTable</a></span><span class="op">(</span></span>
+<span>  <span class="va">conn</span>,</span>
+<span>  <span class="va">symbol</span>,</span>
+<span>  <span class="va">table</span>,</span>
+<span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  missings <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  identifiers <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  id.name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  async <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>conn</dt>
 <dd><p><code><a href="ArmadilloConnection-class.html">ArmadilloConnection-class</a></code> object.</p></dd>
+
+
 <dt>symbol</dt>
 <dd><p>Name of the R symbol.</p></dd>
+
+
 <dt>table</dt>
 <dd><p>Fully qualified name of the table.</p></dd>
+
+
 <dt>variables</dt>
 <dd><p>The variables to load.</p></dd>
+
+
 <dt>missings</dt>
 <dd><p>Not supported</p></dd>
+
+
 <dt>identifiers</dt>
 <dd><p>Not supported</p></dd>
+
+
 <dt>id.name</dt>
 <dd><p>Not supported</p></dd>
+
+
 <dt>async</dt>
 <dd><p>When set, do not wait for the result.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code><a href="ArmadilloResult-class.html">ArmadilloResult-class</a></code> object.</p>
+    
+
+<p>A <code><a href="ArmadilloResult-class.html">ArmadilloResult-class</a></code> object.</p>
     </div>
 
   </div>
@@ -118,7 +135,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
