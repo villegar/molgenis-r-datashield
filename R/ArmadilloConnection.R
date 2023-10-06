@@ -66,7 +66,7 @@ methods::setMethod(
       handle = conn@handle,
       path = "/profiles",
       config = httr::add_headers(.get_auth_header(conn))
-      )
+    )
     .handle_request_error(response)
     if (response$status_code == 404) {
       # endpoint not implemented, fake it!
@@ -95,7 +95,7 @@ methods::setMethod(
       handle = conn@handle,
       path = "/tables",
       config = httr::add_headers(.get_auth_header(conn))
-      )
+    )
     .handle_request_error(response)
     .unlist_character_list(httr::content(response))
   }
@@ -143,7 +143,7 @@ methods::setMethod(
       handle = conn@handle,
       path = "/resources",
       config = httr::add_headers(.get_auth_header(conn))
-      )
+    )
     .handle_request_error(response)
     .unlist_character_list(httr::content(response))
   }
@@ -220,7 +220,7 @@ methods::setMethod(
       handle = conn@handle,
       path = "/symbols",
       config = httr::add_headers(.get_auth_header(conn))
-      )
+    )
     .handle_request_error(response)
     .unlist_character_list(httr::content(response))
   }
@@ -606,7 +606,7 @@ methods::setMethod(
       handle = conn@handle,
       path = "/actuator/info",
       config = httr::add_headers(.get_auth_header(conn))
-      ), silent = TRUE)
+    ), silent = TRUE)
     invisible(NULL)
   }
 )

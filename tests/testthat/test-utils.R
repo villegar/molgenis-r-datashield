@@ -2,8 +2,9 @@ test_that(".handle_last_command_error throws error message", {
   ok <- list(status_code = 200)
   get <- mock(ok)
   content <- mock(list(status = "FAILED", message = "Error"))
-  setClass("connection", slots=list(handle="character", token="character"))
-  connection <- new("connection", handle="test", token="token")
+  setClass("connection", slots = list(handle = "character",
+                                      token = "character"))
+  connection <- new("connection", handle = "test", token = "token")
 
   expect_error(
     with_mock(
@@ -12,14 +13,17 @@ test_that(".handle_last_command_error throws error message", {
       "httr::content" = content
     ), "Error"
   )
-
-  expect_args(get, 1, handle = connection@handle, path = "/lastcommand", config = httr::add_headers(c("Authorization" = paste0("Bearer ", connection@token))))
+  expect_args(get, 1, handle = connection@handle, path = "/lastcommand",
+              config = httr::add_headers(c("Authorization" =
+                                             paste0("Bearer ",
+                                                    connection@token))))
   expect_args(content, 1, ok)
 })
 
 test_that(".handle_last_command_error only works if status is FAILED", {
-  setClass("connection", slots=list(handle="character", token="character"))
-  connection <- new("connection", handle="test", token="token")
+  setClass("connection", slots = list(handle = "character",
+                                      token = "character"))
+  connection <- new("connection", handle = "test", token = "token")
   ok <- list(status_code = 200)
   get <- mock(ok)
   content <- mock(list(status = "COMPLETED"))
@@ -30,7 +34,10 @@ test_that(".handle_last_command_error only works if status is FAILED", {
     "httr::content" = content
   )
 
-  expect_args(get, 1, handle = connection@handle, path = "/lastcommand", config = httr::add_headers(c("Authorization" = paste0("Bearer ", connection@token))))
+  expect_args(get, 1, handle = connection@handle, path = "/lastcommand",
+              config = httr::add_headers(c("Authorization" =
+                                             paste0("Bearer ",
+                                                    connection@token))))
 })
 
 test_that(".handle_request_error handles 401", {
@@ -97,6 +104,9 @@ test_that(".retry_until_last_result handles 404 by retrieving lastcommand", {
     ), "Execution failed: Error"
   )
 
-  expect_args(httr_get, 1, handle = connection@handle, path = "/lastcommand", config = httr::add_headers(c("Authorization" = paste0("Bearer ", connection@token))))
+  expect_args(httr_get, 1, handle = connection@handle, path = "/lastcommand",
+              config = httr::add_headers(c("Authorization" =
+                                             paste0("Bearer ",
+                                                    connection@token))))
   expect_args(httr_content, 1, ok)
 })
