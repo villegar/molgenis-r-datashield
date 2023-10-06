@@ -48,11 +48,11 @@ test_that("dsConnect selects profile if one is provided", {
   httr_handle <- mock(handle)
   with_mock(
     result <- dsConnect(driver,
-                        url = "https://example.org",
-                        username = "admin",
-                        password = "admin",
-                        profile = "foo",
-                        name = "test"
+      url = "https://example.org",
+      username = "admin",
+      password = "admin",
+      profile = "foo",
+      name = "test"
     ),
     "httr::POST" = httr_post,
     "httr::cookies" = httr_cookies,
@@ -65,11 +65,10 @@ test_that("dsConnect selects profile if one is provided", {
 
   expect_args(httr_handle, 1, url = "https://example.org")
   expect_args(httr_post, 1,
-              handle = handle,
-              path = "/select-profile",
-              body = "foo",
-              config =
-                httr::add_headers("Authorization" = "Basic YWRtaW46YWRtaW4=")
+    handle = handle,
+    path = "/select-profile",
+    body = "foo",
+    config = httr::add_headers("Authorization" = "Basic YWRtaW46YWRtaW4=")
   )
 })
 
@@ -80,10 +79,10 @@ test_that("dsConnect returns an ArmadilloConnection", {
   httr_handle <- mock(handle)
   with_mock(
     result <- dsConnect(driver,
-                        url = "https://example.org",
-                        username = "admin",
-                        password = "admin",
-                        name = "test"
+      url = "https://example.org",
+      username = "admin",
+      password = "admin",
+      name = "test"
     ),
     "httr::POST" = httr_post,
     "httr::cookies" = httr_cookies,
@@ -96,11 +95,10 @@ test_that("dsConnect returns an ArmadilloConnection", {
 
   expect_args(httr_handle, 1, url = "https://example.org")
   expect_args(httr_post, 1,
-              handle = handle,
-              path = "/select-profile",
-              body = "default",
-              config =
-                httr::add_headers("Authorization" = "Basic YWRtaW46YWRtaW4=")
+    handle = handle,
+    path = "/select-profile",
+    body = "default",
+    config = httr::add_headers("Authorization" = "Basic YWRtaW46YWRtaW4=")
   )
 })
 
