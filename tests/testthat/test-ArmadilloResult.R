@@ -88,8 +88,8 @@ test_that("dsIsCompleted retrieves status of COMPLETED async command", {
 
 test_that("dsIsCompleted retrieves status of FAILED async command", {
   result <- methods::new("ArmadilloResult",
-                         conn = connection,
-                         rval = list(result = NULL, async = TRUE)
+    conn = connection,
+    rval = list(result = NULL, async = TRUE)
   )
 
   content <- mock(list(status = "FAILED"))
@@ -103,9 +103,9 @@ test_that("dsIsCompleted retrieves status of FAILED async command", {
 
   expect_equal(value, TRUE)
   expect_args(get, 1,
-              handle = connection@handle,
-              path = "/lastcommand",
-              config = httr::add_headers("Authorization" = "Bearer token")
+    handle = connection@handle,
+    path = "/lastcommand",
+    config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
 
