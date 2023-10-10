@@ -1,7 +1,3 @@
-## 2.0.2 Bugfix for update in armadillo
-* Bugfix to enable armadillo update (N.B. this version of DSMolgenisArmadillo 
-should be used when using armadillo 3.5)
-
 ## 2.0.0 Armadillo 3 compatibility
 * Make compatible for armadillo 3
 * Breaks compatibility with armadillo 2
