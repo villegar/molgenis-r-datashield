@@ -27,7 +27,7 @@ library(dsBaseClient)
 library(DSMolgenisArmadillo)
 
 # specify server url
-armadillo_url <- "https://armadillo.dev.molgenis.org"
+armadillo_url <- "https://armadillo-demo.molgenis.net"
 
 # get token from central authentication server
 token <- armadillo.get_token(armadillo_url)
@@ -38,16 +38,19 @@ The important part is to specify the driver. This should be `ArmadilloDriver`.
 ```{r, login}
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
-builder$append(server = "armadillo",
-               url = armadillo_url,
-               token = token,
-               driver = "ArmadilloDriver")
+builder$append(
+  server = "armadillo",
+  url = armadillo_url,
+  token = token,
+  driver = "ArmadilloDriver",
+  profile = "xenon",
+  )
 
 # create loginframe
-logindata <- builder$build()
+login_data <- builder$build()
 
 # login into server
-conns <- datashield.login(logins = logindata, assign = FALSE)
+conns <- DSI::datashield.login(logins = login_data, assign = FALSE)
 ```
 
 > You can append multiple servers to the login frame to perform an analysis
@@ -98,20 +101,20 @@ login.
 ```{r, assign data during login}
 # build the login dataframe
 builder <- DSI::newDSLoginBuilder()
-builder$append(server = "armadillo",
-               url = armadillo_url,
-               token = token,
-               driver = "ArmadilloDriver",
-               table = "gecko/2_1-core-1_0/nonrep")
+builder$append(
+  server = "armadillo",
+  url = armadillo_url,
+  token = token,
+  driver = "ArmadilloDriver",
+  table = "gecko/2_1-core-1_0/nonrep",
+  profile = "xenon",
+  )
 
 # create loginframe
-logindata <- builder$build()
+login_data <- builder$build()
 
 # login into server
-conns <- datashield.login(
-  logins = logindata,
-  assign = TRUE,
-  symbol = "core_nonrep")
+conns <- DSI::datashield.login(logins = login_data, assign = TRUE, symbol="core_nonrep")
 ```
 
 ### Subsetting data
