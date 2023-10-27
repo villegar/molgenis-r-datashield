@@ -1,4 +1,4 @@
-## 2.0.3 Bugfix for update in armadillo
+## 2.0.5 Bugfix for update in armadillo
 * Bugfix to enable armadillo update (N.B. this version of DSMolgenisArmadillo 
 should be used when using armadillo 3.5)
 
