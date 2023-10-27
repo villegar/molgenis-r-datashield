@@ -63,19 +63,23 @@ You can login with basic auth when you are developing. The default credentials a
 ```{r, login frame with basic authentication}
 library(DSMolgenisArmadillo)
 
-armadillo_url <- "https://armadillo.dev.molgenis.org"
+armadillo_url <- "https://armadillo-demo.molgenis.net"
 
 builder <- DSI::newDSLoginBuilder()
-builder$append(server = "armadillo",
-               url = armadillo_url,
-               user = "admin",
-               password = "admin",
-               table = "gecko/2_1-core-1_0/nonrep",
-               driver = "ArmadilloDriver")
 
-logindata <- builder$build()
+builder$append(
+  server = "armadillo",
+  url = armadillo_url,
+  user = "admin",
+  password = "password",
+  driver = "ArmadilloDriver",
+  table = "gecko/2_1-core-1_0/nonrep",
+  profile = "xenon",
+  )
 
-conns <- datashield.login(login = logindata, assign = TRUE)
+login_data <- builder$build()
+
+conns <- DSI::datashield.login(logins = login_data, assign = TRUE)
 ```
 
 #### Version of the package
@@ -112,7 +116,7 @@ In DataSHIELD you can use a variety of methods and packages. To check which are 
 The available packages displayed by the method, are the serverside R-packages. Which means the packages available on the Armadillo.
 
 ```{r, check packages}
-conns <- datashield.login(logins = logindata, assign = F)
+conns <- DSI::datashield.login(logins = login_data, assign = F)
 dsListPackages(conns$armadillo)
 ```
 
