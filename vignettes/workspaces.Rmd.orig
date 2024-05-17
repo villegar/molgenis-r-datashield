@@ -13,7 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 To store the assigned data in the Armadillo service, you can use workspaces to make sure a certain state of the data is maintained on the service.
 
-Saving the workspaces can be done during `datashield.logout` or at runtime.
+Saving the workspaces can be done during `datashield.logout` or at runtime. Please be aware that if your workspace is too big to store on the server, it won't save and you'll get an error message. If this happens,
+please try cleaning up the workspace as much as possible and try again. If it still doesn't work, please
+contact the administrator of the server, to ask if the diskspace can be increased. 
 
 ```{r, saving workspaces, messages=FALSE}
 library(dsBaseClient)

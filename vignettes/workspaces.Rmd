@@ -11,7 +11,9 @@ vignette: >
 
 To store the assigned data in the Armadillo service, you can use workspaces to make sure a certain state of the data is maintained on the service.
 
-Saving the workspaces can be done during `datashield.logout` or at runtime.
+Saving the workspaces can be done during `datashield.logout` or at runtime. Please be aware that if your workspace is too big to store on the server, it won't save and you'll get an error message. If this happens,
+please try cleaning up the workspace as much as possible and try again. If it still doesn't work, please
+contact the administrator of the server, to ask if the diskspace can be increased. 
 
 
 ```r
@@ -26,7 +28,7 @@ token <- armadillo.get_token(armadillo_url)
 ```
 
 ```
-## [1] "We're opening a browser so you can log in with code R8VPYX"
+## [1] "We're opening a browser so you can log in with code 6SFLND"
 ```
 
 ```r
@@ -50,7 +52,7 @@ conns <- DSI::datashield.login(login = logindata)
 ```
 
 ```
-##    [-------------------------------------------------------------------------------------]   0% / 0s  Login armadillo [==================================>-----------------------------------]  50% / 0s  Logged in all servers [================================================================] 100% / 0s
+##    [-------------------------------------------------------------------------------------]   0% / 0s  Login armadillo [==================================>-----------------------------------]  50% / 0s  Logged in all servers [================================================================] 100% / 4s
 ```
 
 ```r
@@ -61,7 +63,7 @@ datashield.assign.table(conns = conns,
 ```
 
 ```
-##    [-------------------------------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Finalizing assignment armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [=========>---------]  50% / 0s  Assigned all table (J <- ...) [========================================================] 100% / 0s
+##    [-------------------------------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 1s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 1s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 1s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 1s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 1s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 1s  Waiting...  (J <- ...) [---------------------------------------------------------------]   0% / 1s  Checking armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 1s  Finalizing assignment armadillo (J <- `gecko/2_1-core-1_0/nonrep`) [=========>---------]  50% / 1s  Assigned all table (J <- ...) [========================================================] 100% / 1s
 ```
 
 ```r
@@ -81,7 +83,7 @@ conns <- DSI::datashield.login(logins = logindata,
 ```
 ## 
 ## Logging into the collaborating servers
-##    [-------------------------------------------------------------------------------------]   0% / 0s  Login armadillo [==================================>-----------------------------------]  50% / 0s  Logged in all servers [================================================================] 100% / 0s
+##    [-------------------------------------------------------------------------------------]   0% / 0s  Login armadillo [==================================>-----------------------------------]  50% / 0s  Logged in all servers [================================================================] 100% / 5s
 ```
 
 ```r
@@ -115,7 +117,7 @@ conns <- DSI::datashield.login(logins = logindata)
 ```
 ## 
 ## Logging into the collaborating servers
-##    [-------------------------------------------------------------------------------------]   0% / 0s  Login armadillo [==================================>-----------------------------------]  50% / 0s  Logged in all servers [================================================================] 100% / 0s
+##    [-------------------------------------------------------------------------------------]   0% / 0s  Login armadillo [==================================>-----------------------------------]  50% / 0s  Logged in all servers [================================================================] 100% / 4s
 ```
 
 ```r
@@ -125,7 +127,7 @@ datashield.assign.table(conns = conns,
 ```
 
 ```
-##    [-------------------------------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Finalizing assignment armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [=========>---------]  50% / 0s  Assigned all table (H <- ...) [========================================================] 100% / 0s
+##    [-------------------------------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 0s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 0s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 1s  Waiting...  (H <- ...) [---------------------------------------------------------------]   0% / 1s  Checking armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [--------------------------------]   0% / 1s  Finalizing assignment armadillo (H <- `gecko/2_1-core-1_0/nonrep`) [=========>---------]  50% / 1s  Assigned all table (H <- ...) [========================================================] 100% / 1s
 ```
 
 ```r
@@ -141,10 +143,10 @@ datashield.workspaces(conns$armadillo)
 ```
 
 ```
-##                                 name   size           lastAccessDate user
-## 1 armadillo:my-workspace-overwritten 172073 2023-10-24T09:22:41.747Z     
-## 2             armadillo:my-workspace   3611 2023-10-24T09:22:40.615Z     
-## 3   armadillo:my-workspace-version-2   3611 2023-10-24T09:22:40.847Z
+##                                 name   size                lastAccessDate user
+## 1 armadillo:my-workspace-overwritten 172672 2024-05-17T10:07:25.624+02:00     
+## 2             armadillo:my-workspace   3947 2024-05-17T10:07:14.872+02:00     
+## 3   armadillo:my-workspace-version-2   3883 2024-05-17T10:07:20.072+02:00
 ```
 
 Remove workspaces.
@@ -156,10 +158,10 @@ datashield.workspaces(conns)
 ```
 
 ```
-##      server name..armadillo.my.workspace. name..armadillo.my.workspace.version.2. user
-## 1 armadillo        armadillo:my-workspace        armadillo:my-workspace-version-2     
-## 2 armadillo        armadillo:my-workspace        armadillo:my-workspace-version-2     
-##   lastAccessDate..2023.10.24T09.22.40.615Z. lastAccessDate..2023.10.24T09.22.40.847Z. size.3611L size.3611L.1
-## 1                  2023-10-24T09:22:40.615Z                  2023-10-24T09:22:40.847Z       3611         3611
-## 2                  2023-10-24T09:22:40.615Z                  2023-10-24T09:22:40.847Z       3611         3611
+##      server name..armadillo.my.workspace. name..armadillo.my.workspace.version.2. user lastAccessDate..2024.05.17T10.07.14.872.02.00.
+## 1 armadillo        armadillo:my-workspace        armadillo:my-workspace-version-2                       2024-05-17T10:07:14.872+02:00
+## 2 armadillo        armadillo:my-workspace        armadillo:my-workspace-version-2                       2024-05-17T10:07:14.872+02:00
+##   lastAccessDate..2024.05.17T10.07.20.072.02.00. size.3947L size.3883L
+## 1                  2024-05-17T10:07:20.072+02:00       3947       3883
+## 2                  2024-05-17T10:07:20.072+02:00       3947       3883
 ```
