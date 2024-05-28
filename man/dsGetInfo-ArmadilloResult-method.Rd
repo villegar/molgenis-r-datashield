@@ -14,7 +14,7 @@
 \value{
 The result information. This should include the R expression
 being executed (`expression`) and if the query is complete
-(`{ "status" = "COMPLETED" }`).
+(`\{ "status" = "COMPLETED" \}`).
 }
 \description{
 Await completion and get the information about a command
