@@ -317,10 +317,10 @@ test_that("dsListMethods returns assign methods", {
               config = httr::add_headers("Authorization" = "Bearer token"))
 
   expected <- tibble(
-    name = list("foo", "bar"),
-    value = list("dsBase::foo", "dsBase::bar"),
-    version = list("6.0.0-03", "6.0.0-03"),
-    package = list("dsBase", "dsBase"),
+    name = c("foo", "bar"),
+    value = c("dsBase::foo", "dsBase::bar"),
+    version = c("6.0.0-03", "6.0.0-03"),
+    package = c("dsBase", "dsBase"),
     type = "assign",
     class = "function"
   )
@@ -350,8 +350,8 @@ test_that("dsListPackages extracts name and version from packages", {
   )
 
   expect_equivalent(result, tibble(
-    name = list("minqa", "RANN"),
-    version = list("1.2.4", "2.6.1")
+    name = c("minqa", "RANN"),
+    version = c("1.2.4", "2.6.1")
   ))
 })
 
@@ -380,13 +380,13 @@ test_that("dsListWorkspaces lists workspaces", {
   )
 
   expect_equivalent(result, tibble(
-    name = list("hello", "world"),
-    size = list(48L, 378L),
-    ETag = list(
+    name = c("hello", "world"),
+    size = c(48L, 378L),
+    ETag = c(
       "\"ca5d3a000723844e874b93a65c3888a1-1\"",
       "\"1f45d1a6f13adda1d05adf1f3da4c4ca-1\""
     ),
-    lastAccessDate = list(
+    lastAccessDate = c(
       "2020-05-06T13:09:00.725Z",
       "2020-05-06T13:09:07.617Z"
     ),
