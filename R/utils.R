@@ -57,10 +57,13 @@
 #' Convert list to data.frame
 #'
 #' @param list list object in R
+#' @importFrom dplyr bind_rows %>%
 #'
 #' @noRd
-.list_to_data_frame <- function(list) {
-  as.data.frame(do.call(rbind, list))
+
+.list_to_data_frame <- function(response){
+  out <- bind_rows(response) %>% data.frame
+  return(out)
 }
 
 #' Retry request after timeout

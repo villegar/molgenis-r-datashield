@@ -358,12 +358,10 @@ methods::setMethod(
       config = httr::add_headers(.get_auth_header(conn))
     )
     .handle_request_error(response)
-
     df <- .list_to_data_frame(httr::content(response))
     df <- .fill_column(df, "type", type)
     df <- .fill_column(df, "class", "function")
     df <- .rename_column(df, "function", "value")
-    df
   }
 )
 
