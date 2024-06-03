@@ -23,15 +23,9 @@ knitr::opts_chunk$set(
 A DSI implementation for the [MOLGENIS Armadillo DataSHIELD Service](https://github.com/molgenis/molgenis-service-armadillo/).
 
 ## Overview
-You can use DSMolgenisArmadillo to analyse data shared in MOLGENIS Armadillo
-servers using DataSHIELD. DataSHIELD allows execution of a subset of analysis
-methods available in R. Methods such as:
+DSMolgenisArmadillo is an extension to DSI which implements S4 classes and generic methods for Armadillo. It extends the functionality of DSI to work with Armadillo servers and is necessary for DataSHIELD analysis using Armadillo.
 
-`ds.mean()`
-`ds.glm()`
-`ds.lmerSLMA()`
-
-For more detailed documentation check: [https://cran.datashield.org/](https://cran.datashield.org/).
+For more detailed documentation check: [https://github.com/datashield/DSI](https://github.com/datashield/DSI/).
 
 ## Installation
 You can install the released version of DSMolgenisArmadillo from [CRAN](https://CRAN.R-project.org) with:
@@ -39,67 +33,6 @@ You can install the released version of DSMolgenisArmadillo from [CRAN](https://
 ```{r eval = FALSE}
 install.packages("DSI")
 install.packages("DSMolgenisArmadillo")
-```
-
-Make sure you install the DataSHIELD client (`dsBaseClient`) to perform the actual analysis. This needs to be a client which is version 6.0.0 or higher.
-
-```{r eval = FALSE}
-# install the DataSHIELD client
-install.packages("dsBaseClient", repos = c("http://cran.datashield.org", "https://cloud.r-project.org/"), dependencies = TRUE)
-```
-
-## Usage
-To use the DataSHIELD Armadillo client and perform analysis in DataSHIELD there
-a few basic steps you need to take.
-
-### Get a token from the ID server
-
-``` R
-# Load the necessary packages.
-library(dsBaseClient)
-library(DSMolgenisArmadillo)
-
-# specify server url
-armadillo_url <- "https://armadillo.dev.molgenis.org"
-
-# get token from central authentication server
-token <- armadillo.get_token(armadillo_url)
-```
-
-### Build the login frame
-You need to specify the project, the folder and the table name(s) you want to access.
-
-``` R
-# build the login dataframe
-builder <- DSI::newDSLoginBuilder()
-builder$append(server = "armadillo",
-               url = armadillo_url,
-               token = token,
-               table = "gecko/2_1-core-1_0/nonrep",
-               driver = "ArmadilloDriver")
-
-# create loginframe
-logindata <- builder$build()
-```
-
-### Login and assign the data
-Assigning the data means that you will assign the data to a symbol in the analysis environment.
-
-``` R
-# login into server
-conns <- datashield.login(logins = logindata, symbol = "core_nonrep", variables = c("coh_country"), assign = TRUE)
-```
-
-### Perform an analysis
-DataSHIELD has a range of methods you can use to perform analysis. Check: the [dsBaseClient](https://cran.datashield.org/web/#client-packages) documentation to see which methods are available.
-
-``` R
-# calculate the mean
-ds.mean("core_nonrep$coh_country", datasources = conns)
-```
-``` R
-# create a histogram
-ds.histogram(x = "core_nonrep$coh_country", datasources = conns)
 ```
 
 ## Documentation
