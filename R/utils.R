@@ -5,6 +5,8 @@
 #' @param handle HTTR handle
 #'
 #' @importFrom httr GET content
+#' @importFrom stringr str_extract str_remove
+#' @importFrom jsonlite fromJSON
 #'
 #' @return error message only
 #'

@@ -44,7 +44,8 @@ Imports:
     utils,
     base64enc,
     urltools, 
-    dplyr
+    dplyr, 
+    jsonlite
 Suggests:
     dsBaseClient (>= 6.0),
     knitr,
