@@ -16,9 +16,24 @@
     config = httr::add_headers(.get_auth_header(conn))
   )
 
-  json_content <- httr::content(command)
-  if (json_content$status == "FAILED") {
-    stop(paste0("Execution failed: ", json_content$message), call. = FALSE)
+  ## Here we try to match the format of Opal
+  json_returned <- httr::content(command)
+  command <- json_returned$expression %>%
+    str_extract("(?<=value=\\{)(.+)") %>%
+    str_remove("\\}\\)\\)")
+  expression <- json_returned$expression
+  message <- fromJSON(str_extract(json_returned$message, "\\{(.*)\\}"))$message
+
+  error_message <- paste0(
+    "Command ",
+    "'",  command, "'",
+    " failed on ", conn@name,
+    ": Error whilst evaluating ",
+    "'", expression, "'",
+    " \U2192 ", message)
+
+  if (json_returned$status == "FAILED") {
+    stop(error_message, call. = FALSE)
   }
 }
 
