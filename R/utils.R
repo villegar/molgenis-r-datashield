@@ -18,8 +18,9 @@
     config = httr::add_headers(.get_auth_header(conn))
   )
 
-  ## Here we try to match the format of Opal
   json_returned <- httr::content(command)
+
+  if (json_returned$status == "FAILED") {
   command <- json_returned$expression %>%
     str_extract("(?<=value=\\{)(.+)") %>%
     str_remove("\\}\\)\\)")
@@ -34,7 +35,6 @@
     "'", expression, "'",
     " \U2192 ", message)
 
-  if (json_returned$status == "FAILED") {
     stop(error_message, call. = FALSE)
   }
 }
@@ -52,6 +52,8 @@
     stop(paste0("Bad request: ", json_content$message), call. = FALSE)
   } else if (response$status_code == 401) {
     stop("Unauthorized", call. = FALSE)
+  } else if (response$status_code == 404) {
+    stop(paste0(response$url, " not found"))
   } else if (response$status_code == 500) {
     json_content <- httr::content(response)
     stop(paste0("Internal server error: ", json_content$message), call. = FALSE)
