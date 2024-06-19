@@ -44,6 +44,12 @@ methods::setMethod(
         path = "/lastcommand",
         config = httr::add_headers(.get_auth_header(dsObj@conn))
       )
+      if(result$status == 404){
+        list(
+          status = "FAILED",
+          error = paste0("No value table exists with the specified name.")
+        )
+      } else
       httr::content(result)
     } else {
       list(status = "COMPLETED")
