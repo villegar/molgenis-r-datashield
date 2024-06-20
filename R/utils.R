@@ -18,8 +18,8 @@
     config = httr::add_headers(.get_auth_header(conn))
   )
 
-  if (command$status != 404) {
-  json_returned <- httr::content(command)
+  if (!command$status %in% c(200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 404)) {
+    json_returned <- httr::content(command)
   command <- json_returned$expression %>%
     str_extract("(?<=value=\\{)(.+)") %>%
     str_remove("\\}\\)\\)")
