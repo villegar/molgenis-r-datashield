@@ -17,14 +17,15 @@
     path = "/lastcommand",
     config = httr::add_headers(.get_auth_header(conn))
   )
-
-  if (!command$status %in% c(200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 404)) {
     json_returned <- httr::content(command)
-  command <- json_returned$expression %>%
+
+    if(command$status == 404) {json_returned <- list(status = "404")}
+    if (json_returned$status == "FAILED") {
+    command <- json_returned$expression %>%
     str_extract("(?<=value=\\{)(.+)") %>%
     str_remove("\\}\\)\\)")
-  expression <- json_returned$expression
-  message <- fromJSON(str_extract(json_returned$message, "\\{(.*)\\}"))$message
+    expression <- json_returned$expression
+    message <- fromJSON(str_extract(json_returned$message, "\\{(.*)\\}"))$message
 
   error_message <- paste0(
     "Command ",
