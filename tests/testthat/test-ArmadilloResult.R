@@ -142,3 +142,23 @@ test_that("dsIsCompleted returns status of sync command", {
 
   expect_equal(value, TRUE)
 })
+
+test_that("getInfo returns correct list for 404 errors", {
+  result <- methods::new("ArmadilloResult",
+                         conn = connection,
+                         rval = list(result = NULL, async = TRUE)
+  )
+
+  get <- mock(list(status_code = 404))
+  info <- with_mock(
+    "DSMolgenisArmadillo:::.retry_until_last_result" = mock(NULL),
+    "httr::GET" = get,
+    dsGetInfo(result)
+  )
+  expect_equal(
+    info,
+    list(
+      status = "FAILED",
+      error = paste0("No value table exists with the specified name.")
+  ))
+})
