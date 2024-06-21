@@ -1,23 +1,27 @@
 test_that(".handle_last_command_error throws error message", {
   ok <- list(status_code = 200)
   get <- mock(ok)
-  content <- mock(list(status = "FAILED", message = "Error"))
+  json_returned <- mock(list(status = "FAILED", message = "Error", expression = "value={broken command"))
+  json_formatted <- mock(list(message = "informative error message"))
+
   setClass("connection", slots = list(handle = "character",
-                                      token = "character"))
-  connection <- new("connection", handle = "test", token = "token")
+                                      token = "character",
+                                      name = "character"))
+  connection <- new("connection", handle = "test", token = "token", name = "test_cohort")
 
   expect_error(
     with_mock(
       .handle_last_command_error(connection),
       "httr::GET" = get,
-      "httr::content" = content
+      "httr::content" = json_returned,
+      "fromJSON" = json_formatted
     ), "Error"
   )
   expect_args(get, 1, handle = connection@handle, path = "/lastcommand",
               config = httr::add_headers(c("Authorization" =
                                              paste0("Bearer ",
                                                     connection@token))))
-  expect_args(content, 1, ok)
+  expect_args(json_returned, 1, ok)
 })
 
 test_that(".handle_last_command_error only works if status is FAILED", {
@@ -90,23 +94,29 @@ test_that(".deparse deparses vectors", {
 test_that(".retry_until_last_result handles 404 by retrieving lastcommand", {
   not_found <- list(status_code = 404)
   ok <- list(status_code = 200)
-  command <- list(status = "FAILED", message = "Error")
   httr_retry <- mock(not_found)
   httr_get <- mock(ok)
-  httr_content <- mock(command)
+  json_returned <- mock(list(status = "FAILED", message = "Error", expression = "value={broken command"))
+  json_formatted <- mock(list(message = "informative error message"))
+
+  setClass("connection", slots = list(handle = "character",
+                                      token = "character",
+                                      name = "character"))
+  connection <- new("connection", handle = "test", token = "token", name = "test_cohort")
 
   expect_error(
     with_mock(
       .retry_until_last_result(connection),
       "httr::GET" = httr_get,
-      "httr::content" = httr_content,
-      "httr::RETRY" = httr_retry
-    ), "Execution failed: Error"
+      "httr::content" = json_returned,
+      "httr::RETRY" = httr_retry,
+      "fromJSON" = json_formatted
+    ), "Command 'broken command' failed on test_cohort: Error whilst evaluating"
   )
 
   expect_args(httr_get, 1, handle = connection@handle, path = "/lastcommand",
               config = httr::add_headers(c("Authorization" =
                                              paste0("Bearer ",
                                                     connection@token))))
-  expect_args(httr_content, 1, ok)
+  expect_args(json_returned, 1, ok)
 })
