@@ -14,7 +14,7 @@ test_that(".handle_last_command_error throws error message", {
       .handle_last_command_error(connection),
       "httr::GET" = get,
       "httr::content" = json_returned,
-      "fromJSON" = json_formatted
+      "jsonlite::fromJSON" = json_formatted
     ), "Error"
   )
   expect_args(get, 1, handle = connection@handle, path = "/lastcommand",
@@ -110,7 +110,7 @@ test_that(".retry_until_last_result handles 404 by retrieving lastcommand", {
       "httr::GET" = httr_get,
       "httr::content" = json_returned,
       "httr::RETRY" = httr_retry,
-      "fromJSON" = json_formatted
+      "jsonlite::fromJSON" = json_formatted
     ), "Command 'broken command' failed on test_cohort: Error whilst evaluating"
   )
 
