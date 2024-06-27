@@ -38,11 +38,15 @@ jobs:
           install2.r --repo https://cloud.r-project.org desc
           Rscript -e "desc::desc_set_version('${VERSION}')"
 
+    - restore_cache:
+        keys:
+        - when-{{ .Environment.CIRCLE_PULL_REQUEST }}-{{ checksum "DESCRIPTION" }}
+
     - run:
         name: Install R deps takes 15min, but no worries we skipinstalled from cache when this PR has installed them before
         command: |
-          install2.r --skipinstalled --repo https://cloud.r-project.org devtools pkgdown markdown rmarkdown mockery webmockr httr urltools xml2 arrow MolgenisAuth DSI git2r ellipsis vctrs covr desc metafor docopt
-          install2.r --skipinstalled --repo https://cran.obiba.org/ dsBaseClient
+          Rscript -e 'install.packages(c("devtools", "pkgdown", "markdown", "rmarkdown", "mockery", "webmockr", "httr", "urltools", "xml2", "arrow", "MolgenisAuth", "DSI", "git2r", "ellipsis", "vctrs", "covr", "desc", "metafor", "fields", "meta", "gridExtra", "panelaggregation"))'
+          Rscript -e 'install.packages("dsBaseClient", repos = "https://cran.obiba.org/")'
           Rscript -e "git2r::config(user.email = 'molgenis+ci@gmail.com', user.name = 'MOLGENIS Jenkins')"
 
     - run:
