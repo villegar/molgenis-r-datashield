@@ -5,6 +5,8 @@
 #' @param handle HTTR handle
 #'
 #' @importFrom httr GET content
+#' @importFrom stringr str_extract str_remove
+#' @importFrom jsonlite fromJSON
 #'
 #' @return error message only
 #'
@@ -15,10 +17,25 @@
     path = "/lastcommand",
     config = httr::add_headers(.get_auth_header(conn))
   )
+    json_returned <- httr::content(command)
 
-  json_content <- httr::content(command)
-  if (json_content$status == "FAILED") {
-    stop(paste0("Execution failed: ", json_content$message), call. = FALSE)
+    if(command$status == 404) {json_returned <- list(status = "404")}
+    if (json_returned$status == "FAILED") {
+    command <- json_returned$expression %>%
+    str_extract("(?<=value=\\{)(.+)") %>%
+    str_remove("\\}\\)\\)")
+    expression <- json_returned$expression
+    message <- fromJSON(str_extract(json_returned$message, "\\{(.*)\\}"))$message
+
+  error_message <- paste0(
+    "Command ",
+    "'",  command, "'",
+    " failed on ", conn@name,
+    ": Error whilst evaluating ",
+    "'", expression, "'",
+    " \U2192 ", message)
+
+    stop(error_message, call. = FALSE)
   }
 }
 
