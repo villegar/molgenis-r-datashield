@@ -1,3 +1,7 @@
+## 2.0.8
+* fix: align error handling with opal
+* fix: datashield.pkg_status, datashield.methods and datashield.workspaces now return same format as opal
+
 ## 2.0.5 Bugfix for update in armadillo
 * Bugfix to enable armadillo update (N.B. this version of DSMolgenisArmadillo 
 should be used when using armadillo 3.5)
