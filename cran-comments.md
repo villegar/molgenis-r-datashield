@@ -1,4 +1,4 @@
-## 2.0.8
+## 2.0.9
 * fix: align error handling with opal
 * fix: datashield.pkg_status, datashield.methods and datashield.workspaces now return same format as opal
 

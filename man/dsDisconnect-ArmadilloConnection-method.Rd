@@ -19,5 +19,5 @@ If a workspace ID is provided, the DataSHIELD R session will be saved before
 being destroyed.
 }
 \seealso{
-\code{\link{dsDisconnect}}
+\code{\link[DSI]{dsDisconnect}}
 }

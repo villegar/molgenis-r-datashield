@@ -6,7 +6,7 @@
 \title{Class ArmadilloConnection.}
 \description{
 An Armadillo connection implementing the DataSHIELD Interface (DSI)
-\code{\link{DSConnection-class}}.
+\code{\link[DSI]{DSConnection-class}}.
 }
 \section{Slots}{
 

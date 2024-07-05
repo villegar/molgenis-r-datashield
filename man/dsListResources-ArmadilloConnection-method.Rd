@@ -17,5 +17,5 @@ List Armadillo DataSHIELD Service resources that may be accessible for
 performing DataSHIELD operations.
 }
 \seealso{
-\code{\link{dsListResources}}
+\code{\link[DSI]{dsListResources}}
 }

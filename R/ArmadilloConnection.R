@@ -5,7 +5,7 @@ setOldClass("handle")
 #' Class ArmadilloConnection.
 #'
 #' An Armadillo connection implementing the DataSHIELD Interface (DSI)
-#' \code{\link{DSConnection-class}}.
+#' \code{\link[DSI]{DSConnection-class}}.
 #'
 #' @slot name The name of the connection
 #' @slot handle The handle used to connect with the server
@@ -39,7 +39,7 @@ methods::setClass("ArmadilloConnection",
 #' character string).
 #'
 #' @importMethodsFrom DSI dsDisconnect
-#' @seealso \code{\link{dsDisconnect}}
+#' @seealso \code{\link[DSI]{dsDisconnect}}
 #' @export
 methods::setMethod(
   "dsDisconnect", "ArmadilloConnection",
@@ -86,7 +86,7 @@ methods::setMethod(
 #'
 #' @return The fully qualified names of the tables.
 #'
-#' @seealso \code{\link{dsListTables}}
+#' @seealso \code{\link[DSI]{dsListTables}}
 #' @importMethodsFrom DSI dsListTables
 #' @export
 methods::setMethod(
@@ -134,7 +134,7 @@ methods::setMethod(
 #'
 #' @return The fully qualified names of the resources.
 #'
-#' @seealso \code{\link{dsListResources}}
+#' @seealso \code{\link[DSI]{dsListResources}}
 #' @importMethodsFrom DSI dsListResources
 #' @export
 methods::setMethod(
@@ -176,7 +176,7 @@ methods::setMethod(
 #' List of DataSHIELD operations on which Armadillo DataSHIELD Service supports
 #' asynchronicity.
 #'
-#' When a \code{\link{DSResult-class}} object is returned on aggregation or
+#' When a \code{\link[DSI]{DSResult-class}} object is returned on aggregation or
 #' assignment operation, the raw result can be accessed asynchronously,
 #' allowing parallelization of DataSHIELD calls over multpile servers.
 #' The returned named list of logicals will specify if asynchronicity is
@@ -300,7 +300,7 @@ methods::setMethod(
 #'
 #' Assign a resource in the DataSHIELD R session.
 #'
-#' @param conn An object that inherits from \code{\link{DSConnection-class}}.
+#' @param conn An object that inherits from \code{\link[DSI]{DSConnection-class}}.
 #' @param symbol Name of the R symbol.
 #' @param resource Fully qualified name of a resource reference in the data
 #' repository.

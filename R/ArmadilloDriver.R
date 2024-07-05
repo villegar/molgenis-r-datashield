@@ -2,7 +2,7 @@
 #' Class ArmadilloDriver with constructor armadillo
 #'
 #' An Armadillo DataSHIELD Service Driver implementing the DataSHIELD Interface
-#' (DSI) \code{\link{DSDriver-class}}. This class should always be initialized
+#' (DSI) \code{\link[DSI]{DSDriver-class}}. This class should always be initialized
 #' with the \code{\link{armadillo}} function.
 #' It returns a singleton that allows you to connect to Armadillo
 #'

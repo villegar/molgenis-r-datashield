@@ -17,7 +17,7 @@ List of DataSHIELD operations on which Armadillo DataSHIELD Service supports
 asynchronicity.
 }
 \details{
-When a \code{\link{DSResult-class}} object is returned on aggregation or
+When a \code{\link[DSI]{DSResult-class}} object is returned on aggregation or
 assignment operation, the raw result can be accessed asynchronously,
 allowing parallelization of DataSHIELD calls over multpile servers.
 The returned named list of logicals will specify if asynchronicity is
