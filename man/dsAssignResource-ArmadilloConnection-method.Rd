@@ -7,7 +7,7 @@
 \S4method{dsAssignResource}{ArmadilloConnection}(conn, symbol, resource, async = TRUE)
 }
 \arguments{
-\item{conn}{An object that inherits from \code{\link{DSConnection-class}}.}
+\item{conn}{An object that inherits from \code{\link[DSI]{DSConnection-class}}.}
 
 \item{symbol}{Name of the R symbol.}
 

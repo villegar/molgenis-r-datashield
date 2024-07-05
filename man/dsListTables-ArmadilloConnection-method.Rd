@@ -17,5 +17,5 @@ List Armadillo DataSHIELD Service tables that may be accessible for
 performing DataSHIELD operations.
 }
 \seealso{
-\code{\link{dsListTables}}
+\code{\link[DSI]{dsListTables}}
 }

@@ -4,7 +4,7 @@ NULL
 #' Class ArmadilloResult.
 #'
 #' An Armadillo result implementing the DataSHIELD Interface (DSI)
-#' \code{\link{DSResult-class}}.
+#' \code{\link[DSI]{DSResult-class}}.
 #'
 #' @slot conn The connection used to create this result
 #' @slot rval The result
