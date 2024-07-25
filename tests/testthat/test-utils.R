@@ -65,11 +65,11 @@ test_that(".handle_request_error handles 400", {
 
 test_that(".handle_request_error handles 500", {
   response <- list(status_code = 500)
-  httr_content <- mock(list(message = "Error"))
+  httr_content <- mock(message = "Something went wrong while reading/writing in the storage")
   with_mock(
     expect_error(
       .handle_request_error(response),
-      "Internal server error: Error"
+      "Internal server error: Something went wrong while reading/writing in the storage",
     ),
     "httr::content" = httr_content
   )
