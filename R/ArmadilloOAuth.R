@@ -10,14 +10,79 @@
 #'
 #' @export
 armadillo.get_token <- function(server) { # nolint
+  credentials <- armadillo.get_credentials(server)
+  return(credentials$id_token)
+}
+
+#' Get credentials information
+#'
+#' Get credentials, including refresh, id and access token via device flow auth
+#' NOTE: in order to get refresh token, refresh tokens should be turned on for this armadillo instance on the auth server
+#'
+#' @param server the URL of the Armadillo server
+#'
+#' @return The credentials
+#'
+#' @importFrom MolgenisAuth discover device_flow_auth
+#'
+#' @export
+armadillo.get_credentials <- function(server) { # nolint
   auth_info <- .get_oauth_info(server)$auth
   endpoint <- MolgenisAuth::discover(auth_info$issuerUri)
   credentials <- MolgenisAuth::device_flow_auth(
     endpoint,
     auth_info$clientId
   )
-  return(credentials$id_token)
+  return(credentials)
 }
+
+.refresh_token <- function(server, credentials) {
+  message("\nAttempting refresh...")
+  # get auth url
+  auth_info <- .get_oauth_info(server)
+  # post to fusionauth refresh endpoint with current access/refresh tokens 
+  fusionAuthRefreshUri <- paste0(auth_info$auth$issuerUri, "/api/jwt/refresh")
+  response <- httr::POST(fusionAuthRefreshUri, handle=handle(''), 
+                         config=httr::set_cookies(refresh_token=credentials$refresh_token, access_token=credentials$access_token))
+  new_credentials <- content(response)
+  if (!is.null(new_credentials$refreshToken)) {
+    message("Refresh successful")
+  } else {
+    if (!is.null(new_credentials$fieldErrors)){
+      stop(paste0(" ", unlist(new_credentials$fieldErrors)))
+    } else {
+      stop("Refresh failed")
+    }
+  }
+  return(new_credentials)
+}
+
+#' Refresh connections of all armadillo connections
+#'
+#' Refreshes a timed out connections using credentials containing the old access token and newest refresh token
+#' Old credentials will be overwritten in the connections object to be able to continue analysis
+#' NOTE: make sure refresh is possible for the armadillo instance on the auth server
+#'
+#' @param server the URL of the Armadillo server
+#' @param credentials a list containing "refresh_token" and "access_token", can be retrieved using armadillo.get_credentials
+#' @param conns the armadillo connections object
+#' @param connections_name the name of the connections object in your environment
+#' @param env your environment (default: .GlobalEnv)
+#'
+#' @return A list of credentials containing a new refresh_token and access_token "token" that can be used to retrieved data again
+#'
+#' @importFrom httr POST set_cookies
+#'
+#' @export
+armadillo.refresh_connections <- function(server, credentials, conns, connections_name, env=.GlobalEnv) {
+  new_credentials <- .refresh_token(server, credentials)
+  for (i in 1:length(conns)) {
+    conns[[i]]@token <- new_credentials$token
+  }
+  assign(connections_name, conns, envir=env)
+  return(new_credentials)
+}
+
 
 #' Get oauth server discovery information
 #'
