@@ -270,17 +270,20 @@ methods::setMethod(
   "dsAssignTable", "ArmadilloConnection",
   function(conn, symbol, table, variables = NULL, missings = FALSE,
            identifiers = NULL, id.name = NULL, async = TRUE) { # nolint
-
     query <- list(table = table, symbol = symbol, async = async)
     if (!is.null(variables)) {
       query$variables <- paste(unlist(variables), collapse = ",")
     }
+
+    conn <- .reset_token_if_expired(conn)
+
     response <- httr::POST(
       handle = conn@handle,
       path = "/load-table",
       query = query,
       config = httr::add_headers(.get_auth_header(conn))
     )
+
     .handle_request_error(response)
 
     if (async) {
@@ -288,7 +291,6 @@ methods::setMethod(
     } else {
       result <- .retry_until_last_result(conn)
     }
-
     methods::new("ArmadilloResult",
       conn = conn,
       rval = list(result = result, async = async)
@@ -321,6 +323,7 @@ methods::setMethod(
       query = query,
       config = httr::add_headers(.get_auth_header(conn))
     )
+
     .handle_request_error(response)
 
     if (async) {
@@ -608,3 +611,68 @@ methods::setMethod(
     invisible(NULL)
   }
 )
+
+.reset_token_if_expired <- function(conn) {
+  credentials <- .get_armadillo_credentials(conn)
+  if(credentials$object@expires_at < (Sys.time() + 60)) {
+    new_credentials <- .refresh_token(conn@handle$url, credentials$object)
+    conn@token <- new_credentials$token
+    .reset_token_global_env(credentials, new_credentials, conn)
+    return(conn)
+  }
+}
+
+.get_armadillo_credentials <- function(conn, env = getOption("datashield.env", globalenv())) {
+  all_credentials <- .get_all_armadillo_credentials(env)
+  matching <- get_matching_credential(all_credentials, conn)
+  return(matching)
+}
+
+.get_all_armadillo_credentials <- function(env = getOption("datashield.env", globalenv())) {
+  objs <- ls(envir = env)
+  conns <- sapply(objs, function(x) {
+    obj <- get(x, envir = env)
+    inherits(obj, "ArmadilloCredentials")
+  }, USE.NAMES = TRUE)
+
+  matched <- objs[conns]
+  return(mget(matched, envir = env))
+}
+
+get_matching_credential <- function(credentials, conn) {
+  target_token <- conn@token
+  for (name in names(credentials)) {
+    cred <- credentials[[name]]
+    if (inherits(cred, "ArmadilloCredentials") && cred@access_token == target_token) {
+      return(list(name = name, object = cred))
+    }
+  }
+
+  return(NULL)  # If no match is found
+}
+
+.reset_armadillo_credentials <- function(old_credentials, new_credentials, env = getOption("datashield.env", globalenv())) {
+  credentials_to_return <- old_credentials$object
+  credentials_to_return@access_token <- new_credentials$token
+  credentials_to_return@refresh_token <- new_credentials$refreshToken
+  assign(old_credentials$name, credentials_to_return, envir = env)
+}
+
+.reset_connections_object <- function(old_credentials, new_credentials, conn, env=getOption("datashield.env", globalenv())) {
+  old_conns <- .getDSConnections(env)
+  old_conns$flag <- NULL
+  conns_to_return <- old_conns[[1]]
+
+  for (i in seq_along(conns_to_return)) {
+    if (methods::slot(conns_to_return[[i]], "token") == old_credentials$object@access_token) {
+      methods::slot(conns_to_return[[i]], "token") <- new_credentials$token
+      break  # stop after first match
+    }
+  }
+  assign(names(old_conns), conns_to_return, envir = env)
+}
+
+.reset_token_global_env <- function(old_credentials, new_credentials, conn, env=getOption("datashield.env", globalenv())) {
+  .reset_armadillo_credentials(old_credentials, new_credentials, env)
+  .reset_connections_object(old_credentials, new_credentials, conn, env)
+}
