@@ -604,3 +604,292 @@ test_that("dsKeepAlive pings server info endpoint", {
     config = httr::add_headers("Authorization" = "Bearer token")
   )
 })
+
+test_that(".get_all_armadillo_credentials finds all connections in test environment", {
+  test_1 <- new(
+    "ArmadilloCredentials",
+    access_token = "aaa-a",
+    expires_in = 29,
+    expires_at = Sys.time(),
+    id_token = "original_id_token_3",
+    refresh_token = "aaa-b",
+    token_type = "Bearer",
+    userId = "aaa-c"
+    )
+
+  test_2 <- new(
+    "ArmadilloCredentials",
+    access_token = "bbb-a",
+    expires_in = 29,
+    expires_at = Sys.time(),
+    id_token = "original_id_token_3",
+    refresh_token = "bbb-b",
+    token_type = "Bearer",
+    userId = "bbb-c"
+    )
+
+  expect_equal(
+    .get_all_armadillo_credentials(env = environment()),
+    list(
+      test_1 = test_1,
+      test_2 = test_2
+      )
+    )
+})
+
+test_that(".get_all_armadillo_credentials returns nothing if no connections present", {
+
+  expect_null(
+    .get_all_armadillo_credentials(env = environment())
+  )
+
+})
+
+
+test_that("get_matching_credentials returns correct match when there is one credentials object and it has a matching token", {
+          credentials_1 <-new(
+            "ArmadilloCredentials",
+            access_token = "aaa-a",
+            expires_in = 29,
+            expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
+            id_token = "original_id_token_3",
+            refresh_token = "aaa-b",
+            token_type = "Bearer",
+            userId = "aaa-c"
+            )
+
+          cohort_1_cred <- list(cohort_1 = credentials_1)
+
+          conn_1 <-  new(
+            "ArmadilloConnection",
+            name = "cohort_1",
+            handle = handle,
+            user = "",
+            cookies = list(
+              domain = "#HttpOnly_localhost",
+              flag = FALSE,
+              path = "/",
+              secure = FALSE,
+              expiration = "Inf",
+              name = "JSESSIONID",
+              value = "12345"),
+            token = "aaa-a"
+          )
+
+          expect_equal(
+            .get_matching_credential(cohort_1_cred, conn_1)[[1]],
+            list(
+              name = "cohort_1",
+              object = cohort_1_cred$cohort_1
+            )
+          )
+})
+
+test_that("get_matching_credentials returns correct match when at least two credentials object but only has a matching token", {
+  credentials_1 <-new(
+    "ArmadilloCredentials",
+    access_token = "aaa-a",
+    expires_in = 29,
+    expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
+    id_token = "original_id_token_3",
+    refresh_token = "aaa-b",
+    token_type = "Bearer",
+    userId = "aaa-c"
+  )
+
+  credentials_2 <-new(
+    "ArmadilloCredentials",
+    access_token = "bbb-a",
+    expires_in = 29,
+    expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
+    id_token = "original_id_token_3",
+    refresh_token = "bbb-b",
+    token_type = "Bearer",
+    userId = "bbb-c"
+  )
+
+  cohort_mult_cred <- list(
+    cohort_1 = credentials_1,
+    cohort_2 = credentials_2
+    )
+
+  conn_1 <-  new(
+    "ArmadilloConnection",
+    name = "cohort_2",
+    handle = handle,
+    user = "",
+    cookies = list(
+      domain = "#HttpOnly_localhost",
+      flag = FALSE,
+      path = "/",
+      secure = FALSE,
+      expiration = "Inf",
+      name = "JSESSIONID",
+      value = "12345"),
+    token = "bbb-a"
+  )
+
+  expect_equal(
+    .get_matching_credential(cohort_mult_cred, conn_1)[[1]],
+    list(
+      name = "cohort_2",
+      object = cohort_mult_cred$cohort_2
+    )
+  )
+})
+
+
+test_that("get_matching_credentials returns correct match when there is are two identical credentials objects and both have a matching token", {
+  credentials_1 <-new(
+    "ArmadilloCredentials",
+    access_token = "aaa-a",
+    expires_in = 29,
+    expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
+    id_token = "original_id_token_3",
+    refresh_token = "aaa-b",
+    token_type = "Bearer",
+    userId = "aaa-c"
+  )
+
+  cohort_identical_cred <- list(
+    cohort_1 = credentials_1,
+    cohort_2 = credentials_1
+  )
+
+  conn_1 <-  new(
+    "ArmadilloConnection",
+    name = "cohort_2",
+    handle = handle,
+    user = "",
+    cookies = list(
+      domain = "#HttpOnly_localhost",
+      flag = FALSE,
+      path = "/",
+      secure = FALSE,
+      expiration = "Inf",
+      name = "JSESSIONID",
+      value = "12345"),
+    token = "aaa-a"
+  )
+
+  expect_equal(
+    .get_matching_credential(cohort_identical_cred, conn_1),
+    list(
+      list(
+        name = "cohort_1",
+        object = cohort_identical_cred$cohort_1
+        ),
+      list(
+        name = "cohort_2",
+        object = cohort_identical_cred$cohort_1
+      )
+    )
+  )
+})
+
+test_that("get_matching_credentials returns empty list there is one credentials object and no matching token", {
+  credentials_1 <-new(
+    "ArmadilloCredentials",
+    access_token = "aaa-a",
+    expires_in = 29,
+    expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
+    id_token = "original_id_token_3",
+    refresh_token = "aaa-b",
+    token_type = "Bearer",
+    userId = "aaa-c"
+  )
+
+  cohort_1_cred <- list(cohort_1 = credentials_1)
+
+  conn_1 <-  new(
+    "ArmadilloConnection",
+    name = "cohort_1",
+    handle = handle,
+    user = "",
+    cookies = list(
+      domain = "#HttpOnly_localhost",
+      flag = FALSE,
+      path = "/",
+      secure = FALSE,
+      expiration = "Inf",
+      name = "JSESSIONID",
+      value = "12345"),
+    token = "bbb-b"
+  )
+
+  print(.get_matching_credential(cohort_1_cred, conn_1))
+
+  expect_equal(
+    .get_matching_credential(cohort_1_cred, conn_1),
+    list()
+  )
+})
+
+test_that("get_matching_credentials returns empty list there are two credentials object and no matching token", {
+  credentials_1 <-new(
+    "ArmadilloCredentials",
+    access_token = "aaa-a",
+    expires_in = 29,
+    expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
+    id_token = "original_id_token_3",
+    refresh_token = "aaa-b",
+    token_type = "Bearer",
+    userId = "aaa-c"
+  )
+
+  credentials_2 <-new(
+    "ArmadilloCredentials",
+    access_token = "bbb-a",
+    expires_in = 29,
+    expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
+    id_token = "original_id_token_3",
+    refresh_token = "bbb-b",
+    token_type = "Bearer",
+    userId = "bbb-c"
+  )
+
+  cohort_mult_cred <- list(
+    cohort_1 = credentials_1,
+    cohort_2 = credentials_2
+  )
+
+  conn_1 <-  new(
+    "ArmadilloConnection",
+    name = "cohort_1",
+    handle = handle,
+    user = "",
+    cookies = list(
+      domain = "#HttpOnly_localhost",
+      flag = FALSE,
+      path = "/",
+      secure = FALSE,
+      expiration = "Inf",
+      name = "JSESSIONID",
+      value = "12345"),
+    token = "ccc-c"
+  )
+
+  expect_equal(
+    .get_matching_credential(cohort_mult_cred, conn_1),
+    list()
+  )
+})
+
+
+
+
+
+
+# .reset_token_if_expired
+#
+# .get_armadillo_credentials
+#
+# .get_all_armadillo_credentials
+#
+
+#
+# .reset_armadillo_credentials
+#
+# .reset_connections_object
+#
+# .reset_token_global_env
