@@ -612,6 +612,12 @@ methods::setMethod(
   }
 )
 
+#' @title Reset Armadillo Token if Expired
+#' @description Checks if the current token has expired and refreshes it if necessary.
+#' @param conn A `DSConnection` object.
+#' @return The updated `DSConnection` object with a refreshed token if needed.
+#' @keywords internal
+#' @noRd
 .reset_token_if_expired <- function(conn) {
   credentials <- .get_armadillo_credentials(conn)
   if(credentials$object@expires_at < (Sys.time() + 60)) {
@@ -622,12 +628,33 @@ methods::setMethod(
   }
 }
 
+#' @title Get Armadillo Credentials
+#' @description Retrieves the Armadillo credentials that match the provided connection.
+#' @param conn A `DSConnection` object.
+#' @param env The environment where credentials are stored. Defaults to `globalenv()` or `getOption("datashield.env")`.
+#' @return A list with the name and object of the matched credentials, or `NULL` if no match is found.
+#' @keywords internal
+#' @noRd
 .get_armadillo_credentials <- function(conn, env = getOption("datashield.env", globalenv())) {
   all_credentials <- .get_all_armadillo_credentials(env)
-  matching <- get_matching_credential(all_credentials, conn)
-  return(matching)
+  if(is.null(all_credentials)) {
+    return()
+  } else {
+  matching <- .get_matching_credential(all_credentials, conn)
+  if(matching == list()) {
+    return()
+  } else {
+    return(matching)
+    }
+  }
 }
 
+#' @title Get All Armadillo Credentials
+#' @description Scans the specified environment for objects of class `"ArmadilloCredentials"`.
+#' @param env The environment to search. Defaults to `globalenv()` or `getOption("datashield.env")`.
+#' @return A named list of `"ArmadilloCredentials"` objects.
+#' @keywords internal
+#' @noRd
 .get_all_armadillo_credentials <- function(env = getOption("datashield.env", globalenv())) {
   objs <- ls(envir = env)
   conns <- sapply(objs, function(x) {
@@ -635,22 +662,45 @@ methods::setMethod(
     inherits(obj, "ArmadilloCredentials")
   }, USE.NAMES = TRUE)
 
+
+  if(is.character(objs) && length(objs) == 0) {
+    return()
+  } else {
   matched <- objs[conns]
   return(mget(matched, envir = env))
+  }
 }
 
-get_matching_credential <- function(credentials, conn) {
+#' @title Get Matching Credential
+#' @description Matches a token from a connection with stored credentials.
+#' @param credentials A named list of `"ArmadilloCredentials"` objects.
+#' @param conn A `DSConnection` object containing the token to match.
+#' @return A list with the name and object of the matched credential, or `NULL` if not found.
+#' @keywords internal
+#' @noRd
+.get_matching_credential <- function(credentials, conn) {
   target_token <- conn@token
+  matches <- list()
+
   for (name in names(credentials)) {
     cred <- credentials[[name]]
     if (inherits(cred, "ArmadilloCredentials") && cred@access_token == target_token) {
-      return(list(name = name, object = cred))
+      matches[[length(matches) + 1]] <- list(name = name, object = cred)
     }
   }
 
-  return(NULL)  # If no match is found
+  return(matches)
 }
 
+
+#' @title Reset Armadillo Credentials
+#' @description Updates the stored credentials in the environment with refreshed tokens.
+#' @param old_credentials A list with name and object of the old credentials.
+#' @param new_credentials A list with new token and refreshToken values.
+#' @param env The environment where credentials are stored. Defaults to `globalenv()` or `getOption("datashield.env")`.
+#' @return None. Used for side-effects.
+#' @keywords internal
+#' @noRd
 .reset_armadillo_credentials <- function(old_credentials, new_credentials, env = getOption("datashield.env", globalenv())) {
   credentials_to_return <- old_credentials$object
   credentials_to_return@access_token <- new_credentials$token
@@ -658,6 +708,15 @@ get_matching_credential <- function(credentials, conn) {
   assign(old_credentials$name, credentials_to_return, envir = env)
 }
 
+#' @title Reset Connections Object
+#' @description Updates the token in the connections object to reflect refreshed credentials.
+#' @param old_credentials A list with the old credentials.
+#' @param new_credentials A list with new token values.
+#' @param conn A `DSConnection` object.
+#' @param env The environment containing the connections object. Defaults to `globalenv()` or `getOption("datashield.env")`.
+#' @return None. Used for side-effects.
+#' @keywords internal
+#' @noRd
 .reset_connections_object <- function(old_credentials, new_credentials, conn, env=getOption("datashield.env", globalenv())) {
   old_conns <- .getDSConnections(env)
   old_conns$flag <- NULL
@@ -672,7 +731,17 @@ get_matching_credential <- function(credentials, conn) {
   assign(names(old_conns), conns_to_return, envir = env)
 }
 
+#' @title Reset Token in Global Environment
+#' @description Updates both the Armadillo credentials and the connection object in the global environment.
+#' @param old_credentials A list with the old credentials.
+#' @param new_credentials A list with new token and refreshToken values.
+#' @param conn A `DSConnection` object.
+#' @param env The environment where updates should be made. Defaults to `globalenv()` or `getOption("datashield.env")`.
+#' @return None. Used for side-effects.
+#' @keywords internal
+#' @noRd
 .reset_token_global_env <- function(old_credentials, new_credentials, conn, env=getOption("datashield.env", globalenv())) {
   .reset_armadillo_credentials(old_credentials, new_credentials, env)
   .reset_connections_object(old_credentials, new_credentials, conn, env)
 }
+
