@@ -14,6 +14,30 @@ armadillo.get_token <- function(server) { # nolint
   return(credentials$id_token)
 }
 
+#' @title ArmadilloCredentials Class
+#' @description An S4 class to represent authentication credentials used for accessing Armadillo servers.
+#' @slot access_token Character. The access token used for authentication.
+#' @slot expires_in Numeric. The number of seconds until the token expires.
+#' @slot expires_at POSIXct. The timestamp when the token expires.
+#' @slot id_token Character. The ID token containing identity information.
+#' @slot refresh_token Character. The token used to obtain a new access token when expired.
+#' @slot token_type Character. The type of token (typically "Bearer").
+#' @slot userId Character. The unique identifier of the user.
+#' @keywords internal
+#' @export
+setClass(
+  "ArmadilloCredentials",
+  slots = list(
+    access_token = "character",
+    expires_in = "numeric",
+    expires_at = "POSIXct",
+    id_token = "character",
+    refresh_token = "character",
+    token_type = "character",
+    userId = "character")
+)
+
+
 #' Get credentials information
 #'
 #' Get credentials, including refresh, id and access token via device flow auth
@@ -33,17 +57,25 @@ armadillo.get_credentials <- function(server) { # nolint
     endpoint,
     auth_info$clientId
   )
-  return(credentials)
+  credentials_obj <- new("ArmadilloCredentials",  access_token = credentials$access_token,
+                         expires_in =  credentials$expires_in,
+                         expires_at = Sys.time() + credentials$expires_in,
+                         id_token =  credentials$id_token,
+                         refresh_token =  credentials$refresh_token,
+                         token_type =  credentials$token_type,
+                         userId =  credentials$userId)
+
+  return(credentials_obj)
 }
 
 .refresh_token <- function(server, credentials) {
   message("\nAttempting refresh...")
   # get auth url
   auth_info <- .get_oauth_info(server)
-  # post to fusionauth refresh endpoint with current access/refresh tokens 
+  # post to fusionauth refresh endpoint with current access/refresh tokens
   fusionAuthRefreshUri <- paste0(auth_info$auth$issuerUri, "/api/jwt/refresh")
-  response <- httr::POST(fusionAuthRefreshUri, handle=handle(''), 
-                         config=httr::set_cookies(refresh_token=credentials$refresh_token, access_token=credentials$access_token))
+  response <- httr::POST(fusionAuthRefreshUri, handle=handle(''),
+                         config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token))
   new_credentials <- content(response)
   if (!is.null(new_credentials$refreshToken)) {
     message("Refresh successful")
