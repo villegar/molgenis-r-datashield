@@ -62,6 +62,14 @@ methods::setMethod(
 
 methods::setMethod(
   "dsListProfiles", "ArmadilloConnection", function(conn) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::GET(
       handle = conn@handle,
       path = "/profiles",
@@ -91,6 +99,14 @@ methods::setMethod(
 #' @export
 methods::setMethod(
   "dsListTables", "ArmadilloConnection", function(conn) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::GET(
       handle = conn@handle,
       path = "/tables",
@@ -113,6 +129,14 @@ methods::setMethod(
 #' @export
 methods::setMethod(
   "dsHasTable", "ArmadilloConnection", function(conn, table) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::HEAD(
       handle = conn@handle,
       path = paste0("/tables/", table),
@@ -139,6 +163,14 @@ methods::setMethod(
 #' @export
 methods::setMethod(
   "dsListResources", "ArmadilloConnection", function(conn) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::GET(
       handle = conn@handle,
       path = "/resources",
@@ -160,6 +192,14 @@ methods::setMethod(
 #' @export
 methods::setMethod(
   "dsHasResource", "ArmadilloConnection", function(conn, resource) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::HEAD(
       handle = conn@handle,
       path = paste0("/resources/", resource),
@@ -216,6 +256,14 @@ methods::setMethod(
 methods::setMethod(
   "dsListSymbols", "ArmadilloConnection",
   function(conn) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::GET(
       handle = conn@handle,
       path = "/symbols",
@@ -240,6 +288,14 @@ methods::setMethod(
 methods::setMethod(
   "dsRmSymbol", "ArmadilloConnection",
   function(conn, symbol) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::DELETE(
       handle = conn@handle,
       path = paste0("/symbols/", symbol),
@@ -322,6 +378,14 @@ methods::setMethod(
   "dsAssignResource", "ArmadilloConnection",
   function(conn, symbol, resource, async = TRUE) {
     query <- list(resource = resource, symbol = symbol, async = async)
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::POST(
       handle = conn@handle,
       path = "/load-resource",
@@ -360,6 +424,14 @@ methods::setMethod(
 methods::setMethod(
   "dsListMethods", "ArmadilloConnection",
   function(conn, type = "aggregate") {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::GET(
       handle = conn@handle,
       path = paste0("/methods/", type),
@@ -386,6 +458,14 @@ methods::setMethod(
 methods::setMethod(
   "dsListPackages", "ArmadilloConnection",
   function(conn) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::GET(
       handle = conn@handle,
       path = "/packages",
@@ -414,6 +494,14 @@ methods::setMethod(
 methods::setMethod(
   "dsListWorkspaces", "ArmadilloConnection",
   function(conn) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::GET(
       handle = conn@handle,
       path = "/workspaces",
@@ -440,6 +528,14 @@ methods::setMethod(
 methods::setMethod(
   "dsSaveWorkspace", "ArmadilloConnection",
   function(conn, name) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::POST(
       handle = conn@handle,
       path = paste0("/workspaces/", name),
@@ -461,6 +557,14 @@ methods::setMethod(
 methods::setMethod(
   "dsRmWorkspace", "ArmadilloConnection",
   function(conn, name) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::DELETE(
       handle = conn@handle,
       path = paste0("/workspaces/", name),
@@ -490,6 +594,14 @@ methods::setMethod(
 methods::setMethod(
   "dsAssignExpr", "ArmadilloConnection",
   function(conn, symbol, expr, async = TRUE) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::POST(
       handle = conn@handle,
       query = list(async = async),
@@ -535,6 +647,14 @@ methods::setMethod(
 methods::setMethod(
   "dsAggregate", "ArmadilloConnection",
   function(conn, expr, async = TRUE) {
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     response <- httr::POST(
       handle = conn@handle,
       query = list(async = async),
@@ -608,6 +728,14 @@ methods::setMethod(
 methods::setMethod(
   "dsKeepAlive", "ArmadilloConnection",
   function(conn) { # nolint
+
+    tryCatch({
+      new_conn <- .reset_token_if_expired(conn)
+      if (!is.null(new_conn)) conn <- new_conn
+    }, error = function(e) {
+      paste0("Failed to reset token: ", e$message)
+    })
+
     try(httr::GET(
       handle = conn@handle,
       path = "/actuator/info",
