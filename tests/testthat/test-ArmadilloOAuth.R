@@ -147,3 +147,39 @@ test_that(".refresh_token stops with generic message if refresh fails silently",
     }
   )
 })
+
+test_that(".get_oauth_info returns content when request is successful", {
+  dummy_response <- structure(list(status_code = 200), class = "response")
+  dummy_content <- list(auth = list(clientId = "abc123", issuerUri = "https://auth.example.org"))
+
+  with_mock(
+    "httr::GET" = function(url) dummy_response,
+    "httr::stop_for_status" = function(response, task) invisible(response),
+    "httr::content" = function(response) dummy_content,
+    {
+      result <- DSMolgenisArmadillo:::.get_oauth_info("https://example.org")
+    }
+  )
+
+  expect_equal(result$auth$clientId, "abc123")
+  expect_equal(result$auth$issuerUri, "https://auth.example.org")
+})
+
+test_that(".get_oauth_info stops if server info fetch fails", {
+  dummy_response <- structure(list(status_code = 404), class = "response")
+
+  with_mock(
+    "httr::GET" = function(url) dummy_response,
+    "httr::stop_for_status" = function(response, task) {
+      stop("404 Not Found")
+    },
+    {
+      expect_error(
+        DSMolgenisArmadillo:::.get_oauth_info("https://example.org"),
+        "404 Not Found"
+      )
+    }
+  )
+})
+
+
