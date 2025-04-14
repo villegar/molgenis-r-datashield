@@ -274,8 +274,11 @@ methods::setMethod(
     if (!is.null(variables)) {
       query$variables <- paste(unlist(variables), collapse = ",")
     }
-browser()
-    conn <- .reset_token_if_expired(conn)
+
+    conn <- tryCatch(
+      .reset_token_if_expired(conn),
+      error = function(e) warning(paste0("Failed to reset token: ", e$message))
+    )
 
     response <- httr::POST(
       handle = conn@handle,

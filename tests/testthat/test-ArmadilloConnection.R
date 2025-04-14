@@ -1283,3 +1283,59 @@ test_that(".reset_token_if_expired refreshes and updates token if expired", {
   expect_s4_class(updated_conn, "ArmadilloConnection")
   expect_equal(updated_conn@token, "new-token")
 })
+
+test_that(".reset_token_if_expired errors with cli_abort when refresh fails", {
+  if (!"methods" %in% loadedNamespaces()) library(methods)
+
+  setClass("opal", contains = "environment")
+
+  expired_cred <- new("ArmadilloCredentials",
+                      access_token = "expired-token",
+                      expires_in = 3600,
+                      expires_at = Sys.time() - 10,
+                      id_token = "id_token_dummy",
+                      refresh_token = "old-refresh",
+                      token_type = "Bearer",
+                      userId = "user_dummy")
+
+  conn <- new("ArmadilloConnection",
+              name = "cohort_1",
+              handle = handle,
+              user = "",
+              cookies = list(
+                domain = "#HttpOnly_localhost",
+                flag = FALSE,
+                path = "/",
+                secure = FALSE,
+                expiration = "Inf",
+                name = "JSESSIONID",
+                value = "12345"),
+              token = "expired-token")
+
+  # Backup original functions
+  old_get <- if (exists(".get_armadillo_credentials", inherits = TRUE)) get(".get_armadillo_credentials", inherits = TRUE) else NULL
+  old_refresh <- if (exists(".refresh_token", inherits = TRUE)) get(".refresh_token", inherits = TRUE) else NULL
+
+  # Assign mocks
+  assign(".get_armadillo_credentials", function(conn) {
+    list(name = "cohort_1", object = expired_cred)
+  }, envir = globalenv())
+
+  assign(".refresh_token", function(url, credentials) {
+    stop("mocked refresh failure")
+  }, envir = globalenv())
+
+  # Clean up mocks after test
+  on.exit({
+    if (!is.null(old_get)) assign(".get_armadillo_credentials", old_get, envir = globalenv()) else rm(".get_armadillo_credentials", envir = globalenv())
+    if (!is.null(old_refresh)) assign(".refresh_token", old_refresh, envir = globalenv()) else rm(".refresh_token", envir = globalenv())
+  })
+
+  expect_warning(
+    tryCatch(
+      .reset_token_if_expired(conn),
+      error = function(e) warning(paste0("Failed to reset token: ", e$message))
+    ),
+    "Failed to reset token: mocked refresh failure"
+  )
+})
