@@ -1219,26 +1219,67 @@ test_that(".reset_token_global_env updates credentials and connection", {
   expect_equal(updated_creds@refresh_token, "refresh_new")
 })
 
+test_that(".reset_token_if_expired refreshes and updates token if expired", {
+  if (!"methods" %in% loadedNamespaces()) library(methods)
 
+  setClass("opal", contains = "environment")
 
-# Test scenarios
-#
-# No armadillo credentials found
-# Multiple matches found
-#
-# No connections object found
-# Multiple identical matches found
-#
-# Token would not refresh
-#
-# Try with previous refresh token
-# Handle nicely if doesn't refresh or some null object is returned along the way
+  handle <- structure(list(handle = new("externalptr"), url = "https://localhost"), class = "handle")
 
+  expired_cred <- new("ArmadilloCredentials",
+                      access_token = "expired-token",
+                      expires_in = 3600,
+                      expires_at = Sys.time() - 10,  # expired
+                      id_token = "id_token_dummy",
+                      refresh_token = "old-refresh",
+                      token_type = "Bearer",
+                      userId = "user_dummy")
 
+  conn <- new("ArmadilloConnection",
+              name = "cohort_1",
+              handle = handle,
+              user = "",
+              cookies = list(
+                domain = "#HttpOnly_localhost",
+                flag = FALSE,
+                path = "/",
+                secure = FALSE,
+                expiration = "Inf",
+                name = "JSESSIONID",
+                value = "12345"),
+              token = "expired-token")
 
-# .reset_token_if_expired
-#
-# .get_armadillo_credentials
-#
-# .get_all_armadillo_credentials
-#
+  # Backup original functions (if defined)
+  old_get <- if (exists(".get_armadillo_credentials", inherits = TRUE)) get(".get_armadillo_credentials", inherits = TRUE) else NULL
+  old_refresh <- if (exists(".refresh_token", inherits = TRUE)) get(".refresh_token", inherits = TRUE) else NULL
+  old_reset <- if (exists(".reset_token_global_env", inherits = TRUE)) get(".reset_token_global_env", inherits = TRUE) else NULL
+
+  # Assign mocks
+  assign(".get_armadillo_credentials", function(conn) {
+    list(name = "cohort_1", object = expired_cred)
+  }, envir = globalenv())
+
+  assign(".refresh_token", function(url, credentials) {
+    list(token = "new-token", refreshToken = "new-refresh")
+  }, envir = globalenv())
+
+  assign(".reset_token_global_env", function(old_credentials, new_credentials, conn, env = globalenv()) {
+    conn@token <- new_credentials$token
+    assign("updated_conn_result", conn, envir = env)
+  }, envir = globalenv())
+
+  # Clean up mocks after test
+  on.exit({
+    if (!is.null(old_get)) assign(".get_armadillo_credentials", old_get, envir = globalenv()) else rm(".get_armadillo_credentials", envir = globalenv())
+    if (!is.null(old_refresh)) assign(".refresh_token", old_refresh, envir = globalenv()) else rm(".refresh_token", envir = globalenv())
+    if (!is.null(old_reset)) assign(".reset_token_global_env", old_reset, envir = globalenv()) else rm(".reset_token_global_env", envir = globalenv())
+    if (exists("updated_conn_result", envir = globalenv())) rm("updated_conn_result", envir = globalenv())
+  })
+
+  # Run
+  .reset_token_if_expired(conn)
+  updated_conn <- get("updated_conn_result", envir = globalenv())
+
+  expect_s4_class(updated_conn, "ArmadilloConnection")
+  expect_equal(updated_conn@token, "new-token")
+})
