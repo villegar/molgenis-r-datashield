@@ -277,10 +277,9 @@ methods::setMethod(
 
     tryCatch({
       new_conn <- .reset_token_if_expired(conn)
-      print(new_conn)
       if (!is.null(new_conn)) conn <- new_conn
     }, error = function(e) {
-      warning(paste0("Failed to reset token: ", e$message))
+      paste0("Failed to reset token: ", e$message)
     })
 
     response <- httr::POST(
