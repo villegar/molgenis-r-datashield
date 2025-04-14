@@ -11,7 +11,7 @@
 #' @export
 armadillo.get_token <- function(server) { # nolint
   credentials <- armadillo.get_credentials(server)
-  return(credentials$id_token)
+  return(credentials@id_token)
 }
 
 #' @title ArmadilloCredentials Class
