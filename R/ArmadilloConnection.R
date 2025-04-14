@@ -717,9 +717,9 @@ methods::setMethod(
 #' @keywords internal
 #' @noRd
 .reset_connections_object <- function(old_credentials, new_credentials, conn, env=getOption("datashield.env", globalenv())) {
-  old_conns <- .getDSConnections(env)
+  old_conns <- DSI:::.getDSConnections(env)
   old_conns$flag <- NULL
-  conns_to_return <- old_conns[[1]]
+  conns_to_return <- old_conns$conns
 
   for (i in seq_along(conns_to_return)) {
     if (methods::slot(conns_to_return[[i]], "token") == old_credentials$object@access_token) {
@@ -743,4 +743,3 @@ methods::setMethod(
   .reset_armadillo_credentials(old_credentials, new_credentials, env)
   .reset_connections_object(old_credentials, new_credentials, conn, env)
 }
-

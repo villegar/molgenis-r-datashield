@@ -646,7 +646,7 @@ test_that(".get_all_armadillo_credentials returns nothing if no connections pres
 })
 
 
-test_that("get_matching_credentials returns correct match when there is one credentials object and it has a matching token", {
+test_that("get_matching_credential returns correct match when there is one credentials object and it has a matching token", {
           credentials_1 <-new(
             "ArmadilloCredentials",
             access_token = "aaa-a",
@@ -685,7 +685,7 @@ test_that("get_matching_credentials returns correct match when there is one cred
           )
 })
 
-test_that("get_matching_credentials returns correct match when at least two credentials object but only has a matching token", {
+test_that("get_matching_credential returns correct match when at least two credentials object but only has a matching token", {
   credentials_1 <-new(
     "ArmadilloCredentials",
     access_token = "aaa-a",
@@ -739,7 +739,7 @@ test_that("get_matching_credentials returns correct match when at least two cred
 })
 
 
-test_that("get_matching_credentials returns first match when there is are two identical credentials objects and both have a matching token", {
+test_that("get_matching_credential returns first match when there is are two identical credentials objects and both have a matching token", {
   credentials_1 <-new(
     "ArmadilloCredentials",
     access_token = "aaa-a",
@@ -781,7 +781,7 @@ test_that("get_matching_credentials returns first match when there is are two id
   )
 })
 
-test_that("get_matching_credentials returns NULL there is one credentials object and no matching token", {
+test_that("get_matching_credential returns NULL there is one credentials object and no matching token", {
   credentials_1 <-new(
     "ArmadilloCredentials",
     access_token = "aaa-a",
@@ -816,7 +816,7 @@ test_that("get_matching_credentials returns NULL there is one credentials object
   )
 })
 
-test_that("get_matching_credentials returns NULL when there are two credentials object and no matching token", {
+test_that("get_matching_credential returns NULL when there are two credentials object and no matching token", {
   credentials_1 <-new(
     "ArmadilloCredentials",
     access_token = "aaa-a",
@@ -865,12 +865,366 @@ test_that("get_matching_credentials returns NULL when there are two credentials 
   )
 })
 
+test_that(".get_armadillo_credentials returns the correct match", {
+  env <- new.env()
+
+  cred <- new(
+    "ArmadilloCredentials",
+    access_token = "abc123",
+    expires_in = 29,
+    expires_at = Sys.time(),
+    id_token = "id-abc",
+    refresh_token = "ref-abc",
+    token_type = "Bearer",
+    userId = "user-abc"
+  )
+
+  assign("test_cred", cred, envir = env)
+
+  conn <- new(
+    "ArmadilloConnection",
+    name = "cohort_1",
+    handle = handle,
+    user = "",
+    cookies = list(),
+    token = "abc123"
+  )
+
+  result <- .get_armadillo_credentials(conn, env = env)
+
+  expect_type(result, "list")
+  expect_equal(result$name, "test_cred")
+  expect_identical(result$object, cred)
+})
+
+test_that(".get_armadillo_credentials returns NULL when no matching credential found", {
+  env <- new.env()
+
+  cred <- new(
+    "ArmadilloCredentials",
+    access_token = "abc123",
+    expires_in = 29,
+    expires_at = Sys.time(),
+    id_token = "id-abc",
+    refresh_token = "ref-abc",
+    token_type = "Bearer",
+    userId = "user-abc"
+  )
+
+  assign("test_cred", cred, envir = env)
+
+  conn <- new(
+    "ArmadilloConnection",
+    name = "cohort_1",
+    handle = handle,
+    user = "",
+    cookies = list(),
+    token = "zzz999"
+  )
+
+  expect_null(.get_armadillo_credentials(conn, env = env))
+})
+
+test_that(".get_armadillo_credentials returns NULL when there are no credentials", {
+  env <- new.env()
+  expect_null(.get_armadillo_credentials(conn = new("ArmadilloConnection", token = "abc"), env = env))
+})
+
+test_that(".get_armadillo_credentials works with custom env and multiple credentials", {
+  env <- new.env()
+
+  cred1 <- new(
+    "ArmadilloCredentials",
+    access_token = "token-1",
+    expires_in = 29,
+    expires_at = Sys.time(),
+    id_token = "id-1",
+    refresh_token = "ref-1",
+    token_type = "Bearer",
+    userId = "user-1"
+  )
+
+  cred2 <- new(
+    "ArmadilloCredentials",
+    access_token = "token-2",
+    expires_in = 29,
+    expires_at = Sys.time(),
+    id_token = "id-2",
+    refresh_token = "ref-2",
+    token_type = "Bearer",
+    userId = "user-2"
+  )
+
+  assign("cred_one", cred1, envir = env)
+  assign("cred_two", cred2, envir = env)
+
+  conn <- new(
+    "ArmadilloConnection",
+    name = "cohort_X",
+    handle = handle,
+    user = "",
+    cookies = list(),
+    token = "token-2"
+  )
+
+  result <- .get_armadillo_credentials(conn, env = env)
+
+  expect_type(result, "list")
+  expect_equal(result$name, "cred_two")
+  expect_identical(result$object, cred2)
+})
+
+test_that(".reset_armadillo_credentials correctly updates tokens", {
+  test_env <- new.env()
+
+  # Original credentials
+  old_cred <- new(
+    "ArmadilloCredentials",
+    access_token = "old-token",
+    expires_in = 29,
+    expires_at = as.POSIXct("2025-03-26 11:00:00", tz = "CET"),
+    id_token = "id_token_x",
+    refresh_token = "old-refresh",
+    token_type = "Bearer",
+    userId = "user-123"
+  )
+
+  assign("cohort_1", old_cred, envir = test_env)
+
+  old_credentials <- list(
+    name = "cohort_1",
+    object = old_cred
+  )
+
+  new_credentials <- list(
+    token = "new-token",
+    refreshToken = "new-refresh"
+  )
+
+  .reset_armadillo_credentials(old_credentials, new_credentials, env = test_env)
+
+  updated <- get("cohort_1", envir = test_env)
+
+  expect_s4_class(updated, "ArmadilloCredentials")
+  expect_equal(updated@access_token, "new-token")
+  expect_equal(updated@refresh_token, "new-refresh")
+
+  # Check that other slots remain unchanged
+  expect_equal(updated@id_token, "id_token_x")
+  expect_equal(updated@token_type, "Bearer")
+  expect_equal(updated@userId, "user-123")
+})
+
+test_that(".reset_armadillo_credentials modifies globalenv by default", {
+  # Set up in globalenv (clean up after test)
+  on.exit(rm("cohort_2", envir = globalenv()), add = TRUE)
+
+  old_cred <- new(
+    "ArmadilloCredentials",
+    access_token = "global-token",
+    expires_in = 10,
+    expires_at = Sys.time(),
+    id_token = "id_token_y",
+    refresh_token = "global-refresh",
+    token_type = "Bearer",
+    userId = "user-456"
+  )
+
+  assign("cohort_2", old_cred, envir = globalenv())
+
+  old_credentials <- list(
+    name = "cohort_2",
+    object = old_cred
+  )
+
+  new_credentials <- list(
+    token = "new-global-token",
+    refreshToken = "new-global-refresh"
+  )
+
+  .reset_armadillo_credentials(old_credentials, new_credentials)
+
+  updated <- get("cohort_2", envir = globalenv())
+
+  expect_equal(updated@access_token, "new-global-token")
+  expect_equal(updated@refresh_token, "new-global-refresh")
+})
+
+test_that(".reset_connections_object updates token in correct ArmadilloConnection", {
+  test_env <- new.env()
+
+  conn_1 <-  new(
+    "ArmadilloConnection",
+    name = "cohort_1",
+    handle = handle,
+    user = "",
+    cookies = list(
+      domain = "#HttpOnly_localhost",
+      flag = FALSE,
+      path = "/",
+      secure = FALSE,
+      expiration = "Inf",
+      name = "JSESSIONID",
+      value = "12345"),
+    token = "aaa-old"
+  )
+
+  if (!"methods" %in% loadedNamespaces()) library(methods)
+  setClass("opal", contains = "environment")
+  conn_2 <- new("OpalConnection",
+                   name = "cohort_2",
+                   opal = new("opal"))
+
+  conns <- list(conn_1, conn_2)
+  names(conns) <- c("cohort_1", "cohort_2")
+
+  assign("conns", conns, envir = test_env)
+
+  old_cred <- new("ArmadilloCredentials",
+                  access_token = "aaa-old",
+                  expires_in = 3600,
+                  expires_at = Sys.time(),
+                  id_token = "id_token_dummy",
+                  refresh_token = "refresh_old",
+                  token_type = "Bearer",
+                  userId = "user_dummy")
+
+  old_credentials <- list(name = "cohort_1", object = old_cred)
+  new_credentials <- list(token = "aaa-new")
+
+  # Run test
+  .reset_connections_object(old_credentials, new_credentials, conn = cohort_1, env = test_env)
+
+  updated_conns <- get("conns", envir = test_env)
+  expect_equal(updated_conns$cohort_1@token, "aaa-new")
+  expect_equal(updated_conns$cohort_2@name, "cohort_2")
+  expect_s4_class(updated_conns$cohort_2, "OpalConnection")
+})
+
+test_that(".reset_connections_object only updates first matching ArmadilloConnection", {
+  test_env <- new.env()
+
+  if (!"methods" %in% loadedNamespaces()) library(methods)
+  setClass("opal", contains = "environment")
+
+  conn_1 <- new("ArmadilloConnection",
+                name = "cohort_1",
+                handle = handle,
+                user = "",
+                cookies = list(
+                  domain = "#HttpOnly_localhost",
+                  flag = FALSE,
+                  path = "/",
+                  secure = FALSE,
+                  expiration = "Inf",
+                  name = "JSESSIONID",
+                  value = "12345"),
+                token = "aaa-old")
+
+  conn_2 <- new("ArmadilloConnection",
+                name = "cohort_2",
+                handle = handle,
+                user = "",
+                cookies = list(
+                  domain = "#HttpOnly_localhost",
+                  flag = FALSE,
+                  path = "/",
+                  secure = FALSE,
+                  expiration = "Inf",
+                  name = "JSESSIONID",
+                  value = "67890"),
+                token = "aaa-old")
+
+  conn_3 <- new("OpalConnection",
+                name = "server2",
+                opal = new("opal"))
+
+  conns <- list(cohort_1 = conn_1, cohort_2 = conn_2, server2 = conn_3)
+  assign("conns", conns, envir = test_env)
+
+  old_cred <- new("ArmadilloCredentials",
+                  access_token = "aaa-old",
+                  expires_in = 3600,
+                  expires_at = Sys.time(),
+                  id_token = "id_token_dummy",
+                  refresh_token = "refresh_old",
+                  token_type = "Bearer",
+                  userId = "user_dummy")
+
+  old_credentials <- list(name = "cohort_1", object = old_cred)
+  new_credentials <- list(token = "new-token")
+
+  .reset_connections_object(old_credentials, new_credentials, conn = conn_1, env = test_env)
+
+  updated <- get("conns", envir = test_env)
+  expect_equal(updated$cohort_1@token, "new-token")
+  expect_equal(updated$cohort_2@token, "aaa-old")
+  expect_s4_class(updated$server2, "OpalConnection")
+})
+
+test_that(".reset_token_global_env updates credentials and connection", {
+  test_env <- new.env()
+
+  conn_1 <-  new(
+    "ArmadilloConnection",
+    name = "cohort_1",
+    handle = handle,
+    user = "",
+    cookies = list(
+      domain = "#HttpOnly_localhost",
+      flag = FALSE,
+      path = "/",
+      secure = FALSE,
+      expiration = "Inf",
+      name = "JSESSIONID",
+      value = "12345"),
+    token = "aaa-old"
+  )
+
+  if (!"methods" %in% loadedNamespaces()) library(methods)
+  setClass("opal", contains = "environment")
+  conn_2 <- new("OpalConnection",
+                name = "cohort_2",
+                opal = new("opal"))
+
+  conns <- list(conn_1, conn_2)
+  names(conns) <- c("cohort_1", "cohort_2")
+
+  assign("conns", conns, envir = test_env)
+
+  old_cred <- new("ArmadilloCredentials",
+                  access_token = "aaa-old",
+                  expires_in = 3600,
+                  expires_at = Sys.time(),
+                  id_token = "id_token_dummy",
+                  refresh_token = "refresh_old",
+                  token_type = "Bearer",
+                  userId = "user_dummy")
+
+  assign("cohort_1", old_cred, envir = test_env)
+
+  old_credentials <- list(name = "cohort_1", object = old_cred)
+  new_credentials <- list(
+    token = "aaa-new",
+    refreshToken = "refresh_new"
+  )
+
+  .reset_token_global_env(old_credentials, new_credentials, conn, env = test_env)
+
+  updated_conns <- get("conns", envir = test_env)
+  updated_creds <- get("cohort_1", envir = test_env)
+
+  expect_equal(updated_conns$cohort_1@token, "aaa-new")
+  expect_equal(updated_creds@access_token, "aaa-new")
+  expect_equal(updated_creds@refresh_token, "refresh_new")
+})
+
+
 
 # Test scenarios
 #
 # No armadillo credentials found
 # Multiple matches found
-# Credentials held in different structure
 #
 # No connections object found
 # Multiple identical matches found
@@ -888,10 +1242,3 @@ test_that("get_matching_credentials returns NULL when there are two credentials 
 #
 # .get_all_armadillo_credentials
 #
-
-#
-# .reset_armadillo_credentials
-#
-# .reset_connections_object
-#
-# .reset_token_global_env
