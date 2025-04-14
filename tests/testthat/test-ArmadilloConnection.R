@@ -605,7 +605,7 @@ test_that("dsKeepAlive pings server info endpoint", {
   )
 })
 
-test_that(".get_all_armadillo_credentials finds all connections in test environment", {
+test_that(".get_all_armadillo_credentials finds all credentials in test environment", {
   test_1 <- new(
     "ArmadilloCredentials",
     access_token = "aaa-a",
@@ -677,7 +677,7 @@ test_that("get_matching_credentials returns correct match when there is one cred
           )
 
           expect_equal(
-            .get_matching_credential(cohort_1_cred, conn_1)[[1]],
+            .get_matching_credential(cohort_1_cred, conn_1),
             list(
               name = "cohort_1",
               object = cohort_1_cred$cohort_1
@@ -730,7 +730,7 @@ test_that("get_matching_credentials returns correct match when at least two cred
   )
 
   expect_equal(
-    .get_matching_credential(cohort_mult_cred, conn_1)[[1]],
+    .get_matching_credential(cohort_mult_cred, conn_1),
     list(
       name = "cohort_2",
       object = cohort_mult_cred$cohort_2
@@ -739,7 +739,7 @@ test_that("get_matching_credentials returns correct match when at least two cred
 })
 
 
-test_that("get_matching_credentials returns correct match when there is are two identical credentials objects and both have a matching token", {
+test_that("get_matching_credentials returns first match when there is are two identical credentials objects and both have a matching token", {
   credentials_1 <-new(
     "ArmadilloCredentials",
     access_token = "aaa-a",
@@ -774,20 +774,14 @@ test_that("get_matching_credentials returns correct match when there is are two 
 
   expect_equal(
     .get_matching_credential(cohort_identical_cred, conn_1),
-    list(
       list(
         name = "cohort_1",
         object = cohort_identical_cred$cohort_1
-        ),
-      list(
-        name = "cohort_2",
-        object = cohort_identical_cred$cohort_1
       )
-    )
   )
 })
 
-test_that("get_matching_credentials returns empty list there is one credentials object and no matching token", {
+test_that("get_matching_credentials returns NULL there is one credentials object and no matching token", {
   credentials_1 <-new(
     "ArmadilloCredentials",
     access_token = "aaa-a",
@@ -817,15 +811,12 @@ test_that("get_matching_credentials returns empty list there is one credentials 
     token = "bbb-b"
   )
 
-  print(.get_matching_credential(cohort_1_cred, conn_1))
-
-  expect_equal(
-    .get_matching_credential(cohort_1_cred, conn_1),
-    list()
+  expect_null(
+    .get_matching_credential(cohort_1_cred, conn_1)
   )
 })
 
-test_that("get_matching_credentials returns empty list there are two credentials object and no matching token", {
+test_that("get_matching_credentials returns NULL when there are two credentials object and no matching token", {
   credentials_1 <-new(
     "ArmadilloCredentials",
     access_token = "aaa-a",
@@ -869,14 +860,25 @@ test_that("get_matching_credentials returns empty list there are two credentials
     token = "ccc-c"
   )
 
-  expect_equal(
-    .get_matching_credential(cohort_mult_cred, conn_1),
-    list()
+  expect_null(
+    .get_matching_credential(cohort_mult_cred, conn_1)
   )
 })
 
 
-
+# Test scenarios
+#
+# No armadillo credentials found
+# Multiple matches found
+# Credentials held in different structure
+#
+# No connections object found
+# Multiple identical matches found
+#
+# Token would not refresh
+#
+# Try with previous refresh token
+# Handle nicely if doesn't refresh or some null object is returned along the way
 
 
 

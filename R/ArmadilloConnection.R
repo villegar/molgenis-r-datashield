@@ -274,7 +274,7 @@ methods::setMethod(
     if (!is.null(variables)) {
       query$variables <- paste(unlist(variables), collapse = ",")
     }
-
+browser()
     conn <- .reset_token_if_expired(conn)
 
     response <- httr::POST(
@@ -641,7 +641,7 @@ methods::setMethod(
     return()
   } else {
   matching <- .get_matching_credential(all_credentials, conn)
-  if(matching == list()) {
+  if(is.list(matching) && length(matching) == 0) {
     return()
   } else {
     return(matching)
@@ -680,16 +680,15 @@ methods::setMethod(
 #' @noRd
 .get_matching_credential <- function(credentials, conn) {
   target_token <- conn@token
-  matches <- list()
 
   for (name in names(credentials)) {
     cred <- credentials[[name]]
     if (inherits(cred, "ArmadilloCredentials") && cred@access_token == target_token) {
-      matches[[length(matches) + 1]] <- list(name = name, object = cred)
+      return(list(name = name, object = cred))
     }
   }
 
-  return(matches)
+  return(NULL)
 }
 
 
