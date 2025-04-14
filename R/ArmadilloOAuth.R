@@ -89,33 +89,6 @@ armadillo.get_credentials <- function(server) { # nolint
   return(new_credentials)
 }
 
-#' Refresh connections of all armadillo connections
-#'
-#' Refreshes a timed out connections using credentials containing the old access token and newest refresh token
-#' Old credentials will be overwritten in the connections object to be able to continue analysis
-#' NOTE: make sure refresh is possible for the armadillo instance on the auth server
-#'
-#' @param server the URL of the Armadillo server
-#' @param credentials a list containing "refresh_token" and "access_token", can be retrieved using armadillo.get_credentials
-#' @param conns the armadillo connections object
-#' @param connections_name the name of the connections object in your environment
-#' @param env your environment (default: .GlobalEnv)
-#'
-#' @return A list of credentials containing a new refresh_token and access_token "token" that can be used to retrieved data again
-#'
-#' @importFrom httr POST set_cookies
-#'
-#' @export
-armadillo.refresh_connections <- function(server, credentials, conns, connections_name, env=.GlobalEnv) {
-  new_credentials <- .refresh_token(server, credentials)
-  for (i in 1:length(conns)) {
-    conns[[i]]@token <- new_credentials$token
-  }
-  assign(connections_name, conns, envir=env)
-  return(new_credentials)
-}
-
-
 #' Get oauth server discovery information
 #'
 #' Specifically this method returns the
