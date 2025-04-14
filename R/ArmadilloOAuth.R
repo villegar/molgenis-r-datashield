@@ -44,11 +44,9 @@ setClass(
 #' NOTE: in order to get refresh token, refresh tokens should be turned on for this armadillo instance on the auth server
 #'
 #' @param server the URL of the Armadillo server
-#'
 #' @return The credentials
-#'
 #' @importFrom MolgenisAuth discover device_flow_auth
-#'
+#' @importFrom methods new
 #' @export
 armadillo.get_credentials <- function(server) { # nolint
   auth_info <- .get_oauth_info(server)$auth
@@ -68,6 +66,17 @@ armadillo.get_credentials <- function(server) { # nolint
   return(credentials_obj)
 }
 
+#' Refresh OAuth token using FusionAuth
+#'
+#' Attempts to refresh the OAuth access token using the FusionAuth refresh endpoint.
+#' It uses the current `access_token` and `refresh_token` from the provided credentials,
+#' and performs a POST request to the FusionAuth server.
+#'
+#' @param server Character. The URL of the Armadillo server.
+#' @param credentials An `ArmadilloCredentials` S4 object containing the current tokens.
+#' @return A list containing the new credentials returned by the refresh endpoint.
+#' @importFrom httr POST set_cookies content handle
+#' @noRd
 .refresh_token <- function(server, credentials) {
   message("\nAttempting refresh...")
   # get auth url
