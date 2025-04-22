@@ -672,6 +672,7 @@ methods::setMethod(
     } else {
       result <- .retry_until_last_result(conn)
     }
+
     methods::new("ArmadilloResult",
       conn = conn,
       rval = list(result = result, async = async)
@@ -754,7 +755,7 @@ methods::setMethod(
 #' @noRd
 .reset_token_if_expired <- function(conn) {
   credentials <- .get_armadillo_credentials(conn)
-  if(credentials$object@expires_at < (Sys.time() + 60)) {
+  if(credentials$object@expires_at < Sys.time()) {
     new_credentials <- .refresh_token(conn@handle$url, credentials$object)
     conn@token <- new_credentials$token
     .reset_token_global_env(credentials, new_credentials, conn)
