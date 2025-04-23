@@ -852,9 +852,9 @@ methods::setMethod(
 #' @keywords internal
 #' @noRd
 .reset_connections_object <- function(old_credentials, new_credentials, conn, env=getOption("datashield.env", globalenv())) {
-  old_conns <- DSI:::.getDSConnections(env)
+  old_conns <- .getDSConnectionsMod(env)
   old_conns$flag <- NULL
-  conns_to_return <- old_conns$conns
+  conns_to_return <- old_conns[[1]]
 
   for (i in seq_along(conns_to_return)) {
     if (methods::slot(conns_to_return[[i]], "token") == old_credentials$object@access_token) {
@@ -877,4 +877,42 @@ methods::setMethod(
 .reset_token_global_env <- function(old_credentials, new_credentials, conn, env=getOption("datashield.env", globalenv())) {
   .reset_armadillo_credentials(old_credentials, new_credentials, env)
   .reset_connections_object(old_credentials, new_credentials, conn, env)
+  .reset_connections_object(old_credentials, new_credentials, conn, sys.frame(1))
 }
+
+.getDSConnectionsMod <- function(env) {
+  # get the names of all the objects in the current work environment
+  symbols <- base::ls(name=env)
+
+  # check which of the object is a list (the connection objects are kept in a list)
+  if (length(symbols) > 0) {
+    connlist <- c()
+    flag <- 0
+    for (i in 1:length(symbols)) {
+      obj <- base::get(symbols[i], envir = env)
+      if ("list" %in% class(obj)) {
+        # if an object is not an empty list check if its elements are of type DSConnection
+        if (length(obj) > 0) {
+          if (.isDSConnection(obj[[1]])) {
+            connlist <- append(connlist, symbols[i])
+            flag <- 1
+          }
+        }
+      }
+    }
+    if (flag == 1) {
+      if (length(connlist) > 1) {
+        flag <- 2
+        return(list(flag=flag, conns=connlist))
+      } else {
+        pp <- connlist[[1]]
+        conns <- base::get(pp, envir = env)
+        conns_to_return <- list(flag=flag, conns=conns)
+        names(conns_to_return) <- c("flag", pp)
+        return(conns_to_return)
+      }
+    }
+  }
+  return(list(flag=0, conns=NULL))
+}
+
