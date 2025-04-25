@@ -63,12 +63,7 @@ methods::setMethod(
 methods::setMethod(
   "dsListProfiles", "ArmadilloConnection", function(conn) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -100,12 +95,7 @@ methods::setMethod(
 methods::setMethod(
   "dsListTables", "ArmadilloConnection", function(conn) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -130,12 +120,7 @@ methods::setMethod(
 methods::setMethod(
   "dsHasTable", "ArmadilloConnection", function(conn, table) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::HEAD(
       handle = conn@handle,
@@ -164,12 +149,7 @@ methods::setMethod(
 methods::setMethod(
   "dsListResources", "ArmadilloConnection", function(conn) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -193,12 +173,7 @@ methods::setMethod(
 methods::setMethod(
   "dsHasResource", "ArmadilloConnection", function(conn, resource) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::HEAD(
       handle = conn@handle,
@@ -257,12 +232,7 @@ methods::setMethod(
   "dsListSymbols", "ArmadilloConnection",
   function(conn) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -289,12 +259,7 @@ methods::setMethod(
   "dsRmSymbol", "ArmadilloConnection",
   function(conn, symbol) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::DELETE(
       handle = conn@handle,
@@ -331,12 +296,7 @@ methods::setMethod(
       query$variables <- paste(unlist(variables), collapse = ",")
     }
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -379,12 +339,7 @@ methods::setMethod(
   function(conn, symbol, resource, async = TRUE) {
     query <- list(resource = resource, symbol = symbol, async = async)
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -425,12 +380,7 @@ methods::setMethod(
   "dsListMethods", "ArmadilloConnection",
   function(conn, type = "aggregate") {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -459,12 +409,7 @@ methods::setMethod(
   "dsListPackages", "ArmadilloConnection",
   function(conn) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -495,12 +440,7 @@ methods::setMethod(
   "dsListWorkspaces", "ArmadilloConnection",
   function(conn) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -529,12 +469,7 @@ methods::setMethod(
   "dsSaveWorkspace", "ArmadilloConnection",
   function(conn, name) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -558,12 +493,7 @@ methods::setMethod(
   "dsRmWorkspace", "ArmadilloConnection",
   function(conn, name) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::DELETE(
       handle = conn@handle,
@@ -595,12 +525,7 @@ methods::setMethod(
   "dsAssignExpr", "ArmadilloConnection",
   function(conn, symbol, expr, async = TRUE) {
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -647,14 +572,7 @@ methods::setMethod(
 methods::setMethod(
   "dsAggregate", "ArmadilloConnection",
   function(conn, expr, async = TRUE) {
-
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-      conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -731,12 +649,7 @@ methods::setMethod(
   "dsKeepAlive", "ArmadilloConnection",
   function(conn) { # nolint
 
-    tryCatch({
-      new_conn <- .reset_token_if_expired(conn)
-      if (!is.null(new_conn)) conn <- new_conn
-    }, error = function(e) {
-      paste0("Failed to reset token: ", e$message)
-    })
+    conn <- .reset_token_safely(conn, env)
 
     try(httr::GET(
       handle = conn@handle,
@@ -747,15 +660,36 @@ methods::setMethod(
   }
 )
 
+#' @title Reset Armadillo Token if Expired with tryCatch
+#' @description Tries to refresh token and not break things if this fails
+#' @param conn A `DSConnection` object.
+#' @param env The DataSHIELD connection environment
+#' @return The updated `DSConnection` object with a refreshed token if needed.
+#' @keywords internal
+#' @noRd
+.reset_token_safely <- function(conn, env = getOption("datashield.env", globalenv())) {
+    tryCatch({
+      conn <- .reset_token_if_expired(conn, env)
+      if (inherits(conn, "ArmadilloConnection")) conn
+    }, error = function(e) {
+      warning("Failed to reset token: ", e$message)
+      NULL
+    })
+  }
+
 #' @title Reset Armadillo Token if Expired
 #' @description Checks if the current token has expired and refreshes it if necessary.
 #' @param conn A `DSConnection` object.
 #' @return The updated `DSConnection` object with a refreshed token if needed.
 #' @keywords internal
 #' @noRd
-.reset_token_if_expired <- function(conn) {
+.reset_token_if_expired <- function(conn, env = getOption("datashield.env", globalenv())) {
   credentials <- .get_armadillo_credentials(conn)
   if(credentials$object@expires_at < Sys.time()) {
+    if(identical(names(.getDSConnectionsMod(env)), c("flag", "conns"))) {
+      return(
+        warning("Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment. Please ensure only one exists and try again"))
+    }
     new_credentials <- .refresh_token(conn@handle$url, credentials$object)
     conn@token <- new_credentials$token
     .reset_token_global_env(credentials, new_credentials, conn)
@@ -768,6 +702,7 @@ methods::setMethod(
 #' @param conn A `DSConnection` object.
 #' @param env The environment where credentials are stored. Defaults to `globalenv()` or `getOption("datashield.env")`.
 #' @return A list with the name and object of the matched credentials, or `NULL` if no match is found.
+#' @importFrom DSI datashield.connections_find
 #' @keywords internal
 #' @noRd
 .get_armadillo_credentials <- function(conn, env = getOption("datashield.env", globalenv())) {
@@ -916,3 +851,14 @@ methods::setMethod(
   return(list(flag=0, conns=NULL))
 }
 
+#' Check if provided object is a S4 class instance and if this class inherits from \code{\link{DSConnection-class}}.
+#' @keywords internal
+#' @importFrom methods getClass
+.isDSConnection <- function(obj) {
+  if (isS4(obj)) {
+    cls <- getClass(class(obj)[[1]])
+    "DSConnection" %in% names(cls@contains)
+  } else {
+    FALSE
+  }
+}
