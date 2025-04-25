@@ -63,7 +63,7 @@ methods::setMethod(
 methods::setMethod(
   "dsListProfiles", "ArmadilloConnection", function(conn) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -95,7 +95,7 @@ methods::setMethod(
 methods::setMethod(
   "dsListTables", "ArmadilloConnection", function(conn) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -120,7 +120,7 @@ methods::setMethod(
 methods::setMethod(
   "dsHasTable", "ArmadilloConnection", function(conn, table) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::HEAD(
       handle = conn@handle,
@@ -149,7 +149,7 @@ methods::setMethod(
 methods::setMethod(
   "dsListResources", "ArmadilloConnection", function(conn) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -173,7 +173,7 @@ methods::setMethod(
 methods::setMethod(
   "dsHasResource", "ArmadilloConnection", function(conn, resource) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::HEAD(
       handle = conn@handle,
@@ -232,7 +232,7 @@ methods::setMethod(
   "dsListSymbols", "ArmadilloConnection",
   function(conn) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -259,7 +259,7 @@ methods::setMethod(
   "dsRmSymbol", "ArmadilloConnection",
   function(conn, symbol) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::DELETE(
       handle = conn@handle,
@@ -296,7 +296,7 @@ methods::setMethod(
       query$variables <- paste(unlist(variables), collapse = ",")
     }
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -339,7 +339,7 @@ methods::setMethod(
   function(conn, symbol, resource, async = TRUE) {
     query <- list(resource = resource, symbol = symbol, async = async)
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -380,7 +380,7 @@ methods::setMethod(
   "dsListMethods", "ArmadilloConnection",
   function(conn, type = "aggregate") {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -409,7 +409,7 @@ methods::setMethod(
   "dsListPackages", "ArmadilloConnection",
   function(conn) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -440,7 +440,7 @@ methods::setMethod(
   "dsListWorkspaces", "ArmadilloConnection",
   function(conn) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::GET(
       handle = conn@handle,
@@ -469,7 +469,7 @@ methods::setMethod(
   "dsSaveWorkspace", "ArmadilloConnection",
   function(conn, name) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -493,7 +493,7 @@ methods::setMethod(
   "dsRmWorkspace", "ArmadilloConnection",
   function(conn, name) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::DELETE(
       handle = conn@handle,
@@ -525,7 +525,7 @@ methods::setMethod(
   "dsAssignExpr", "ArmadilloConnection",
   function(conn, symbol, expr, async = TRUE) {
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -572,7 +572,7 @@ methods::setMethod(
 methods::setMethod(
   "dsAggregate", "ArmadilloConnection",
   function(conn, expr, async = TRUE) {
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     response <- httr::POST(
       handle = conn@handle,
@@ -649,7 +649,7 @@ methods::setMethod(
   "dsKeepAlive", "ArmadilloConnection",
   function(conn) { # nolint
 
-    conn <- .reset_token_safely(conn, env)
+    conn <- .refresh_token_safely(conn)
 
     try(httr::GET(
       handle = conn@handle,
