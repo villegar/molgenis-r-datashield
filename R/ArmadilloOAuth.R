@@ -92,7 +92,7 @@ armadillo.get_credentials <- function(server) { # nolint
   response <- httr::POST(fusionAuthRefreshUri, handle=handle(''),
                          config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token))
   new_credentials <- content(response)
-  new_credentials$expires_at <- .get_updated_expiry_date(auth_info, credentials)
+  new_credentials$expires_at <- .get_updated_expiry_date(auth_info, new_credentials)
 
   if (!is.null(new_credentials$refreshToken)) {
     message("Refresh successful")
@@ -117,11 +117,11 @@ armadillo.get_credentials <- function(server) { # nolint
 #' @return A POSIXct object representing the token's expiry time.
 #' @keywords internal
 #' @noRd
-.get_updated_expiry_date <- function(auth_info, credentials) {
+.get_updated_expiry_date <- function(auth_info, new_credentials) {
   validate_url <- paste0(auth_info$auth$issuerUri, "/api/jwt/validate")
   response <- httr::GET(
     url = validate_url,
-    httr::add_headers(Authorization = paste("Bearer", credentials@access_token))
+    httr::add_headers(Authorization = paste("Bearer", new_credentials$access_token))
     )
   return(as.POSIXct(content(response)$jwt$exp))
 }
