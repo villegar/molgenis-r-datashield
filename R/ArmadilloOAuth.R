@@ -92,6 +92,8 @@ armadillo.get_credentials <- function(server) { # nolint
   response <- httr::POST(fusionAuthRefreshUri, handle=handle(''),
                          config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token))
   new_credentials <- content(response)
+  new_credentials$expires_at <- .get_updated_expiry_date(auth_info, credentials)
+
   if (!is.null(new_credentials$refreshToken)) {
     message("Refresh successful")
   } else {
@@ -102,6 +104,26 @@ armadillo.get_credentials <- function(server) { # nolint
     }
   }
   return(new_credentials)
+}
+
+#' Get updated token expiry date from FusionAuth
+#'
+#' Sends a request to FusionAuth's `/api/jwt/validate` endpoint to retrieve
+#' and return the updated expiry time of the JWT access token.
+#'
+#' @param auth_info A list containing authentication metadata, including `auth$issuerUri`.
+#' @param credentials An object with an `@access_token` slot containing the JWT.
+#'
+#' @return A POSIXct object representing the token's expiry time.
+#' @keywords internal
+#' @noRd
+.get_updated_expiry_date <- function(auth_info, credentials) {
+  validate_url <- paste0(auth_info$auth$issuerUri, "/api/jwt/validate")
+  response <- httr::GET(
+    url = validate_url,
+    httr::add_headers(Authorization = paste("Bearer", credentials@access_token))
+    )
+  return(as.POSIXct(content(response)$jwt$exp))
 }
 
 #' Get oauth server discovery information
@@ -159,6 +181,7 @@ armadillo.get_credentials <- function(server) { # nolint
     }
     new_credentials <- .refresh_token(conn@handle$url, credentials$object)
     conn@token <- new_credentials$token
+    conn@expires_at <- new_credentials$expires_at
     .reset_token_global_env(credentials, new_credentials, conn)
     return(conn)
   }
@@ -241,6 +264,7 @@ armadillo.get_credentials <- function(server) { # nolint
   credentials_to_return <- old_credentials$object
   credentials_to_return@access_token <- new_credentials$token
   credentials_to_return@refresh_token <- new_credentials$refreshToken
+  credentials_to_return@expires_at <- new_credentials$expires_at
   assign(old_credentials$name, credentials_to_return, envir = env)
 }
 
