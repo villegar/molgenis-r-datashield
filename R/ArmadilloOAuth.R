@@ -40,8 +40,14 @@ setClass(
 
 #' Get credentials information
 #'
-#' Get credentials, including refresh, id and access token via device flow auth
-#' NOTE: in order to get refresh token, refresh tokens should be turned on for this armadillo instance on the auth server
+#' @details This function fetched various details from the auth server, including refresh, id and
+#' access tokens. NOTE: in order to get refresh token, refresh tokens should be turned on for this
+#' armadillo instance on the auth server. When access tokens are fetched using this method, it
+#'enables the automatic refreshing of tokens when they time out. This works by checking whether the
+#'current token(s) have expired, and if so attempting to refresh them and write the refreshed
+#' token to the connection and credentials objects in the global environment. For this to work
+#' correctly, ensure that there only exists one DataSHIELD connections object in the global
+#' environment, and that for each datasource there is only object containing their credentials.
 #'
 #' @param server the URL of the Armadillo server
 #' @return The credentials
@@ -149,7 +155,7 @@ armadillo.get_credentials <- function(server) { # nolint
     multiple_conns <- identical(names(.getDSConnectionsMod(env)), c("flag", "conns")) &!is.null(names(.getDSConnectionsMod(env)$conns))
     if(multiple_conns) {
       return(
-        warning("Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment. Please ensure only one exists and try again"))
+        warning("Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment. Run ?armadillo.get_credentials for more details"))
     }
     new_credentials <- .refresh_token(conn@handle$url, credentials$object)
     conn@token <- new_credentials$token
