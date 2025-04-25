@@ -127,7 +127,7 @@ armadillo.get_credentials <- function(server) { # nolint
 #' @return The updated `DSConnection` object with a refreshed token if needed.
 #' @keywords internal
 #' @noRd
-.reset_token_safely <- function(conn, env = getOption("datashield.env", globalenv())) {
+.refresh_token_safely <- function(conn, env = getOption("datashield.env", globalenv())) {
   tryCatch({
     conn <- .reset_token_if_expired(conn, env)
     if (inherits(conn, "ArmadilloConnection")) conn
@@ -146,7 +146,8 @@ armadillo.get_credentials <- function(server) { # nolint
 .reset_token_if_expired <- function(conn, env = getOption("datashield.env", globalenv())) {
   credentials <- .get_armadillo_credentials(conn)
   if(credentials$object@expires_at < Sys.time()) {
-    if(identical(names(.getDSConnectionsMod(env)), c("flag", "conns"))) {
+    multiple_conns <- identical(names(.getDSConnectionsMod(env)), c("flag", "conns")) &!is.null(names(.getDSConnectionsMod(env)$conns))
+    if(multiple_conns) {
       return(
         warning("Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment. Please ensure only one exists and try again"))
     }
@@ -275,18 +276,33 @@ armadillo.get_credentials <- function(server) { # nolint
   .reset_connections_object(old_credentials, new_credentials, conn, sys.frame(1))
 }
 
+#' Detect DataSHIELD Connections in an Environment
+#'
+#' Scans a given environment for DataSHIELD connection objects. Slightly modified from original version in DSI
+#'
+#' @param env An environment object to search for DataSHIELD connections.
+#'
+#' @return A list with:
+#' \describe{
+#'   \item{flag}{Indicator of result type:
+#'     \itemize{
+#'       \item 0: No connections found.
+#'       \item 1: One connection list found.
+#'       \item 2: Multiple connection lists found.
+#'     }}
+#'   \item{conns}{Either the connection list (if one found) or a character vector with the names of multiple connection lists.}
+#' }
+#'
+#' @keywords internal
+#' @noRd
 .getDSConnectionsMod <- function(env) {
-  # get the names of all the objects in the current work environment
   symbols <- base::ls(name=env)
-
-  # check which of the object is a list (the connection objects are kept in a list)
   if (length(symbols) > 0) {
     connlist <- c()
     flag <- 0
     for (i in 1:length(symbols)) {
       obj <- base::get(symbols[i], envir = env)
       if ("list" %in% class(obj)) {
-        # if an object is not an empty list check if its elements are of type DSConnection
         if (length(obj) > 0) {
           if (.isDSConnection(obj[[1]])) {
             connlist <- append(connlist, symbols[i])
@@ -314,6 +330,7 @@ armadillo.get_credentials <- function(server) { # nolint
 #' Check if provided object is a S4 class instance and if this class inherits from \code{\link{DSConnection-class}}.
 #' @keywords internal
 #' @importFrom methods getClass
+#' @noRd
 .isDSConnection <- function(obj) {
   if (isS4(obj)) {
     cls <- getClass(class(obj)[[1]])
