@@ -847,7 +847,7 @@ test_that(".reset_token_if_expired refreshes and updates token if expired", {
     assign("updated_conn_result", conn, envir = env)
   })
 
-  .reset_token_if_expired(conn)
+  .reset_token_if_expired(conn, env = updated_conn_env)
 
   updated_conn <- get("updated_conn_result", envir = updated_conn_env)
   expect_s4_class(updated_conn, "ArmadilloConnection")

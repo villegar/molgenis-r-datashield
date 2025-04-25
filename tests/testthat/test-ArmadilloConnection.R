@@ -2,7 +2,7 @@ test_that("dsDisconnect calls /logout endpoint ", {
   post <- mock()
   with_mock(
     "httr::POST" = post,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsDisconnect(connection)
   )
   expect_called(post, 1)
@@ -16,7 +16,7 @@ test_that("dsDisconnect saves the workspace", {
   post <- mock(list(status_code = 200), cycle = TRUE)
   with_mock(
     "httr::POST" = post,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsDisconnect(connection, save = "keepit")
   )
   expect_called(post, 2)
@@ -35,7 +35,7 @@ test_that("dsListProfiles retrieves profiles", {
   result <- with_mock(
     "httr::GET" = get,
     "httr::content" = content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsListProfiles(connection)
   )
   expect_args(get, 1,
@@ -52,7 +52,7 @@ test_that("dsListProfiles returns default result if none found", {
   result <- with_mock(
     "httr::GET" = get,
     "httr::content" = content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsListProfiles(connection)
   )
   expect_args(get, 1,
@@ -72,7 +72,7 @@ test_that("dsListTables retrieves tables", {
   result <- with_mock(
     "httr::GET" = get,
     "httr::content" = content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsListTables(connection)
   )
   expect_args(get, 1,
@@ -89,7 +89,7 @@ test_that("dsListResources retrieves resources", {
   result <- with_mock(
     "httr::GET" = get,
     "httr::content" = content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsListResources(connection)
   )
   expect_args(get, 1,
@@ -103,7 +103,7 @@ test_that("dsHasTable returns TRUE if table exists", {
   head <- mock(list(status_code = 200))
   with_mock(
     "httr::HEAD" = head,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     expect_true(dsHasTable(connection, "project/folder/name.parquet"))
   )
   expect_args(head, 1,
@@ -117,7 +117,7 @@ test_that("dsHasTable returns FALSE if table doesnot exist", {
   head <- mock(list(status_code = 404))
   with_mock(
     "httr::HEAD" = head,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     expect_false(dsHasTable(connection, "project/folder/name.parquet"))
   )
   expect_args(head, 1,
@@ -131,7 +131,7 @@ test_that("dsHasResource returns TRUE if resource exists", {
   head <- mock(list(status_code = 200))
   with_mock(
     "httr::HEAD" = head,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     expect_true(dsHasResource(connection, "project/folder/name"))
   )
   expect_args(head, 1,
@@ -145,7 +145,7 @@ test_that("dsHasResource returns FALSE if table doesnot exist", {
   head <- mock(list(status_code = 404))
   with_mock(
     "httr::HEAD" = head,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     expect_false(dsHasResource(connection, "project/folder/name"))
   )
   expect_args(head, 1,
@@ -174,7 +174,7 @@ test_that("dsListSymbols returns symbols", {
   result <- with_mock(
     "httr::GET" = get,
     "httr::content" = content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsListSymbols(connection)
   )
   expect_args(get, 1,
@@ -188,7 +188,7 @@ test_that("dsRmSymbol removes symbol", {
   delete <- mock(list(status_code = 200))
   result <- with_mock(
     "httr::DELETE" = delete,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsRmSymbol(connection, "D")
   )
   expect_args(delete, 1,
@@ -201,7 +201,7 @@ test_that("dsAssignTable assigns table to symbol", {
   post <- mock(list(status_code = 200))
   result <- with_mock(
     "httr::POST" = post,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAssignTable(connection, "D", "project/folder/name.parquet")
   )
   expect_args(post, 1,
@@ -221,7 +221,7 @@ test_that("dsAssignTable allows variable selection", {
   post <- mock(list(status_code = 200))
   result <- with_mock(
     "httr::POST" = post,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAssignTable(connection, "D",
       "project/folder/name.parquet",
       variables = c("foo", "bar")
@@ -249,7 +249,7 @@ test_that("dsAssignTable, when called synchronously, waits for result", {
     "httr::POST" = post,
     "httr::RETRY" = retry,
     "httr::content" = httr_content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAssignTable(connection, "D", "project/folder/name.parquet")
   )
   expect_args(post, 1,
@@ -268,7 +268,7 @@ test_that("dsAssignResource assigns resource to symbol", {
   post <- mock(list(status_code = 200))
   result <- with_mock(
     "httr::POST" = post,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAssignResource(connection, "D", "project/folder/name")
   )
   expect_args(post, 1,
@@ -292,7 +292,7 @@ test_that("dsAssignResource, when called synchronously, waits for result", {
     "httr::POST" = post,
     "httr::RETRY" = retry,
     "httr::content" = httr_content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAssignResource(connection, "D", "project/folder/name")
   )
   expect_args(post, 1,
@@ -325,7 +325,7 @@ test_that("dsListMethods returns assign methods", {
   result <- with_mock(
     "httr::GET" = get,
     "httr::content" = content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsListMethods(connection, type = "assign")
   )
 
@@ -364,7 +364,7 @@ test_that("dsListPackages extracts name and version from packages", {
   result <- with_mock(
     "httr::GET" = get,
     "httr::content" = content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsListPackages(connection)
   )
 
@@ -395,7 +395,7 @@ test_that("dsListWorkspaces lists workspaces", {
   result <- with_mock(
     "httr::GET" = get,
     "httr::content" = content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsListWorkspaces(connection)
   )
 
@@ -419,7 +419,7 @@ test_that("dsSaveWorkspace saves workspace", {
 
   with_mock(
     "httr::POST" = post,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsSaveWorkspace(connection, "keepit")
   )
 
@@ -435,7 +435,7 @@ test_that("dsRmWorkspace removes workspace", {
 
   with_mock(
     "httr::DELETE" = delete,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsRmWorkspace(connection, "keepit")
   )
 
@@ -450,7 +450,7 @@ test_that("dsAssignExpr assigns expression to symbol", {
   post <- mock(list(status_code = 200))
   result <- with_mock(
     "httr::POST" = post,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAssignExpr(connection, "D", "ls()")
   )
 
@@ -469,7 +469,7 @@ test_that("dsAssignExpr deparses function calls in expression", {
   post <- mock(list(status_code = 200))
   result <- with_mock(
     "httr::POST" = post,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAssignExpr(connection, "D", call("ls"))
   )
   expect_args(post, 1,
@@ -490,7 +490,7 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     "httr::POST" = post,
     "httr::RETRY" = retry,
     "httr::content" = httr_content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAssignExpr(connection, "D", "ls()", async = FALSE)
   )
   expect_args(post, 1,
@@ -516,7 +516,7 @@ test_that("dsAggregate executes deparsed query", {
   post <- mock(list(status_code = 200))
   result <- with_mock(
     "httr::POST" = post,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAggregate(connection, call("ls"))
   )
 
@@ -539,7 +539,7 @@ test_that("dsAssignExpr, when called synchronously, waits for result", {
     "httr::POST" = post,
     "httr::RETRY" = retry,
     "httr::content" = httr_content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAggregate(connection, "ls()", async = FALSE)
   )
   expect_args(post, 1,
@@ -573,7 +573,7 @@ test_that("dsAssignExpr handles error when called synchronously", {
     "httr::POST" = post,
     "httr::GET" = get,
     "httr::content" = content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsAggregate(connection, "ls()", async = FALSE)
   ), "Internal server error: Error")
 })
@@ -601,7 +601,7 @@ test_that("dsGetInfo returns server info", {
   result <- with_mock(
     "httr::GET" = get,
     "httr::content" = httr_content,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsGetInfo(connection)
   )
 
@@ -624,7 +624,7 @@ test_that("dsKeepAlive pings server info endpoint", {
   get <- mock(list(status_code = 200))
   result <- with_mock(
     "httr::GET" = get,
-    ".refresh_token_safely" = function(conn) connection,
+    "DSMolgenisArmadillo:::.refresh_token_safely" = function(conn) connection,
     dsKeepAlive(connection)
   )
 
