@@ -176,12 +176,16 @@ armadillo.get_credentials <- function(server) { # nolint
 #' @noRd
 .reset_token_if_expired <- function(conn, env = getOption("datashield.env", globalenv())) {
   credentials <- .get_armadillo_credentials(conn)
-  if(credentials$object@expires_at < Sys.time()) {
+  if(is.null(credentials)) {
+    return(NULL)
+  } else if(credentials$object@expires_at < Sys.time()) {
     .check_multiple_conns(env)
     new_credentials <- .refresh_token(conn@handle$url, credentials$object)
     conn@token <- new_credentials$token
     .reset_token_global_env(credentials, new_credentials, conn)
     return(conn)
+    } else {
+    return(NULL)
   }
 }
 
@@ -213,7 +217,7 @@ if(multiple_conns) {
 .get_armadillo_credentials <- function(conn, env = getOption("datashield.env", globalenv())) {
   all_credentials <- .get_all_armadillo_credentials(env)
   if(is.null(all_credentials)) {
-    stop("no credentials found in global environment")
+    return(NULL)
   } else {
     matching <- .get_matching_credential(all_credentials, conn)
     if(is.null(matching)) {
@@ -236,12 +240,10 @@ if(multiple_conns) {
     obj <- get(x, envir = env)
     inherits(obj, "ArmadilloCredentials")
   }, USE.NAMES = TRUE)
-
-
-  if(is.character(objs) && length(objs) == 0) {
-    return()
+  matched <- objs[conns]
+  if(is.character(matched) && length(matched) == 0) {
+    return(NULL)
   } else {
-    matched <- objs[conns]
     return(mget(matched, envir = env))
   }
 }
