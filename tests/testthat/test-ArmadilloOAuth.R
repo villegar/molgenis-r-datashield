@@ -217,7 +217,7 @@ test_that(".get_all_armadillo_credentials finds all credentials in test environm
 test_that(".get_all_armadillo_credentials returns nothing if no connections present", {
 
   expect_null(
-    .get_all_armadillo_credentials(env = environment())
+    .get_all_armadillo_credentials(env = new.env())
   )
 
 })
@@ -506,9 +506,9 @@ test_that(".get_armadillo_credentials returns error when no matching credential 
 
 test_that(".get_armadillo_credentials returns NULL when there are no credentials", {
   env <- new.env()
-  expect_error(
-    .get_armadillo_credentials(conn = new("ArmadilloConnection", token = "abc"), env = env),
-    "no credentials found in global environment")
+  expect_null(
+    .get_armadillo_credentials(conn = new("ArmadilloConnection", token = "abc"), env = env)
+  )
 })
 
 test_that(".get_armadillo_credentials works with custom env and multiple credentials", {

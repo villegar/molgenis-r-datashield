@@ -240,6 +240,9 @@ if(multiple_conns) {
     obj <- get(x, envir = env)
     inherits(obj, "ArmadilloCredentials")
   }, USE.NAMES = TRUE)
+  if(length(objs) == 0 | length(conns) == 0) {
+    return(NULL)
+  }
   matched <- objs[conns]
   if(is.character(matched) && length(matched) == 0) {
     return(NULL)
