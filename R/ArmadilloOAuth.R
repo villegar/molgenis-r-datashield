@@ -93,7 +93,6 @@ armadillo.get_credentials <- function(server) { # nolint
                          config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token))
   new_credentials <- content(response)
   new_credentials$expires_at <- .get_updated_expiry_date(auth_info, new_credentials$token)
-
   if (!is.null(new_credentials$refreshToken)) {
     message("Refresh successful")
   } else {

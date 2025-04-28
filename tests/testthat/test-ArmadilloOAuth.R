@@ -72,14 +72,12 @@ test_that(".refresh_token stops with message if fieldErrors returned", {
   dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
   dummy_response <- structure(list(status_code = 400), class = "response")
   dummy_content <- list(
-    error = list(
       fieldErrors = list(message = "Invalid refresh token")
     )
-  )
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
-    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) Sys.time(),
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) list(expires_at = ""),
     "httr::POST" = function(...) dummy_response,
     "httr::content" = function(response) dummy_content,
     {
@@ -108,7 +106,7 @@ test_that(".refresh_token stops with message if fieldErrors returned", {
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
-    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) Sys.time(),
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) list(expires_at = ""),
     "httr::POST" = function(...) dummy_response,
     "httr::content" = function(response) dummy_error_response,
     {
