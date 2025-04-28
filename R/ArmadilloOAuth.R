@@ -92,7 +92,7 @@ armadillo.get_credentials <- function(server) { # nolint
   response <- httr::POST(fusionAuthRefreshUri, handle=handle(''),
                          config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token))
   new_credentials <- content(response)
-  new_credentials$expires_at <- .get_updated_expiry_date(auth_info, new_credentials)
+  new_credentials$expires_at <- .get_updated_expiry_date(auth_info, new_credentials$token)
 
   if (!is.null(new_credentials$refreshToken)) {
     message("Refresh successful")
@@ -117,11 +117,11 @@ armadillo.get_credentials <- function(server) { # nolint
 #' @return A POSIXct object representing the token's expiry time.
 #' @keywords internal
 #' @noRd
-.get_updated_expiry_date <- function(auth_info, new_credentials) {
+.get_updated_expiry_date <- function(auth_info, token) {
   validate_url <- paste0(auth_info$auth$issuerUri, "/api/jwt/validate")
   response <- httr::GET(
     url = validate_url,
-    httr::add_headers(Authorization = paste("Bearer", new_credentials$access_token))
+    httr::add_headers(Authorization = paste("Bearer", token))
     )
   return(as.POSIXct(content(response)$jwt$exp))
 }
@@ -157,11 +157,15 @@ armadillo.get_credentials <- function(server) { # nolint
 #' @noRd
 .refresh_token_safely <- function(conn, env = getOption("datashield.env", globalenv())) {
   tryCatch({
-    conn <- .reset_token_if_expired(conn, env)
-    if (inherits(conn, "ArmadilloConnection")) conn
+    new_conn <- .reset_token_if_expired(conn, env)
+    if (inherits(new_conn, "ArmadilloConnection")) {
+      return(new_conn)
+      } else {
+        return(conn)
+      }
   }, error = function(e) {
-    warning("Failed to reset token: ", e$message)
-    NULL
+    warning("Failed to reset token: ", e$message, call. = FALSE)
+    conn
   })
 }
 
@@ -174,18 +178,22 @@ armadillo.get_credentials <- function(server) { # nolint
 .reset_token_if_expired <- function(conn, env = getOption("datashield.env", globalenv())) {
   credentials <- .get_armadillo_credentials(conn)
   if(credentials$object@expires_at < Sys.time()) {
-    multiple_conns <- identical(names(.getDSConnectionsMod(env)), c("flag", "conns")) &!is.null(names(.getDSConnectionsMod(env)$conns))
-    if(multiple_conns) {
-      return(
-        warning("Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment. Run ?armadillo.get_credentials for more details"))
-    }
+    .check_multiple_conns(env)
     new_credentials <- .refresh_token(conn@handle$url, credentials$object)
     conn@token <- new_credentials$token
-    conn@expires_at <- new_credentials$expires_at
     .reset_token_global_env(credentials, new_credentials, conn)
     return(conn)
   }
 }
+
+.check_multiple_conns <- function(env){
+  multiple_conns <- identical(names(.getDSConnectionsMod(env)), c("flag", "conns")) &!is.null(names(.getDSConnectionsMod(env)$conns))
+if(multiple_conns) {
+  return(
+    warning("Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment. Run ?armadillo.get_credentials for more details"))
+}
+}
+
 
 #' @title Get Armadillo Credentials
 #' @description Retrieves the Armadillo credentials that match the provided connection.
@@ -198,11 +206,11 @@ armadillo.get_credentials <- function(server) { # nolint
 .get_armadillo_credentials <- function(conn, env = getOption("datashield.env", globalenv())) {
   all_credentials <- .get_all_armadillo_credentials(env)
   if(is.null(all_credentials)) {
-    return()
+    stop("no credentials found in global environment")
   } else {
     matching <- .get_matching_credential(all_credentials, conn)
-    if(is.list(matching) && length(matching) == 0) {
-      return()
+    if(is.null(matching)) {
+      stop("no matching credentials found in global environment")
     } else {
       return(matching)
     }
