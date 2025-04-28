@@ -185,14 +185,22 @@ armadillo.get_credentials <- function(server) { # nolint
   }
 }
 
+#' Check for multiple DataSHIELD connections
+#'
+#' Checks whether multiple DataSHIELD connection objects exist in the environment,
+#' and if so, issues a warning if token refresh is not possible.
+#'
+#' @param env Environment where DataSHIELD connections are stored.
+#'
+#' @return A warning if multiple connections are found; otherwise, nothing is returned.
+#' @keywords internal
+#' @noRd
 .check_multiple_conns <- function(env){
-  multiple_conns <- identical(names(.getDSConnectionsMod(env)), c("flag", "conns")) &!is.null(names(.getDSConnectionsMod(env)$conns))
+  multiple_conns <- identical(names(.getDSConnectionsMod(env)), c("flag", "conns")) &!is.null(.getDSConnectionsMod(env)$conns)
 if(multiple_conns) {
-  return(
-    warning("Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment. Run ?armadillo.get_credentials for more details"))
+  stop("Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment. Run ?armadillo.get_credentials for more details")
 }
 }
-
 
 #' @title Get Armadillo Credentials
 #' @description Retrieves the Armadillo credentials that match the provided connection.
@@ -273,6 +281,7 @@ if(multiple_conns) {
   credentials_to_return@refresh_token <- new_credentials$refreshToken
   credentials_to_return@expires_at <- new_credentials$expires_at
   assign(old_credentials$name, credentials_to_return, envir = env)
+  message(paste0("Token reset in connections object ", "'", old_credentials$name, "'", "in ", format(env)))
 }
 
 #' @title Reset Connections Object
@@ -296,6 +305,7 @@ if(multiple_conns) {
     }
   }
   assign(names(old_conns), conns_to_return, envir = env)
+  message(paste0("Token reset in credentials object ", "'", names(old_conns), "'", "in ", format(env)))
 }
 
 #' @title Reset Token in Global Environment
