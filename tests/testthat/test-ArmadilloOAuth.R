@@ -58,11 +58,11 @@ test_that("armadillo.get_credentials returns a valid ArmadilloCredentials object
   expect_true(abs(as.numeric(result@expires_at - (Sys.time() + 3600))) < 2)
 })
 
-test_that(".refresh_token returns new credentials when refresh is successful", {
+test_that(".refresh_token stops with message if fieldErrors returned", {
   server <- "https://example.org"
   credentials <- new("ArmadilloCredentials",
                      access_token = "access123",
-                     refresh_token = "refresh123",
+                     refresh_token = "bad-refresh",
                      expires_in = 3600,
                      expires_at = Sys.time() + 3600,
                      id_token = "id123",
@@ -70,26 +70,25 @@ test_that(".refresh_token returns new credentials when refresh is successful", {
                      userId = "user123")
 
   dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
-  dummy_response <- structure(list(status_code = 200), class = "response")
-  dummy_new_creds <- list(
-    access_token = "new-access",
-    refreshToken = "new-refresh",
-    id_token = "new-id",
-    token_type = "Bearer",
-    userId = "user123"
+  dummy_response <- structure(list(status_code = 400), class = "response")
+  dummy_content <- list(
+    error = list(
+      fieldErrors = list(message = "Invalid refresh token")
+    )
   )
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) Sys.time(),
     "httr::POST" = function(...) dummy_response,
-    "httr::content" = function(response) dummy_new_creds,
+    "httr::content" = function(response) dummy_content,
     {
-      result <- DSMolgenisArmadillo:::.refresh_token(server, credentials)
+      expect_error(
+        DSMolgenisArmadillo:::.refresh_token(server, credentials),
+        regexp = "Invalid refresh token"
+      )
     }
   )
-
-  expect_equal(result$access_token, "new-access")
-  expect_equal(result$refreshToken, "new-refresh")
 })
 
 test_that(".refresh_token stops with message if fieldErrors returned", {
@@ -109,6 +108,7 @@ test_that(".refresh_token stops with message if fieldErrors returned", {
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) Sys.time(),
     "httr::POST" = function(...) dummy_response,
     "httr::content" = function(response) dummy_error_response,
     {
@@ -137,6 +137,7 @@ test_that(".refresh_token stops with generic message if refresh fails silently",
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) Sys.time(),
     "httr::POST" = function(...) dummy_response,
     "httr::content" = function(response) dummy_empty_response,
     {
@@ -475,7 +476,7 @@ test_that(".get_armadillo_credentials returns the correct match", {
   expect_identical(result$object, cred)
 })
 
-test_that(".get_armadillo_credentials returns NULL when no matching credential found", {
+test_that(".get_armadillo_credentials returns error when no matching credential found", {
   env <- new.env()
 
   cred <- new(
@@ -500,12 +501,16 @@ test_that(".get_armadillo_credentials returns NULL when no matching credential f
     token = "zzz999"
   )
 
-  expect_null(.get_armadillo_credentials(conn, env = env))
+  expect_error(
+    .get_armadillo_credentials(conn, env = env),
+    "no matching credentials found in global environment")
 })
 
 test_that(".get_armadillo_credentials returns NULL when there are no credentials", {
   env <- new.env()
-  expect_null(.get_armadillo_credentials(conn = new("ArmadilloConnection", token = "abc"), env = env))
+  expect_error(
+    .get_armadillo_credentials(conn = new("ArmadilloConnection", token = "abc"), env = env),
+    "no credentials found in global environment")
 })
 
 test_that(".get_armadillo_credentials works with custom env and multiple credentials", {
@@ -576,7 +581,8 @@ test_that(".reset_armadillo_credentials correctly updates tokens", {
 
   new_credentials <- list(
     token = "new-token",
-    refreshToken = "new-refresh"
+    refreshToken = "new-refresh",
+    expires_at = as.POSIXct("2035-03-26 11:00:00", tz = "CET")
   )
 
   .reset_armadillo_credentials(old_credentials, new_credentials, env = test_env)
@@ -601,7 +607,7 @@ test_that(".reset_armadillo_credentials modifies globalenv by default", {
     "ArmadilloCredentials",
     access_token = "global-token",
     expires_in = 10,
-    expires_at = Sys.time(),
+    expires_at = as.POSIXct("2025-03-26 11:00:00", tz = "CET"),
     id_token = "id_token_y",
     refresh_token = "global-refresh",
     token_type = "Bearer",
@@ -617,7 +623,8 @@ test_that(".reset_armadillo_credentials modifies globalenv by default", {
 
   new_credentials <- list(
     token = "new-global-token",
-    refreshToken = "new-global-refresh"
+    refreshToken = "new-global-refresh",
+    expires_at = as.POSIXct("2035-03-26 11:00:00", tz = "CET")
   )
 
   .reset_armadillo_credentials(old_credentials, new_credentials)
@@ -787,7 +794,8 @@ test_that(".reset_token_global_env updates credentials and connection", {
   old_credentials <- list(name = "cohort_1", object = old_cred)
   new_credentials <- list(
     token = "aaa-new",
-    refreshToken = "refresh_new"
+    refreshToken = "refresh_new",
+    expires_at = as.POSIXct("2035-03-26 11:00:00", tz = "CET")
   )
 
   .reset_token_global_env(old_credentials, new_credentials, conn, env = test_env)
