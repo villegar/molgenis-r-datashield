@@ -1000,3 +1000,36 @@ test_that(".refresh_token_safely returns original connection and warns if error 
     }
   )
 })
+
+test_that(".reset_token_if_expired returns NULL if credentials are NULL", {
+  conn <- structure(list(), class = "DSConnection")
+
+  with_mock(
+    "DSMolgenisArmadillo:::.get_armadillo_credentials" = function(conn) NULL,
+    {
+      result <- DSMolgenisArmadillo:::.reset_token_if_expired(conn)
+      expect_null(result)
+    }
+  )
+})
+
+test_that(".reset_token_if_expired returns NULL if token has not expired", {
+  conn <- structure(list(
+    handle = list(url = "https://example.org"),
+    token = "token123"
+  ), class = "DSConnection")
+
+  # Create a dummy S4 object with an expires_at slot
+  DummyCredentials <- methods::setClass("DummyCredentials", slots = c(expires_at = "POSIXct"))
+  dummy_object <- DummyCredentials(expires_at = Sys.time() + 3600)  # token valid for 1 hour
+
+  valid_credentials <- list(object = dummy_object)
+
+  with_mock(
+    "DSMolgenisArmadillo:::.get_armadillo_credentials" = function(conn) valid_credentials,
+    {
+      result <- DSMolgenisArmadillo:::.reset_token_if_expired(conn)
+      expect_null(result)
+    }
+  )
+})
