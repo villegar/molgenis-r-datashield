@@ -58,6 +58,38 @@ test_that("armadillo.get_credentials returns a valid ArmadilloCredentials object
   expect_true(abs(as.numeric(result@expires_at - (Sys.time() + 3600))) < 2)
 })
 
+test_that(".refresh_token returns success message if new credentials are not null", {
+  server <- "https://example.org"
+  credentials_in <- list(
+    access_token = "access123",
+    expires_in = 3600,
+    id_token = "id123",
+    refresh_token = "refresh123",
+    token_type = "Bearer",
+    userId = "user123"
+  )
+  credentials_out <- list(refreshToken = "access123", token = "token123", expires_at = "2025-04-29 09:45:08 CEST")
+
+  dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
+  dummy_response <- structure(list(status_code = 400), class = "response")
+
+  with_mock(
+    "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) "2025-04-29 09:45:08 CEST",
+    "httr::POST" = function(...) dummy_response,
+    "httr::content" = function(response) credentials_out,
+    {
+      expect_message(
+        DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
+        regexp = "Refresh successful"
+      )
+      expect_equal(
+        DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
+        credentials_out)
+    }
+  )
+})
+
 test_that(".refresh_token stops with message if fieldErrors returned", {
   server <- "https://example.org"
   credentials <- new("ArmadilloCredentials",
@@ -77,7 +109,7 @@ test_that(".refresh_token stops with message if fieldErrors returned", {
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
-    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) list(expires_at = ""),
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) "",
     "httr::POST" = function(...) dummy_response,
     "httr::content" = function(response) dummy_content,
     {
@@ -106,7 +138,7 @@ test_that(".refresh_token stops with message if fieldErrors returned", {
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
-    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) list(expires_at = ""),
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) "",
     "httr::POST" = function(...) dummy_response,
     "httr::content" = function(response) dummy_error_response,
     {
