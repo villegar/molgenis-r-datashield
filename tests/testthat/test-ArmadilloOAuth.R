@@ -960,3 +960,43 @@ test_that(".get_updated_expiry_date returns correct expiry time", {
   )
 })
 
+test_that(".refresh_token_safely returns refreshed connection if successful", {
+  conn <- structure(list(), class = "DSConnection")
+  refreshed_conn <- structure(list(), class = "ArmadilloConnection")
+
+  with_mock(
+    "DSMolgenisArmadillo:::.reset_token_if_expired" = function(conn, env) refreshed_conn,
+    {
+      result <- DSMolgenisArmadillo:::.refresh_token_safely(conn)
+      expect_s3_class(result, "ArmadilloConnection")
+    }
+  )
+})
+
+test_that(".refresh_token_safely returns original connection if refresh returns non-connection", {
+  conn <- structure(list(), class = "DSConnection")
+  non_connection <- NULL  # or any object not of class "ArmadilloConnection"
+
+  with_mock(
+    "DSMolgenisArmadillo:::.reset_token_if_expired" = function(conn, env) non_connection,
+    {
+      result <- DSMolgenisArmadillo:::.refresh_token_safely(conn)
+      expect_identical(result, conn)
+    }
+  )
+})
+
+test_that(".refresh_token_safely returns original connection and warns if error occurs", {
+  conn <- structure(list(), class = "DSConnection")
+
+  with_mock(
+    "DSMolgenisArmadillo:::.reset_token_if_expired" = function(conn, env) stop("token error"),
+    {
+      expect_warning(
+        result <- DSMolgenisArmadillo:::.refresh_token_safely(conn),
+        regexp = "Failed to reset token: token error"
+      )
+      expect_identical(result, conn)
+    }
+  )
+})
