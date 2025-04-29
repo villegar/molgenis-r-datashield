@@ -1033,3 +1033,56 @@ test_that(".reset_token_if_expired returns NULL if token has not expired", {
     }
   )
 })
+
+test_that(".check_multiple_conns throws error when multiple connections are found", {
+  env <- new.env()
+
+  with_mock(
+    "DSMolgenisArmadillo:::.getDSConnectionsMod" = function(env) list(flag = TRUE, conns = list(conn1 = 1, conn2 = 2)),
+    {
+      expect_error(
+        DSMolgenisArmadillo:::.check_multiple_conns(env),
+        regexp = "Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment"
+      )
+    }
+  )
+})
+
+test_that(".get_all_armadillo_credentials returns NULL when no matching objects found", {
+  env <- new.env()
+  assign("not_creds", list(some = "thing"), envir = env)
+
+  result <- DSMolgenisArmadillo:::.get_all_armadillo_credentials(env)
+  expect_null(result)
+})
+
+test_that(".getDSConnectionsMod returns flag = 2 when multiple DSConnection lists are found", {
+  env <- new.env()
+
+  # Create dummy lists (structure doesn't matter, since we mock .isDSConnection to always return TRUE)
+  assign("conn_list1", list("dummy_conn1"), envir = env)
+  assign("conn_list2", list("dummy_conn2"), envir = env)
+
+  with_mock(
+    "DSMolgenisArmadillo:::.isDSConnection" = function(x) TRUE,
+    {
+      result <- DSMolgenisArmadillo:::.getDSConnectionsMod(env)
+      expect_equal(result$flag, 2)
+      expect_setequal(result$conns, c("conn_list1", "conn_list2"))
+    }
+  )
+})
+
+test_that(".isDSConnection returns FALSE for non-S4 objects", {
+  non_s4_obj <- list(a = 1)
+  result <- DSMolgenisArmadillo:::.isDSConnection(non_s4_obj)
+  expect_false(result)
+})
+
+test_that(".isDSConnection returns FALSE for S4 object not inheriting from DSConnection", {
+  DummyClass <- methods::setClass("DummyClass", slots = c(x = "numeric"))
+  obj <- DummyClass(x = 123)
+
+  result <- DSMolgenisArmadillo:::.isDSConnection(obj)
+  expect_false(result)
+})
