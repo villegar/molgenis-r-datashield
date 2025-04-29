@@ -940,3 +940,23 @@ test_that(".reset_token_if_expired returns warning when refresh fails", {
     "Failed to reset token: mocked refresh failure"
   )
 })
+
+test_that(".get_updated_expiry_date returns correct expiry time", {
+  auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
+  token <- "dummy_token"
+
+  dummy_response <- structure(list(), class = "response")
+  expiry_time <- Sys.time() + 3600  # 1 hour from now
+  dummy_content <- list(jwt = list(exp = expiry_time))
+
+  with_mock(
+    "httr::GET" = function(...) dummy_response,
+    "httr::content" = function(response) dummy_content,
+    {
+      result <- DSMolgenisArmadillo:::.get_updated_expiry_date(auth_info, token)
+      expect_s3_class(result, "POSIXct")
+      expect_equal(result, expiry_time)
+    }
+  )
+})
+
