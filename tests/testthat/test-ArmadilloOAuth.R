@@ -1012,7 +1012,7 @@ test_that(".check_multiple_conns throws error when multiple connections are foun
   env <- new.env()
 
   with_mock(
-    "DSMolgenisArmadillo:::.getDSConnectionsMod" = function(env) list(flag = TRUE, conns = list(conn1 = 1, conn2 = 2)),
+    "DSMolgenisArmadillo:::.getDSConnectionsMod" = function(env) list(flag = 2, conns = list(conn1 = 1, conn2 = 2)),
     {
       expect_error(
         DSMolgenisArmadillo:::.check_multiple_conns(env),

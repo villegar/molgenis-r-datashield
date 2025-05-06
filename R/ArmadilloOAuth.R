@@ -197,7 +197,7 @@ armadillo.get_credentials <- function(server) { # nolint
 #' @keywords internal
 #' @noRd
 .check_multiple_conns <- function(env){
-  multiple_conns <- identical(names(.getDSConnectionsMod(env)), c("flag", "conns")) &!is.null(.getDSConnectionsMod(env)$conns)
+  multiple_conns <- .getDSConnectionsMod(env)$flag == 2
 if(multiple_conns) {
   stop("Token has expired however it was not possible to refresh token because multiple DataSHIELD connection objects found in environment. Run ?armadillo.get_credentials for more details")
 }
