@@ -21,8 +21,6 @@ An S4 class to represent authentication credentials used for accessing Armadillo
 \item{\code{refresh_token}}{Character. The token used to obtain a new access token when expired.}
 
 \item{\code{token_type}}{Character. The type of token (typically "Bearer").}
-
-\item{\code{userId}}{Character. The unique identifier of the user.}
 }}
 
 \keyword{internal}

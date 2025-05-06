@@ -22,7 +22,6 @@ armadillo.get_token <- function(server) { # nolint
 #' @slot id_token Character. The ID token containing identity information.
 #' @slot refresh_token Character. The token used to obtain a new access token when expired.
 #' @slot token_type Character. The type of token (typically "Bearer").
-#' @slot userId Character. The unique identifier of the user.
 #' @keywords internal
 #' @export
 setClass(
@@ -33,8 +32,7 @@ setClass(
     expires_at = "POSIXct",
     id_token = "character",
     refresh_token = "character",
-    token_type = "character",
-    userId = "character")
+    token_type = "character")
 )
 
 
@@ -66,8 +64,7 @@ armadillo.get_credentials <- function(server) { # nolint
                          expires_at = Sys.time() + credentials$expires_in,
                          id_token =  credentials$id_token,
                          refresh_token =  credentials$refresh_token,
-                         token_type =  credentials$token_type,
-                         userId =  credentials$userId)
+                         token_type =  credentials$token_type)
 
   return(credentials_obj)
 }

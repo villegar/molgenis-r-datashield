@@ -5,8 +5,7 @@ test_that("get_token returns the id_token from credentials", {
                           expires_at = Sys.time() + 3600,
                           id_token = "abcd-abcd",
                           refresh_token = "refresh123",
-                          token_type = "Bearer",
-                          userId = "user123"
+                          token_type = "Bearer"
   )
 
   with_mock(
@@ -54,7 +53,6 @@ test_that("armadillo.get_credentials returns a valid ArmadilloCredentials object
   expect_equal(result@id_token, "id123")
   expect_equal(result@refresh_token, "refresh123")
   expect_equal(result@token_type, "Bearer")
-  expect_equal(result@userId, "user123")
   expect_true(abs(as.numeric(result@expires_at - (Sys.time() + 3600))) < 2)
 })
 
@@ -98,8 +96,7 @@ test_that(".refresh_token stops with message if fieldErrors returned", {
                      expires_in = 3600,
                      expires_at = Sys.time() + 3600,
                      id_token = "id123",
-                     token_type = "Bearer",
-                     userId = "user123")
+                     token_type = "Bearer")
 
   dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
   dummy_response <- structure(list(status_code = 400), class = "response")
@@ -129,8 +126,7 @@ test_that(".refresh_token stops with message if fieldErrors returned", {
                      expires_in = 3600,
                      expires_at = Sys.time() + 3600,
                      id_token = "id123",
-                     token_type = "Bearer",
-                     userId = "user123")
+                     token_type = "Bearer")
 
   dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
   dummy_response <- structure(list(status_code = 200), class = "response")
@@ -158,8 +154,7 @@ test_that(".refresh_token stops with generic message if refresh fails silently",
                      expires_in = 3600,
                      expires_at = Sys.time() + 3600,
                      id_token = "id123",
-                     token_type = "Bearer",
-                     userId = "user123")
+                     token_type = "Bearer")
 
   dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
   dummy_response <- structure(list(status_code = 200), class = "response")
@@ -222,8 +217,7 @@ test_that(".get_all_armadillo_credentials finds all credentials in test environm
     expires_at = Sys.time(),
     id_token = "original_id_token_3",
     refresh_token = "aaa-b",
-    token_type = "Bearer",
-    userId = "aaa-c"
+    token_type = "Bearer"
   )
 
   test_2 <- new(
@@ -233,8 +227,7 @@ test_that(".get_all_armadillo_credentials finds all credentials in test environm
     expires_at = Sys.time(),
     id_token = "original_id_token_3",
     refresh_token = "bbb-b",
-    token_type = "Bearer",
-    userId = "bbb-c"
+    token_type = "Bearer"
   )
 
   expect_equal(
@@ -263,8 +256,7 @@ test_that("get_matching_credential returns correct match when there is one crede
     expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
     id_token = "original_id_token_3",
     refresh_token = "aaa-b",
-    token_type = "Bearer",
-    userId = "aaa-c"
+    token_type = "Bearer"
   )
 
   cohort_1_cred <- list(cohort_1 = credentials_1)
@@ -302,8 +294,7 @@ test_that("get_matching_credential returns correct match when at least two crede
     expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
     id_token = "original_id_token_3",
     refresh_token = "aaa-b",
-    token_type = "Bearer",
-    userId = "aaa-c"
+    token_type = "Bearer"
   )
 
   credentials_2 <-new(
@@ -313,8 +304,7 @@ test_that("get_matching_credential returns correct match when at least two crede
     expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
     id_token = "original_id_token_3",
     refresh_token = "bbb-b",
-    token_type = "Bearer",
-    userId = "bbb-c"
+    token_type = "Bearer"
   )
 
   cohort_mult_cred <- list(
@@ -356,8 +346,7 @@ test_that("get_matching_credential returns first match when there is are two ide
     expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
     id_token = "original_id_token_3",
     refresh_token = "aaa-b",
-    token_type = "Bearer",
-    userId = "aaa-c"
+    token_type = "Bearer"
   )
 
   cohort_identical_cred <- list(
@@ -398,8 +387,7 @@ test_that("get_matching_credential returns NULL there is one credentials object 
     expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
     id_token = "original_id_token_3",
     refresh_token = "aaa-b",
-    token_type = "Bearer",
-    userId = "aaa-c"
+    token_type = "Bearer"
   )
 
   cohort_1_cred <- list(cohort_1 = credentials_1)
@@ -433,8 +421,7 @@ test_that("get_matching_credential returns NULL when there are two credentials o
     expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
     id_token = "original_id_token_3",
     refresh_token = "aaa-b",
-    token_type = "Bearer",
-    userId = "aaa-c"
+    token_type = "Bearer"
   )
 
   credentials_2 <-new(
@@ -444,8 +431,7 @@ test_that("get_matching_credential returns NULL when there are two credentials o
     expires_at = as.POSIXct("2025-03-26 11:15:36", tz = "CET"),
     id_token = "original_id_token_3",
     refresh_token = "bbb-b",
-    token_type = "Bearer",
-    userId = "bbb-c"
+    token_type = "Bearer"
   )
 
   cohort_mult_cred <- list(
@@ -484,8 +470,7 @@ test_that(".get_armadillo_credentials returns the correct match", {
     expires_at = Sys.time(),
     id_token = "id-abc",
     refresh_token = "ref-abc",
-    token_type = "Bearer",
-    userId = "user-abc"
+    token_type = "Bearer"
   )
 
   assign("test_cred", cred, envir = env)
@@ -516,8 +501,7 @@ test_that(".get_armadillo_credentials returns error when no matching credential 
     expires_at = Sys.time(),
     id_token = "id-abc",
     refresh_token = "ref-abc",
-    token_type = "Bearer",
-    userId = "user-abc"
+    token_type = "Bearer"
   )
 
   assign("test_cred", cred, envir = env)
@@ -553,8 +537,7 @@ test_that(".get_armadillo_credentials works with custom env and multiple credent
     expires_at = Sys.time(),
     id_token = "id-1",
     refresh_token = "ref-1",
-    token_type = "Bearer",
-    userId = "user-1"
+    token_type = "Bearer"
   )
 
   cred2 <- new(
@@ -564,8 +547,7 @@ test_that(".get_armadillo_credentials works with custom env and multiple credent
     expires_at = Sys.time(),
     id_token = "id-2",
     refresh_token = "ref-2",
-    token_type = "Bearer",
-    userId = "user-2"
+    token_type = "Bearer"
   )
 
   assign("cred_one", cred1, envir = env)
@@ -598,8 +580,7 @@ test_that(".reset_armadillo_credentials correctly updates tokens", {
     expires_at = as.POSIXct("2025-03-26 11:00:00", tz = "CET"),
     id_token = "id_token_x",
     refresh_token = "old-refresh",
-    token_type = "Bearer",
-    userId = "user-123"
+    token_type = "Bearer"
   )
 
   assign("cohort_1", old_cred, envir = test_env)
@@ -626,7 +607,6 @@ test_that(".reset_armadillo_credentials correctly updates tokens", {
   # Check that other slots remain unchanged
   expect_equal(updated@id_token, "id_token_x")
   expect_equal(updated@token_type, "Bearer")
-  expect_equal(updated@userId, "user-123")
 })
 
 test_that(".reset_armadillo_credentials modifies globalenv by default", {
@@ -640,8 +620,7 @@ test_that(".reset_armadillo_credentials modifies globalenv by default", {
     expires_at = as.POSIXct("2025-03-26 11:00:00", tz = "CET"),
     id_token = "id_token_y",
     refresh_token = "global-refresh",
-    token_type = "Bearer",
-    userId = "user-456"
+    token_type = "Bearer"
   )
 
   assign("cohort_2", old_cred, envir = globalenv())
@@ -704,8 +683,7 @@ test_that(".reset_connections_object updates token in correct ArmadilloConnectio
                   expires_at = Sys.time(),
                   id_token = "id_token_dummy",
                   refresh_token = "refresh_old",
-                  token_type = "Bearer",
-                  userId = "user_dummy")
+                  token_type = "Bearer")
 
   old_credentials <- list(name = "cohort_1", object = old_cred)
   new_credentials <- list(token = "aaa-new")
@@ -766,8 +744,7 @@ test_that(".reset_connections_object only updates first matching ArmadilloConnec
                   expires_at = Sys.time(),
                   id_token = "id_token_dummy",
                   refresh_token = "refresh_old",
-                  token_type = "Bearer",
-                  userId = "user_dummy")
+                  token_type = "Bearer")
 
   old_credentials <- list(name = "cohort_1", object = old_cred)
   new_credentials <- list(token = "new-token")
@@ -816,8 +793,7 @@ test_that(".reset_token_global_env updates credentials and connection", {
                   expires_at = Sys.time(),
                   id_token = "id_token_dummy",
                   refresh_token = "refresh_old",
-                  token_type = "Bearer",
-                  userId = "user_dummy")
+                  token_type = "Bearer")
 
   assign("cohort_1", old_cred, envir = test_env)
 
@@ -853,8 +829,7 @@ test_that(".reset_token_if_expired refreshes and updates token if expired", {
                       expires_at = Sys.time() - 10,
                       id_token = "id_token_dummy",
                       refresh_token = "old-refresh",
-                      token_type = "Bearer",
-                      userId = "user_dummy")
+                      token_type = "Bearer")
 
   conn <- new("ArmadilloConnection",
               name = "cohort_1",
@@ -907,8 +882,7 @@ test_that(".reset_token_if_expired returns warning when refresh fails", {
                       expires_at = Sys.time() - 10,
                       id_token = "id_token_dummy",
                       refresh_token = "old-refresh",
-                      token_type = "Bearer",
-                      userId = "user_dummy")
+                      token_type = "Bearer")
 
   conn <- new("ArmadilloConnection",
               name = "cohort_1",
