@@ -85,17 +85,24 @@ armadillo.get_credentials <- function(server) { # nolint
 #' @importFrom httr POST set_cookies content handle
 #' @noRd
 .refresh_token <- function(server, credentials) {
-  browser()
   message("\nAttempting refresh...")
   # get auth url
   auth_info <- .get_oauth_info(server)
+
+if(credentials@auth_type == "fusionauth") {
+
   # post to fusionauth refresh endpoint with current access/refresh tokens
   fusionAuthRefreshUri <- paste0(auth_info$auth$issuerUri, "/api/jwt/refresh")
-  response <- httr::POST(keyCloakRefreshUri, handle=handle(''),
+  response <- httr::POST(fusionAuthRefreshUri, handle=handle(''),
                          config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token))
 
+  content <- content(response)
+  new_credentials <- new("ArmadilloCredentials",
+                         access_token = content$token,
+                         refresh_token = content$refreshToken,
+                         expires_at = .get_updated_expiry_date(auth_info, content$token))
 
-
+} else {
   keyCloakRefreshUri <- paste0(auth_info$auth$issuerUri, "/protocol/openid-connect/token")
 
   response <- httr::POST(
@@ -108,13 +115,19 @@ armadillo.get_credentials <- function(server) { # nolint
     encode = "form"
   )
 
-  new_credentials <- content(response)
-  new_credentials$expires_at <- .get_updated_expiry_date(auth_info, new_credentials$token)
-  if (!is.null(new_credentials$refreshToken)) {
+  content <- content(response)
+  new_credentials <- new("ArmadilloCredentials",
+                          access_token = content$access_token,
+                          refresh_token = content$refresh_token,
+                          expires_in = content$expires_in,
+                          expires_at = Sys.time() + content$expires_in)
+}
+
+  if (!is.null(new_credentials@access_token)) {
     message("Refresh successful")
   } else {
-    if (!is.null(new_credentials$fieldErrors)){
-      stop(paste0(" ", unlist(new_credentials$fieldErrors)))
+    if (!is.null(content$fieldErrors)){
+      stop(paste0(" ", unlist(content$fieldErrors)))
     } else {
       stop("Refresh failed")
     }
