@@ -122,9 +122,13 @@ if(credentials@auth_type == "fusionauth") {
   content <- content(response)
   new_credentials <- new("ArmadilloCredentials",
                           access_token = content$access_token,
-                          refresh_token = content$refresh_token,
                           expires_in = content$expires_in,
-                          expires_at = Sys.time() + content$expires_in)
+                          expires_at = Sys.time() + content$expires_in,
+                          id_token = credentials@id_token,
+                          refresh_token = credentials@refresh_token,
+                          token_type = credentials@token_type,
+                          auth_type = credentials@auth_type)
+
 }
 
   if (!is.null(new_credentials@access_token)) {
@@ -293,6 +297,7 @@ if(multiple_conns) {
 #' @keywords internal
 #' @noRd
 .get_matching_credential <- function(credentials, conn) {
+  browser()
   target_token <- conn@token
 
   for (name in names(credentials)) {
