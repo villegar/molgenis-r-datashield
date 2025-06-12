@@ -99,8 +99,12 @@ if(credentials@auth_type == "fusionauth") {
   content <- content(response)
   new_credentials <- new("ArmadilloCredentials",
                          access_token = content$token,
+                         expires_in = as.numeric(.get_updated_expiry_date(auth_info, content$token) - Sys.time()),
+                         expires_at = .get_updated_expiry_date(auth_info, content$token),
+                         id_token = credentials@id_token,
                          refresh_token = content$refreshToken,
-                         expires_at = .get_updated_expiry_date(auth_info, content$token))
+                         token_type = credentials@token_type,
+                         auth_type = credentials@auth_type)
 
 } else {
   keyCloakRefreshUri <- paste0(auth_info$auth$issuerUri, "/protocol/openid-connect/token")
