@@ -32,7 +32,8 @@ setClass(
     expires_at = "POSIXct",
     id_token = "character",
     refresh_token = "character",
-    token_type = "character")
+    token_type = "character",
+    auth_type = "character")
 )
 
 
@@ -59,12 +60,15 @@ armadillo.get_credentials <- function(server) { # nolint
     endpoint,
     auth_info$clientId
   )
+
   credentials_obj <- new("ArmadilloCredentials",  access_token = credentials$access_token,
                          expires_in =  credentials$expires_in,
                          expires_at = Sys.time() + credentials$expires_in,
                          id_token =  credentials$id_token,
                          refresh_token =  credentials$refresh_token,
-                         token_type =  credentials$token_type)
+                         token_type =  credentials$token_type,
+                         auth_type = ifelse(grepl("realms", endpoint$authorize), "keycloak", "fusionauth")
+  )
 
   return(credentials_obj)
 }
@@ -81,13 +85,29 @@ armadillo.get_credentials <- function(server) { # nolint
 #' @importFrom httr POST set_cookies content handle
 #' @noRd
 .refresh_token <- function(server, credentials) {
+  browser()
   message("\nAttempting refresh...")
   # get auth url
   auth_info <- .get_oauth_info(server)
   # post to fusionauth refresh endpoint with current access/refresh tokens
   fusionAuthRefreshUri <- paste0(auth_info$auth$issuerUri, "/api/jwt/refresh")
-  response <- httr::POST(fusionAuthRefreshUri, handle=handle(''),
+  response <- httr::POST(keyCloakRefreshUri, handle=handle(''),
                          config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token))
+
+
+
+  keyCloakRefreshUri <- paste0(auth_info$auth$issuerUri, "/protocol/openid-connect/token")
+
+  response <- httr::POST(
+    url = keyCloakRefreshUri,
+    body = list(
+      grant_type = "refresh_token",
+      refresh_token = credentials@refresh_token,
+      client_id = auth_info$auth$clientId
+    ),
+    encode = "form"
+  )
+
   new_credentials <- content(response)
   new_credentials$expires_at <- .get_updated_expiry_date(auth_info, new_credentials$token)
   if (!is.null(new_credentials$refreshToken)) {
