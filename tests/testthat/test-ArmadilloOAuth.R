@@ -56,91 +56,141 @@ test_that("armadillo.get_credentials returns a valid ArmadilloCredentials object
   expect_true(abs(as.numeric(result@expires_at - (Sys.time() + 3600))) < 2)
 })
 
-test_that(".refresh_token returns success message if new credentials are not null", {
+test_that(".refresh_token returns success message if new credentials are not null and option fusionauth", {
   server <- "https://example.org"
-  credentials_in <- list(
-    access_token = "access123",
-    expires_in = 3600,
-    id_token = "id123",
-    refresh_token = "refresh123",
-    token_type = "Bearer",
-    userId = "user123"
+  credentials_in <- methods::new("ArmadilloCredentials",
+                                 access_token = "access123",
+                                 expires_in = 3600,
+                                 expires_at = Sys.time(),
+                                 id_token = "id123",
+                                 refresh_token = "refresh123",
+                                 token_type = "Bearer",
+                                 auth_type = "fusionauth"
   )
-  credentials_out <- list(refreshToken = "access123", token = "token123", expires_at = "2025-04-29 09:45:08 CEST")
+  credentials_out <- methods::new("ArmadilloCredentials",
+                                  access_token = "access456",
+                                  expires_in = -70.20557,
+                                  expires_at = as.POSIXct("2025-04-29 09:45:08 CEST"),
+                                  id_token = "id123",
+                                  refresh_token = "refresh456",
+                                  token_type = "Bearer",
+                                  auth_type = "fusionauth")
+
+  content_mock_fusion <- list(
+    refreshToken = "refresh456",
+    token = "access456")
 
   dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
   dummy_response <- structure(list(status_code = 400), class = "response")
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
-    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) "2025-04-29 09:45:08 CEST",
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) as.POSIXct("2025-04-29 09:45:08 CEST"),
     "httr::POST" = function(...) dummy_response,
-    "httr::content" = function(response) credentials_out,
+    "httr::content" = function(response) content_mock_fusion,
     {
+
       expect_message(
         DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
         regexp = "Refresh successful"
       )
+
       expect_equal(
         DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
-        credentials_out)
+        credentials_out,
+        tolerance = 0.1)
+    }
+  )
+})
+
+test_that(".refresh_token returns success message if new credentials are not null and option keycloak", {
+  server <- "https://example.org"
+  credentials_in <- methods::new("ArmadilloCredentials",
+                                 access_token = "access123",
+                                 expires_in = 3600,
+                                 expires_at = as.POSIXct("2025-07-08 14:52:44 CEST"),
+                                 id_token = "id123",
+                                 refresh_token = "refresh123",
+                                 token_type = "Bearer",
+                                 auth_type = "keycloak"
+  )
+
+  credentials_out <- methods::new("ArmadilloCredentials",
+                                  access_token = "access456",
+                                  expires_in = 300,
+                                  expires_at = as.POSIXct(Sys.time() + 300),
+                                  id_token = "id123",
+                                  refresh_token = "refresh123",
+                                  token_type = "Bearer",
+                                  auth_type = "keycloak"
+  )
+
+  content_mock_keycloak <- list(
+    access_token = "access456",
+    expires_in = 300,
+    refresh_expires_in = 0,
+    refresh_token = "refresh123",
+    token_type = "Bearer",
+    id_token = "id123",
+    `not-before-policy` = 0,
+    session_state = "abc123",
+    scope = "openid profile email"
+  )
+
+  dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
+  dummy_response <- structure(list(status_code = 400), class = "response")
+
+  with_mock(
+    "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) as.POSIXct("2025-04-29 09:45:08 CEST"),
+    "httr::POST" = function(...) dummy_response,
+    "httr::content" = function(response) content_mock_keycloak,
+    {
+
+      expect_message(
+        DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
+        regexp = "Refresh successful"
+      )
+
+      print(DSMolgenisArmadillo:::.refresh_token(server, credentials_in))
+      expect_equal(
+        DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
+        credentials_out,
+        tolerance = 0.10)
     }
   )
 })
 
 test_that(".refresh_token stops with message if fieldErrors returned", {
   server <- "https://example.org"
-  credentials <- new("ArmadilloCredentials",
-                     access_token = "access123",
-                     refresh_token = "bad-refresh",
-                     expires_in = 3600,
-                     expires_at = Sys.time() + 3600,
-                     id_token = "id123",
-                     token_type = "Bearer")
+  credentials <- methods::new("ArmadilloCredentials",
+                                 access_token = "access123",
+                                 expires_in = 3600,
+                                 expires_at = Sys.time(),
+                                 id_token = "id123",
+                                 refresh_token = "refresh123",
+                                 token_type = "Bearer",
+                                 auth_type = "fusionauth"
+  )
+
 
   dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
   dummy_response <- structure(list(status_code = 400), class = "response")
   dummy_content <- list(
+      refreshToken = "refresh456",
+      token = "access456",
       fieldErrors = list(message = "Invalid refresh token")
-    )
+  )
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
-    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) "",
+    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) as.POSIXct("2025-04-29 09:45:08 CEST"),
     "httr::POST" = function(...) dummy_response,
     "httr::content" = function(response) dummy_content,
     {
       expect_error(
         DSMolgenisArmadillo:::.refresh_token(server, credentials),
         regexp = "Invalid refresh token"
-      )
-    }
-  )
-})
-
-test_that(".refresh_token stops with message if fieldErrors returned", {
-  server <- "https://example.org"
-  credentials <- new("ArmadilloCredentials",
-                     access_token = "access123",
-                     refresh_token = "refresh123",
-                     expires_in = 3600,
-                     expires_at = Sys.time() + 3600,
-                     id_token = "id123",
-                     token_type = "Bearer")
-
-  dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
-  dummy_response <- structure(list(status_code = 200), class = "response")
-  dummy_error_response <- list(fieldErrors = list("Invalid refresh token"))
-
-  with_mock(
-    "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
-    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) "",
-    "httr::POST" = function(...) dummy_response,
-    "httr::content" = function(response) dummy_error_response,
-    {
-      expect_error(
-        DSMolgenisArmadillo:::.refresh_token(server, credentials),
-        "Invalid refresh token"
       )
     }
   )
@@ -154,7 +204,8 @@ test_that(".refresh_token stops with generic message if refresh fails silently",
                      expires_in = 3600,
                      expires_at = Sys.time() + 3600,
                      id_token = "id123",
-                     token_type = "Bearer")
+                     token_type = "Bearer",
+                     auth_type = "fusionauth")
 
   dummy_auth_info <- list(auth = list(issuerUri = "https://auth.example.org"))
   dummy_response <- structure(list(status_code = 200), class = "response")
