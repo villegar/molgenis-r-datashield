@@ -266,12 +266,7 @@ if(multiple_conns) {
   if(is.null(all_credentials)) {
     return(NULL)
   } else {
-    matching <- .get_matching_credential(all_credentials, conn)
-    if(is.null(matching)) {
-      stop("no matching credentials found in global environment")
-    } else {
-      return(matching)
-    }
+    .get_matching_credential(all_credentials, conn)
   }
 }
 

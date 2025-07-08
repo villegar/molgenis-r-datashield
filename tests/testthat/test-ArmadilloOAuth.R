@@ -542,35 +542,6 @@ test_that(".get_armadillo_credentials returns the correct match", {
   expect_identical(result$object, cred)
 })
 
-test_that(".get_armadillo_credentials returns error when no matching credential found", {
-  env <- new.env()
-
-  cred <- new(
-    "ArmadilloCredentials",
-    access_token = "abc123",
-    expires_in = 29,
-    expires_at = Sys.time(),
-    id_token = "id-abc",
-    refresh_token = "ref-abc",
-    token_type = "Bearer"
-  )
-
-  assign("test_cred", cred, envir = env)
-
-  conn <- new(
-    "ArmadilloConnection",
-    name = "cohort_1",
-    handle = handle,
-    user = "",
-    cookies = list(),
-    token = "zzz999"
-  )
-
-  expect_error(
-    .get_armadillo_credentials(conn, env = env),
-    "no matching credentials found in global environment")
-})
-
 test_that(".get_armadillo_credentials returns NULL when there are no credentials", {
   env <- new.env()
   expect_null(
