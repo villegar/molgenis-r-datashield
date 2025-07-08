@@ -22,6 +22,7 @@ armadillo.get_token <- function(server) { # nolint
 #' @slot id_token Character. The ID token containing identity information.
 #' @slot refresh_token Character. The token used to obtain a new access token when expired.
 #' @slot token_type Character. The type of token (typically "Bearer").
+#' @slot auth_type Character. the authentication provider type (e.g., "keycloak", "fusionauth").
 #' @keywords internal
 #' @export
 setClass(
@@ -93,10 +94,20 @@ if(credentials@auth_type == "fusionauth") {
 
   # post to fusionauth refresh endpoint with current access/refresh tokens
   fusionAuthRefreshUri <- paste0(auth_info$auth$issuerUri, "/api/jwt/refresh")
-  response <- httr::POST(fusionAuthRefreshUri, handle=handle(''),
-                         config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token))
+  response <- httr::POST(
+    url = fusionAuthRefreshUri,
+    handle=handle(''),
+    config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token)
+    )
 
   content <- content(response)
+
+  if (!is.null(content$fieldErrors)){
+    stop(paste0(" ", unlist(content$fieldErrors)))
+  } else if (is.null(content$token)) {
+    stop("Refresh failed")
+  }
+
   new_credentials <- new("ArmadilloCredentials",
                          access_token = content$token,
                          expires_in = as.numeric(.get_updated_expiry_date(auth_info, content$token) - Sys.time()),
@@ -108,7 +119,6 @@ if(credentials@auth_type == "fusionauth") {
 
 } else {
   keyCloakRefreshUri <- paste0(auth_info$auth$issuerUri, "/protocol/openid-connect/token")
-
   response <- httr::POST(
     url = keyCloakRefreshUri,
     body = list(
@@ -120,6 +130,13 @@ if(credentials@auth_type == "fusionauth") {
   )
 
   content <- content(response)
+
+  if (!is.null(content$fieldErrors)){
+    stop(paste0(" ", unlist(content$fieldErrors)))
+  } else if (is.null(content$access_token)) {
+    stop("Refresh failed")
+  }
+
   new_credentials <- new("ArmadilloCredentials",
                           access_token = content$access_token,
                           expires_in = content$expires_in,
@@ -131,15 +148,7 @@ if(credentials@auth_type == "fusionauth") {
 
 }
 
-  if (!is.null(new_credentials@access_token)) {
-    message("Refresh successful")
-  } else {
-    if (!is.null(content$fieldErrors)){
-      stop(paste0(" ", unlist(content$fieldErrors)))
-    } else {
-      stop("Refresh failed")
-    }
-  }
+  message("Refresh successful")
   return(new_credentials)
 }
 
@@ -297,7 +306,6 @@ if(multiple_conns) {
 #' @keywords internal
 #' @noRd
 .get_matching_credential <- function(credentials, conn) {
-  browser()
   target_token <- conn@token
 
   for (name in names(credentials)) {
