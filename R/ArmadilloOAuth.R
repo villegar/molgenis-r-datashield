@@ -228,7 +228,7 @@ if(credentials@auth_type == "fusionauth") {
   } else if(credentials$object@expires_at < Sys.time()) {
     .check_multiple_conns(env)
     new_credentials <- .refresh_token(conn@handle$url, credentials$object)
-    conn@token <- new_credentials$token
+    conn@token <- new_credentials@access_token
     .reset_token_global_env(credentials, new_credentials, conn)
     return(conn)
     } else {
@@ -324,9 +324,9 @@ if(multiple_conns) {
 #' @noRd
 .reset_armadillo_credentials <- function(old_credentials, new_credentials, env = getOption("datashield.env", globalenv())) {
   credentials_to_return <- old_credentials$object
-  credentials_to_return@access_token <- new_credentials$token
-  credentials_to_return@refresh_token <- new_credentials$refreshToken
-  credentials_to_return@expires_at <- new_credentials$expires_at
+  credentials_to_return@access_token <- new_credentials@access_token
+  credentials_to_return@refresh_token <- new_credentials@refresh_token
+  credentials_to_return@expires_at <- new_credentials@expires_at
   assign(old_credentials$name, credentials_to_return, envir = env)
   message(paste0("Token reset in connections object ", "'", old_credentials$name, "'", "in ", format(env)))
 }
@@ -347,7 +347,7 @@ if(multiple_conns) {
 
   for (i in seq_along(conns_to_return)) {
     if (methods::slot(conns_to_return[[i]], "token") == old_credentials$object@access_token) {
-      methods::slot(conns_to_return[[i]], "token") <- new_credentials$token
+      methods::slot(conns_to_return[[i]], "token") <- new_credentials@access_token
       break  # stop after first match
     }
   }

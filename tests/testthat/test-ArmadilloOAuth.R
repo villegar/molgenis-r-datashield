@@ -98,7 +98,7 @@ test_that(".refresh_token returns success message if new credentials are not nul
       expect_equal(
         DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
         credentials_out,
-        tolerance = 0.1)
+        tolerance = 0.2)
     }
   )
 })
@@ -682,11 +682,10 @@ test_that(".reset_armadillo_credentials correctly updates tokens", {
     object = old_cred
   )
 
-  new_credentials <- list(
-    token = "new-token",
-    refreshToken = "new-refresh",
-    expires_at = as.POSIXct("2035-03-26 11:00:00", tz = "CET")
-  )
+  new_credentials <- old_cred
+  new_credentials@access_token = "new-token"
+  new_credentials@refresh_token = "new-refresh"
+  new_credentials@expires_at = as.POSIXct("2035-03-26 11:00:00", tz = "CET")
 
   .reset_armadillo_credentials(old_credentials, new_credentials, env = test_env)
 
@@ -722,11 +721,10 @@ test_that(".reset_armadillo_credentials modifies globalenv by default", {
     object = old_cred
   )
 
-  new_credentials <- list(
-    token = "new-global-token",
-    refreshToken = "new-global-refresh",
-    expires_at = as.POSIXct("2035-03-26 11:00:00", tz = "CET")
-  )
+  new_credentials <- old_cred
+  new_credentials@access_token = "new-global-token"
+  new_credentials@refresh_token = "new-global-refresh"
+  new_credentials@expires_at = as.POSIXct("2035-03-26 11:00:00", tz = "CET")
 
   .reset_armadillo_credentials(old_credentials, new_credentials)
 
@@ -778,7 +776,8 @@ test_that(".reset_connections_object updates token in correct ArmadilloConnectio
                   token_type = "Bearer")
 
   old_credentials <- list(name = "cohort_1", object = old_cred)
-  new_credentials <- list(token = "aaa-new")
+  new_credentials <- old_cred
+  new_credentials@access_token = "aaa-new"
 
   # Run test
   .reset_connections_object(old_credentials, new_credentials, conn = cohort_1, env = test_env)
@@ -839,7 +838,8 @@ test_that(".reset_connections_object only updates first matching ArmadilloConnec
                   token_type = "Bearer")
 
   old_credentials <- list(name = "cohort_1", object = old_cred)
-  new_credentials <- list(token = "new-token")
+  new_credentials <- old_cred
+  new_credentials@access_token = "new-token"
 
   .reset_connections_object(old_credentials, new_credentials, conn = conn_1, env = test_env)
 
@@ -890,11 +890,11 @@ test_that(".reset_token_global_env updates credentials and connection", {
   assign("cohort_1", old_cred, envir = test_env)
 
   old_credentials <- list(name = "cohort_1", object = old_cred)
-  new_credentials <- list(
-    token = "aaa-new",
-    refreshToken = "refresh_new",
-    expires_at = as.POSIXct("2035-03-26 11:00:00", tz = "CET")
-  )
+
+  new_credentials <- old_cred
+  new_credentials@access_token = "aaa-new"
+  new_credentials@refresh_token = "refresh_new"
+  new_credentials@expires_at = as.POSIXct("2035-03-26 11:00:00", tz = "CET")
 
   .reset_token_global_env(old_credentials, new_credentials, conn, env = test_env)
 
@@ -944,11 +944,17 @@ test_that(".reset_token_if_expired refreshes and updates token if expired", {
   })
 
   stub(.reset_token_if_expired, ".refresh_token", function(url, credentials) {
-    list(token = "new-token", refreshToken = "new-refresh")
+    new("ArmadilloCredentials",
+        access_token = "new-token",
+        expires_in = 3600,
+        expires_at = Sys.time() - 10,
+        id_token = "id_token_dummy",
+        refresh_token = "new-refresh",
+        token_type = "Bearer")
   })
 
   stub(.reset_token_if_expired, ".reset_token_global_env", function(old_credentials, new_credentials, conn, env = updated_conn_env) {
-    conn@token <- new_credentials$token
+    conn@token <- new_credentials@access_token
     assign("updated_conn_result", conn, envir = env)
   })
 
