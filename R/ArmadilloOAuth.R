@@ -22,6 +22,7 @@ armadillo.get_token <- function(server) { # nolint
 #' @slot id_token Character. The ID token containing identity information.
 #' @slot refresh_token Character. The token used to obtain a new access token when expired.
 #' @slot token_type Character. The type of token (typically "Bearer").
+#' @slot auth_type Character. the authentication provider type (e.g., "keycloak", "fusionauth").
 #' @keywords internal
 #' @export
 setClass(
@@ -32,7 +33,8 @@ setClass(
     expires_at = "POSIXct",
     id_token = "character",
     refresh_token = "character",
-    token_type = "character")
+    token_type = "character",
+    auth_type = "character")
 )
 
 
@@ -59,12 +61,15 @@ armadillo.get_credentials <- function(server) { # nolint
     endpoint,
     auth_info$clientId
   )
+
   credentials_obj <- new("ArmadilloCredentials",  access_token = credentials$access_token,
                          expires_in =  credentials$expires_in,
                          expires_at = Sys.time() + credentials$expires_in,
                          id_token =  credentials$id_token,
                          refresh_token =  credentials$refresh_token,
-                         token_type =  credentials$token_type)
+                         token_type =  credentials$token_type,
+                         auth_type = ifelse(grepl("realms", endpoint$authorize), "keycloak", "fusionauth")
+  )
 
   return(credentials_obj)
 }
@@ -84,21 +89,66 @@ armadillo.get_credentials <- function(server) { # nolint
   message("\nAttempting refresh...")
   # get auth url
   auth_info <- .get_oauth_info(server)
+
+if(credentials@auth_type == "fusionauth") {
+
   # post to fusionauth refresh endpoint with current access/refresh tokens
   fusionAuthRefreshUri <- paste0(auth_info$auth$issuerUri, "/api/jwt/refresh")
-  response <- httr::POST(fusionAuthRefreshUri, handle=handle(''),
-                         config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token))
-  new_credentials <- content(response)
-  new_credentials$expires_at <- .get_updated_expiry_date(auth_info, new_credentials$token)
-  if (!is.null(new_credentials$refreshToken)) {
-    message("Refresh successful")
-  } else {
-    if (!is.null(new_credentials$fieldErrors)){
-      stop(paste0(" ", unlist(new_credentials$fieldErrors)))
-    } else {
-      stop("Refresh failed")
-    }
+  response <- httr::POST(
+    url = fusionAuthRefreshUri,
+    handle=handle(''),
+    config=httr::set_cookies(refresh_token=credentials@refresh_token, access_token=credentials@access_token)
+    )
+
+  content <- content(response)
+
+  if (!is.null(content$fieldErrors)){
+    stop(paste0(" ", unlist(content$fieldErrors)))
+  } else if (is.null(content$token)) {
+    stop("Refresh failed")
   }
+
+  new_credentials <- new("ArmadilloCredentials",
+                         access_token = content$token,
+                         expires_in = as.numeric(.get_updated_expiry_date(auth_info, content$token) - Sys.time()),
+                         expires_at = .get_updated_expiry_date(auth_info, content$token),
+                         id_token = credentials@id_token,
+                         refresh_token = content$refreshToken,
+                         token_type = credentials@token_type,
+                         auth_type = credentials@auth_type)
+
+} else {
+  keyCloakRefreshUri <- paste0(auth_info$auth$issuerUri, "/protocol/openid-connect/token")
+  response <- httr::POST(
+    url = keyCloakRefreshUri,
+    body = list(
+      grant_type = "refresh_token",
+      refresh_token = credentials@refresh_token,
+      client_id = auth_info$auth$clientId
+    ),
+    encode = "form"
+  )
+
+  content <- content(response)
+
+  if (!is.null(content$fieldErrors)){
+    stop(paste0(" ", unlist(content$fieldErrors)))
+  } else if (is.null(content$access_token)) {
+    stop("Refresh failed")
+  }
+
+  new_credentials <- new("ArmadilloCredentials",
+                          access_token = content$access_token,
+                          expires_in = content$expires_in,
+                          expires_at = Sys.time() + content$expires_in,
+                          id_token = credentials@id_token,
+                          refresh_token = credentials@refresh_token,
+                          token_type = credentials@token_type,
+                          auth_type = credentials@auth_type)
+
+}
+
+  message("Refresh successful")
   return(new_credentials)
 }
 
@@ -178,7 +228,7 @@ armadillo.get_credentials <- function(server) { # nolint
   } else if(credentials$object@expires_at < Sys.time()) {
     .check_multiple_conns(env)
     new_credentials <- .refresh_token(conn@handle$url, credentials$object)
-    conn@token <- new_credentials$token
+    conn@token <- new_credentials@access_token
     .reset_token_global_env(credentials, new_credentials, conn)
     return(conn)
     } else {
@@ -216,12 +266,7 @@ if(multiple_conns) {
   if(is.null(all_credentials)) {
     return(NULL)
   } else {
-    matching <- .get_matching_credential(all_credentials, conn)
-    if(is.null(matching)) {
-      stop("no matching credentials found in global environment")
-    } else {
-      return(matching)
-    }
+    .get_matching_credential(all_credentials, conn)
   }
 }
 
@@ -279,9 +324,9 @@ if(multiple_conns) {
 #' @noRd
 .reset_armadillo_credentials <- function(old_credentials, new_credentials, env = getOption("datashield.env", globalenv())) {
   credentials_to_return <- old_credentials$object
-  credentials_to_return@access_token <- new_credentials$token
-  credentials_to_return@refresh_token <- new_credentials$refreshToken
-  credentials_to_return@expires_at <- new_credentials$expires_at
+  credentials_to_return@access_token <- new_credentials@access_token
+  credentials_to_return@refresh_token <- new_credentials@refresh_token
+  credentials_to_return@expires_at <- new_credentials@expires_at
   assign(old_credentials$name, credentials_to_return, envir = env)
   message(paste0("Token reset in connections object ", "'", old_credentials$name, "'", "in ", format(env)))
 }
@@ -302,7 +347,7 @@ if(multiple_conns) {
 
   for (i in seq_along(conns_to_return)) {
     if (methods::slot(conns_to_return[[i]], "token") == old_credentials$object@access_token) {
-      methods::slot(conns_to_return[[i]], "token") <- new_credentials$token
+      methods::slot(conns_to_return[[i]], "token") <- new_credentials@access_token
       break  # stop after first match
     }
   }
