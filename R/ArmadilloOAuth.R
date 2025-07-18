@@ -10,6 +10,7 @@
 #'
 #' @export
 armadillo.get_token <- function(server) { # nolint
+  lifecycle::deprecate_warn("3.0.0", "armadillo.get_token()", "armadillo.get_credentials()")
   credentials <- armadillo.get_credentials(server)
   return(credentials@id_token)
 }
