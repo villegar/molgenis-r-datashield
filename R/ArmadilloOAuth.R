@@ -56,7 +56,7 @@ setClass(
 #' @export
 armadillo.get_credentials <- function(server) { # nolint
   auth_info <- .get_oauth_info(server)$auth
-  endpoint <- MolgenisAuth::discover(auth_info$issuerUri)
+  endpoint <- discover(auth_info$issuerUri)
   credentials <- device_flow_auth(
     endpoint,
     auth_info$clientId
