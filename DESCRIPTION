@@ -36,16 +36,17 @@ Maintainer: Mariska Slofstra <m.k.slofstra@umcg.nl>
 Depends: 
     R (>= 3.6),
     DSI (>= 1.3.0),
-    MolgenisAuth (>= 0.0.25),
+    MolgenisAuth (>= 1.0.0),
 Imports: 
     methods,
     httr,
     stringr,
     utils,
     base64enc,
-    urltools, 
-    dplyr, 
-    jsonlite
+    urltools,
+    dplyr,
+    jsonlite,
+    lifecycle
 Suggests:
     dsBaseClient (>= 6.0),
     knitr,
