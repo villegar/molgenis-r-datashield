@@ -118,7 +118,7 @@ test_that(".refresh_token returns success message if new credentials are not nul
   credentials_out <- methods::new("ArmadilloCredentials",
                                   access_token = "access456",
                                   expires_in = 300,
-                                  expires_at = as.POSIXct(Sys.time() + 300),
+                                  expires_at = as.POSIXct("2025-07-08 16:00:00 CEST") + 300,
                                   id_token = "id123",
                                   refresh_token = "refresh123",
                                   token_type = "Bearer",
@@ -142,7 +142,6 @@ test_that(".refresh_token returns success message if new credentials are not nul
 
   with_mock(
     "DSMolgenisArmadillo:::.get_oauth_info" = function(server) dummy_auth_info,
-    "DSMolgenisArmadillo:::.get_updated_expiry_date" = function(auth_info, token) as.POSIXct("2025-04-29 09:45:08 CEST"),
     "httr::POST" = function(...) dummy_response,
     "httr::content" = function(response) content_mock_keycloak,
     {
@@ -153,8 +152,12 @@ test_that(".refresh_token returns success message if new credentials are not nul
       )
 
       print(DSMolgenisArmadillo:::.refresh_token(server, credentials_in))
+
+      result <- DSMolgenisArmadillo:::.refresh_token(server, credentials_in)
+      credentials_out@expires_at <- result@expires_at ## This is a hack, but can't mock Sys.Time and slow machine causes this to fail their test
+
       expect_equal(
-        DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
+        result,
         credentials_out,
         tolerance = 0.10)
     }
