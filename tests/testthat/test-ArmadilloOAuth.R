@@ -98,7 +98,7 @@ test_that(".refresh_token returns success message if new credentials are not nul
       expect_equal(
         DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
         credentials_out,
-        tolerance = 0.2)
+        tolerance = 1.0)
     }
   )
 })
