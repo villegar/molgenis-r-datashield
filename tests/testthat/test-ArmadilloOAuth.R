@@ -95,10 +95,13 @@ test_that(".refresh_token returns success message if new credentials are not nul
         regexp = "Refresh successful"
       )
 
-      expect_equal(
-        DSMolgenisArmadillo:::.refresh_token(server, credentials_in),
-        credentials_out,
-        tolerance = 1.0)
+      res <- DSMolgenisArmadillo:::.refresh_token(server, credentials_in)
+
+      expect_equal(res@access_token,  credentials_out@access_token)
+      expect_equal(res@id_token,      credentials_out@id_token)
+      expect_equal(res@refresh_token, credentials_out@refresh_token)
+      expect_equal(res@token_type,    credentials_out@token_type)
+      expect_equal(res@auth_type,     credentials_out@auth_type) ## Don't test expires_in and expires_at because these fail CRAN tests due to slow machines
     }
   )
 })
