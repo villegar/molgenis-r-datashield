@@ -1,3 +1,6 @@
+# DSMolgenisArmadillo 3.0.1
+Fix: fixed failing tests
+
 # DSMolgenisArmadillo 3.0.0
 * Feat: Implemented functionality to refresh tokens if they have expired. This involved adding a 
 new function `armadillo.get_credentials` which replaces `armadillo.get_token`, and also retrieves
